@@ -1,0 +1,337 @@
+<!doctype html>
+<html lang="ru">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <title>  Настройка FreeBSD на Lenovo Thinkpad X220 (2011 года) | Dragon's notes
+</title>
+  <link rel="canonical" href="https://eugene-andrienko.com/thinkpad-x220-freebsd.html">
+
+<link rel="apple-touch-icon" sizes="180x180" href="/theme/icons/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/theme/icons/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/theme/icons/favicon-16x16.png">
+<link rel="manifest" href="/theme/icons/site.webmanifest">
+<link rel="mask-icon" href="/theme/icons/safari-pinned-tab.svg" color="#5bbad5">
+<link rel="shortcut icon" href="/theme/icons/favicon.ico">
+<meta name="apple-mobile-web-app-title" content="Драконовы заметки">
+<meta name="application-name" content="Драконовы заметки">
+<meta name="msapplication-TileColor" content="#00aba9">
+<meta name="msapplication-config" content="/theme/icons/browserconfig.xml">
+<meta name="theme-color" content="#ffffff">    <link rel="manifest" href="https://eugene-andrienko.com/manifest.json">
+
+  <link rel="stylesheet" href="https://eugene-andrienko.com/theme/css/lumen.min.css">
+
+  <link rel="alternate" type="application/atom+xml" title="Full Atom Feed"
+        href="https://eugene-andrienko.com/feeds/all.atom.xml">
+  <link rel="alternate" type="application/atom+xml" title="Categories Atom Feed"
+        href="https://eugene-andrienko.com/feeds/it.atom.xml">  
+  <meta name="description" content="Эта небольшая заметка кратко описывает настройку FreeBSD 12.1 для работы на Lenovo ThinkPad X220 — чтобы не забыть неочевидные действия, выполняемые после установки системы. Используемый ThinkPad из 2011 года — из тех времён, когда ещё использовался приличный дизайн от IBM – с синим Enter и семирядной клавиатурой.">
+
+
+</head>
+
+<body>
+  <header class="header">
+    <div class="container">
+<div class="row">
+    <div class="col-sm-4">
+      <a href="https://eugene-andrienko.com/">
+        <img class="img-fluid rounded" src=https://eugene-andrienko.com/theme/images/siteimage.png alt="Dragon's notes">
+      </a>
+    </div>
+  <div class="col-sm-8">
+    <h1 class="title"><a href="https://eugene-andrienko.com/" style="color: black">Dragon's notes</a></h1>
+      <ul class="list-inline">
+          <li class="list-inline-item"><a class="fab fa-github" href="https://github.com/eugeneandrienko" target="_blank" style="color: black"></a></li>
+          <li class="list-inline-item"><a class="fab fa-linkedin" href="https://www.linkedin.com/in/eugeneandrienko" target="_blank" style="color: black"></a></li>
+          <li class="list-inline-item"><a class="fab fa-strava" href="https://www.strava.com/athletes/8248131" target="_blank" style="color: black"></a></li>
+          <li class="list-inline-item"><a class="fas fa-map-marked-alt" href="https://www.openstreetmap.org/user/h0rr0rrdrag0n" target="_blank" style="color: black"></a></li>
+      </ul>
+  </div>
+</div>    </div>
+  </header>
+
+  <div class="main">
+    <div class="container">
+      <h1>  Настройка FreeBSD на Lenovo Thinkpad X220 (2011&nbsp;года)
+</h1>
+  <article class="article">
+    <div class="content">
+      <p>Эта небольшая заметка кратко описывает настройку FreeBSD 12.1 для работы на Lenovo
+ThinkPad X220 — чтобы не забыть неочевидные действия, выполняемые после
+установки системы. Используемый ThinkPad из 2011 года — из тех времён, когда ещё
+использовался приличный дизайн от <span class="caps">IBM</span> – с синим Enter и семирядной клавиатурой.</p>
+<div class="contents topic" id="topic-1">
+<p class="topic-title">Содержание поста:</p>
+<ul class="simple">
+<li><a class="reference internal" href="#bash" id="toc-entry-1">Корректное отображение ~ в пути, в приглашении bash</a></li>
+<li><a class="reference internal" href="#section-1" id="toc-entry-2">Минимальный набор групп для доступа к устройствам ноутбука</a></li>
+<li><a class="reference internal" href="#section-2" id="toc-entry-3">Управление питанием</a></li>
+<li><a class="reference internal" href="#section-3" id="toc-entry-4">Звук</a></li>
+<li><a class="reference internal" href="#section-4" id="toc-entry-5">Управление яркостью</a></li>
+<li><a class="reference internal" href="#section-5" id="toc-entry-6">Мультимедиа-клавиши</a></li>
+<li><a class="reference internal" href="#section-6" id="toc-entry-7">Тачпад и трекпойнт</a></li>
+<li><a class="reference internal" href="#section-7" id="toc-entry-8">Веб-камера</a></li>
+<li><a class="reference internal" href="#section-8" id="toc-entry-9">Сон</a></li>
+<li><a class="reference internal" href="#drm-kmod" id="toc-entry-10">Включение drm-kmod</a></li>
+<li><a class="reference internal" href="#wi-fi" id="toc-entry-11">Wi-Fi</a></li>
+<li><a class="reference internal" href="#section-9" id="toc-entry-12">Разное</a></li>
+</ul>
+</div>
+<p>В заметке используются материалы из следующих мест:</p>
+<ul class="simple">
+<li><a class="reference external" href="https://cyber.dabamos.de/unix/x230/">https://cyber.dabamos.de/unix/x230/</a></li>
+<li><a class="reference external" href="https://unrelenting.technology/articles/freebsd-on-the-thinkpad-x240">https://unrelenting.technology/articles/freebsd-on-the-thinkpad-x240</a></li>
+<li><a class="reference external" href="https://github.com/grembo/xorg-udev-setup-check">https://github.com/grembo/xorg-udev-setup-check</a></li>
+<li><a class="reference external" href="https://www.c0ffee.net/blog/freebsd-on-a-laptop/">https://www.c0ffee.net/blog/freebsd-on-a-laptop/</a></li>
+<li><a class="reference external" href="https://cooltrainer.org/a-freebsd-desktop-howto/">https://cooltrainer.org/a-freebsd-desktop-howto/</a></li>
+<li><a class="reference external" href="https://wiki.archlinux.org/title/Lenovo_ThinkPad_X230">https://wiki.archlinux.org/title/Lenovo_ThinkPad_X230</a></li>
+</ul>
+<div class="section" id="bash">
+<h2>Корректное отображение ~ в пути, в приглашении bash</h2>
+<p>Поскольку все домашние каталоги пользователей расположены по пути
+<tt class="docutils literal">/usr/home/</tt>, а <tt class="docutils literal">/home/</tt> лишь символическая ссылка на вышеуказанный
+каталог – в приглашении командной строки <tt class="docutils literal">\w</tt> будет заменяться не на
+<tt class="docutils literal">~/catalog_name</tt>, а на <tt class="docutils literal">/usr/home/catalog_name</tt>.</p>
+<p>Чтобы путь к каталогу внутри домашнего каталога имел в своём начале
+<tt class="docutils literal">~</tt>, нужно установить в качестве домашнего каталога пользователя
+прямой путь к нему — <tt class="docutils literal">/usr/home/</tt>, а не символическую ссылку — <tt class="docutils literal">/home/</tt>. Делается это
+через <tt class="docutils literal">sudo chsh username</tt>.</p>
+</div>
+<div class="section" id="section-1">
+<h2>Минимальный набор групп для доступа к устройствам ноутбука</h2>
+<ul class="simple">
+<li>wheel — нужен для sudo;</li>
+<li>video – для доступа к <tt class="docutils literal">/dev/dri/card*</tt>;</li>
+<li>webcamd — для доступа к веб-камере.</li>
+</ul>
+</div>
+<div class="section" id="section-2">
+<h2>Управление питанием</h2>
+<p>Настройки для <tt class="docutils literal">/etc/rc.conf</tt>:</p>
+<pre class="literal-block">
+powerd_enable="YES"
+powerd_flags="-a hiadaptive -b adaptive -M 2000"
+performance_cx_lowest="C2"
+economy_cx_lowest="C3"
+</pre>
+<p>В <tt class="docutils literal">/boot/loader.conf</tt> добавить:</p>
+<pre class="literal-block">
+cpufreq_load="YES"
+kern.hz=100
+</pre>
+<p>Благодаря этим настройкам ноутбук станет более медленным, но энергосберегающим
+при работе от батареи. И наоборот — при работе от сети.</p>
+</div>
+<div class="section" id="section-3">
+<h2>Звук</h2>
+<p>Нужно загружать модуль <tt class="docutils literal">snd_hda</tt> при старте системы – для этого добавляем в
+<tt class="docutils literal">/boot/loader.conf</tt>:</p>
+<pre class="literal-block">
+snd_hda_load="YES"
+</pre>
+<p>Для переключения между динамиками и наушниками нужно добавить в
+<tt class="docutils literal">/boot/device.hints</tt>:</p>
+<pre class="literal-block">
+hint.hdaa.0.nid20.config="as=1 seq=0 device=Speaker"
+hint.hdaa.0.nid21.config="as=1 seq=15 device=Headphones"
+</pre>
+</div>
+<div class="section" id="section-4">
+<h2>Управление яркостью</h2>
+<p>В <tt class="docutils literal">/boot/loader.conf</tt> надо добавить это:</p>
+<pre class="literal-block">
+acpi_ibm_load="YES"
+acpi_video_load="YES"
+</pre>
+<p>Первая строка загружает модуль ядра, который обеспечивает взаимодействие с
+разной полезной периферией на Thinkpad’ах — вроде мультимедиа-клавиш, кнопок
+контроля яркости и т.п.</p>
+<p>Вторая строка загружает модуль с помощью которого можно управлять яркостью
+экрана через sysctl, обращаясь к <tt class="docutils literal">hw.acpi.video.lcd0.brightness</tt>.</p>
+</div>
+<div class="section" id="section-5">
+<h2>Мультимедиа-клавиши</h2>
+<p>Сначала надо проверить, что модуль <tt class="docutils literal">acpi_ibm</tt> уже загружен в системе.</p>
+<p>После этого нужно добавить в <tt class="docutils literal">/etc/devd.conf</tt> следующие строки, чтобы devd
+научился ловить нажатия на Fn кнопки и отсылать их в наш скрипт:</p>
+<pre class="literal-block">
+notify 10 {
+    match "system" "ACPI";
+    match "subsystem" "IBM";
+    action "/etc/acpi_thinkpad.sh $notify";
+};
+</pre>
+<p>Неполное содержимое скрипта <tt class="docutils literal">/etc/acpi_thinkpad.sh</tt>:</p>
+<pre class="literal-block">
+#!/bin/sh
+
+ACPI_EVENT="$1"
+
+case "$ACPI_EVENT" in
+    '0x04')
+        /usr/sbin/zzz
+        ;;
+esac
+</pre>
+<p>Посмотреть скан-коды клавиш можно остановив devd и запустив его из
+консоли от рута с ключом <tt class="docutils literal"><span class="pre">-d</span></tt>.</p>
+</div>
+<div class="section" id="section-6">
+<h2>Тачпад и трекпойнт</h2>
+<p>Для начала надо включить поддержку Synaptics touchpad и трекпойнта в
+<tt class="docutils literal">/boot/loader.conf</tt>:</p>
+<pre class="literal-block">
+hw.psm.synaptics_support=1
+hw.psm.trackpoint_support=1
+</pre>
+<p>Пакет <tt class="docutils literal"><span class="pre">xf86-input-synaptics</span></tt> должен быть удалён — вместо него должен
+быть установлен пакет <tt class="docutils literal"><span class="pre">xf86-input-evdev</span></tt>.</p>
+<p>Этого достаточно для работы тачпада и трекпойнта и средней кнопки над
+тачпадом. Заодно будет работать и прокрутка при нажатии на среднюю кнопку.</p>
+<p>Мне удобен весьма чуствительный трекпойнт и для этого в <tt class="docutils literal">/etc/systcl.conf</tt>
+должны быть следующие строки:</p>
+<pre class="literal-block">
+hw.psm.trackpoint.sensitivity=255
+hw.psm.trackpoint.upper_plateau=125
+</pre>
+</div>
+<div class="section" id="section-7">
+<h2>Веб-камера</h2>
+<p>Нужно произвести следующие изменения в следующих файлах:</p>
+<p><tt class="docutils literal">/boot/loader.conf</tt>:</p>
+<pre class="literal-block">
+cuse_load="YES"
+</pre>
+<p><tt class="docutils literal">/etc/rc.conf</tt>:</p>
+<pre class="literal-block">
+webcamd_enable="YES"
+</pre>
+<p><tt class="docutils literal">/etc/sysctl.conf</tt>:</p>
+<pre class="literal-block">
+kern.evdev.rcpt_mask=12
+</pre>
+<p>После, добавить пользователя в группу <tt class="docutils literal">webcamd</tt>:</p>
+<pre class="literal-block">
+sudo pw groupmod webcamd -m &lt;username&gt;
+</pre>
+</div>
+<div class="section" id="section-8">
+<h2>Сон</h2>
+<p>Для начала должен быть загружен модуль <tt class="docutils literal">acpi_ibm</tt>.</p>
+<p>Переход в режим сна делается командой: <tt class="docutils literal">acpiconf <span class="pre">-s</span> 3</tt> от рута. Либо
+же, можно использовать команду <tt class="docutils literal">zzz</tt>.</p>
+</div>
+<div class="section" id="drm-kmod">
+<h2>Включение drm-kmod</h2>
+<p>Нужно установить пакет <tt class="docutils literal"><span class="pre">graphics/drm-kmod</span></tt>. Затем, надо включить
+загрузку модуля <tt class="docutils literal">i915kms.ko</tt> добавлением следующей строки в
+<tt class="docutils literal">/etc/rc.conf</tt>:</p>
+<pre class="literal-block">
+kld_list="${kld_list} /boot/modules/i915kms.ko"
+</pre>
+</div>
+<div class="section" id="wi-fi">
+<h2>Wi-Fi</h2>
+<p>Нужно добавить в <tt class="docutils literal">/boot/loader.conf</tt>:</p>
+<pre class="literal-block">
+if_iwn_load="YES"
+wlan_wep_load="YES"
+wlan_ccmp_load="YES"
+wlan_tkip_load="YES"
+</pre>
+<p>Потом, добавить в <tt class="docutils literal">/etc/rc.conf</tt>:</p>
+<pre class="literal-block">
+wlans_iwn0="wlan0"
+ifconfig_wlan0="WPA DHCP powersave"
+create_args_wlan0="country RU regdomain NONE"
+</pre>
+<p>Для работы с WiFi-сетями нужно установить пакет wpa_supplicant и добавить в
+начало <tt class="docutils literal">/etc/wpa_supplicant.conf</tt>:</p>
+<pre class="literal-block">
+ctrl_interface=/var/run/wpa_supplicant
+eapol_version=2
+fast_reauth=1
+</pre>
+</div>
+<div class="section" id="section-9">
+<h2>Разное</h2>
+<p>Можно добавить в <tt class="docutils literal">/boot/loader.conf</tt>:</p>
+<pre class="literal-block">
+autoboot_delay="2"
+kern.maxproc="100000"
+kern.ipc.shmseg="1024"
+kern.ipc.shmmni="1024"
+cpuctl_load="YES"
+coretemp_load="YES"
+libiconv_load="YES"
+libmchain_load="YES"
+cd9660_iconv_load="YES"
+msdosfs_iconv_load="YES"
+</pre>
+<p>Это включит поддержку температурных сенсоров в системе, сделает задержку в две
+секунды перед загрузкой системы загрузчиком — чтобы долго не ждать — и так далее.</p>
+<p>Чтобы при загрузке системы <span class="caps">DHCP</span> client не тормозил весь процесс — можно внести в
+<tt class="docutils literal">/etc/rc.conf</tt> следующую строку:</p>
+<pre class="literal-block">
+background_dhclient="YES"
+</pre>
+<p>Для монтирования разделов вручную пользователем, отключения системного динамика
+и т.п. — можно добавить в <tt class="docutils literal">/etc/sysctl.conf</tt> следующее:</p>
+<pre class="literal-block">
+vfs.read_max=128
+vfs.usermount=1
+hw.syscons.bell=0
+kern.vt.enable_bell=0
+</pre>
+</div>
+
+    </div>
+    <br/>
+    <header class="text-right">
+      <small>
+        <ul class="list-inline">
+          <li class="list-inline-item">
+            <i class="fas fa-folder-open"></i>
+            <a href="https://eugene-andrienko.com/category/it.html">IT</a>
+          </li>
+          <li class="list-inline-item text-muted" title="2020-09-26T00:20:00+03:00">
+            26 September 2020 (Sat)
+          </li>
+        </ul>
+      </small>
+    </header>
+  </article>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="container">
+<div class="row">
+  <ul class="col-sm-4 list-inline">
+    <li class="list-inline-item"><a href="https://eugene-andrienko.com/archives.html">Archive</a></li>
+    <li class="list-inline-item"><a href="https://eugene-andrienko.com/categories.html">Categories</a></li>
+      <li class="list-inline-item"><a href="https://eugene-andrienko.com/tags.html">Tags</a></li>
+  </ul>
+  <p class="col-sm-8 text-sm-right text-muted">
+      <small>
+        Built by <a href="https://github.com/getpelican/pelican" target="_blank">Pelican</a>
+        / <a href="https://github.com/nairobilug/pelican-alchemy" target="_blank">&#x2728;</a>.
+
+        Fonts: <a href="https://github.com/typiconman/fonts-cu" target="_blank">Monomakh Unicode</a>,
+        <a href="https://github.com/akryukov/oldstand" target="_blank">Old Standard</a>,
+        <a href="https://github.com/slavonic/FiraSlav" target="_blank">Fira Slav</a>
+      </small>
+  </p>
+</div>    </div>
+  </footer>
+
+  <link rel="stylesheet" href="https://eugene-andrienko.com/theme/css/fontawesome.min.css">
+  <link rel="stylesheet" href="https://eugene-andrienko.com/theme/css/pygments/emacs.min.css">
+  <link rel="stylesheet" href="https://eugene-andrienko.com/theme/css/theme.css">
+</body>
+
+</html>

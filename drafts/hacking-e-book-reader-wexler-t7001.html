@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="ru">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <title>  Hacking e-book reader Wexler T7001 | Dragon's notes
+</title>
+  <link rel="canonical" href="https://eugene-andrienko.com/drafts/hacking-e-book-reader-wexler-t7001.html">
+
+<link rel="apple-touch-icon" sizes="180x180" href="/theme/icons/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/theme/icons/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/theme/icons/favicon-16x16.png">
+<link rel="manifest" href="/theme/icons/site.webmanifest">
+<link rel="mask-icon" href="/theme/icons/safari-pinned-tab.svg" color="#5bbad5">
+<link rel="shortcut icon" href="/theme/icons/favicon.ico">
+<meta name="apple-mobile-web-app-title" content="Драконовы заметки">
+<meta name="application-name" content="Драконовы заметки">
+<meta name="msapplication-TileColor" content="#00aba9">
+<meta name="msapplication-config" content="/theme/icons/browserconfig.xml">
+<meta name="theme-color" content="#ffffff">    <link rel="manifest" href="https://eugene-andrienko.com/manifest.json">
+
+  <link rel="stylesheet" href="https://eugene-andrienko.com/theme/css/lumen.min.css">
+
+  <link rel="alternate" type="application/atom+xml" title="Full Atom Feed"
+        href="https://eugene-andrienko.com/feeds/all.atom.xml">
+  <link rel="alternate" type="application/atom+xml" title="Categories Atom Feed"
+        href="https://eugene-andrienko.com/feeds/it.atom.xml">  
+  <meta name="description" content="С давних пор у меня в шкафу валялась сломанная электронная книжка Wexler. Предыдущий владелец отдал мне её зная, что я люблю ковыряться в электронике. Книга не включалась, но по крайней мере экран был целый и я решил попробовать использовать его в качестве дисплея для Raspberry Pi.">
+
+
+</head>
+
+<body>
+  <header class="header">
+    <div class="container">
+<div class="row">
+    <div class="col-sm-4">
+      <a href="https://eugene-andrienko.com/">
+        <img class="img-fluid rounded" src=https://eugene-andrienko.com/theme/images/siteimage.png alt="Dragon's notes">
+      </a>
+    </div>
+  <div class="col-sm-8">
+    <h1 class="title"><a href="https://eugene-andrienko.com/" style="color: black">Dragon's notes</a></h1>
+      <ul class="list-inline">
+          <li class="list-inline-item"><a class="fab fa-github" href="https://github.com/eugeneandrienko" target="_blank" style="color: black"></a></li>
+          <li class="list-inline-item"><a class="fab fa-linkedin" href="https://www.linkedin.com/in/eugeneandrienko" target="_blank" style="color: black"></a></li>
+          <li class="list-inline-item"><a class="fab fa-strava" href="https://www.strava.com/athletes/8248131" target="_blank" style="color: black"></a></li>
+          <li class="list-inline-item"><a class="fas fa-map-marked-alt" href="https://www.openstreetmap.org/user/h0rr0rrdrag0n" target="_blank" style="color: black"></a></li>
+      </ul>
+  </div>
+</div>    </div>
+  </header>
+
+  <div class="main">
+    <div class="container">
+      <h1>  Hacking e-book reader Wexler&nbsp;T7001
+</h1>
+  <article class="article">
+    <div class="content">
+      <div class="contents topic" id="topic-1">
+<p class="topic-title">Содержание</p>
+<ul class="simple">
+<li><a class="reference internal" href="#section-1" id="toc-entry-1">Разбираемся с внутренностями устройства</a></li>
+<li><a class="reference internal" href="#test-table" id="toc-entry-2">Test table</a></li>
+<li><a class="reference internal" href="#test-3" id="toc-entry-3">test 3</a></li>
+</ul>
+</div>
+<p><span class="bukvica">С</span></p>
+<p>давних пор у меня в шкафу валялась сломанная электронная книжка
+Wexler. Предыдущий владелец отдал мне её зная, что я люблю ковыряться в
+электронике. Книга не включалась, но по крайней мере экран был целый и я решил
+попробовать использовать его в качестве дисплея для Raspberry Pi.</p>
+<p>Разбирается книга просто — крестовой отвёрткой откручиваются несколько винтов
+на задней крышке, а потом корпус расщёлкивается кредитной картой. После
+разборки перед нами предстают внутренности электронной книжки:</p>
+<div class="figure align-center" style="width: 50%">
+<img alt="разобранная книга" class="img-fluid" src="../images/IT/2023/wexler7001internals.jpg"/>
+<p class="caption">Разобранная книга</p>
+</div>
+<p>Из интересных нам деталей здесь есть:</p>
+<ul class="simple">
+<li>7” <span class="caps">TFT</span> экран <span class="caps">HL070ML268</span>-21A с разрешением 480x800.</li>
+<li><span class="caps">MCU</span> Rockchip <span class="caps">RK2729</span> — двухядерный процессор. В одном ядре <span class="caps">ARM9</span>, в другом —
+<span class="caps">DSP</span>, для работы с различными форматами видео, аудио и электронных книг.</li>
+<li><span class="caps">RAM</span> <span class="caps">AOTOM</span> <span class="caps">A2561616L</span>-<span class="caps">6TE</span> на 256 Мб.</li>
+<li><span class="caps">NAND</span> flash Hynix <span class="caps">H27UBG8T2ATA</span> на 4 Гб. И рядом ещё одно посадочное место под
+такую же flash-память.</li>
+<li>Вздутый Li-Ion аккумулятор, из-за которого книга и не включалась.</li>
+<li>Почти оторвавшийся разъём micro-<span class="caps">USB</span>, из-за которого книга не реагировала на
+подключение зарядного устройства.</li>
+</ul>
+<p>После пайки разъёма книга начала реагировать на подключение кабеля. Для
+тестирования я убрал испорченный аккумулятор и вместо него подключил просто
+лабораторный блок питания, выставленный на 3.7 В. Больше в книге ничего не
+было сломано и она заработала сразу после подачи питания:</p>
+<div class="figure align-center" style="width: 50%">
+<img alt="работающая книга" class="img-fluid" src="../images/IT/2023/wexler7001working.jpg"/>
+</div>
+<div class="section" id="section-1">
+<h2>Разбираемся с внутренностями устройства</h2>
+<p>Модель книги я узнал, подключив книгу к компьютеру и посмотрев на вывод
+<tt class="docutils literal">dmesg</tt>:</p>
+<div class="figure align-center" style="width: 100%">
+<img alt="wexler t7001" class="img-fluid" src="../images/IT/2023/dmesg.png"/>
+<p class="caption">Модель книги: Wexler T7001</p>
+</div>
+<p>Первое, что мне удалось найти, зная модель — это <a class="reference external" href="../files/IT/2023/Wexler+Book+T7001+Schematics.pdf">принципиальную
+схему</a>. Поскольку книга достаточно старая, её схема есть на <a class="reference external" href="https://www.alisaler.com/wexler-book-t7001-schematics/">разнообразных</a>
+<a class="reference external" href="https://www.electronica-pt.com/esquema/notebooks/tablets/wexler/wexler-book-t7001-schematics-64561/">сайтах</a>, посвящённых самостоятельному ремонту электроники.</p>
+<p>За подробностями о перепрошивке этого устройства я полез на <span class="caps">4PDA</span>. И это было
+ошибкой — в <a class="reference external" href="https://4pda.to/forum/index.php?showtopic=207548">теме</a> форума о прошивках этой книги, было 124 страницы в общем и
+целом посвящённые бессистемным попыткам залить в книгу прошивки от любых
+похожих книг, какие попадались в руки форумчанам, правке открытых ресурсов в
+этих прошивках, да обновлению прошивками от производителя.</p>
+<p>Наверное единственное полезное <a class="reference external" href="https://4pda.to/forum/index.php?showtopic=207548&amp;st=440#entry6363038">сообщение</a> было от пользователя PastorNikodim —
+он написал, что в книге скорее всего используется один из вариантов Rockchip
+<span class="caps">OS</span>, которая основывается на Linux. И файл <tt class="docutils literal"><span class="caps">BASE</span>.<span class="caps">RKW</span></tt> в прошивке — это скорее
+всего скомпилированное ядро системы.</p>
+<p>На <span class="caps">RK2729</span> удалось найти лишь Technical Reference Manual
+Brief <a class="footnote-reference" href="#footnote-1" id="footnote-reference-1">[1]</a>  на этом сайте: <a class="reference external" href="https://rockchip.fr/">https://rockchip.fr/</a>. Там было лишь
+общее описание микроконтроллера, распиновка и ряд чертежей и схем. К
+сожалению, информации о работе со встроенными в чип периферийными
+устройствами, контроллерами и о том как прошивать этот чип — в этом документе
+не было.</p>
+</div>
+<div class="section" id="test-table">
+<h2>Test table</h2>
+<table border="1" class="table-striped table docutils table-hover">
+<colgroup>
+<col width="50%"/>
+<col width="50%"/>
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">H1</th>
+<th class="head">H2</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>1</td>
+<td>2</td>
+</tr>
+<tr><td>3</td>
+<td>4</td>
+</tr>
+</tbody>
+</table>
+<p>text some lont test</p>
+</div>
+<div class="section" id="test-3">
+<h2>test 3</h2>
+<p>test 3</p>
+<hr class="docutils"/>
+<table class="table-hover table footnote table-striped docutils" frame="void" id="footnote-1" rules="none">
+<colgroup><col class="label"/><col/></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#footnote-reference-1">[1]</a></td><td><a class="reference external" href="https://rockchip.fr/RK2729%20datasheet%20V1.0.pdf">https://rockchip.fr/<span class="caps">RK2729</span> datasheet V1.0.pdf</a></td></tr>
+</tbody>
+</table>
+</div>
+
+    </div>
+    <br/>
+    <header class="text-right">
+      <small>
+        <ul class="list-inline">
+          <li class="list-inline-item">
+            <i class="fas fa-folder-open"></i>
+            <a href="https://eugene-andrienko.com/category/it.html">IT</a>
+          </li>
+          <li class="list-inline-item text-muted" title="2023-01-03T20:06:00+03:00">
+            3 January 2023 (Tue)
+          </li>
+        </ul>
+      </small>
+    </header>
+  </article>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="container">
+<div class="row">
+  <ul class="col-sm-4 list-inline">
+    <li class="list-inline-item"><a href="https://eugene-andrienko.com/archives.html">Archive</a></li>
+    <li class="list-inline-item"><a href="https://eugene-andrienko.com/categories.html">Categories</a></li>
+      <li class="list-inline-item"><a href="https://eugene-andrienko.com/tags.html">Tags</a></li>
+  </ul>
+  <p class="col-sm-8 text-sm-right text-muted">
+      <small>
+        Built by <a href="https://github.com/getpelican/pelican" target="_blank">Pelican</a>
+        / <a href="https://github.com/nairobilug/pelican-alchemy" target="_blank">&#x2728;</a>.
+
+        Fonts: <a href="https://github.com/typiconman/fonts-cu" target="_blank">Monomakh Unicode</a>,
+        <a href="https://github.com/akryukov/oldstand" target="_blank">Old Standard</a>,
+        <a href="https://github.com/slavonic/FiraSlav" target="_blank">Fira Slav</a>
+      </small>
+  </p>
+</div>    </div>
+  </footer>
+
+  <link rel="stylesheet" href="https://eugene-andrienko.com/theme/css/fontawesome.min.css">
+  <link rel="stylesheet" href="https://eugene-andrienko.com/theme/css/pygments/emacs.min.css">
+  <link rel="stylesheet" href="https://eugene-andrienko.com/theme/css/theme.css">
+</body>
+
+</html>

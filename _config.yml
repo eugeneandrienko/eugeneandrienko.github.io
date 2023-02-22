@@ -22,7 +22,7 @@ header_pages:
   - tags.html
   - archives.html
 disqus:
-  shortname: "eugene-andrienko.com"
+  shortname: "eugene-andrienko-com"
 banner:
   opacity: 0.6
 

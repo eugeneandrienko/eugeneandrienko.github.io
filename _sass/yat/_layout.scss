@@ -132,13 +132,13 @@ html {
     line-height: $base-line-height;
     color: $header-text-color;
     transition: 0.1s ease-in-out;
+    &:hover {
+        text-decoration: underline;
+    }
 
     // Gaps between nav items, but not on the last one
     &:not(:last-child) {
-      margin-right: 24px;
-      &:hover {
-        text-decoration: underline;
-      }
+        margin-right: 24px;
     }
   }
 
@@ -239,6 +239,7 @@ html {
     .post-tag {
       display: inline-block;
       margin: 0 12px 0 0;
+      text-decoration: none;
     }
   }
 }
@@ -321,6 +322,7 @@ html {
     color: #777;
     word-break: break-word;
     overflow-wrap: break-word;
+    text-decoration: none;
   }
 
   .post-tags .post-tag {
@@ -452,6 +454,13 @@ html {
       height: 1px;
       background-color: #ebebeb;
       border: none;
+    }
+
+    a {
+        color: #0000ff
+    }
+    a:visited {
+        color: #ff00ff
     }
   }
 
@@ -742,7 +751,8 @@ html {
 
   li a {
     &.post-link {
-      margin-left: 5px;
+        margin-left: 5px;
+        text-decoration: none;
     }
 
     color: #303030;

@@ -1,5 +1,9 @@
+*NOTE:* Some links and all footnotes are broken when you view this file from
+GitHub. Because GitHub doesn't support OrgMode completely.
+
 This =README.org= written in «literal programming» paradigm. It generates all
-necessary scripts and files to build my blog with next commands:
+necessary scripts and files to build my blog with next commands (press =C-c C-c=
+on the code block or type it by hands in console):
 #+begin_src bash :results silent raw
   if [ -f ./.configured ]; then
       exit 42
@@ -58,7 +62,8 @@ articles/it/draft-palm-tung-e2-ressurection % tree -L 1
 └── tiktok.png
 #+end_example
 
-Every static file should be linked via =file:= protocol, for example:
+Every link to static file inside article should use =file:= protocol, for
+example:
 #+begin_src org
   file:test.org
   [[file:test.org][Test]]
@@ -73,8 +78,8 @@ articles.
 - =#+TAGS:= :: Space-separated list of tags.
 - =#+COVER:= :: Cover image.
 
-These properties *should be supported* by the underlying machinery. Now, for the
-Jekyll this is done by the next code:
+These properties *should be supported* by the underlying machinery. They are
+acessible via environment variables in conversion script:
 #+name: read_article_properties
 #+begin_src bash
   TITLE=$(grep '#+TITLE:' "$article" | sed -r 's/#\+TITLE: (.+)/\1/g')
@@ -89,7 +94,7 @@ Of course, most of the static-site engines do not support OrgMode files syntax
 org-file to somewhat another format.
 
 To make conversion just type =make= in you console. This triggers the next
-actions:
+action:
 #+begin_src makefile :tangle Makefile
   CONVERSION_SCRIPT = ./internals/scripts/articles-bake-jekyll.sh
   all: $(CONVERSION_SCRIPT)
@@ -162,9 +167,9 @@ We need to make next adjustments in generated markdown file:
 - Add front matter
 - Fix filepaths from =file:///filename= to =/filename= — because Pandoc converts
   =file:filename= to =file:///filename=.
-- Fix headers. For unknown reasons Jekyll treats as first-level header the
-  second-level headers from Markdown documents. The first-level headers
-  ignored as headers.
+- Fix headers. For unknown reason Jekyll treats second-level headers as
+  first-level headers. And treats first-level header as something not worth to
+  his attention.
         
   #+begin_src bash
     cat << EOF >> "$FILEPATH"/"$FILENAME"2.md
@@ -193,7 +198,7 @@ We need to make next adjustments in generated markdown file:
     sed -i -r 's/^#(.+)/##\1/g' "$FILEPATH"/"$FILENAME".md
   #+end_src
  
-After all that suffering move baked article to =_posts/= and all related static
+After all that suffering move prepared article to =_posts/= and all related static
 files to =assets/static=:
 #+begin_src bash
   mv "$FILEPATH"/"$FILENAME".md "$POSTS"
@@ -224,7 +229,7 @@ When you run =make= — you update Markdown articles from repository with change
 made in OrgMode files (see [[* Convert articles][«Convert articles»]])
 
 When you end with editing — type =make deploy=, enter commit message and push
-you changes back to GitHub.
+you changes back to GitHub:
 #+begin_src makefile
   .PHONY: deploy
   deploy:
@@ -236,10 +241,10 @@ you changes back to GitHub.
 
 When branch =master= on GitHub blog's repository is changed — the CloudFlare
 catches it and begin to build html and other Web 2.0 things from our Jekyll
-sources. If it is succeded — blog static files will be deployed and become
-available at https://eugene-andrienko.com.
+sources. If it is succeded — blog files will be deployed and become available
+at https://eugene-andrienko.com.
 
-From the bird's-eye our deployment process looks like these steps:
+From the bird's-eye our deployment process has next steps:
 1. Create/edit article in Emacs OrgMode.
 2. Run =make= to convert article to Markdown in Jekyll format. At this point
    only *published* articles exists in our Jekyll installation. All drafts and
@@ -253,7 +258,7 @@ From the bird's-eye our deployment process looks like these steps:
 To preview your changes you can start local server via the =make serve= command:
 #+begin_src makefile :tangle Makefile
   .PHONY: serve
-  serve:
+  serve: all
           cd $(JEKYLL) && \
           bundle exec jekyll serve
 #+end_Src

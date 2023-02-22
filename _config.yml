@@ -2,10 +2,11 @@ title: Dragon's notes
 email: evg.andrienko@gmail.com
 author: Eugene Andrienko
 copyright: "Dragon's blog (cleft): 2020-{currentYear} {author}"
+url: "https://eugene-andrienko.com"
 yat:
   date_format: "%d %b %Y"
-theme_color: "#0d5875"
-brand_color: "#0d5875"
+theme_color: "#696969"
+brand_color: "#696969"
 defaults:
   home:
     heading: "Dragon's notes"

@@ -1,0 +1,33 @@
+title: Dragon's notes
+email: evg.andrienko@gmail.com
+author: Eugene Andrienko
+copyright: "Dragon's blog (cleft): 2020-{currentYear} {author}"
+yat:
+  date_format: "%d %b %Y"
+theme_color: "#0d5875"
+brand_color: "#0d5875"
+defaults:
+  home:
+    heading: "Dragon's notes"
+    subheading: "IT, photo and bicycles"
+markdown: kramdown
+kmarkdown:
+  input: GFM
+port: 8000
+lang: "en"
+translate_langs: []
+header_pages:
+  - about.html
+  - tags.html
+  - archives.html
+disqus:
+  shortname: "h0rr0rr_drag0n"
+banner:
+  opacity: 0.6
+
+plugins:
+  - jekyll-feed
+  - jekyll-seo-tag
+  - jekyll-sitemap
+  - jekyll-paginate
+  - jekyll-spaceship

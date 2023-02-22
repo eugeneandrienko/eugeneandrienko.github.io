@@ -17,7 +17,7 @@
     {% for key in  keys %}
       <li>
         <a href="{{ url }}#h-{{ key }}">
-          {{ key }} <span>{{ site.posts | where: field, key | size }}</span>
+          {{ key | capitalize }} <span>{{ site.posts | where: field, key | size }}</span>
         </a>
       </li>
     {% endfor %}

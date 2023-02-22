@@ -185,7 +185,9 @@ We need to make next adjustments in generated markdown file:
     EOF
     if [ ! -z "$COVER" ]; then
         cat << EOF >> "$FILEPATH"/"$FILENAME"2.md
-    banner: /assets/static/$COVER
+    banner:
+      image: /assets/static/$COVER
+      opacity: 0.6
     EOF
     fi
     cat << EOF >> "$FILEPATH"/"$FILENAME"2.md

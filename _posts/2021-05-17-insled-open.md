@@ -7,7 +7,9 @@ date: "2021-05-17 10:00"
 comments: true
 hidden:
   - related_posts
-banner: /assets/static/route.png
+banner:
+  image: /assets/static/route.png
+  opacity: 0.6
 ---
 
 Помимо обычных для, наверное, любого города бесплатных велосипедных

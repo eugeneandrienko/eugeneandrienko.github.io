@@ -23,8 +23,6 @@ header_pages:
   - archives.html
 disqus:
   shortname: "eugene-andrienko-com"
-banner:
-  opacity: 0.6
 
 plugins:
   - jekyll-feed

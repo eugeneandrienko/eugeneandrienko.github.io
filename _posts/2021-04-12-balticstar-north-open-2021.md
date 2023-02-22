@@ -7,7 +7,9 @@ date: "2021-04-12 12:00"
 comments: true
 hidden:
   - related_posts
-banner: /assets/static/strava.jpg
+banner:
+  image: /assets/static/strava.jpg
+  opacity: 0.6
 ---
 
 В этом мире существуют и извращенцы, и любители БДСМ, и прочие мазохисты

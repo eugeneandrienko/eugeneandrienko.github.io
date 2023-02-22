@@ -1,0 +1,273 @@
+This =README.org= written in «literal programming» paradigm. It generates all
+necessary scripts and files to build my blog with next commands:
+#+begin_src bash :results silent raw
+  if [ -f ./.configured ]; then
+      exit 42
+  fi
+  mkdir -p internals/scripts
+  emacs README.org --batch -f org-babel-tangle --kill
+  sed -i -r 's/^ {8}/\t/g' Makefile
+  make init
+#+end_src
+
+The main goal of all of these — separate articles itself from different
+blogging engines/platforms/etc. At this level I want to have my articles
+*incapsulated* from CSS, Jekyll, fonts, Markdown or other uninteresting things.
+
+Articles written as Org Mode files. These files lies in =./articles= catalog
+with the structure described below.
+
+Every subcatalog in =./articles= is a separate /category/. For example, now we
+have next categories:
+#+begin_example
+articles % tree -L 1
+./
+├── arms/
+├── cycling/
+├── it/
+├── leatherwork/
+└── photo/
+#+end_example
+
+In every /category/-catalog there are set of catalogs — one catalog per
+article. These article-catalogs should have name in next format:
+- =YYYY-MM-DD-article-name= :: Catalog for published article
+- =draft-article-name= :: Catalog for draft
+- =hidden-article-name= ::  Catalog for hidden article
+
+For example:
+#+begin_example
+articles/it % tree -L 1
+./
+├── 2020-09-09-thinkpad-x220-freebsd/
+├── draft-palm-tung-e2-archaeological/
+├── draft-palm-tung-e2-ressurection/
+└── draft-wexler-7001/
+#+end_example
+
+Inside every catalog there should be set of images and other static files,
+related to article. And =article.org= file with article itself. For example:
+#+begin_example
+articles/it/draft-palm-tung-e2-ressurection % tree -L 1
+./
+├── article.org
+├── P1283929.jpg
+├── P1283931.jpg
+├── palm-2031-problem.png
+├── palm-menu-hotkeys.png
+└── tiktok.png
+#+end_example
+
+Every static file should be linked via =file:= protocol, for example:
+#+begin_src org
+  file:test.org
+  [[file:test.org][Test]]
+#+end_src
+
+* Article properties
+There are next properties, which can be in OrgMode files with my
+articles.
+
+- =#+TITLE:= :: Title of article.
+- =#+DATE:= :: Date and time of publication. In =YYYY-MM-DD HH:MM= format.
+- =#+TAGS:= :: Space-separated list of tags.
+- =#+COVER:= :: Cover image.
+
+These properties *should be supported* by the underlying machinery. Now, for the
+Jekyll this is done by the next code:
+#+name: read_article_properties
+#+begin_src bash
+  TITLE=$(grep '#+TITLE:' "$article" | sed -r 's/#\+TITLE: (.+)/\1/g')
+  DATE=$(grep '#+DATE:' "$article" | sed -r 's/#\+DATE: (.+)/\1/g')
+  TAGS=$(grep '#+TAGS:' "$article" | sed -r 's/#\+TAGS: (.+)/\1/g')
+  COVER=$(grep '#+COVER:' "$article" | sed -r 's/#\+COVER: (.+)/\1/g')
+#+end_src
+
+* Convert articles
+Of course, most of the static-site engines do not support OrgMode files syntax
+(for reasons unknown to me). So, we need to convert our nice and shiny
+org-file to somewhat another format.
+
+To make conversion just type =make= in you console. This triggers the next
+actions:
+#+begin_src makefile :tangle Makefile
+  CONVERSION_SCRIPT = ./internals/scripts/articles-bake-jekyll.sh
+  all: $(CONVERSION_SCRIPT)
+          $(CONVERSION_SCRIPT)
+#+end_src
+
+This code just call the script, defined in =CONVERSION_SCRIPT= variable. For
+every static-site engine we have different conversion scripts.
+
+** Jekyll
+:PROPERTIES:
+:header-args: :tangle internals/scripts/articles-bake-jekyll.sh :noweb yes
+:END:
+For Jekyll I use Pandoc and bunch of regexes to create a proper =*.md= file.
+
+We take every published article:
+#+begin_src bash :shebang "#!/usr/bin/env bash"
+  ARTICLES="./articles/"
+  POSTS="./internals/jekyll/_posts"
+  STATIC="./internals/jekyll/assets/static"
+
+  for article in $(find "$ARTICLES" -type f -name article.org); do
+      echo "$article" | grep -q 'articles/.\{1,\}/[0-9]\{4\}-[0-9]\{2\}-[0-9]\{2\}-.\{1,\}/article.org'
+      if [ "$?" -ne "0" ]; then
+          continue
+      fi
+#+end_src
+
+And read metadata from it:
+#+begin_src bash
+  CATEGORY=$(echo "$article" | sed -r 's!\./articles/([a-z0-9]+)/.+\.org!\1!g')
+  FILENAME=$(echo "$article" | sed -r 's!\./articles/[a-z0-9]+/(.+)/article\.org!\1!g')
+  FILEPATH=$(dirname "$article")
+  <<read_article_properties>>
+#+end_src
+
+Make some adjustments in temporary copy of article. Maybe it can be done with
+Pandoc, but /faster/ — to do it via shell:
+#+begin_src bash
+  sed -r 's!file:(.+)!file:/assets/static/\1!g' "$article" > "$FILEPATH"/"$FILENAME".org
+  sed -i -r -e '/#\+TAGS: .+/d' \
+      -e '/#\+TITLE: .+/d' \
+      -e '/#\+COVER: .+/d' \
+      "$FILEPATH"/"$FILENAME".org
+#+end_src
+
+Here we change path to every static file — to make it accessible via Jekyll
+machinery. And remove OrgMode tags which wasn't removed by Pandoc.
+
+After that we successfully convert our article from shiny OrgMode syntax to
+Markdown:
+#+begin_src bash
+  pandoc -t gfm -o "$FILEPATH"/"$FILENAME".md "$FILEPATH"/"$FILENAME".org
+  rm -f "$FILEPATH"/"$FILENAME".org
+#+end_src
+
+Of course, like a lot of another static-site engines, Jekyll adds some
+non-standart properties to the beginning of the file [fn:org-mode-shiny]. So,
+we need to write these properties in our generated file. Maybe this task also
+can be completed by Pandoc itself, but the next approach is /faster to
+implement/.
+
+[fn:org-mode-shiny] Compare with Org Mode, where we also add some properties
+to the beginning of the file, but they are completely conform with standard
+and do not breaks file representation in Emacs or in any exported (via Emacs
+Org Mode) document! That's why I write my articles in Org Mode but not in
+Markdown, or RestructuredText, or something another «brand new standard».
+
+We need to make next adjustments in generated markdown file:
+- Add front matter
+- Fix filepaths from =file:///filename= to =/filename= — because Pandoc converts
+  =file:filename= to =file:///filename=.
+- Fix headers. For unknown reasons Jekyll treats as first-level header the
+  second-level headers from Markdown documents. The first-level headers
+  ignored as headers.
+        
+  #+begin_src bash
+    cat << EOF >> "$FILEPATH"/"$FILENAME"2.md
+    ---
+    layout: post
+    title: "$TITLE"
+    category: "$CATEGORY"
+    tags: "$TAGS"
+    date: "$DATE"
+    comments: true
+    hidden:
+      - related_posts
+    EOF
+    if [ ! -z "$COVER" ]; then
+        cat << EOF >> "$FILEPATH"/"$FILENAME"2.md
+    banner: /assets/static/$COVER
+    EOF
+    fi
+    cat << EOF >> "$FILEPATH"/"$FILENAME"2.md
+    ---
+
+    EOF
+    cat "$FILEPATH"/"$FILENAME".md >> "$FILEPATH"/"$FILENAME"2.md
+    mv "$FILEPATH"/"$FILENAME"2.md "$FILEPATH"/"$FILENAME".md
+    sed -i -r 's!(.*)file://(.*)!\1\2!g' "$FILEPATH"/"$FILENAME".md
+    sed -i -r 's/^#(.+)/##\1/g' "$FILEPATH"/"$FILENAME".md
+  #+end_src
+ 
+After all that suffering move baked article to =_posts/= and all related static
+files to =assets/static=:
+#+begin_src bash
+  mv "$FILEPATH"/"$FILENAME".md "$POSTS"
+  find "$FILEPATH" -type f -not -name article.org -exec cp {} "$STATIC" \;
+  done
+#+end_src
+
+* Deploy
+:PROPERTIES:
+:header-args: :tangle Makefile
+:END:
+I made deployment as simple as I can. After you call =make init= once in the
+beginning of the this README — the initialized and properly configured Jekyll
+site pulled to =./internals/jekyll= from
+[[https://github.com/eugeneandrienko/eugeneandrienko.github.io][eugeneandrienko/eugeneandrienko.github.io]] repository:
+
+#+begin_src makefile
+  JEKYLL = internals/jekyll
+  .PHONY: init
+  init:
+          mkdir -p $(JEKYLL)
+          cd $(JEKYLL) && \
+          git clone git@github.com:eugeneandrienko/eugeneandrienko.github.io.git .
+          touch .configured
+#+end_src
+
+When you run =make= — you update Markdown articles from repository with changes,
+made in OrgMode files (see [[* Convert articles][«Convert articles»]])
+
+When you end with editing — type =make deploy=, enter commit message and push
+you changes back to GitHub.
+#+begin_src makefile
+  .PHONY: deploy
+  deploy:
+          cd $(JEKYLL) && \
+          git add _posts/ assets/ && \
+          git commit && \
+          git push
+#+end_src
+
+When branch =master= on GitHub blog's repository is changed — the CloudFlare
+catches it and begin to build html and other Web 2.0 things from our Jekyll
+sources. If it is succeded — blog static files will be deployed and become
+available at https://eugene-andrienko.com.
+
+From the bird's-eye our deployment process looks like these steps:
+1. Create/edit article in Emacs OrgMode.
+2. Run =make= to convert article to Markdown in Jekyll format. At this point
+   only *published* articles exists in our Jekyll installation. All drafts and
+   hidden articles stay as OrgMode files outside of our Git-repository from
+   GitHub.
+3. Run =make deploy= to push changes to GitHub.
+4. Wait while triggered Cloudflare build and deploy blog.
+5. Done!
+
+* Local server
+To preview your changes you can start local server via the =make serve= command:
+#+begin_src makefile :tangle Makefile
+  .PHONY: serve
+  serve:
+          cd $(JEKYLL) && \
+          bundle exec jekyll serve
+#+end_Src
+
+* How to clear all
+If you want to stay with OrgMode files and remove all Jekyll files, scripts
+and other things, not related to articles — run =make deepclean=. This command
+cleans all unnecessary.
+
+#+begin_src makefile :tangle Makefile
+  INTERNALS = internals
+
+  .PHONY: deepclean
+  deepclean:
+          rm -rf $(INTERNALS) Makefile
+          rm -f .configured
+#+end_src

@@ -151,6 +151,13 @@ html[data-theme="dark"]  {
       img:not(.emoji):not([raw]) {
         background-color: #ffffff33;
       }
+
+      a {
+          color: #6969ff
+      }
+      a:visited {
+        color: #ff00ff
+      }
     }
   }
 

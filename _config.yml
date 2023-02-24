@@ -19,6 +19,7 @@ lang: "en"
 translate_langs: []
 header_pages:
   - about.html
+  - cv.html
   - tags.html
   - archives.html
 disqus:
@@ -30,3 +31,4 @@ plugins:
   - jekyll-sitemap
   - jekyll-paginate
   - jekyll-spaceship
+  - jekyll-pdf-embed

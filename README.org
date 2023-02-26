@@ -147,7 +147,8 @@ machinery. And remove OrgMode tags which wasn't removed by Pandoc.
 After that we successfully convert our article from shiny OrgMode syntax to
 Markdown:
 #+begin_src bash
-  pandoc -t gfm -o "$FILEPATH"/"$FILENAME".md "$FILEPATH"/"$FILENAME".org
+  pandoc -t gfm --shift-heading-level-by=1 -o "$FILEPATH"/"$FILENAME".md \
+         "$FILEPATH"/"$FILENAME".org
   rm -f "$FILEPATH"/"$FILENAME".org
 #+end_src
 
@@ -167,9 +168,6 @@ We need to make next adjustments in generated markdown file:
 - Add front matter
 - Fix filepaths from =file:///filename= to =/filename= — because Pandoc converts
   =file:filename= to =file:///filename=.
-- Fix headers. For unknown reason Jekyll treats second-level headers as
-  first-level headers. And treats first-level header as something not worth to
-  his attention.
         
   #+begin_src bash
     cat << EOF >> "$FILEPATH"/"$FILENAME"2.md
@@ -197,7 +195,6 @@ We need to make next adjustments in generated markdown file:
     cat "$FILEPATH"/"$FILENAME".md >> "$FILEPATH"/"$FILENAME"2.md
     mv "$FILEPATH"/"$FILENAME"2.md "$FILEPATH"/"$FILENAME".md
     sed -i -r 's!(.*)file://(.*)!\1\2!g' "$FILEPATH"/"$FILENAME".md
-    sed -i -r 's/^#(.+)/##\1/g' "$FILEPATH"/"$FILENAME".md
   #+end_src
  
 After all that suffering move prepared article to =_posts/= and all related static

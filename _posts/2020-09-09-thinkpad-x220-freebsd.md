@@ -116,8 +116,8 @@ notify 10 {
 
 Неполное содержимое скрипта `/etc/acpi_thinkpad.sh`:
 
-``` example
-##!/bin/sh
+``` bash
+#!/bin/sh
 
 ACPI_EVENT="$1"
 

@@ -3,20 +3,45 @@ GitHub. Because GitHub doesn't support OrgMode completely.
 
 This =README.org= written in «literal programming» paradigm. It generates all
 necessary scripts and files to build my blog with next commands (press =C-c C-c=
-on the code block or type it by hands in console):
+inside the code block below):
 #+begin_src bash :results silent raw
-  if [ -f ./.configured ]; then
-      exit 42
-  fi
   mkdir -p internals/scripts
   emacs README.org --batch -f org-babel-tangle --kill
   sed -i -r 's/^ {8}/\t/g' Makefile
+#+end_src
+
+There are some repositories and programs, which should be pulled inside
+=./internals= catalog before we start. It can be do via next command:
+#+begin_src bash :results silent raw
   make init
 #+end_src
 
-The main goal of all of these — separate articles itself from different
+After you call this command — initialized and properly configured Jekyll site
+will be pulled to =./internals/jekyll= from
+[[https://github.com/eugeneandrienko/eugeneandrienko.github.io][eugeneandrienko/eugeneandrienko.github.io]] repository. And additional
+templates/filters for Pandoc will be pulled to =./internals/pandoc-jekyll= from
+eugeneandrienko/pandoc-jekyll repository.
+
+#+name: init4makefile
+#+begin_src makefile
+  JEKYLL = internals/jekyll
+  PANDOC_JEKYLL = internals/pandoc_jekyll
+  .PHONY: init
+  init:
+          mkdir -p $(JEKYLL)
+          mkdir -p $(PANDOC_JEKYLL)
+          cd $(JEKYLL) && \
+          git clone git@github.com:eugeneandrienko/eugeneandrienko.github.io.git .
+          cd $(PANDOC_JEKYLL) && \
+          git clone git@github.com:eugeneandrienko/pandoc_jekyll.git .
+#+end_src
+
+The main goal all of these machinery — separate articles itself from different
 blogging engines/platforms/etc. At this level I want to have my articles
-*incapsulated* from CSS, Jekyll, fonts, Markdown or other uninteresting things.
+*incapsulated* and *independent* from CSS, Jekyll, fonts, Markdown or other
+uninteresting things.
+
+* How to write articles
 
 Articles written as Org Mode files. These files lies in =./articles= catalog
 with the structure described below.
@@ -78,17 +103,12 @@ articles.
 - =#+TAGS:= :: Space-separated list of tags.
 - =#+COVER:= :: Cover image.
 
-These properties *should be supported* by the underlying machinery. They are
-acessible via environment variables in conversion script:
-#+name: read_article_properties
-#+begin_src bash
-  TITLE=$(grep '#+TITLE:' "$article" | sed -r 's/#\+TITLE: (.+)/\1/g')
-  DATE=$(grep '#+DATE:' "$article" | sed -r 's/#\+DATE: (.+)/\1/g')
-  TAGS=$(grep '#+TAGS:' "$article" | sed -r 's/#\+TAGS: (.+)/\1/g')
-  COVER=$(grep '#+COVER:' "$article" | sed -r 's/#\+COVER: (.+)/\1/g')
-#+end_src
+These properties *should be supported* by the underlying machinery.
 
 * Convert articles
+:PROPERTIES:
+:header-args: :noweb yes
+:END:
 Of course, most of the static-site engines do not support OrgMode files syntax
 (for reasons unknown to me). So, we need to convert our nice and shiny
 org-file to somewhat another format.
@@ -99,6 +119,8 @@ action:
   CONVERSION_SCRIPT = ./internals/scripts/articles-bake-jekyll.sh
   all: $(CONVERSION_SCRIPT)
           $(CONVERSION_SCRIPT)
+
+  <<init4makefile>>
 #+end_src
 
 This code just call the script, defined in =CONVERSION_SCRIPT= variable. For
@@ -106,7 +128,7 @@ every static-site engine we have different conversion scripts.
 
 ** Jekyll
 :PROPERTIES:
-:header-args: :tangle internals/scripts/articles-bake-jekyll.sh :noweb yes
+:header-args: :tangle internals/scripts/articles-bake-jekyll.sh
 :END:
 For Jekyll I use Pandoc and bunch of regexes to create a proper =*.md= file.
 
@@ -128,17 +150,12 @@ And read metadata from it:
   CATEGORY=$(echo "$article" | sed -r 's!\./articles/([a-z0-9]+)/.+\.org!\1!g')
   FILENAME=$(echo "$article" | sed -r 's!\./articles/[a-z0-9]+/(.+)/article\.org!\1!g')
   FILEPATH=$(dirname "$article")
-  <<read_article_properties>>
 #+end_src
 
 Make some adjustments in temporary copy of article. Maybe it can be done with
 Pandoc, but /faster/ — to do it via shell:
 #+begin_src bash
   sed -r 's!file:(.+)!file:/assets/static/\1!g' "$article" > "$FILEPATH"/"$FILENAME".org
-  sed -i -r -e '/#\+TAGS: .+/d' \
-      -e '/#\+TITLE: .+/d' \
-      -e '/#\+COVER: .+/d' \
-      "$FILEPATH"/"$FILENAME".org
 #+end_src
 
 Here we change path to every static file — to make it accessible via Jekyll
@@ -147,8 +164,11 @@ machinery. And remove OrgMode tags which wasn't removed by Pandoc.
 After that we successfully convert our article from shiny OrgMode syntax to
 Markdown:
 #+begin_src bash
-  pandoc -t gfm --shift-heading-level-by=1 -o "$FILEPATH"/"$FILENAME".md \
-         "$FILEPATH"/"$FILENAME".org
+  pandoc -s "$FILEPATH"/"$FILENAME".org -t json | \
+      java -jar internals/pandoc_jekyll/target/pandoc_jekyll-1.0-SNAPSHOT-shaded.jar | \
+      pandoc -s -f json -t gfm --shift-heading-level-by=1 -M category:"$CATEGORY" \
+             --template=internals/pandoc_jekyll/jekyll.gfm \
+             -o "$FILEPATH"/"$FILENAME".md
   rm -f "$FILEPATH"/"$FILENAME".org
 #+end_src
 
@@ -165,35 +185,10 @@ Org Mode) document! That's why I write my articles in Org Mode but not in
 Markdown, or RestructuredText, or something another «brand new standard».
 
 We need to make next adjustments in generated markdown file:
-- Add front matter
 - Fix filepaths from =file:///filename= to =/filename= — because Pandoc converts
   =file:filename= to =file:///filename=.
         
   #+begin_src bash
-    cat << EOF >> "$FILEPATH"/"$FILENAME"2.md
-    ---
-    layout: post
-    title: "$TITLE"
-    category: "$CATEGORY"
-    tags: "$TAGS"
-    date: "$DATE"
-    comments: true
-    hidden:
-      - related_posts
-    EOF
-    if [ ! -z "$COVER" ]; then
-        cat << EOF >> "$FILEPATH"/"$FILENAME"2.md
-    banner:
-      image: /assets/static/$COVER
-      opacity: 0.6
-    EOF
-    fi
-    cat << EOF >> "$FILEPATH"/"$FILENAME"2.md
-    ---
-
-    EOF
-    cat "$FILEPATH"/"$FILENAME".md >> "$FILEPATH"/"$FILENAME"2.md
-    mv "$FILEPATH"/"$FILENAME"2.md "$FILEPATH"/"$FILENAME".md
     sed -i -r 's!(.*)file://(.*)!\1\2!g' "$FILEPATH"/"$FILENAME".md
   #+end_src
  
@@ -209,23 +204,9 @@ files to =assets/static=:
 :PROPERTIES:
 :header-args: :tangle Makefile
 :END:
-I made deployment as simple as I can. After you call =make init= once in the
-beginning of the this README — the initialized and properly configured Jekyll
-site pulled to =./internals/jekyll= from
-[[https://github.com/eugeneandrienko/eugeneandrienko.github.io][eugeneandrienko/eugeneandrienko.github.io]] repository:
-
-#+begin_src makefile
-  JEKYLL = internals/jekyll
-  .PHONY: init
-  init:
-          mkdir -p $(JEKYLL)
-          cd $(JEKYLL) && \
-          git clone git@github.com:eugeneandrienko/eugeneandrienko.github.io.git .
-          touch .configured
-#+end_src
-
-When you run =make= — you update Markdown articles from repository with changes,
-made in OrgMode files (see [[* Convert articles][«Convert articles»]])
+I made deployment as simple as I can. When you run =make= — you update Markdown
+articles from repository with changes, made in OrgMode files (see [[* Convert articles][«Convert
+articles»]])
 
 When you end with editing — type =make deploy=, enter commit message and push
 you changes back to GitHub:

@@ -254,5 +254,4 @@ cleans all unnecessary.
   .PHONY: deepclean
   deepclean:
           rm -rf $(INTERNALS) Makefile
-          rm -f .configured
 #+end_src

@@ -1,9 +1,9 @@
 ---
 layout: post
-title: "Спасибо что живой?"
-category: "cycling"
-tags: "ПДД"
-date: "2020-05-17 23:00"
+title: Спасибо что живой?
+category: cycling
+tags: ПДД
+date: 2020-05-17 23:00
 comments: true
 hidden:
   - related_posts

@@ -1,9 +1,9 @@
 ---
 layout: post
-title: "Открытие велосезона с INSLED"
-category: "cycling"
-tags: "вылазки"
-date: "2021-05-17 10:00"
+title: Открытие велосезона с INSLED
+category: cycling
+tags: вылазки
+date: 2021-05-17 10:00
 comments: true
 hidden:
   - related_posts
@@ -47,7 +47,10 @@ banner:
 «великолепию» добавился ещё и песок, в котором я вяз передним колесом
 как финансово безграмотный — в кредитах.
 
-![*Проезд под ЗСД*](/assets/static/under_the_zsd.png)
+<figure>
+<img src="/assets/static/under_the_zsd.png" />
+<figcaption><em>Проезд под ЗСД</em></figcaption>
+</figure>
 
 В принципе, я уже начал что-то подозревать о пристрастии организаторов к
 лесным дорогам на подъезде к памятнику «Молох Тоталитаризма», после того
@@ -82,8 +85,10 @@ banner:
 
 ![](/assets/static/mud3.jpg)
 
-![*Привал у Сестрорецкого
-разлива*](/assets/static/sestroreckii_razliv.jpg)
+<figure>
+<img src="/assets/static/sestroreckii_razliv.jpg" />
+<figcaption><em>Привал у Сестрорецкого разлива</em></figcaption>
+</figure>
 
 На привале рядом с Сестрорецким разливом я аж успел замёрзнуть, пока
 ведущие проводили всякие там конкурсы — конечно же у меня был с собой

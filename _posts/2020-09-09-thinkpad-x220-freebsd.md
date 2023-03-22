@@ -1,9 +1,8 @@
 ---
 layout: post
-title: "Настройка FreeBSD на Lenovo Thinkpad X220 (2011 года)"
-category: "it"
-tags: ""
-date: "#+DATE:: 2020-09-26 00:20"
+title: Настройка FreeBSD на Lenovo Thinkpad X220 (2011 года)
+category: it
+date: 2020-09-26 00:20
 comments: true
 hidden:
   - related_posts
@@ -24,7 +23,7 @@ hidden:
 - <https://cooltrainer.org/a-freebsd-desktop-howto/>
 - <https://wiki.archlinux.org/title/Lenovo_ThinkPad_X230>
 
-## Корректное отображение \~ в пути, в приглашении bash
+## Корректное отображение ~ в пути, в приглашении bash
 
 Поскольку все домашние каталоги пользователей расположены по пути
 `/usr/home/`, а `/home/` лишь символическая ссылка на вышеуказанный

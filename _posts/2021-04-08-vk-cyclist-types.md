@@ -1,9 +1,8 @@
 ---
 layout: post
-title: "Типажи подписчиков велосипедных групп из ВК"
-category: "cycling"
-tags: ""
-date: "2021-04-08 15:21"
+title: Типажи подписчиков велосипедных групп из ВК
+category: cycling
+date: 2021-04-08 15:21
 comments: true
 hidden:
   - related_posts

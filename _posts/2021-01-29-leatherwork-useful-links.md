@@ -1,9 +1,8 @@
 ---
 layout: post
-title: "Ссылки по кожевенному делу"
-category: "leatherwork"
-tags: ""
-date: "2021-02-04 19:01"
+title: Ссылки по кожевенному делу
+category: leatherwork
+date: 2021-02-04 19:01
 comments: true
 hidden:
   - related_posts

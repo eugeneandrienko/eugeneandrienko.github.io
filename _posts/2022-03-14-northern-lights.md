@@ -36,29 +36,27 @@ banner:
 Результат вышел не особо впечатляющим — потому что я использовал обычную
 цветную плёнку, рассчитанную на дневные фотографии [^2]:
 
-<div class="ladoga">
-    <div>
-        <a href="/assets/static/ladoga1.jpg" data-lightbox="ladoga">
-            <img data-lazy="/assets/static/ladoga1-thumb.jpg"/>
-        </a>
-    </div>
-    <div>
-        <a href="/assets/static/ladoga2.jpg" data-lightbox="ladoga">
-            <img data-lazy="/assets/static/ladoga2-thumb.jpg"/>
-        </a>
-    </div>
-    <div>
-        <a href="/assets/static/ladoga3.jpg" data-lightbox="ladoga">
-            <img data-lazy="/assets/static/ladoga3-thumb.jpg"/>
-        </a>
-    </div>
-    <div>
-        <a href="/assets/static/ladoga4.jpg" data-lightbox="ladoga">
-            <img data-lazy="/assets/static/ladoga4-thumb.jpg"/>
-        </a>
-    </div>
+<div class="ladoga"><div>
+    <a href="/assets/static/ladoga1.jpg" data-lightbox="ladoga">
+        <img data-lazy="/assets/static/ladoga1-thumb.jpg"/>
+    </a>
 </div>
-<script type="text/javascript">
+<div>
+    <a href="/assets/static/ladoga2.jpg" data-lightbox="ladoga">
+        <img data-lazy="/assets/static/ladoga2-thumb.jpg"/>
+    </a>
+</div>
+<div>
+    <a href="/assets/static/ladoga3.jpg" data-lightbox="ladoga">
+        <img data-lazy="/assets/static/ladoga3-thumb.jpg"/>
+    </a>
+</div>
+<div>
+    <a href="/assets/static/ladoga4.jpg" data-lightbox="ladoga">
+        <img data-lazy="/assets/static/ladoga4-thumb.jpg"/>
+    </a>
+</div>
+</div><script type="text/javascript">
     $(document).ready(function(){
         $('.ladoga').slick({
             infinite: false,
@@ -169,24 +167,22 @@ banner:
 поинтереснее, чем на плёнку с ISO 400. Вот, например, моя первая попытка
 сфотографировать сияние где-то на Волоярви:
 
-<div class="volo">
-    <div>
-        <a href="/assets/static/volo1.jpg" data-lightbox="volo">
-            <img data-lazy="/assets/static/volo1-thumb.jpg"/>
-        </a>
-    </div>
-    <div>
-        <a href="/assets/static/volo2.jpg" data-lightbox="volo">
-            <img data-lazy="/assets/static/volo2-thumb.jpg"/>
-        </a>
-    </div>
-    <div>
-        <a href="/assets/static/volo3.jpg" data-lightbox="volo">
-            <img data-lazy="/assets/static/volo3-thumb.jpg"/>
-        </a>
-    </div>
+<div class="volo"><div>
+    <a href="/assets/static/volo1.jpg" data-lightbox="volo">
+        <img data-lazy="/assets/static/volo1-thumb.jpg"/>
+    </a>
 </div>
-<script type="text/javascript">
+<div>
+    <a href="/assets/static/volo2.jpg" data-lightbox="volo">
+        <img data-lazy="/assets/static/volo2-thumb.jpg"/>
+    </a>
+</div>
+<div>
+    <a href="/assets/static/volo3.jpg" data-lightbox="volo">
+        <img data-lazy="/assets/static/volo3-thumb.jpg"/>
+    </a>
+</div>
+</div><script type="text/javascript">
     $(document).ready(function(){
         $('.volo').slick({
             infinite: false,
@@ -214,69 +210,67 @@ banner:
 фотографировать сияния. Лично я не пробовал, но видел [хорошие
 фотографии](https://www.instagram.com/p/CoHUaqFIzKy/) у других людей.
 
-<div class="aurora">
-    <div>
-        <a href="/assets/static/aurora1.jpg" data-lightbox="aurora">
-            <img data-lazy="/assets/static/aurora1-thumb.jpg"/>
-        </a>
-    </div>
-    <div>
-        <a href="/assets/static/aurora2.jpg" data-lightbox="aurora">
-            <img data-lazy="/assets/static/aurora2-thumb.jpg"/>
-        </a>
-    </div>
-    <div>
-        <a href="/assets/static/aurora3.jpg" data-lightbox="aurora">
-            <img data-lazy="/assets/static/aurora3-thumb.jpg"/>
-        </a>
-    </div>
-    <div>
-        <a href="/assets/static/aurora4.jpg" data-lightbox="aurora">
-            <img data-lazy="/assets/static/aurora4-thumb.jpg"/>
-        </a>
-    </div>
-    <div>
-        <a href="/assets/static/aurora5.jpg" data-lightbox="aurora">
-            <img data-lazy="/assets/static/aurora5-thumb.jpg"/>
-        </a>
-    </div>
-    <div>
-        <a href="/assets/static/aurora6.jpg" data-lightbox="aurora">
-            <img data-lazy="/assets/static/aurora6-thumb.jpg"/>
-        </a>
-    </div>
-    <div>
-        <a href="/assets/static/aurora7.jpg" data-lightbox="aurora">
-            <img data-lazy="/assets/static/aurora7-thumb.jpg"/>
-        </a>
-    </div>
-    <div>
-        <a href="/assets/static/aurora8.jpg" data-lightbox="aurora">
-            <img data-lazy="/assets/static/aurora8-thumb.jpg"/>
-        </a>
-    </div>
-    <div>
-        <a href="/assets/static/aurora9.jpg" data-lightbox="aurora">
-            <img data-lazy="/assets/static/aurora9-thumb.jpg"/>
-        </a>
-    </div>
-    <div>
-        <a href="/assets/static/aurora10.jpg" data-lightbox="aurora">
-            <img data-lazy="/assets/static/aurora10-thumb.jpg"/>
-        </a>
-    </div>
-    <div>
-        <a href="/assets/static/aurora11.jpg" data-lightbox="aurora">
-            <img data-lazy="/assets/static/aurora11-thumb.jpg"/>
-        </a>
-    </div>
-    <div>
-        <a href="/assets/static/aurora12.jpg" data-lightbox="aurora">
-            <img data-lazy="/assets/static/aurora12-thumb.jpg"/>
-        </a>
-    </div>
+<div class="aurora"><div>
+    <a href="/assets/static/aurora1.jpg" data-lightbox="aurora">
+        <img data-lazy="/assets/static/aurora1-thumb.jpg"/>
+    </a>
 </div>
-<script type="text/javascript">
+<div>
+    <a href="/assets/static/aurora2.jpg" data-lightbox="aurora">
+        <img data-lazy="/assets/static/aurora2-thumb.jpg"/>
+    </a>
+</div>
+<div>
+    <a href="/assets/static/aurora3.jpg" data-lightbox="aurora">
+        <img data-lazy="/assets/static/aurora3-thumb.jpg"/>
+    </a>
+</div>
+<div>
+    <a href="/assets/static/aurora4.jpg" data-lightbox="aurora">
+        <img data-lazy="/assets/static/aurora4-thumb.jpg"/>
+    </a>
+</div>
+<div>
+    <a href="/assets/static/aurora5.jpg" data-lightbox="aurora">
+        <img data-lazy="/assets/static/aurora5-thumb.jpg"/>
+    </a>
+</div>
+<div>
+    <a href="/assets/static/aurora6.jpg" data-lightbox="aurora">
+        <img data-lazy="/assets/static/aurora6-thumb.jpg"/>
+    </a>
+</div>
+<div>
+    <a href="/assets/static/aurora7.jpg" data-lightbox="aurora">
+        <img data-lazy="/assets/static/aurora7-thumb.jpg"/>
+    </a>
+</div>
+<div>
+    <a href="/assets/static/aurora8.jpg" data-lightbox="aurora">
+        <img data-lazy="/assets/static/aurora8-thumb.jpg"/>
+    </a>
+</div>
+<div>
+    <a href="/assets/static/aurora9.jpg" data-lightbox="aurora">
+        <img data-lazy="/assets/static/aurora9-thumb.jpg"/>
+    </a>
+</div>
+<div>
+    <a href="/assets/static/aurora10.jpg" data-lightbox="aurora">
+        <img data-lazy="/assets/static/aurora10-thumb.jpg"/>
+    </a>
+</div>
+<div>
+    <a href="/assets/static/aurora11.jpg" data-lightbox="aurora">
+        <img data-lazy="/assets/static/aurora11-thumb.jpg"/>
+    </a>
+</div>
+<div>
+    <a href="/assets/static/aurora12.jpg" data-lightbox="aurora">
+        <img data-lazy="/assets/static/aurora12-thumb.jpg"/>
+    </a>
+</div>
+</div><script type="text/javascript">
     $(document).ready(function(){
         $('.aurora').slick({
             infinite: false,

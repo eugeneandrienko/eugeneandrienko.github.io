@@ -20,7 +20,7 @@ After you call this command — initialized and properly configured Jekyll site
 will be pulled to =./internals/jekyll= from
 [[https://github.com/eugeneandrienko/eugeneandrienko.github.io][eugeneandrienko/eugeneandrienko.github.io]] repository. And additional
 templates/filters for Pandoc will be pulled to =./internals/pandoc-jekyll= from
-eugeneandrienko/pandoc-jekyll repository.
+[[https://github.com/eugeneandrienko/pandoc_jekyll][eugeneandrienko/pandoc-jekyll]] repository.
 
 #+name: init4makefile
 #+begin_src makefile
@@ -94,7 +94,18 @@ example:
   [[file:test.org][Test]]
 #+end_src
 
-* Article properties
+Galleries can be described in the next way:
+#+begin_src org
+  ,#+begin_export json
+  {"gallery":
+      {"gallery-name": "some-gallery",
+       "gallery-items": [["picture1.jpg", "thumb1.jpg"],
+                         ["picture2.jpg"],
+                         ["picture3.jpg", "thumb3.jpg"]]}}
+  ,#+end_export
+#+end_src
+
+* Special syntax for articles
 There are next properties, which can be in OrgMode files with my
 articles.
 
@@ -104,6 +115,11 @@ articles.
 - =#+COVER:= :: Cover image.
 
 These properties *should be supported* by the underlying machinery.
+
+In article photos can be grouped in galleries. Gallery can be described like
+this:
+#+begin_src org
+#+end_src
 
 * Convert articles
 :PROPERTIES:
@@ -158,9 +174,6 @@ Pandoc, but /faster/ — to do it via shell:
   sed -r 's!file:(.+)!file:/assets/static/\1!g' "$article" > "$FILEPATH"/"$FILENAME".org
 #+end_src
 
-Here we change path to every static file — to make it accessible via Jekyll
-machinery. And remove OrgMode tags which wasn't removed by Pandoc.
-
 After that we successfully convert our article from shiny OrgMode syntax to
 Markdown:
 #+begin_src bash
@@ -172,25 +185,11 @@ Markdown:
   rm -f "$FILEPATH"/"$FILENAME".org
 #+end_src
 
-Of course, like a lot of another static-site engines, Jekyll adds some
-non-standart properties to the beginning of the file [fn:org-mode-shiny]. So,
-we need to write these properties in our generated file. Maybe this task also
-can be completed by Pandoc itself, but the next approach is /faster to
-implement/.
-
-[fn:org-mode-shiny] Compare with Org Mode, where we also add some properties
-to the beginning of the file, but they are completely conform with standard
-and do not breaks file representation in Emacs or in any exported (via Emacs
-Org Mode) document! That's why I write my articles in Org Mode but not in
-Markdown, or RestructuredText, or something another «brand new standard».
-
-We need to make next adjustments in generated markdown file:
-- Fix filepaths from =file:///filename= to =/filename= — because Pandoc converts
-  =file:filename= to =file:///filename=.
-        
-  #+begin_src bash
-    sed -i -r 's!(.*)file://(.*)!\1\2!g' "$FILEPATH"/"$FILENAME".md
-  #+end_src
+We need to fix filepaths from =file:///filename= to =/filename= in generated
+Markdown file:
+#+begin_src bash
+  sed -i -r 's!(.*)file://(.*)!\1\2!g' "$FILEPATH"/"$FILENAME".md
+#+end_src
  
 After all that suffering move prepared article to =_posts/= and all related static
 files to =assets/static=:
@@ -228,8 +227,8 @@ From the bird's-eye our deployment process has next steps:
 1. Create/edit article in Emacs OrgMode.
 2. Run =make= to convert article to Markdown in Jekyll format. At this point
    only *published* articles exists in our Jekyll installation. All drafts and
-   hidden articles stay as OrgMode files outside of our Git-repository from
-   GitHub.
+   hidden articles stay as OrgMode files outside of directory with Jekyll
+   blog.
 3. Run =make deploy= to push changes to GitHub.
 4. Wait while triggered Cloudflare build and deploy blog.
 5. Done!
@@ -246,7 +245,7 @@ To preview your changes you can start local server via the =make serve= command:
 * How to clear all
 If you want to stay with OrgMode files and remove all Jekyll files, scripts
 and other things, not related to articles — run =make deepclean=. This command
-cleans all unnecessary.
+clears all unnecessary.
 
 #+begin_src makefile :tangle Makefile
   INTERNALS = internals

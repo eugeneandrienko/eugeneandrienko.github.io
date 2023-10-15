@@ -116,11 +116,6 @@ articles.
 
 These properties *should be supported* by the underlying machinery.
 
-In article photos can be grouped in galleries. Gallery can be described like
-this:
-#+begin_src org
-#+end_src
-
 * Convert articles
 :PROPERTIES:
 :header-args: :noweb yes
@@ -240,7 +235,9 @@ To preview your changes you can start local server via the =make serve= command:
   serve: all
           cd $(JEKYLL) && \
           bundle exec jekyll serve
-#+end_Src
+          find articles/ -type f -name '*.org' | \
+                  entr -r -s 'cd $(JEKYLL) && bundle exec jekyll serve'
+#+end_src
 
 * How to clear all
 If you want to stay with OrgMode files and remove all Jekyll files, scripts

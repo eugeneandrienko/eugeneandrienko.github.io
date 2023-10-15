@@ -10,7 +10,7 @@ brand_color: "#696969"
 defaults:
   home:
     heading: "Dragon's notes"
-    subheading: "IT, photo and bicycles"
+    subheading: "IT, photo, bicycles and stakan portveyna"
 markdown: kramdown
 kmarkdown:
   input: GFM

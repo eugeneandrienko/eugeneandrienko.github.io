@@ -143,16 +143,31 @@ every static-site engine we have different conversion scripts.
 :END:
 For Jekyll I use Pandoc and bunch of regexes to create a proper =*.md= file.
 
-We take every published article:
+We take every published article, even drafts if option =--drafts= is given:
 #+begin_src bash :shebang "#!/usr/bin/env bash"
   ARTICLES="./articles/"
   POSTS="./internals/jekyll/_posts"
   STATIC="./internals/jekyll/assets/static"
 
+  PROCESS_DRAFTS="false"
+  if [ "$1" == "--drafts" ]; then
+      PROCESS_DRAFTS="true"
+  fi
+
   for article in $(find "$ARTICLES" -type f -name article.org); do
+      IS_DRAFT_ARTICLE="false"
       echo "$article" | grep -q 'articles/.\{1,\}/[0-9]\{4\}-[0-9]\{2\}-[0-9]\{2\}-.\{1,\}/article.org'
       if [ "$?" -ne "0" ]; then
-          continue
+          if [ "$PROCESS_DRAFTS" = "true" ]; then
+              echo "$article" | grep -q 'articles/.\{1,\}/draft-.\{1,\}/article.org'
+              if [ "$?" -ne "0" ]; then
+                  continue
+              else
+                  IS_DRAFT_ARTICLE="true"
+              fi
+          else
+              continue
+          fi
       fi
 #+end_src
 
@@ -185,11 +200,15 @@ Markdown file:
 #+begin_src bash
   sed -i -r 's!(.*)file://(.*)!\1\2!g' "$FILEPATH"/"$FILENAME".md
 #+end_src
- 
+
 After all that suffering move prepared article to =_posts/= and all related static
 files to =assets/static=:
 #+begin_src bash
-  mv "$FILEPATH"/"$FILENAME".md "$POSTS"
+  if [ "$IS_DRAFT_ARTICLE" = "false" ]; then
+      mv "$FILEPATH"/"$FILENAME".md "$POSTS"/"$FILENAME".md
+  else
+      mv "$FILEPATH"/"$FILENAME".md "$POSTS"/"$(date +%Y-%m-%d)-$FILENAME".md
+  fi
   find "$FILEPATH" -type f -not -name article.org -exec cp {} "$STATIC" \;
   done
 #+end_src
@@ -232,7 +251,8 @@ From the bird's-eye our deployment process has next steps:
 To preview your changes you can start local server via the =make serve= command:
 #+begin_src makefile :tangle Makefile
   .PHONY: serve
-  serve: all
+  serve: $(CONVERSION_SCRIPT)
+          $(CONVERSION_SCRIPT) --drafts
           cd $(JEKYLL) && \
           bundle exec jekyll serve
           find articles/ -type f -name '*.org' | \

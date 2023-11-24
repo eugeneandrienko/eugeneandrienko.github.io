@@ -1,5 +1,22 @@
+* TOC
+
+- [[* Introduction][Introduction]]
+- [[* File hierarchy description][File hierarchy description]]
+- [[* How to write articles][How to write articles]]
+  - [[* Article header][Article header]]
+  - [[* File/image include][File/image include]]
+  - [[* Footnotes][Footnotes]]
+  - [[* Online videos][Online videos]]
+- [[* How to build blog][How to build blog]]
+- [[* How articles' conversion works][How articles' conversion works]]
+- [[* How to deploy blog][How to deploy blog]]
+- [[* Preview blog locally][Preview blog locally]]
+- [[* Clean][Clean]]
+
 *NOTE:* Some links and all footnotes are broken when you view this file from
 GitHub. Because GitHub doesn't support OrgMode completely.
+
+* Introduction
 
 This =README.org= written in «literal programming» paradigm. It generates all
 necessary scripts and files to build my blog with next commands (press =C-c C-c=
@@ -20,7 +37,7 @@ After you call this command — initialized and properly configured Jekyll site
 will be pulled to =./internals/jekyll= from
 [[https://github.com/eugeneandrienko/eugeneandrienko.github.io][eugeneandrienko/eugeneandrienko.github.io]] repository. And additional
 templates/filters for Pandoc will be pulled to =./internals/pandoc-jekyll= from
-[[https://github.com/eugeneandrienko/pandoc_jekyll][eugeneandrienko/pandoc-jekyll]] repository.
+[[https://github.com/eugeneandrienko/pandoc_jekyll][eugeneandrienko/pandoc-jekyll]] repository:
 
 #+name: init4makefile
 #+begin_src makefile
@@ -31,7 +48,8 @@ templates/filters for Pandoc will be pulled to =./internals/pandoc-jekyll= from
           mkdir -p $(JEKYLL)
           mkdir -p $(PANDOC_JEKYLL)
           cd $(JEKYLL) && \
-          git clone git@github.com:eugeneandrienko/eugeneandrienko.github.io.git .
+          git clone git@github.com:eugeneandrienko/eugeneandrienko.github.io.git . && \
+          bundle update --bundler
           cd $(PANDOC_JEKYLL) && \
           git clone git@github.com:eugeneandrienko/pandoc_jekyll.git .
 #+end_src
@@ -41,13 +59,22 @@ blogging engines/platforms/etc. At this level I want to have my articles
 *incapsulated* and *independent* from CSS, Jekyll, fonts, Markdown or other
 uninteresting things.
 
-* How to write articles
+You can write articles in OrgMode syntax and its will automatically converted
+to markdown and then to html — as posts for static blog.
+
+Used programs:
+- pandoc
+- jekyll
+- bundle
+- make
+
+* File hierarchy description
 
 Articles written as Org Mode files. These files lies in =./articles= catalog
 with the structure described below.
 
-Every subcatalog in =./articles= is a separate /category/. For example, now we
-have next categories:
+Every subcatalog in =./articles= is a separate /category/. For example, we have
+next categories:
 #+begin_example
 articles % tree -L 1
 ./
@@ -60,9 +87,12 @@ articles % tree -L 1
 
 In every /category/-catalog there are set of catalogs — one catalog per
 article. These article-catalogs should have name in next format:
-- =YYYY-MM-DD-article-name= :: Catalog for published article
-- =draft-article-name= :: Catalog for draft
-- =hidden-article-name= ::  Catalog for hidden article
+- =YYYY-MM-DD-article-name= :: Catalog for published article. These articles can
+  be previewed with =make serve= command. Its also can be published in the blog.
+- =draft-article-name= :: Catalog for draft article. These articles can be
+  previewed with =make serve-draft= command. And never be published.
+- =hidden-article-name= ::  Catalog for hidden article. This articles will never
+  be previewed and published.
 
 For example:
 #+begin_example
@@ -71,7 +101,7 @@ articles/it % tree -L 1
 ├── 2020-09-09-thinkpad-x220-freebsd/
 ├── draft-palm-tung-e2-archaeological/
 ├── draft-palm-tung-e2-ressurection/
-└── draft-wexler-7001/
+└── hidden-wexler-7001/
 #+end_example
 
 Inside every catalog there should be set of images and other static files,
@@ -87,14 +117,55 @@ articles/it/draft-palm-tung-e2-ressurection % tree -L 1
 └── tiktok.png
 #+end_example
 
-Every link to static file inside article should use =file:= protocol, for
-example:
+* How to write articles
+
+Articles written in [[https://orgmode.org/manuals.html][OrgMode syntax]]. You can use all OrgMode directives, either
+tables and footnotes.
+
+** Article header
+
+There are next properties, which can be in article header:
+
+- =#+TITLE:= :: Title of article.
+- =#+DATE:= :: Date and time of publication. It should be in =YYYY-MM-DD HH:MM=
+  format.
+- =#+TAGS:= :: Space-separated list of tags (optional).
+- =#+COVER:= :: Cover image (optional).
+
+These properties *should be supported* by the underlying machinery.
+
+Example of article header, where cover image has the =header.jpg= name and lies
+in the same catalog as =article.org= file:
 #+begin_src org
-  file:test.org
-  [[file:test.org][Test]]
+  ,#+TITLE: Sample title
+  ,#+DATE: 2023-11-22 22:22
+  ,#+COVER: header.jpg
+  ,#+TAGS: tag1 tag2
 #+end_src
 
-Galleries can be described in the next way:
+** File/image include
+
+Files or images should be lie in the same catalog as for =article.org=.
+
+You can insert images in next ways:
+1. Without caption:
+   #+begin_src org
+     ,#+ATTR_RST: :alt alternative text for accessibility :width 50% :align center
+     [[file:filename.jpg]]
+   #+end_src
+2. With caption:
+   #+begin_src org
+     ,#+CAPTION: Your caption for filename.jpg
+     ,#+ATTR_RST: :align center :alt alternative text for accessibility
+     [[file:filename.jpg]]
+   #+end_src
+
+*** JS carousel for multiple images
+
+You can use nice JS carousel to display multiple images at one point (thanks
+for [[http://kenwheeler.github.io/slick/][Slick carouse]]l).
+
+Carousel can be described like this:
 #+begin_src org
   ,#+begin_export json
   {"gallery":
@@ -105,18 +176,56 @@ Galleries can be described in the next way:
   ,#+end_export
 #+end_src
 
-* Special syntax for articles
-There are next properties, which can be in OrgMode files with my
-articles.
+Identifier =some-gallery= should be unique for every carousel.
 
-- =#+TITLE:= :: Title of article.
-- =#+DATE:= :: Date and time of publication. In =YYYY-MM-DD HH:MM= format.
-- =#+TAGS:= :: Space-separated list of tags.
-- =#+COVER:= :: Cover image.
+** Footnotes
 
-These properties *should be supported* by the underlying machinery.
+Link to footnote can be inserted like this:
+#+begin_src org
+  [fn:footnote-id]
+#+end_src
 
-* Convert articles
+The footnote text should be inserted to the end of article, like this:
+#+begin_src org
+  [fn:footnote-id] Footnote text
+#+end_src
+
+** Online videos
+
+Online videos, for example from YouTube, can be inserted in next way:
+#+begin_src org
+  ,#+begin_src markdown
+    ![](https://www.youtube.com/watch?v=dQw4w9WgXcQ)
+  ,#+end_src
+#+end_src
+
+* How to build blog
+
+All actions can be complete with =Makefile= from root catalog of blog. This
+=Makefile= you can use in next ways:
+- =make= :: Show help
+- =make build= :: Build blog with articles, ready to publish.
+- =make serve= :: Start local server at =http://127.0.0.1:8000= with articles
+  ready to publish.
+- =make drafts= :: Build blog and start local server with published and draft
+  articles.
+- =make clean= :: Clean cache and generated markdown articles from blog.
+
+#+name: help4makefile
+#+begin_src makefile
+  all:
+          @echo "Available commands:"
+          @echo ""
+          @echo -e "\tmake — show this help message"
+          @echo -e "\tmake build — build blog with articles, ready to publish"
+          @echo -e "\tmake serve — start local server with published articles at 127.0.0.1:8000"
+          @echo -e "\tmake drafts — build blog with published and draft articles, and start local server at 127.0.0.1:8000"
+          @echo -e "\tmake clean — clean cache and generated markdown articles"
+          @echo ""
+
+#+end_src
+
+* How articles' conversion works
 :PROPERTIES:
 :header-args: :noweb yes
 :END:
@@ -124,18 +233,23 @@ Of course, most of the static-site engines do not support OrgMode files syntax
 (for reasons unknown to me). So, we need to convert our nice and shiny
 org-file to somewhat another format.
 
-To make conversion just type =make= in you console. This triggers the next
+To make conversion just type =make build= in you console. This triggers the next
 action:
 #+begin_src makefile :tangle Makefile
+  <<help4makefile>>
+
   CONVERSION_SCRIPT = ./internals/scripts/articles-bake-jekyll.sh
-  all: $(CONVERSION_SCRIPT)
+  .PHONY: build
+  build: $(CONVERSION_SCRIPT)
           $(CONVERSION_SCRIPT)
+          cp README.org $(JEKYLL)
+          cd $(JEKYLL) && bundle exec jekyll build
 
   <<init4makefile>>
 #+end_src
 
 This code just call the script, defined in =CONVERSION_SCRIPT= variable. For
-every static-site engine we have different conversion scripts.
+every static-site engine we can have different conversion scripts:
 
 ** Jekyll
 :PROPERTIES:
@@ -213,19 +327,15 @@ files to =assets/static=:
   done
 #+end_src
 
-* Deploy
+* How to deploy blog
 :PROPERTIES:
 :header-args: :tangle Makefile
 :END:
-I made deployment as simple as I can. When you run =make= — you update Markdown
-articles from repository with changes, made in OrgMode files (see [[* Convert articles][«Convert
-articles»]])
-
-When you end with editing — type =make deploy=, enter commit message and push
-you changes back to GitHub:
+I made deployment as simple as I can. Just type =make deploy= and write commit
+message. After that your changes will be pushed to git server (for example GitHub):
 #+begin_src makefile
   .PHONY: deploy
-  deploy:
+  deploy: all
           cd $(JEKYLL) && \
           git add _posts/ assets/ && \
           git commit && \
@@ -237,37 +347,49 @@ catches it and begin to build html and other Web 2.0 things from our Jekyll
 sources. If it is succeded — blog files will be deployed and become available
 at https://eugene-andrienko.com.
 
-From the bird's-eye our deployment process has next steps:
-1. Create/edit article in Emacs OrgMode.
-2. Run =make= to convert article to Markdown in Jekyll format. At this point
-   only *published* articles exists in our Jekyll installation. All drafts and
-   hidden articles stay as OrgMode files outside of directory with Jekyll
-   blog.
-3. Run =make deploy= to push changes to GitHub.
-4. Wait while triggered Cloudflare build and deploy blog.
-5. Done!
+You can setup your own git server and point your http server to catalog with
+repository contents (*not* to /bare/ git repository!)
 
-* Local server
-To preview your changes you can start local server via the =make serve= command:
+From the bird's-eye our deployment process has next steps:
+1. Run =make build= to convert published articles to HTML for static blog.
+2. Run =make deploy= to push changes to GitHub.
+3. Wait while triggered Cloudflare build and deploy blog.
+
+* Preview blog locally
+To preview your published articles you can start local server via the =make serve= command:
 #+begin_src makefile :tangle Makefile
   .PHONY: serve
-  serve: $(CONVERSION_SCRIPT)
-          $(CONVERSION_SCRIPT) --drafts
+  serve:
+          find articles/ -type f -name '*.org' | entr -rspn '$(CONVERSION_SCRIPT)' &
           cd $(JEKYLL) && \
           bundle exec jekyll serve
-          find articles/ -type f -name '*.org' | \
-                  entr -r -s 'cd $(JEKYLL) && bundle exec jekyll serve'
+          pkill entr
 #+end_src
 
-* How to clear all
-If you want to stay with OrgMode files and remove all Jekyll files, scripts
-and other things, not related to articles — run =make deepclean=. This command
-clears all unnecessary.
-
+To preview published *and* draft articles you can start local server with =make drafts= command:
 #+begin_src makefile :tangle Makefile
-  INTERNALS = internals
-
-  .PHONY: deepclean
-  deepclean:
-          rm -rf $(INTERNALS) Makefile
+  .PHONY: drafts
+  drafts: $(CONVERSION_SCRIPT) clean
+          $(CONVERSION_SCRIPT) --drafts
+          find articles/ -type f -name '*.org' | entr -rspn '$(CONVERSION_SCRIPT) --drafts' &
+          cd $(JEKYLL) && \
+          bundle exec jekyll serve
+          pkill entr
 #+end_src
+
+In both cases =entr= will be used to regenerate Markdown files from OrgMode
+files if last was changed. Renewed Markdown file will be automatically
+regenerated to HTML by Jekyll.
+
+* Clean
+To clear generated files before blog regeneration — you can use =make clean=:
+#+begin_src makefile :tangle Makefile
+  .PHONY: clean
+  clean:
+          cd $(JEKYLL) && \
+          bundle exec jekyll clean && \
+          rm -f _posts/*.md
+#+end_src
+
+This can be useful to clear draft articles from static blog directories before
+published articles regeneration.

@@ -219,10 +219,10 @@ All actions can be complete with =Makefile= from root catalog of blog. This
           @echo -e "\tmake — show this help message"
           @echo -e "\tmake build — build blog with articles, ready to publish"
           @echo -e "\tmake serve — start local server with published articles at 127.0.0.1:8000"
+          @echo -e "\tmake deploy — deploy blog via git"
           @echo -e "\tmake drafts — build blog with published and draft articles, and start local server at 127.0.0.1:8000"
           @echo -e "\tmake clean — clean cache and generated markdown articles"
           @echo ""
-
 #+end_src
 
 * How articles' conversion works

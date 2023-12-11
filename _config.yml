@@ -10,12 +10,12 @@ brand_color: "#696969"
 defaults:
   home:
     heading: "Dragon's notes"
-    subheading: "IT, photo, bicycles and stakan portveyna"
+    subheading: "Заставляю песок думать"
 markdown: kramdown
 kmarkdown:
   input: GFM
 port: 8000
-lang: "en"
+lang: "ru"
 translate_langs: []
 header_pages:
   - about.html

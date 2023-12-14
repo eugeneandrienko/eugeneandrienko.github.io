@@ -155,9 +155,9 @@ You can insert images in next ways:
    #+end_src
 2. With caption:
    #+begin_src org
-     ,#+CAPTION: Your caption for filename.jpg
      ,#+ATTR_RST: :align center :alt alternative text for accessibility
      [[file:filename.jpg]]
+     /Your caption for filename.jpg/
    #+end_src
 
 *** JS carousel for multiple images

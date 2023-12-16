@@ -1,9 +1,9 @@
 .theme-toggle {
   position: relative;
   width: $base-font-size * 7.65;
-  margin-top: 10px;
-  margin-right: 60px;
-  margin-left: auto;
+  margin-top: 30px;
+  margin-right: auto;
+  margin-left: 60px;
   transition: .3s cubic-bezier(.4,.03,0,1);
 
   label, .toggle {
@@ -28,8 +28,8 @@
   .names {
     font-size: 1em;
     font-weight: bolder;
-    width: 76%;
-    margin-left: 12%;
+    width: 65%;
+    margin-left: 19%;
     position: relative;
     display: flex;
     justify-content: space-between;

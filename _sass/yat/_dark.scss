@@ -115,12 +115,6 @@ html[data-theme="dark"]  {
       }
     }
 
-    .post-list {
-      & > li:not(:last-child) {
-        border-bottom: 1px solid #545454;
-      }
-    }
-
     .post-tags .post-tag:hover {
       color: #d7d7d7;
     }

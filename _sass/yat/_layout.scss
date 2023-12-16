@@ -119,6 +119,7 @@ html {
   position: absolute;
   right: 0;
   top: 0;
+  font-weight: bold;
 
   .nav-trigger {
     display: none;
@@ -271,12 +272,7 @@ html {
     list-style: none;
 
     > li {
-      margin-bottom: $spacing-unit * 1.5;
       padding-bottom: 30px;
-
-      &:not(:last-child) {
-        border-bottom: 1px solid #e3e3e3;
-      }
     }
   }
 
@@ -622,7 +618,7 @@ html {
       margin: 0;
 
       > :nth-child(1) {
-        @include relative-font-size(3.9);
+        @include relative-font-size(3.6);
         letter-spacing: -1px;
         margin-bottom: 0.1em;
         font-weight: normal;

@@ -3,14 +3,14 @@
   <label for="theme-switch">
     <div class="toggle"></div>
     <div class="names">
-      <p class="light">Light</p>
-      <p class="dark">Dark</p>
+      <p class="light">🌞</p>
+      <p class="dark">🌒</p>
     </div>
   </label>
 </div>
 
 {%- assign name = 'night_mode' -%}
-{%- include functions.html func='get_value' default='auto' -%}
+{%- include functions.html func='get_value' default='manual' -%}
 {%- assign night_mode = return -%}
 
 <script>
@@ -52,15 +52,15 @@
       var now = new Date();
       var toggleAt = new Date();
       var hours = now.getHours();
-      var nightShift = hours >= 19 || hours <=7;
+      var nightShift = hours >= 22 || hours <=6;
 
       if (nightShift) {
-        if (hours > 7) {
+        if (hours > 6) {
           toggleAt.setDate(toggleAt.getDate() + 1);
         }
-        toggleAt.setHours(7);
+        toggleAt.setHours(6);
       } else {
-        toggleAt.setHours(19);
+        toggleAt.setHours(22);
       }
 
       toggleAt.setMinutes(0);

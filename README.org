@@ -315,6 +315,13 @@ Markdown file:
   sed -i -r 's!(.*)file://(.*)!\1\2!g' "$FILEPATH"/"$FILENAME".md
 #+end_src
 
+And fix string with title — it should be written in one line, without trailing
+spaces:
+#+begin_src bash
+  sed -i -r '/^title:/{ s/(title:.+)/\1 /g; N; /category:/{ s/(category:.+)/\n\1/g; }; s/\n// };' "$FILEPATH"/"$FILENAME".md
+  sed -i -r 's/(title:.+) +/\1/g' "$FILEPATH"/"$FILENAME".md
+#+end_src
+
 After all that suffering move prepared article to =_posts/= and all related static
 files to =assets/static=:
 #+begin_src bash

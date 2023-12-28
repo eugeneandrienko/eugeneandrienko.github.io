@@ -10,12 +10,12 @@ brand_color: "#696969"
 defaults:
   home:
     heading: "Dragon's notes"
-    subheading: "Заставляю песок думать"
+    subheading: "I force a sand to think"
 markdown: kramdown
 kmarkdown:
   input: GFM
 port: 8000
-lang: "ru"
+lang: "en"
 excerpt_size: 1000
 translate_langs: []
 header_pages:

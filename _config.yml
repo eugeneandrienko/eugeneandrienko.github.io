@@ -16,7 +16,7 @@ kmarkdown:
   input: GFM
 port: 8000
 lang: "en"
-excerpt_size: 1000
+excerpt_size: 500
 translate_langs: []
 header_pages:
   - about.html

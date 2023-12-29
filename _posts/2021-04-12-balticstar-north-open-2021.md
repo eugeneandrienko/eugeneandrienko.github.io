@@ -2,7 +2,7 @@
 layout: post
 title: Северное открытие летнего сезона 2021 с «Балтийской звездой»
 category: cycling
-tags: вылазки
+tags: sorties
 date: 2021-04-12 12:00
 comments: true
 hidden:

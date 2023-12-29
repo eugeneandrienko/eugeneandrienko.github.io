@@ -2,7 +2,7 @@
 layout: post
 title: Открытие велосезона с INSLED
 category: cycling
-tags: вылазки
+tags: sorties
 date: 2021-05-17 10:00
 comments: true
 hidden:

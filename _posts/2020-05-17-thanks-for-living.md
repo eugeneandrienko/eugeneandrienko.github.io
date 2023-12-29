@@ -2,7 +2,7 @@
 layout: post
 title: Спасибо что живой?
 category: cycling
-tags: ПДД
+tags: traffic_rules
 date: 2020-05-17 23:00
 comments: true
 hidden:

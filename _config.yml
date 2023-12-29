@@ -22,6 +22,7 @@ header_pages:
   - about.html
   - cv.html
   - tags.html
+  - categories.html
   - archives.html
 disqus:
   shortname: "eugene-andrienko-com"

@@ -303,9 +303,15 @@ html {
   }
 
   .post-meta {
-    font-size: $base-font-size;
-    color: $grey-color;
-    margin-bottom: $spacing-unit * 0.5;
+      font-size: $base-font-size;
+      color: $grey-color;
+      margin-bottom: $spacing-unit * 0.5;
+
+      .post-category {
+          a {
+              text-decoration: none;
+          }
+      }
   }
 
   .post-link {

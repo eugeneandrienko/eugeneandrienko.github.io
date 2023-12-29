@@ -10,7 +10,7 @@ brand_color: "#696969"
 defaults:
   home:
     heading: "Dragon's notes"
-    subheading: "I force a sand to think"
+    subheading: "Force sand to think"
 markdown: kramdown
 kmarkdown:
   input: GFM

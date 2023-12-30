@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Настройка FreeBSD на Lenovo Thinkpad X220 (2011 года)
+title: Setting up FreeBSD for Lenovo Thinkpad X220 (2011 year)
 category: it
 date: 2020-09-26 00:20
 comments: true
@@ -8,13 +8,13 @@ hidden:
   - related_posts
 ---
 
-Эта небольшая заметка кратко описывает настройку FreeBSD 12.1 для работы
-на Lenovo ThinkPad X220 — чтобы не забыть неочевидные действия,
-выполняемые после установки системы. Используемый ThinkPad из 2011 года
-— из тех времён, когда ещё использовался приличный дизайн от IBM – с
-синим Enter и семирядной клавиатурой.
+There are a bunch of tips and tricks about FreeBSD setup for Thinkpad
+X220 in this little note. I wrote it to not forget non-obvious actions,
+wchich should be done after system installation. Used Thinkpad came from
+2011 year — from that times, when it used decent design from IBM with
+blue Enter and 7-row keyboard.
 
-В заметке используются материалы из следующих мест:
+This post based on information from the next pages:
 
 - <https://cyber.dabamos.de/unix/x230/>
 - <https://unrelenting.technology/articles/freebsd-on-the-thinkpad-x240>
@@ -23,28 +23,31 @@ hidden:
 - <https://cooltrainer.org/a-freebsd-desktop-howto/>
 - <https://wiki.archlinux.org/title/Lenovo_ThinkPad_X230>
 
-## Корректное отображение ~ в пути, в приглашении bash
+## Show ~ for current directory path in bash prompt
 
-Поскольку все домашние каталоги пользователей расположены по пути
-`/usr/home/`, а `/home/` лишь символическая ссылка на вышеуказанный
-каталог – в приглашении командной строки `\w` будет заменяться не на
-`~/catalog_name`, а на `/usr/home/catalog_name`.
+In FreeBSD all users' home catalogs placed in `/usr/home/`. The `/home/`
+is just a symbolic link to `/usr/home/`. So, thats why in command prompt
+`\w` will be substituted to `/usr/home/catalog_name`, not to
+`~/catalog_name`.
 
-Чтобы путь к каталогу внутри домашнего каталога имел в своём начале `~`,
-нужно установить в качестве домашнего каталога пользователя прямой путь
-к нему — `/usr/home/`, а не символическую ссылку — `/home/`. Делается
-это через `sudo
-chsh username`.
+To fix that you need to set path to home catalog directly to
+`/usr/home/user_catalog`, not to `/home/user_catalog`. Use
+`sudo chsh username` for this.
 
-## Минимальный набор групп для доступа к устройствам ноутбука
+## Minimal set of groups
 
-- wheel — нужен для sudo;
-- video – для доступа к `/dev/dri/card*`;
-- webcamd — для доступа к веб-камере.
+`wheel`  
+for sudo
 
-## Управление питанием
+`video`  
+grants access to `/dev/dri/card*`
 
-Настройки для `/etc/rc.conf`:
+`webcamd`  
+grants access to web-camera.
+
+## Power control
+
+`/etc/rc.conf` settings:
 
 ``` example
 powerd_enable="YES"
@@ -53,27 +56,26 @@ performance_cx_lowest="C2"
 economy_cx_lowest="C3"
 ```
 
-В `/boot/loader.conf` добавить:
+`/boot/loader.conf` settings:
 
 ``` example
 cpufreq_load="YES"
 kern.hz=100
 ```
 
-Благодаря этим настройкам ноутбук станет более медленным, но
-энергосберегающим при работе от батареи. И наоборот — при работе от
-сети.
+Thanks to these settings — notebook will become slowly but more
+energy-saving.
 
-## Звук
+## Sound
 
-Нужно загружать модуль `snd_hda` при старте системы — для этого
-добавляем в `/boot/loader.conf`:
+Need to load `snd_hda` module on system startup. Add this to
+`/boot/loader.conf`:
 
 ``` example
 snd_hda_load="YES"
 ```
 
-Для переключения между динамиками и наушниками нужно добавить в
+To switch between speakers and earphone on the fly — add these lines to
 `/boot/device.hints`:
 
 ``` example
@@ -81,29 +83,26 @@ hint.hdaa.0.nid20.config="as=1 seq=0 device=Speaker"
 hint.hdaa.0.nid21.config="as=1 seq=15 device=Headphones"
 ```
 
-## Управление яркостью
+## Brightness control
 
-В `/boot/loader.conf` надо добавить это:
+Add these lines to `/boot/loader.conf`:
 
 ``` example
 acpi_ibm_load="YES"
 acpi_video_load="YES"
 ```
 
-Первая строка загружает модуль ядра, который обеспечивает взаимодействие
-с разной полезной периферией на Thinkpad'ах — вроде мультимедиа-клавиш,
-кнопок контроля яркости и т.п.
+First line loads kernel module to operate with Thinkpad peripherals —
+multimedia-keys, brightness-control keys, etc. Second line loads kernel
+module to control screen brightness via sysctl (use
+`hw.acpi.video.lcd0.brightness` setup).
 
-Вторая строка загружает модуль с помощью которого можно управлять
-яркостью экрана через sysctl, обращаясь к
-`hw.acpi.video.lcd0.brightness`.
+## Multimedia keys
 
-## Мультимедиа-клавиши
+First, module `acpi_ibm` should be already loaded in system.
 
-Сначала надо проверить, что модуль `acpi_ibm` уже загружен в системе.
-
-После этого нужно добавить в `/etc/devd.conf` следующие строки, чтобы
-devd научился ловить нажатия на Fn кнопки и отсылать их в наш скрипт:
+The next strings should be added to `/etc/devd.conf`, with them devd
+could process Fn+Fkey keypresses and send it to our script:
 
 ``` example
 notify 10 {
@@ -113,7 +112,7 @@ notify 10 {
 };
 ```
 
-Неполное содержимое скрипта `/etc/acpi_thinkpad.sh`:
+Script content (incomplete):
 
 ``` bash
 #!/bin/sh
@@ -127,12 +126,12 @@ case "$ACPI_EVENT" in
 esac
 ```
 
-Посмотреть скан-коды клавиш можно остановив devd и запустив его из
-консоли от рута с ключом `-d`.
+To watch key scan-codes just stop devd and launch it from root with `-d`
+argument.
 
-## Тачпад и трекпойнт
+## Touchpad and trackpoint
 
-Для начала надо включить поддержку Synaptics touchpad и трекпойнта в
+First, enable Synaptics touchpad and trackpoint support in
 `/boot/loader.conf`:
 
 ``` example
@@ -140,61 +139,55 @@ hw.psm.synaptics_support=1
 hw.psm.trackpoint_support=1
 ```
 
-Пакет `xf86-input-synaptics` должен быть удалён — вместо него должен
-быть установлен пакет `xf86-input-evdev`.
+Package `xf86-input-synaptics` should be replaced with
+`xf86-input-evdev`. With these changes — touchpad, trackpoint and middle
+mouse button above of touchpad will be working. Also, scrolling with
+middle button and trackpoint will work.
 
-Этого достаточно для работы тачпада и трекпойнта и средней кнопки над
-тачпадом. Заодно будет работать и прокрутка при нажатии на среднюю
-кнопку.
-
-Мне удобен весьма чуствительный трекпойнт и для этого в
-`/etc/systcl.conf` должны быть следующие строки:
+I'd like sensitive trackpoint — so I add the next lines to
+`/etc/systcl.conf`:
 
 ``` example
 hw.psm.trackpoint.sensitivity=255
 hw.psm.trackpoint.upper_plateau=125
 ```
 
-## Веб-камера
+## Web-camera
 
-Нужно произвести следующие изменения в следующих файлах:
+Make next changes in next files:
 
-`/boot/loader.conf`:
-
+`/boot/loader.conf`  
 ``` example
 cuse_load="YES"
 ```
 
-`/etc/rc.conf`:
-
+`/etc/rc.conf`  
 ``` example
 webcamd_enable="YES"
 ```
 
-`/etc/sysctl.conf`:
-
+`/etc/sysctl.conf`  
 ``` example
 kern.evdev.rcpt_mask=12
 ```
 
-После, добавить пользователя в группу `webcamd`:
+After that add user to `webcamd` group:
 
 ``` example
 sudo pw groupmod webcamd -m <username>
 ```
 
-## Сон
+## Sleep
 
-Для начала должен быть загружен модуль `acpi_ibm`.
+First, the module `acpi_ibm` should be loaded:
 
-Переход в режим сна делается командой: `acpiconf -s 3` от рута. Либо же,
-можно использовать команду `zzz`.
+Then, we can go to sleep mode via `acpiconf -s 3` command. Or via `zzz`
+command.
 
-## Включение drm-kmod
+## Enable drm-kmod
 
-Нужно установить пакет `graphics/drm-kmod`. Затем, надо включить
-загрузку модуля `i915kms.ko` добавлением следующей строки в
-`/etc/rc.conf`:
+Install the package `graphics/drm-kmod`. After, enable module
+`i915kms.ko` — add next line to `/etc/rc.conf`:
 
 ``` example
 kld_list="${kld_list} /boot/modules/i915kms.ko"
@@ -202,7 +195,7 @@ kld_list="${kld_list} /boot/modules/i915kms.ko"
 
 ## Wi-Fi
 
-Нужно добавить в `/boot/loader.conf`:
+Add next lines to `/boot/loader.conf`:
 
 ``` example
 if_iwn_load="YES"
@@ -211,7 +204,8 @@ wlan_ccmp_load="YES"
 wlan_tkip_load="YES"
 ```
 
-Потом, добавить в `/etc/rc.conf`:
+And these lines to `/etc/rc.conf` (select proper country code in last
+line):
 
 ``` example
 wlans_iwn0="wlan0"
@@ -219,8 +213,9 @@ ifconfig_wlan0="WPA DHCP powersave"
 create_args_wlan0="country RU regdomain NONE"
 ```
 
-Для работы с WiFi-сетями нужно установить пакет wpa<sub>supplicant</sub>
-и добавить в начало `/etc/wpa_supplicant.conf`:
+Install package `wpa_supplicant` to operate with Wi-Fi networks from
+user mode. And add next lines to the start of
+`/etc/wpa_supplicant.conf`:
 
 ``` example
 ctrl_interface=/var/run/wpa_supplicant
@@ -228,9 +223,9 @@ eapol_version=2
 fast_reauth=1
 ```
 
-## Разное
+## Miscellaneous
 
-Можно добавить в `/boot/loader.conf`:
+You can add next lines to `/boot/loader.conf`:
 
 ``` example
 autoboot_delay="2"
@@ -245,19 +240,18 @@ cd9660_iconv_load="YES"
 msdosfs_iconv_load="YES"
 ```
 
-Это включит поддержку температурных сенсоров в системе, сделает задержку
-в две секунды перед загрузкой системы загрузчиком — чтобы долго не ждать
-— и так далее.
+These lines enable support of temperature sensors in system, will reduce
+delay to two seconds before the system boots and so on.
 
-Чтобы при загрузке системы DHCP client не тормозил весь процесс — можно
-внести в `/etc/rc.conf` следующую строку:
+To load DHCP client in background on system startup and reduce system
+boot time — add next line to `/etc/rc.conf`:
 
 ``` example
 background_dhclient="YES"
 ```
 
-Для монтирования разделов вручную пользователем, отключения системного
-динамика и т.п. — можно добавить в `/etc/sysctl.conf` следующее:
+To mount filesystems without root privileges, to disable system beeper
+and so on — add next lines to `/etc/sysctl.conf`:
 
 ``` example
 vfs.read_max=128

@@ -396,7 +396,7 @@ To clear generated files before blog regeneration — you can use =make clean=:
           cd $(JEKYLL) && \
           bundle exec jekyll clean && \
           rm -f _posts/*.md && \
-          rm -f assets/static/*{.png,.jpg,.svg}
+          rm -f assets/static/*{.png,.jpg,.jpeg,.JPG,.svg}
 #+end_src
 
 This can be useful to clear draft articles from static blog directories before

@@ -194,9 +194,9 @@ The footnote text should be inserted to the end of article, like this:
 
 Online videos, for example from YouTube, can be inserted in next way:
 #+begin_src org
-  ,#+begin_src markdown
-    ![](https://www.youtube.com/watch?v=dQw4w9WgXcQ)
-  ,#+end_src
+  ,#+begin_export markdown
+  ![](https://www.youtube.com/watch?v=dQw4w9WgXcQ)
+  ,#+end_export
 #+end_src
 
 * How to build blog

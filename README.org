@@ -199,6 +199,12 @@ Online videos, for example from YouTube, can be inserted in next way:
   ,#+end_export
 #+end_src
 
+** Insert _ symbol
+
+#+begin_src org
+  \text{_}
+#+end_src
+
 * How to build blog
 
 All actions can be complete with =Makefile= from root catalog of blog. This

@@ -15,7 +15,7 @@ markdown: kramdown
 kmarkdown:
   input: GFM
 port: 8000
-lang: "en"
+lang: "ru"
 translate_langs: []
 header_pages:
   - about.html

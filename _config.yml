@@ -23,8 +23,6 @@ header_pages:
   - tags.html
   - categories.html
   - archives.html
-disqus:
-  shortname: "eugene-andrienko-com"
 
 plugins:
   - jekyll-feed

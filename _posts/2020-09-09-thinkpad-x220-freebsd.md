@@ -219,8 +219,8 @@ ifconfig_wlan0="WPA DHCP powersave"
 create_args_wlan0="country RU regdomain NONE"
 ```
 
-Для работы с WiFi-сетями нужно установить пакет wpa<sub>supplicant</sub>
-и добавить в начало `/etc/wpa_supplicant.conf`:
+Для работы с WiFi-сетями нужно установить пакет `wpa_supplicant` и
+добавить в начало `/etc/wpa_supplicant.conf`:
 
 ``` example
 ctrl_interface=/var/run/wpa_supplicant

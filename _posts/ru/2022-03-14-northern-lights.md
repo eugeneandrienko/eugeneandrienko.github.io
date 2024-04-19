@@ -38,35 +38,13 @@ summary: Личный опыт в деле ловли северных сиян�
 Результат вышел не особо впечатляющим — потому что я использовал обычную
 цветную плёнку, рассчитанную на дневные фотографии [^2]:
 
-<div class="ladoga"><div>
-    <a href="/assets/static/ladoga1.jpg" data-lightbox="ladoga">
-        <img data-lazy="/assets/static/ladoga1-thumb.jpg"/>
-    </a>
-</div>
-<div>
-    <a href="/assets/static/ladoga2.jpg" data-lightbox="ladoga">
-        <img data-lazy="/assets/static/ladoga2-thumb.jpg"/>
-    </a>
-</div>
-<div>
-    <a href="/assets/static/ladoga3.jpg" data-lightbox="ladoga">
-        <img data-lazy="/assets/static/ladoga3-thumb.jpg"/>
-    </a>
-</div>
-<div>
-    <a href="/assets/static/ladoga4.jpg" data-lightbox="ladoga">
-        <img data-lazy="/assets/static/ladoga4-thumb.jpg"/>
-    </a>
-</div>
-</div><script type="text/javascript">
-    $(document).ready(function(){
-        $('.ladoga').slick({
-            infinite: false,
-            lazyLoad: 'ondemand',
-            dots: true
-        });
-    });
-</script>
+![](/assets/static/ladoga1.jpg)
+
+![](/assets/static/ladoga2.jpg)
+
+![](/assets/static/ladoga3.jpg)
+
+![](/assets/static/ladoga4.jpg)
 
 Но на мой взгляд эти фотографии хорошо показывают, что можно увидеть
 невооружёнными глазами на нашей широте.
@@ -169,30 +147,11 @@ summary: Личный опыт в деле ловли северных сиян�
 поинтереснее, чем на плёнку с ISO 400. Вот, например, моя первая попытка
 сфотографировать сияние где-то на Волоярви:
 
-<div class="volo"><div>
-    <a href="/assets/static/volo1.jpg" data-lightbox="volo">
-        <img data-lazy="/assets/static/volo1-thumb.jpg"/>
-    </a>
-</div>
-<div>
-    <a href="/assets/static/volo2.jpg" data-lightbox="volo">
-        <img data-lazy="/assets/static/volo2-thumb.jpg"/>
-    </a>
-</div>
-<div>
-    <a href="/assets/static/volo3.jpg" data-lightbox="volo">
-        <img data-lazy="/assets/static/volo3-thumb.jpg"/>
-    </a>
-</div>
-</div><script type="text/javascript">
-    $(document).ready(function(){
-        $('.volo').slick({
-            infinite: false,
-            lazyLoad: 'ondemand',
-            dots: true
-        });
-    });
-</script>
+![](/assets/static/volo1.jpg)
+
+![](/assets/static/volo2.jpg)
+
+![](/assets/static/volo3.jpg)
 
 Сияние было ещё слабее, чем предыдущее. ISO было установлено в 3200,
 объектив, выдержка и диафрагма были те же самые, что и в прошлый раз,
@@ -212,81 +171,40 @@ summary: Личный опыт в деле ловли северных сиян�
 фотографировать сияния. Лично я не пробовал, но видел [хорошие
 фотографии](https://www.instagram.com/p/CoHUaqFIzKy/) у других людей.
 
-<div class="aurora"><div>
-    <a href="/assets/static/aurora1.jpg" data-lightbox="aurora">
-        <img data-lazy="/assets/static/aurora1-thumb.jpg"/>
-    </a>
-</div>
-<div>
-    <a href="/assets/static/aurora2.jpg" data-lightbox="aurora">
-        <img data-lazy="/assets/static/aurora2-thumb.jpg"/>
-    </a>
-</div>
-<div>
-    <a href="/assets/static/aurora3.jpg" data-lightbox="aurora">
-        <img data-lazy="/assets/static/aurora3-thumb.jpg"/>
-    </a>
-</div>
-<div>
-    <a href="/assets/static/aurora4.jpg" data-lightbox="aurora">
-        <img data-lazy="/assets/static/aurora4-thumb.jpg"/>
-    </a>
-</div>
-<div>
-    <a href="/assets/static/aurora5.jpg" data-lightbox="aurora">
-        <img data-lazy="/assets/static/aurora5-thumb.jpg"/>
-    </a>
-</div>
-<div>
-    <a href="/assets/static/aurora6.jpg" data-lightbox="aurora">
-        <img data-lazy="/assets/static/aurora6-thumb.jpg"/>
-    </a>
-</div>
-<div>
-    <a href="/assets/static/aurora7.jpg" data-lightbox="aurora">
-        <img data-lazy="/assets/static/aurora7-thumb.jpg"/>
-    </a>
-</div>
-<div>
-    <a href="/assets/static/aurora8.jpg" data-lightbox="aurora">
-        <img data-lazy="/assets/static/aurora8-thumb.jpg"/>
-    </a>
-</div>
-<div>
-    <a href="/assets/static/aurora9.jpg" data-lightbox="aurora">
-        <img data-lazy="/assets/static/aurora9-thumb.jpg"/>
-    </a>
-</div>
-<div>
-    <a href="/assets/static/aurora10.jpg" data-lightbox="aurora">
-        <img data-lazy="/assets/static/aurora10-thumb.jpg"/>
-    </a>
-</div>
-<div>
-    <a href="/assets/static/aurora11.jpg" data-lightbox="aurora">
-        <img data-lazy="/assets/static/aurora11-thumb.jpg"/>
-    </a>
-</div>
-<div>
-    <a href="/assets/static/aurora12.jpg" data-lightbox="aurora">
-        <img data-lazy="/assets/static/aurora12-thumb.jpg"/>
-    </a>
-</div>
-</div><script type="text/javascript">
-    $(document).ready(function(){
-        $('.aurora').slick({
-            infinite: false,
-            lazyLoad: 'ondemand',
-            dots: true
-        });
-    });
-</script>
+У меня на мой Olympus в итоге получались следующие фотографии. Северное
+сияние в Назии:
 
-Тут стоит выдержка в 6 секунд и ISO 640, диафрагма открыта на полную
-(f=2.8).
+![](/assets/static/aurora1.jpg)
 
-На последних кадрах дуга стояла где-то на высоте 60° над горизонтом и
-уже просто не помещалась в объектив.
+![](/assets/static/aurora2.jpg)
+
+![](/assets/static/aurora3.jpg)
+
+![](/assets/static/aurora4.jpg)
+
+![](/assets/static/aurora5.jpg)
+
+![](/assets/static/aurora6.jpg)
+
+И северное сияние, снятое на южном берегу Финского залива. Эти фото
+сняты через стекло машины с рук:
+
+![](/assets/static/aurora7.jpg)
+
+![](/assets/static/aurora8.jpg)
+
+![](/assets/static/aurora9.jpg)
+
+А вот эти — уже «по нормальному» со штатива, на *свежем* воздухе. Тут
+использовалась выдержка в 6 секунд и ISO 640, диафрагма была открыта на
+полную (f=2.8). Дуга стояла где-то на высоте 60° над горизонтом и уже
+просто не помещалась в объектив.
+
+![](/assets/static/aurora10.jpg)
+
+![](/assets/static/aurora11.jpg)
+
+![](/assets/static/aurora12.jpg)
 
 ## Тайм-лапсы
 

@@ -160,24 +160,6 @@ You can insert images in next ways:
      /Your caption for filename.jpg/
    #+end_src
 
-*** JS carousel for multiple images
-
-You can use nice JS carousel to display multiple images at one point (thanks
-for [[http://kenwheeler.github.io/slick/][Slick carouse]]l).
-
-Carousel can be described like this:
-#+begin_src org
-  ,#+begin_export json
-  {"gallery":
-      {"gallery-name": "some-gallery",
-       "gallery-items": [["picture1.jpg", "thumb1.jpg"],
-                         ["picture2.jpg"],
-                         ["picture3.jpg", "thumb3.jpg"]]}}
-  ,#+end_export
-#+end_src
-
-Identifier =some-gallery= should be unique for every carousel.
-
 ** Footnotes
 
 Link to footnote can be inserted like this:
@@ -409,7 +391,8 @@ To clear generated files before blog regeneration — you can use =make clean=:
   clean:
           cd $(JEKYLL) && \
           bundle exec jekyll clean && \
-          rm -f _posts/*.md && \
+          rm -f _posts/ru/*.md && \
+          rm -f _posts/en/*.md && \
           rm -f assets/static/*{.png,.jpg,.jpeg,.JPG,.svg,.html}
 #+end_src
 

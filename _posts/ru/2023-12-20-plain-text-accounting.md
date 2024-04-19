@@ -621,44 +621,22 @@ sqlite3 -header -csv ':memory:' '.import --csv /dev/stdin expenses' "
 
 ### Планирование нового бюджета
 
-Планирование бюджета происходит через bash-скрипт с dialog.
+Планирование бюджета происходит через bash-скрипт с dialog:
 
-<div class="planning"><div>
-    <a href="/assets/static/plan1.png" data-lightbox="planning">
-        <img data-lazy="/assets/static/plan1.png"/>
-    </a>
-</div>
-<div>
-    <a href="/assets/static/plan2.png" data-lightbox="planning">
-        <img data-lazy="/assets/static/plan2.png"/>
-    </a>
-</div>
-<div>
-    <a href="/assets/static/plan3.png" data-lightbox="planning">
-        <img data-lazy="/assets/static/plan3.png"/>
-    </a>
-</div>
-<div>
-    <a href="/assets/static/plan4.png" data-lightbox="planning">
-        <img data-lazy="/assets/static/plan4.png"/>
-    </a>
-</div>
-<div>
-    <a href="/assets/static/plan5.png" data-lightbox="planning">
-        <img data-lazy="/assets/static/plan5.png"/>
-    </a>
-</div>
-</div><script type="text/javascript">
-    $(document).ready(function(){
-        $('.planning').slick({
-            infinite: false,
-            lazyLoad: 'ondemand',
-            dots: true
-        });
-    });
-</script>
+![](/assets/static/plan1.png) *Выбор стартовой даты для нового
+бюджета*
 
-Тут всё относительно просто:
+![](/assets/static/plan2.png) *Ввод данных по накоплениям*
+
+![](/assets/static/plan3.png) *Сумма пришедшей зарплаты, плюс
+остатки с предыдущей итерации*
+
+![](/assets/static/plan4.png) *Составление бюджета*
+
+![](/assets/static/plan5.png) *Проверка того, что мы не ушли в
+минус*
+
+Тут всё реализовано относительно просто:
 
 - Получаю нужные данные от пользователя через формы dialog — даты, суммы
   накоплений, план расходов для бюджета.

@@ -132,33 +132,17 @@ from future» бизнес-софта.
 
 ![](/assets/static/change_distro.png)
 
-С того времени у меня сохранилось лишь три скриншота (тут fluxbox и vim
-с плагинами):
+С того времени у меня сохранилось лишь три скриншота. Тут я копаюсь в
+Cишном коде в GVim, обвешанном плагинами (оконный менеджер
+[FluxBox](http://fluxbox.org/)):
 
-<div class="red_eyes"><div>
-    <a href="/assets/static/2010-05-21-222033_1280x800_scrot.png" data-lightbox="red_eyes">
-        <img data-lazy="/assets/static/2010-05-21-222033_1280x800_scrot.png"/>
-    </a>
-</div>
-<div>
-    <a href="/assets/static/2010-05-21-223027_1280x800_scrot.png" data-lightbox="red_eyes">
-        <img data-lazy="/assets/static/2010-05-21-223027_1280x800_scrot.png"/>
-    </a>
-</div>
-<div>
-    <a href="/assets/static/2010-05-21-233743_1280x800_scrot.png" data-lightbox="red_eyes">
-        <img data-lazy="/assets/static/2010-05-21-233743_1280x800_scrot.png"/>
-    </a>
-</div>
-</div><script type="text/javascript">
-    $(document).ready(function(){
-        $('.red_eyes').slick({
-            infinite: false,
-            lazyLoad: 'ondemand',
-            dots: true
-        });
-    });
-</script>
+![](/assets/static/2010-05-21-222033_1280x800_scrot.png)
+
+![](/assets/static/2010-05-21-223027_1280x800_scrot.png)
+
+А тут какой-то код на GNU Assembler:
+
+![](/assets/static/2010-05-21-233743_1280x800_scrot.png)
 
 Тогда же я освоил LaTeX, устав от проблем с печатью лабораторных
 отчётов, когда файл сделанный в Open Office, криво печатался в книжном,
@@ -300,27 +284,15 @@ dotfiles](https://github.com/eugeneandrienko/dotfiles), в котором я
 таскал с системы на систему свои конфигурационные файлы к вышеописанным
 программам.
 
-Немного скриншотов рабочего стола с тех времён:
+Немного скриншотов рабочего стола с тех времён. Тут xmonad на двух
+мониторах — слева urxvt, справа Chromium:
 
-<div class="red_eyes2"><div>
-    <a href="/assets/static/2010-03-14-134724_2048x768_scrot.png" data-lightbox="red_eyes2">
-        <img data-lazy="/assets/static/2010-03-14-134724_2048x768_scrot.png"/>
-    </a>
-</div>
-<div>
-    <a href="/assets/static/2010-03-15-184410_2048x768_scrot.png" data-lightbox="red_eyes2">
-        <img data-lazy="/assets/static/2010-03-15-184410_2048x768_scrot.png"/>
-    </a>
-</div>
-</div><script type="text/javascript">
-    $(document).ready(function(){
-        $('.red_eyes2').slick({
-            infinite: false,
-            lazyLoad: 'ondemand',
-            dots: true
-        });
-    });
-</script>
+![](/assets/static/2010-03-14-134724_2048x768_scrot.png)
+
+А тут идёт редактирование отчета по лабораторной работе — слева
+результат в apvlv, справа TeX-исходник в GVim:
+
+![](/assets/static/2010-03-15-184410_2048x768_scrot.png)
 
 Впоследствии, я много раз пытался перейти на обычный софт с GUI или
 всякие Web-приложения, но уже не получалось. Либо возможности по его

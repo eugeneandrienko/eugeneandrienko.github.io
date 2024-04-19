@@ -3,6 +3,7 @@ layout: post
 title: Как сделать timelapse видео на Olympus E-M10 II в Linux/FreeBSD
 category: photo
 date: 2022-01-16 18:30
+lang: ru
 comments: true
 hidden:
   - related_posts

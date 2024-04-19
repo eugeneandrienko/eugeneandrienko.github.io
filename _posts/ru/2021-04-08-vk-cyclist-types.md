@@ -3,6 +3,7 @@ layout: post
 title: Типажи подписчиков велосипедных групп из ВК
 category: cycling
 date: 2021-04-08 15:21
+lang: ru
 comments: true
 hidden:
   - related_posts

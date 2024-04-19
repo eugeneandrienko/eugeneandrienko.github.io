@@ -4,6 +4,7 @@ title: Спасибо что живой?
 category: cycling
 tags: traffic_rules
 date: 2020-05-17 23:00
+lang: ru
 comments: true
 hidden:
   - related_posts

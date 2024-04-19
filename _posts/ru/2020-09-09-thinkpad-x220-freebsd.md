@@ -3,6 +3,7 @@ layout: post
 title: Настройка FreeBSD на Lenovo Thinkpad X220 (2011 года)
 category: it
 date: 2020-09-26 00:20
+lang: ru
 comments: true
 hidden:
   - related_posts

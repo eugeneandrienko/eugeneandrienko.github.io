@@ -3,6 +3,7 @@ layout: post
 title: Как я провёл 18 лет в консоли Linux и ни о чём не жалею
 category: it
 date: 2024-01-02 12:53
+lang: ru
 comments: true
 hidden:
   - related_posts

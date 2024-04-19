@@ -15,8 +15,14 @@ markdown: kramdown
 kmarkdown:
   input: GFM
 port: 8000
+languages: ["en", "ru"]
 lang: "ru"
-translate_langs: []
+default_lang: "ru"
+exclude_from_localization: ["assets"]
+parallel_localization: true
+lang_from_path: true
+sass:
+  sourcemap: never
 header_pages:
   - about.html
   - cv.html
@@ -30,3 +36,4 @@ plugins:
   - jekyll-sitemap
   - jekyll-paginate
   - jekyll-spaceship
+  - jekyll-polyglot

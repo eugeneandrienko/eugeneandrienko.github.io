@@ -3,6 +3,7 @@ layout: post
 title: Plain text accounting
 category: it
 date: 2023-12-20 01:29
+lang: ru
 comments: true
 hidden:
   - related_posts

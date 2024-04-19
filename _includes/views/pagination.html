@@ -9,6 +9,7 @@
   <!-- Post list links -->
   <ul class="post-list">
     {%- for post in paginator.posts -%}
+    {% if post.lang == site.active_lang %}
     <li>
       {%- assign date_format = site.yat.date_format | default: "%b %-d, %Y" -%}
 
@@ -35,6 +36,7 @@
         {%- endfor -%}
       </div>
     </li>
+    {% endif %}
     {%- endfor -%}
   </ul>
 

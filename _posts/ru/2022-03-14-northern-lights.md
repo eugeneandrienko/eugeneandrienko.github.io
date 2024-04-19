@@ -3,6 +3,7 @@ layout: post
 title: Северные сияния в Ленинградской области
 category: photo
 date: 2022-03-14 12:34
+lang: ru
 comments: true
 hidden:
   - related_posts

@@ -274,12 +274,12 @@ We take every published article, even drafts if option =--drafts= is given:
       PROCESS_DRAFTS="true"
   fi
 
-  for article in $(find "$ARTICLES" -type f -name article.org); do
+  for article in $(find "$ARTICLES" -type f -regextype grep -regex '.\{1,\}/article-[a-z]\{2\}\.org'); do
       IS_DRAFT_ARTICLE="false"
-      echo "$article" | grep -q 'articles/.\{1,\}/[0-9]\{4\}-[0-9]\{2\}-[0-9]\{2\}-.\{1,\}/article.org'
+      echo "$article" | grep -q 'articles/.\{1,\}/[0-9]\{4\}-[0-9]\{2\}-[0-9]\{2\}-.\{1,\}/article-[a-z]\{2\}.org'
       if [ "$?" -ne "0" ]; then
           if [ "$PROCESS_DRAFTS" = "true" ]; then
-              echo "$article" | grep -q 'articles/.\{1,\}/draft-.\{1,\}/article.org'
+              echo "$article" | grep -q 'articles/.\{1,\}/draft-.\{1,\}/article-[a-z]\{2\}.org'
               if [ "$?" -ne "0" ]; then
                   continue
               else
@@ -294,14 +294,20 @@ We take every published article, even drafts if option =--drafts= is given:
 And read metadata from it:
 #+begin_src bash
   CATEGORY=$(echo "$article" | sed -r 's!\./articles/([a-z0-9]+)/.+\.org!\1!g')
-  FILENAME=$(echo "$article" | sed -r 's!\./articles/[a-z0-9]+/(.+)/article\.org!\1!g')
+  FILENAME=$(echo "$article" | sed -r 's!\./articles/[a-z0-9]+/(.+)/article-[a-z]{2}\.org!\1!g')
   FILEPATH=$(dirname "$article")
+  LANGUAGE=$(echo "$article" | sed -r 's!\./articles/[a-z0-9]+/.+/article-([a-z]{2})\.org!\1!g')
 #+end_src
 
 Make some adjustments in temporary copy of article. Maybe it can be done with
 Pandoc, but /faster/ — to do it via shell:
 #+begin_src bash
   sed -r 's!file:(.+)!file:/assets/static/\1!g' "$article" > "$FILEPATH"/"$FILENAME".org
+#+end_src
+
+Insert language code to article header:
+#+begin_src bash
+  sed -ri "2i #+LANG: $LANGUAGE" "$FILEPATH"/"$FILENAME".org
 #+end_src
 
 After that we successfully convert our article from shiny OrgMode syntax to
@@ -328,16 +334,18 @@ spaces:
   sed -i -r 's/(title:.+) $/\1/g' "$FILEPATH"/"$FILENAME".md
 #+end_src
 
-After all that suffering move prepared article to =_posts/= and all related static
-files to =assets/static=:
+After all that suffering move prepared article to =_posts/= and all related
+static files to =assets/static=. Because we use [[https://github.com/untra/polyglot][jekyll-polyglot]] without lang
+formatter - put all articles written in =$LANGAUGE= to =_posts/$LANGUAGE= catalog.
 #+begin_src bash
+  mkdir -p "$POSTS"/"$LANGUAGE"
   if [ "$IS_DRAFT_ARTICLE" = "false" ]; then
-      mv "$FILEPATH"/"$FILENAME".md "$POSTS"/"$FILENAME".md
+      mv "$FILEPATH"/"$FILENAME".md "$POSTS"/"$LANGUAGE"/"$FILENAME".md
   else
-      mv "$FILEPATH"/"$FILENAME".md "$POSTS"/"$(date +%Y-%m-%d)-$FILENAME".md
+      mv "$FILEPATH"/"$FILENAME".md "$POSTS"/"$LANGUAGE"/"$(date +%Y-%m-%d)-$FILENAME".md
   fi
-  find "$FILEPATH" -type f -not -name article.org -exec cp {} "$STATIC" \;
-  done
+  find "$FILEPATH" -type f -regextype grep -not -regex '.\{1,\}/article-[a-z]\{2\}\.org' -exec cp {} "$STATIC" \;
+done
 #+end_src
 
 * How to deploy blog

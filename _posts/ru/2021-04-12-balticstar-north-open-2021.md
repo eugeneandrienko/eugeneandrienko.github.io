@@ -4,6 +4,7 @@ title: Северное открытие летнего сезона 2021 с «�
 category: cycling
 tags: sorties
 date: 2021-04-12 12:00
+lang: ru
 comments: true
 hidden:
   - related_posts

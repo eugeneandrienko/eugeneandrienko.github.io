@@ -3,6 +3,7 @@ layout: post
 title: Ссылки по кожевенному делу
 category: leatherwork
 date: 2021-02-04 19:01
+lang: ru
 comments: true
 hidden:
   - related_posts

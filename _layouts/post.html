@@ -55,27 +55,5 @@ sidebar:
       </ul>
     </div>
     {%- endif -%}
-
-    {%- assign result = hidden | where_exp: "item", "item == 'comments'" -%}
-    {%- if result.size == 0 -%}
-    <div class="post-comments">
-      {%- if page.comments != false -%}
-
-      {%- if site.disqus.shortname -%}
-      {%- include extensions/comments/disqus.html -%}
-      {%- endif -%}
-
-      {%- if site.gitment.username -%}
-      {%- include extensions/comments/gitment.html -%}
-      {%- endif -%}
-
-      {%- if site.utterances.repo -%}
-      {%- include extensions/comments/utterances.html -%}
-      {%- endif -%}
-
-      {%- endif -%}
-    </div>
-    {%- endif -%}
-
   </section>
 </div>

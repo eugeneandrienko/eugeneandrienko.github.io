@@ -25,9 +25,9 @@
         </a>
       </h2>
       <div class="post-meta">
-        <span class="post-date"><i class="fa fa-calendar"></i> {{ post.date | date: date_format }}</span>
-        <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> {{ reading_time }}</span>
-        <span class="post-category left-vsplit"><i class="fa fa-folder-open-o"></i> <a href="{{ '/categories.html' | relative_url }}#{{ post.category }}">{{ post.category }}</a></span>
+        <span class="post-date"><i class="fa-regular fa-calendar"></i> {{ post.date | date: date_format }}</span>
+        <span class="post-reading-time left-vsplit"><i class="fa-regular fa-clock"></i> {{ reading_time }}</span>
+        <span class="post-category left-vsplit"><i class="fa-regular fa-folder"></i> <a href="{{ '/categories.html' | relative_url }}#{{ post.category }}">{{ post.category }}</a></span>
       </div>
       <p>{{ post.summary }}</p>
       <div class="post-tags">

@@ -53,8 +53,8 @@ grants access to web-camera.
 ``` example
 powerd_enable="YES"
 powerd_flags="-a hiadaptive -b adaptive -M 2000"
-performance_cx_lowest="C2"
-economy_cx_lowest="C3"
+performance_cx_lowest="Cmax"
+economy_cx_lowest="Cmax"
 ```
 
 `/boot/loader.conf` settings:
@@ -259,4 +259,109 @@ vfs.read_max=128
 vfs.usermount=1
 hw.syscons.bell=0
 kern.vt.enable_bell=0
+```
+
+## 2024-04-28 update
+
+Now, I am using coreboot instead of BIOS on my Thinkpad. Also, I
+soldered expansion board AGAN X230 to my motherboard to use nice and
+shiny 2K-display. As operation system I use FreeBSD 14.0. Thats why I
+wrote this update:
+
+### Working sleep mode (S3)
+
+Out of the box, the sleep mode is working incorrectly. Command
+`sudo zzz` nice switches laptop to sleep mode. **But**, after wakeup I
+can see screen with i3wm for seconds and after that system behaves like
+I have entered `sudo shutdown -h
+now` command. But I didn't enter it either!
+
+After digging on FreeBSD forum, I found a topic, where a man with HP
+laptop describing his issues with non-working sleep mode. Suddenly, but
+advice from this topic helped me a lot.
+
+There are should be the next lines in `/etc/sysctl.conf`:
+
+``` example
+hw.pci.do_power_suspend=0
+hw.pci.do_power_nodriver=1
+```
+
+And next in `/boot/loader.conf`:
+
+``` example
+hint.p4tcc.0.disabled="1"
+hint.acpi_throttle.0.disabled="1"
+```
+
+After restart, sleep mode finally works well as before! Without strange
+shutdown after wake up.
+
+To enable sleeping after closing the lid, I've added one more line to
+`/etc/sysctl.conf`:
+
+``` example
+hw.acpi.lid_switch_state=S3
+```
+
+### Output boot-log to «secondary» 2K-display
+
+Coreboot with SeaBIOS payload FreeBSD bootloader don't works very well
+together. If you try to boot FreeBSD on the machine with coreboot,
+you'll see a thin line of something like video interference on the top
+of the screen.
+
+To fix that, you should blindly press Esc in the bootloader. After that,
+still *blindly* enter command `vbe on` and press Enter. Now, bootloader
+switch the video mode and it's interface will be displayed on the
+screen.
+
+Boot to the system with the `boot` command and add next lines to
+`/boot/loader.conf`:
+
+``` example
+hw.vga.textmode="0"
+kern.vty=vt
+i915kms_load="YES"
+vbe_max_resolution=2560x1440
+```
+
+### Reduce count of messages from system when booting
+
+Add to `/boot/loader.conf`:
+
+``` example
+boot_mute="YES"
+```
+
+To `/etc/rc.conf`:
+
+``` example
+rc_startmsgs="NO"
+```
+
+### Powersaving for videocard
+
+Add next lines to `/boot/loader.conf`:
+
+``` example
+drm.i915.enable_rc6="7"
+drm.i915.semaphores="1"
+drm.i915.intel_iommu_enabled="1"
+```
+
+### Miscellaneous (2)
+
+To decrease desktop latency under the high load, add next lines to
+`/etc/sysctl.conf`:
+
+``` example
+kern.sched.preempt_thresh=224
+```
+
+Settings for network stack performance in `/boot/loader.conf`:
+
+``` example
+net.link.ifqmaxlen="2048"
+cc_htcp_load="YES"
 ```

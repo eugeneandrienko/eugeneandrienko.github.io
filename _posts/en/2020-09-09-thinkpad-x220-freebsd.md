@@ -350,6 +350,15 @@ drm.i915.semaphores="1"
 drm.i915.intel_iommu_enabled="1"
 ```
 
+### Slow internet with Intel 8260 WiFi card
+
+I'm using Intel 8260 WiFi-card in my laptop now. With default settings,
+my Internet connection is very low (if use 1/4 of maximal power on
+WiFi-router and go away from it's antennas).
+
+After reading of FreeBSD forum I've found what it can be easily solved.
+Just add `mode 11g` to line with `ifconfig_wlan0=` in `/etc/rc.conf`.
+
 ### Miscellaneous (2)
 
 To decrease desktop latency under the high load, add next lines to

@@ -24,7 +24,8 @@ inside the code block below):
 #+begin_src bash :results silent raw
   mkdir -p internals/scripts
   emacs README.org --batch -f org-babel-tangle --kill
-  sed -i -r 's/^ {8}/\t/g' Makefile
+  sed -r 's/^ {8}/\t/g' Makefile > Makefile.new
+  mv Makefile.new Makefile
 #+end_src
 
 There are some repositories and programs, which should be pulled inside
@@ -256,7 +257,7 @@ We take every published article, even drafts if option =--drafts= is given:
       PROCESS_DRAFTS="true"
   fi
 
-  for article in $(find "$ARTICLES" -type f -regextype grep -regex '.\{1,\}/article-[a-z]\{2\}\.org'); do
+  for article in $(find "$ARTICLES" -type f -regex '.\{1,\}/article-[a-z]\{2\}\.org'); do
       IS_DRAFT_ARTICLE="false"
       echo "$article" | grep -q 'articles/.\{1,\}/[0-9]\{4\}-[0-9]\{2\}-[0-9]\{2\}-.\{1,\}/article-[a-z]\{2\}.org'
       if [ "$?" -ne "0" ]; then
@@ -289,7 +290,9 @@ Pandoc, but /faster/ — to do it via shell:
 
 Insert language code to article header:
 #+begin_src bash
-  sed -ri "2i #+LANG: $LANGUAGE" "$FILEPATH"/"$FILENAME".org
+  awk -v lang="#+LANG: $LANGUAGE" 'NR == 3 {print lang "\n"} {print}' \
+      "$FILEPATH"/"$FILENAME".org > "$FILEPATH"/"$FILENAME".org.new
+  mv "$FILEPATH"/"$FILENAME".org.new "$FILEPATH"/"$FILENAME".org
 #+end_src
 
 After that we successfully convert our article from shiny OrgMode syntax to
@@ -306,19 +309,13 @@ Markdown:
 We need to fix filepaths from =file:///filename= to =/filename= in generated
 Markdown file:
 #+begin_src bash
-  sed -i -r 's!(.*)file://(.*)!\1\2!g' "$FILEPATH"/"$FILENAME".md
-#+end_src
-
-And fix string with title — it should be written in one line, without trailing
-spaces:
-#+begin_src bash
-  sed -i -r '/^title:/{ s/(title:.+)/\1 /g; N; /category:/{ s/(category:.+)/\n\1/g; }; s/\n// };' "$FILEPATH"/"$FILENAME".md
-  sed -i -r 's/(title:.+) $/\1/g' "$FILEPATH"/"$FILENAME".md
+  sed -r 's!(.*)file://(.*)!\1\2!g' "$FILEPATH"/"$FILENAME".md > "$FILEPATH"/"$FILENAME".md.new
+  mv "$FILEPATH"/"$FILENAME".md.new "$FILEPATH"/"$FILENAME".md
 #+end_src
 
 After all that suffering move prepared article to =_posts/= and all related
 static files to =assets/static=. Because we use [[https://github.com/untra/polyglot][jekyll-polyglot]] without lang
-formatter - put all articles written in =$LANGAUGE= to =_posts/$LANGUAGE= catalog.
+formatter - put all articles written in =$LANGUAGE= to =_posts/$LANGUAGE= catalog.
 #+begin_src bash
   mkdir -p "$POSTS"/"$LANGUAGE"
   if [ "$IS_DRAFT_ARTICLE" = "false" ]; then
@@ -326,7 +323,7 @@ formatter - put all articles written in =$LANGAUGE= to =_posts/$LANGUAGE= catalo
   else
       mv "$FILEPATH"/"$FILENAME".md "$POSTS"/"$LANGUAGE"/"$(date +%Y-%m-%d)-$FILENAME".md
   fi
-  find "$FILEPATH" -type f -regextype grep -not -regex '.\{1,\}/article-[a-z]\{2\}\.org' -exec cp {} "$STATIC" \;
+  find "$FILEPATH" -type f -not -regex '.\{1,\}/article-[a-z]\{2\}\.org' -exec cp {} "$STATIC" \;
 done
 #+end_src
 
@@ -390,10 +387,15 @@ To clear generated files before blog regeneration — you can use =make clean=:
   .PHONY: clean
   clean:
           cd $(JEKYLL) && \
-          bundle exec jekyll clean && \
           rm -f _posts/ru/*.md && \
           rm -f _posts/en/*.md && \
-          rm -f assets/static/*{.png,.jpg,.jpeg,.JPG,.svg,.html}
+          rm -f assets/static/*.png && \
+	        rm -f assets/static/*.jpg && \
+          rm -f assets/static/*.jpeg && \
+          rm -f assets/static/*.JPG && \
+          rm -f assets/static/*.svg && \
+          rm -f assets/static/*.html && \
+          bundle exec jekyll clean
 #+end_src
 
 This can be useful to clear draft articles from static blog directories before

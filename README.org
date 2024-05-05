@@ -360,10 +360,8 @@ To preview your published articles you can start local server via the =make serv
 #+begin_src makefile :tangle Makefile
   .PHONY: serve
   serve:
-          find articles/ -type f -name '*.org' | entr -rspn '$(CONVERSION_SCRIPT)' &
           cd $(JEKYLL) && \
           bundle exec jekyll serve
-          pkill entr
 #+end_src
 
 To preview published *and* draft articles you can start local server with =make drafts= command:
@@ -371,15 +369,9 @@ To preview published *and* draft articles you can start local server with =make 
   .PHONY: drafts
   drafts: $(CONVERSION_SCRIPT) clean
           $(CONVERSION_SCRIPT) --drafts
-          find articles/ -type f -name '*.org' | entr -rspn '$(CONVERSION_SCRIPT) --drafts' &
           cd $(JEKYLL) && \
           bundle exec jekyll serve
-          pkill entr
 #+end_src
-
-In both cases =entr= will be used to regenerate Markdown files from OrgMode
-files if last was changed. Renewed Markdown file will be automatically
-regenerated to HTML by Jekyll.
 
 * Clean
 To clear generated files before blog regeneration — you can use =make clean=:

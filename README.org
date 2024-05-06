@@ -257,7 +257,7 @@ We take every published article, even drafts if option =--drafts= is given:
       PROCESS_DRAFTS="true"
   fi
 
-  for article in $(find "$ARTICLES" -type f -regex '.\{1,\}/article-[a-z]\{2\}\.org'); do
+  for article in $(find "$ARTICLES" -type f -name '*.org' | grep '.\{1,\}/article-[a-z]\{2\}\.org'); do
       IS_DRAFT_ARTICLE="false"
       echo "$article" | grep -q 'articles/.\{1,\}/[0-9]\{4\}-[0-9]\{2\}-[0-9]\{2\}-.\{1,\}/article-[a-z]\{2\}.org'
       if [ "$?" -ne "0" ]; then
@@ -323,7 +323,7 @@ formatter - put all articles written in =$LANGUAGE= to =_posts/$LANGUAGE= catalo
   else
       mv "$FILEPATH"/"$FILENAME".md "$POSTS"/"$LANGUAGE"/"$(date +%Y-%m-%d)-$FILENAME".md
   fi
-  find "$FILEPATH" -type f -not -regex '.\{1,\}/article-[a-z]\{2\}\.org' -exec cp {} "$STATIC" \;
+  find "$FILEPATH" -type f | grep -v '.\{1,\}/article-[a-z]\{2\}\.org' | xargs -I fromf cp fromf "$STATIC"
 done
 #+end_src
 

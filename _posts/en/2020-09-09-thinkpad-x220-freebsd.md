@@ -359,6 +359,27 @@ WiFi-router and go away from it's antennas).
 After reading of FreeBSD forum I've found what it can be easily solved.
 Just add `mode 11g` to line with `ifconfig_wlan0=` in `/etc/rc.conf`.
 
+### Sound and coreboot
+
+Some system internals (nIDs) changed after installation of coreboot
+instead of BIOS. As a result: there is no sound in headphones, connected
+via 3.5mm jack. Instruction from <span class="spurious-link"
+target="* Sound">*Sound*</span> section became unapplicable.
+
+To see, which nID I shoule use, there is the next command:
+
+``` bash
+dmesg | grep pcm
+```
+
+As a result, I got my headphones working after adding next lines to
+`/boot/device.hints`:
+
+``` example
+hint.hdaa.0.nid31.config="as=1 seq=0 device=Speaker"
+hint.hdaa.0.nid35.config="as=1 seq=15 device=Headphones"
+```
+
 ### Miscellaneous (2)
 
 To decrease desktop latency under the high load, add next lines to

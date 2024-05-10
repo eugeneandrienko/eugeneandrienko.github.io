@@ -149,7 +149,7 @@ I'd like sensitive trackpoint — so I add the next lines to
 `/etc/systcl.conf`:
 
 ``` example
-hw.psm.trackpoint.sensitivity=255
+hw.psm.trackpoint.sensitivity=150
 hw.psm.trackpoint.upper_plateau=125
 ```
 

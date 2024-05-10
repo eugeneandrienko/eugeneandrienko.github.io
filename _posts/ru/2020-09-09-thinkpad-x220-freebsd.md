@@ -152,7 +152,7 @@ hw.psm.trackpoint_support=1
 `/etc/systcl.conf` должны быть следующие строки:
 
 ``` example
-hw.psm.trackpoint.sensitivity=255
+hw.psm.trackpoint.sensitivity=150
 hw.psm.trackpoint.upper_plateau=125
 ```
 

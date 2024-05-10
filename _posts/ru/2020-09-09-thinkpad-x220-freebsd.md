@@ -352,14 +352,22 @@ drm.i915.semaphores="1"
 drm.i915.intel_iommu_enabled="1"
 ```
 
-### Медленный интернет с Intel 8260
+### Intel 8260
 
-В ноутбуке теперь стоит аналог WiFi-карты Intel 8260 и с настройками «по
-умолчанию» интернет крайне медленно работает, если выставить четверть от
-максимальной мощности на WiFi-роутере и уйти максимально далеко от него.
+В ноутбуке теперь стоит аналог WiFi-карты Intel 8260 и настраивать его
+надо через `iwlwifi`, а не через `iwn`, который в основном для старых
+карт.
 
-Неожиданно, но после чтения форумов оказалось, что эта проблема решается
-добавлением `mode 11g` в строку с `ifconfig_wlan0=` в `/etc/rc.conf`.
+Настройка WiFi весьма проста. Ничего в `/boot/loader.conf` прописывать
+не надо. А в `/etc/rc.conf` надо прописать лишь несколько строк:
+
+``` example
+kld_list="${kld_list} if_iwlwifi"
+wlans_iwlwifi0="wlan0"
+ifconfig_wlan0="WPA DHCP mode 11g"
+ifconfig_wlan0_ipv6="inet6 accept_rtadv"
+create_args_wlan0="wlanmode sta regdomain none country RU"
+```
 
 ### Звук и coreboot
 

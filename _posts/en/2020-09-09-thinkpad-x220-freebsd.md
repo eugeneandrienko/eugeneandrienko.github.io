@@ -350,14 +350,22 @@ drm.i915.semaphores="1"
 drm.i915.intel_iommu_enabled="1"
 ```
 
-### Slow internet with Intel 8260 WiFi card
+### Intel 8260
 
-I'm using Intel 8260 WiFi-card in my laptop now. With default settings,
-my Internet connection is very low (if use 1/4 of maximal power on
-WiFi-router and go away from it's antennas).
+Because now I'm using WiFi-card Intel 8260 — it should be configured via
+`iwlwifi`, not via `iwn`.
 
-After reading of FreeBSD forum I've found what it can be easily solved.
-Just add `mode 11g` to line with `ifconfig_wlan0=` in `/etc/rc.conf`.
+Setup WiFi-card via `iwlwifi` is very simple. Nothing about Wi-Fi should
+be in `/boot/loader.conf`. And there are just few lines for
+`/etc/rc.conf`:
+
+``` example
+kld_list="${kld_list} if_iwlwifi"
+wlans_iwlwifi0="wlan0"
+ifconfig_wlan0="WPA DHCP mode 11g"
+ifconfig_wlan0_ipv6="inet6 accept_rtadv"
+create_args_wlan0="wlanmode sta regdomain none country RU"
+```
 
 ### Sound and coreboot
 

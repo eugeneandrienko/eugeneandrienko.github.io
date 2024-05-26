@@ -403,3 +403,9 @@ Settings for network stack performance in `/boot/loader.conf`:
 net.link.ifqmaxlen="2048"
 cc_htcp_load="YES"
 ```
+
+Dock-station support;
+
+``` example
+acpi_dock_load="YES"
+```

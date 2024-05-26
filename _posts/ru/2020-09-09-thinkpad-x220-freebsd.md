@@ -406,3 +406,9 @@ kern.sched.preempt_thresh=224
 net.link.ifqmaxlen="2048"
 cc_htcp_load="YES"
 ```
+
+Поддержка дока:
+
+``` example
+acpi_dock_load="YES"
+```

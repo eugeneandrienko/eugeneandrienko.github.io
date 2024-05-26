@@ -390,6 +390,29 @@ hint.hdaa.0.nid31.config="as=1 seq=0 device=Speaker"
 hint.hdaa.0.nid35.config="as=1 seq=15 device=Headphones"
 ```
 
+### Глитчи в GUI
+
+Спустя какое-то время работы у меня возникали чёрные квадраты и
+(изредка) полосы на экране. Как оказалось, надо установить драйвер от
+Intel:
+
+``` example
+sudo pkg install xf86-video-intel
+```
+
+И [создать
+файл](https://forums.freebsd.org/threads/pixel-artifacts-and-kernel-crash-with-intel-hd-3000-and-i915kms-driver.87585/)
+`/usr/local/etc/X11/xorg.conf.d/10-intel.conf` со следующим содержимым:
+
+``` example
+Section "Device"
+        Option     "ShadowFB"               "False"
+        Identifier  "Card0"
+        Driver      "modesetting"
+        BusID       "PCI:0:2:0"
+EndSection
+```
+
 ### Разное (2)
 
 Для большей отзывчивости десктопа под высокой нагрузкой, я добавил в

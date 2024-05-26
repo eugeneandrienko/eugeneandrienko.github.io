@@ -388,6 +388,29 @@ hint.hdaa.0.nid31.config="as=1 seq=0 device=Speaker"
 hint.hdaa.0.nid35.config="as=1 seq=15 device=Headphones"
 ```
 
+### GUI glitches
+
+After some time of working, there are black squares and (rarely) lines
+appears on the screen. To solve this problem, I've installed Intel video
+driver:
+
+``` example
+sudo pkg install xf86-video-intel
+```
+
+And
+[created](https://forums.freebsd.org/threads/pixel-artifacts-and-kernel-crash-with-intel-hd-3000-and-i915kms-driver.87585/)
+`/usr/local/etc/X11/xorg.conf.d/10-intel.conf` file with next contents:
+
+``` example
+Section "Device"
+        Option     "ShadowFB"               "False"
+        Identifier  "Card0"
+        Driver      "modesetting"
+        BusID       "PCI:0:2:0"
+EndSection
+```
+
 ### Miscellaneous (2)
 
 To decrease desktop latency under the high load, add next lines to

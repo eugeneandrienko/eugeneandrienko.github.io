@@ -406,10 +406,14 @@ sudo pkg install xf86-video-intel
 
 ``` example
 Section "Device"
-        Option     "ShadowFB"               "False"
         Identifier  "Card0"
-        Driver      "modesetting"
+        Driver      "intel"
         BusID       "PCI:0:2:0"
+        Option      "Accel"                 "true"
+        Option      "AccelMethod"           "SNA"
+        Option      "VSync"                 "false"
+        Option      "PageFlip"              "false"
+        Option      "TripleBuffer"          "false"
 EndSection
 ```
 

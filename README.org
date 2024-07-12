@@ -313,6 +313,14 @@ Markdown file:
   mv "$FILEPATH"/"$FILENAME".md.new "$FILEPATH"/"$FILENAME".md
 #+end_src
 
+And we need to fix string with title - it should be written in one line,
+without trailing space:
+#+begin_src bash
+  sed -r '/^title:/{ s/(title:.+)/\1 /g; N; /category:/{ s/(category:.+)/\n\1/g; }; s/\n//; };' "$FILEPATH"/"$FILENAME".md > "$FILEPATH"/"$FILENAME".md.new
+  sed -r 's/(title:.+) $/\1/g' "$FILEPATH"/"$FILENAME".md.new > "$FILEPATH"/"$FILENAME".md
+  rm -f "$FILEPATH"/"$FILENAME".md.new
+#+end_src
+
 After all that suffering move prepared article to =_posts/= and all related
 static files to =assets/static=. Because we use [[https://github.com/untra/polyglot][jekyll-polyglot]] without lang
 formatter - put all articles written in =$LANGUAGE= to =_posts/$LANGUAGE= catalog.

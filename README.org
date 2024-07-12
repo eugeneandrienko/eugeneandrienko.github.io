@@ -397,6 +397,7 @@ To clear generated files before blog regeneration — you can use =make clean=:
           rm -f assets/static/*.webm && \
           rm -f assets/static/*.webp && \
           rm -f assets/static/*.html && \
+          rm -f assets/static/*.tar.bz2 && \
           bundle exec jekyll clean
 #+end_src
 

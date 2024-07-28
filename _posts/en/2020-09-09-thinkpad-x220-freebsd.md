@@ -436,3 +436,8 @@ Dock-station support;
 ``` example
 acpi_dock_load="YES"
 ```
+
+Dependencies for Strongswan:
+
+1.  `openssl` package
+2.  Kernel module `ipsec` should be loaded

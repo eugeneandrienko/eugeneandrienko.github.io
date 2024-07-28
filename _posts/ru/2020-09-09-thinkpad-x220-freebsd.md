@@ -439,3 +439,8 @@ cc_htcp_load="YES"
 ``` example
 acpi_dock_load="YES"
 ```
+
+Зависимости для Strongswan:
+
+1.  Пакет `openssl`
+2.  Загруженный модуль ядра `ipsec`

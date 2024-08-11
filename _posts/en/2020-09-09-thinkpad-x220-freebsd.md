@@ -441,3 +441,7 @@ Dependencies for Strongswan:
 
 1.  `openssl` package
 2.  Kernel module `ipsec` should be loaded
+
+Dependencies for l2tpd:
+
+1.  Kernel module `ng_l2tp` should be loaded

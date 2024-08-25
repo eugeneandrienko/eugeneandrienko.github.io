@@ -354,20 +354,14 @@ drm.i915.intel_iommu_enabled="1"
 
 ### Intel 8260
 
-В ноутбуке теперь стоит аналог WiFi-карты Intel 8260 и настраивать его
-надо через `iwlwifi`, а не через `iwn`, который в основном для старых
-карт.
+В ноутбуке теперь стоит аналог WiFi-карты Intel 8260 и лучший способ
+заставить WiFi работать на полную катушку — это использовать
+[wifibox](https://man.freebsd.org/cgi/man.cgi?query=wifibox&apropos=0&sektion=8&manpath=freebsd-ports&format=html).
+Его настройка проста, выполняется за пять минут и подробно описана в
+этих двух статьях:
 
-Настройка WiFi весьма проста. Ничего в `/boot/loader.conf` прописывать
-не надо. А в `/etc/rc.conf` надо прописать лишь несколько строк:
-
-``` example
-kld_list="${kld_list} if_iwlwifi"
-wlans_iwlwifi0="wlan0"
-ifconfig_wlan0="WPA DHCP mode 11g"
-ifconfig_wlan0_ipv6="inet6 accept_rtadv"
-create_args_wlan0="wlanmode sta regdomain none country RU"
-```
+- <https://jrgsystems.com/posts/2022-04-20-802.11ac-on-freebsd-with-wifibox/>
+- <https://xyinn.org/md/freebsd/wifibox>
 
 ### Звук и coreboot
 
@@ -393,28 +387,36 @@ hint.hdaa.0.nid35.config="as=1 seq=15 device=Headphones"
 ### Глитчи в GUI
 
 Спустя какое-то время работы у меня возникали чёрные квадраты и
-(изредка) полосы на экране. Как оказалось, надо установить драйвер от
-Intel:
+(изредка) полосы на экране. Вероятно, это как-то связано с coreboot —
+замена драйвера `intel` на `modesetting` не помогла.
 
-``` example
-sudo pkg install xf86-video-intel
-```
+![](/assets/static/freebsd_intel_glitches.jpg) *Глитчи на экране
+ноутбука*
 
-И [создать
-файл](https://forums.freebsd.org/threads/pixel-artifacts-and-kernel-crash-with-intel-hd-3000-and-i915kms-driver.87585/)
-`/usr/local/etc/X11/xorg.conf.d/10-intel.conf` со следующим содержимым:
+Впрочем, благодаря [вот этому комментарию на форуме
+FreeBSD](https://forums.freebsd.org/threads/intel-video-and-screentearing.72085/)
+и использованию `picom` с опцией `--no-vsync`, у меня получилось
+значительно снизить частоту появления глитчей.
+
+В итоге, мой `/usr/local/etc/X11/xorg.conf.d/10-intel.conf` выглядит
+так:
 
 ``` example
 Section "Device"
-        Identifier  "Card0"
-        Driver      "intel"
-        BusID       "PCI:0:2:0"
-        Option      "Accel"                 "true"
-        Option      "AccelMethod"           "SNA"
-        Option      "VSync"                 "false"
-        Option      "PageFlip"              "false"
-        Option      "TripleBuffer"          "false"
+    Identifier  "Card0"
+    Driver      "intel"
+    BusID       "PCI:0:2:0"
+    Option      "Accel"         "true"
+    Option      "AccelMethod"           "SNA"
+    Option      "DRI"                   "3"
+    Option      "TearFree"          "true"
 EndSection
+```
+
+А в `/boot/loader.conf` была добавлена опция:
+
+``` example
+drm.i915.enable_fbc="1"
 ```
 
 ### Разное (2)
@@ -439,12 +441,3 @@ cc_htcp_load="YES"
 ``` example
 acpi_dock_load="YES"
 ```
-
-Зависимости для Strongswan:
-
-1.  Пакет `openssl`
-2.  Загруженный модуль ядра `ipsec`
-
-Зависимости для l2tpd:
-
-1.  Загруженный модуль ядра `ng_l2tp`

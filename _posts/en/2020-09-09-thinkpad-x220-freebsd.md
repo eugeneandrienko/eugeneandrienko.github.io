@@ -353,19 +353,12 @@ drm.i915.intel_iommu_enabled="1"
 ### Intel 8260
 
 Because now I'm using WiFi-card Intel 8260 — it should be configured via
-`iwlwifi`, not via `iwn`.
+[wifibox](https://man.freebsd.org/cgi/man.cgi?query=wifibox&apropos=0&sektion=8&manpath=freebsd-ports&format=html)
+to use full power of WiFi. Wifibox configuration is simple, takes near 5
+minutes and described in these two articles:
 
-Setup WiFi-card via `iwlwifi` is very simple. Nothing about Wi-Fi should
-be in `/boot/loader.conf`. And there are just few lines for
-`/etc/rc.conf`:
-
-``` example
-kld_list="${kld_list} if_iwlwifi"
-wlans_iwlwifi0="wlan0"
-ifconfig_wlan0="WPA DHCP mode 11g"
-ifconfig_wlan0_ipv6="inet6 accept_rtadv"
-create_args_wlan0="wlanmode sta regdomain none country RU"
-```
+- <https://jrgsystems.com/posts/2022-04-20-802.11ac-on-freebsd-with-wifibox/>
+- <https://xyinn.org/md/freebsd/wifibox>
 
 ### Sound and coreboot
 
@@ -391,28 +384,36 @@ hint.hdaa.0.nid35.config="as=1 seq=15 device=Headphones"
 ### GUI glitches
 
 After some time of working, there are black squares and (rarely) lines
-appears on the screen. To solve this problem, I've installed Intel video
-driver:
+appears on the screen. Maybe there are because of coreboot. When I
+switch from `intel` to `modesetting` driver — it won't help.
 
-``` example
-sudo pkg install xf86-video-intel
-```
+![](/assets/static/freebsd_intel_glitches.jpg) *Glitches on the
+laptop screen*
 
-And
-[created](https://forums.freebsd.org/threads/pixel-artifacts-and-kernel-crash-with-intel-hd-3000-and-i915kms-driver.87585/)
-`/usr/local/etc/X11/xorg.conf.d/10-intel.conf` file with next contents:
+But, thanks to [this FreeBSD forum
+message](https://forums.freebsd.org/threads/intel-video-and-screentearing.72085/)
+and `picom` usage with `--no-vsync` option, I managed to noticeably
+decrease frequency of glithes appearance.
+
+As a result, my `/usr/local/etc/X11/xorg.conf.d/10-intel.conf` has the
+next contents:
 
 ``` example
 Section "Device"
-        Identifier  "Card0"
-        Driver      "intel"
-        BusID       "PCI:0:2:0"
-        Option      "Accel"                 "true"
-        Option      "AccelMethod"           "SNA"
-        Option      "VSync"                 "false"
-        Option      "PageFlip"              "false"
-        Option      "TripleBuffer"          "false"
+    Identifier  "Card0"
+    Driver      "intel"
+    BusID       "PCI:0:2:0"
+    Option      "Accel"         "true"
+    Option      "AccelMethod"           "SNA"
+    Option      "DRI"                   "3"
+    Option      "TearFree"          "true"
 EndSection
+```
+
+And I add next option to `/boot/loader.conf`:
+
+``` example
+drm.i915.enable_fbc="1"
 ```
 
 ### Miscellaneous (2)
@@ -436,12 +437,3 @@ Dock-station support;
 ``` example
 acpi_dock_load="YES"
 ```
-
-Dependencies for Strongswan:
-
-1.  `openssl` package
-2.  Kernel module `ipsec` should be loaded
-
-Dependencies for l2tpd:
-
-1.  Kernel module `ng_l2tp` should be loaded

@@ -12,8 +12,11 @@ defaults:
     heading: "Dragon's notes"
     subheading: "Force sand to think"
 markdown: kramdown
-kmarkdown:
+highlighter: rouge
+kramdown:
   input: GFM
+  auto_ids: true
+  syntax_highlighter: rouge
 port: 8000
 languages: ["en", "ru"]
 lang: "ru"

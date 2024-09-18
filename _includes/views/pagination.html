@@ -15,25 +15,22 @@
 
       {% assign article = post.content %}
       {% assign lang = post.lang %}
-      {%- include functions.html func='get_reading_time' -%}
-      {% assign reading_time = return %}
       {%- assign post_url = post.url | relative_url -%}
 
-      <h2 class="post-title">
-        <a class="post-link" href="{{ post_url }}">
-          {{ post.title | escape }}
-        </a>
-      </h2>
       <div class="post-meta">
-        <span class="post-date"><i class="fa-regular fa-calendar"></i> {{ post.date | date: date_format }}</span>
-        <span class="post-reading-time left-vsplit"><i class="fa-regular fa-clock"></i> {{ reading_time }}</span>
-        <span class="post-category left-vsplit"><i class="fa-regular fa-folder"></i> <a href="{{ '/categories.html' | relative_url }}#{{ post.category }}">{{ post.category }}</a></span>
-      </div>
-      <p>{{ post.summary }}</p>
-      <div class="post-tags">
-        {%- for tag in post.tags -%}
-        <a class="post-tag" href="{{ '/tags.html ' | relative_url }}#{{tag}}">#{{tag}}</a>
-        {%- endfor -%}
+        <span class="post-date">{{ post.date | date: date_format }}&nbsp;</span>
+        <span class="post-title">
+          <a class="post-link" href="{{ post_url }}" title="{{ post.summary }}">
+            {{ post.title | escape }}
+          </a>
+        </span>
+        <span class="post-category">
+          &nbsp;
+          <i class="fa-regular fa-folder"></i>
+          <a href="{{ '/categories.html' | relative_url }}#{{post.category }}">
+            {{ post.category }}
+          </a>
+        </span>
       </div>
     </li>
     {% endif %}

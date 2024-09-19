@@ -89,5 +89,11 @@
       </div>
     </div>
   </section>
+{%- else -%}
+  <style>
+    html .site-header {
+        background-color: #839496;
+    }
+  </style>
+  {%- include views/header.html -%}
 {%- endif -%}
-

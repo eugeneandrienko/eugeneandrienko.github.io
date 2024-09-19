@@ -1445,14 +1445,14 @@ modifications*
 ![](/assets/static/notebook_after.jpg) *Laptop after all
 modifications*
 
-|  | Before | After |
-|----|----|----|
-| Display | 1366x768 | 2560x1440 |
-| WiFi | 2.4 GHz, 300 Mbps, 802.11b/g/n | 2.4 and 5 GHz, 800-900 Mbps, 802.11b/g/n/ac, and internal Bluetooth support |
-| Hard drives | 180 GB SSD | 0.5 TB SSD and 180 GB SSD, the third disk can be connected via Optibay |
-| USB ports | 1xUSB3.0, 2xUSB2.0 | 3xUSB3.0, 2xUSB2.0 |
-| Keyboard | Original with UK layout and Cyrillic stickers | Original with US layout |
-| Battery life | Near 1.5 hours | 5-6 hours. With external powerbank — up to 9 hours |
+|              | Before                                        | After                                                                       |
+|--------------|-----------------------------------------------|-----------------------------------------------------------------------------|
+| Display      | 1366x768                                      | 2560x1440                                                                   |
+| WiFi         | 2.4 GHz, 300 Mbps, 802.11b/g/n                | 2.4 and 5 GHz, 800-900 Mbps, 802.11b/g/n/ac, and internal Bluetooth support |
+| Hard drives  | 180 GB SSD                                    | 0.5 TB SSD and 180 GB SSD, the third disk can be connected via Optibay      |
+| USB ports    | 1xUSB3.0, 2xUSB2.0                            | 3xUSB3.0, 2xUSB2.0                                                          |
+| Keyboard     | Original with UK layout and Cyrillic stickers | Original with US layout                                                     |
+| Battery life | Near 1.5 hours                                | 5-6 hours. With external powerbank — up to 9 hours                          |
 
 As a result, this machine will serve me for at least the next ten years.
 The only bottleneck here is all sorts of JavaScript from websites — if

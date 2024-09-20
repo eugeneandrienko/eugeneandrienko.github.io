@@ -10,15 +10,16 @@
   {%- assign header_transparent_class = "site-header-transparent" -%}
 {%- endif -%}
 
-<header class="site-header {{ header_transparent_class }}" role="banner">
-
+<header class="site-header {{ header_transparent_class }}">
   <div class="wrapper">
     <div class="site-header-inner">
       {%- assign default_paths = site.pages | where: "dir", "/" | map: "path" -%}
       {%- assign page_paths = site.header_pages | default: default_paths -%}
 
       <span class="site-brand">
-        {%- include views/site-brand.html -%}
+        <a class="site-brand-inner" rel="author" href="{{ "/" | relative_url }}">
+          {{ site.title | escape }}
+        </a>
       </span>
 
       {%- if page_paths -%}

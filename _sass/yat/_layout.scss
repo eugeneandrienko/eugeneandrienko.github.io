@@ -644,8 +644,9 @@
   }
 
   .post-meta {
-    font-size: $small-font-size;
-    color: $grey-color;
+      font-family: Noto Sans Mono;
+      font-size: $small-font-size;
+      color: $grey-color;
   }
 
   li a {

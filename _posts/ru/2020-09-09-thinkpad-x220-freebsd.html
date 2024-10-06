@@ -1,0 +1,608 @@
+---
+layout: post
+title: Настройка FreeBSD на Lenovo Thinkpad X220 (2011 года)
+category: it
+date: 2020-09-26
+lang: ru
+comments: true
+hidden:
+  - related_posts
+---
+
+<p>
+Эта небольшая заметка кратко описывает настройку FreeBSD 12.1 для работы на
+Lenovo ThinkPad X220 &#x2014; чтобы не забыть неочевидные действия, выполняемые
+после установки системы. Используемый ThinkPad из 2011 года &#x2014; из тех времён,
+когда ещё использовался приличный дизайн от IBM &#x2013; с синим Enter и семирядной
+клавиатурой.
+</p>
+
+<p>
+В заметке используются материалы из следующих мест:
+</p>
+
+<ul class="org-ul">
+<li><a href="https://cyber.dabamos.de/unix/x230/">https://cyber.dabamos.de/unix/x230/</a></li>
+<li><a href="https://unrelenting.technology/articles/freebsd-on-the-thinkpad-x240">https://unrelenting.technology/articles/freebsd-on-the-thinkpad-x240</a></li>
+<li><a href="https://github.com/grembo/xorg-udev-setup-check">https://github.com/grembo/xorg-udev-setup-check</a></li>
+<li><a href="https://www.c0ffee.net/blog/freebsd-on-a-laptop/">https://www.c0ffee.net/blog/freebsd-on-a-laptop/</a></li>
+<li><a href="https://cooltrainer.org/a-freebsd-desktop-howto/">https://cooltrainer.org/a-freebsd-desktop-howto/</a></li>
+<li><a href="https://wiki.archlinux.org/title/Lenovo_ThinkPad_X230">https://wiki.archlinux.org/title/Lenovo_ThinkPad_X230</a></li>
+</ul>
+
+<div id="outline-container-org8a0968b" class="outline-2">
+<h2 id="org8a0968b">Корректное отображение ~ в пути, в приглашении bash</h2>
+<div class="outline-text-2" id="text-org8a0968b">
+<p>
+Поскольку все домашние каталоги пользователей расположены по пути <code>/usr/home/</code>,
+а <code>/home/</code> лишь символическая ссылка на вышеуказанный каталог &#x2013; в приглашении
+командной строки <code>\w</code> будет заменяться не на <code>~/catalog_name</code>, а на
+<code>/usr/home/catalog_name</code>.
+</p>
+
+<p>
+Чтобы путь к каталогу внутри домашнего каталога имел в своём начале <code>~</code>, нужно
+установить в качестве домашнего каталога пользователя прямой путь к нему &#x2014;
+<code>/usr/home/</code>, а не символическую ссылку &#x2014; <code>/home/</code>.  Делается это через <code>sudo
+chsh username</code>.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgb6db31c" class="outline-2">
+<h2 id="orgb6db31c">Минимальный набор групп для доступа к устройствам ноутбука</h2>
+<div class="outline-text-2" id="text-orgb6db31c">
+<ul class="org-ul">
+<li>wheel &#x2014; нужен для sudo;</li>
+<li>video &#x2013; для доступа к <code>/dev/dri/card*</code>;</li>
+<li>webcamd &#x2014; для доступа к веб-камере.</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgb607b57" class="outline-2">
+<h2 id="orgb607b57">Управление питанием</h2>
+<div class="outline-text-2" id="text-orgb607b57">
+<p>
+Настройки для <code>/etc/rc.conf</code>:
+</p>
+
+<pre class="example" id="org851361b">
+powerd_enable="YES"
+powerd_flags="-a hiadaptive -b adaptive -M 2000"
+performance_cx_lowest="Cmax"
+economy_cx_lowest="Cmax"
+</pre>
+
+<p>
+В <code>/boot/loader.conf</code> добавить:
+</p>
+<pre class="example" id="org3153706">
+cpufreq_load="YES"
+kern.hz=100
+</pre>
+
+<p>
+Благодаря этим настройкам ноутбук станет более медленным, но энергосберегающим
+при работе от батареи. И наоборот &#x2014; при работе от сети.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgfbd367f" class="outline-2">
+<h2 id="orgfbd367f">Звук</h2>
+<div class="outline-text-2" id="text-orgfbd367f">
+<p>
+Нужно загружать модуль <code>snd_hda</code> при старте системы — для этого добавляем в
+<code>/boot/loader.conf</code>:
+</p>
+
+<pre class="example" id="org0e48083">
+snd_hda_load="YES"
+</pre>
+
+<p>
+Для переключения между динамиками и наушниками нужно добавить в
+<code>/boot/device.hints</code>:
+</p>
+
+<pre class="example" id="orge66f018">
+hint.hdaa.0.nid20.config="as=1 seq=0 device=Speaker"
+hint.hdaa.0.nid21.config="as=1 seq=15 device=Headphones"
+</pre>
+</div>
+</div>
+
+<div id="outline-container-org30c2802" class="outline-2">
+<h2 id="org30c2802">Управление яркостью</h2>
+<div class="outline-text-2" id="text-org30c2802">
+<p>
+В <code>/boot/loader.conf</code> надо добавить это:
+</p>
+
+<pre class="example" id="org0a31fc6">
+acpi_ibm_load="YES"
+acpi_video_load="YES"
+</pre>
+
+<p>
+Первая строка загружает модуль ядра, который обеспечивает взаимодействие с
+разной полезной периферией на Thinkpad'ах &#x2014; вроде мультимедиа-клавиш, кнопок
+контроля яркости и т.п.
+</p>
+
+<p>
+Вторая строка загружает модуль с помощью которого можно управлять яркостью
+экрана через sysctl, обращаясь к <code>hw.acpi.video.lcd0.brightness</code>.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org5678f5c" class="outline-2">
+<h2 id="org5678f5c">Мультимедиа-клавиши</h2>
+<div class="outline-text-2" id="text-org5678f5c">
+<p>
+Сначала надо проверить, что модуль <code>acpi_ibm</code> уже загружен в системе.
+</p>
+
+<p>
+После этого нужно добавить в <code>/etc/devd.conf</code> следующие строки, чтобы devd
+научился ловить нажатия на Fn кнопки и отсылать их в наш скрипт:
+</p>
+
+<pre class="example" id="orgd0f7b10">
+notify 10 {
+    match "system" "ACPI";
+    match "subsystem" "IBM";
+    action "/etc/acpi_thinkpad.sh $notify";
+};
+</pre>
+
+<p>
+Неполное содержимое скрипта <code>/etc/acpi_thinkpad.sh</code>:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-bash"><span style="color: #93a1a1;">#</span><span style="color: #93a1a1;">!/bin/</span><span style="color: #859900; font-weight: bold;">sh</span>
+
+<span style="color: #268bd2;">ACPI_EVENT</span>=<span style="color: #2aa198;">"$1"</span>
+
+<span style="color: #859900; font-weight: bold;">case</span> <span style="color: #2aa198;">"$ACPI_EVENT"</span><span style="color: #859900; font-weight: bold;"> in</span>
+    <span style="color: #2aa198;">'0x04'</span>)
+        /usr/sbin/zzz
+        ;;
+<span style="color: #859900; font-weight: bold;">esac</span>
+</pre>
+</div>
+
+<p>
+Посмотреть скан-коды клавиш можно остановив devd и запустив его из консоли от
+рута с ключом <code>-d</code>.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org67f9942" class="outline-2">
+<h2 id="org67f9942">Тачпад и трекпойнт</h2>
+<div class="outline-text-2" id="text-org67f9942">
+<p>
+Для начала надо включить поддержку Synaptics touchpad и трекпойнта в
+<code>/boot/loader.conf</code>:
+</p>
+
+<pre class="example" id="org2fa5793">
+hw.psm.synaptics_support=1
+hw.psm.trackpoint_support=1
+</pre>
+
+<p>
+Пакет <code>xf86-input-synaptics</code> должен быть удалён &#x2014; вместо него должен быть
+установлен пакет <code>xf86-input-evdev</code>.
+</p>
+
+<p>
+Этого достаточно для работы тачпада и трекпойнта и средней кнопки над
+тачпадом. Заодно будет работать и прокрутка при нажатии на среднюю кнопку.
+</p>
+
+<p>
+Мне удобен весьма чуствительный трекпойнт и для этого в <code>/etc/systcl.conf</code>
+должны быть следующие строки:
+</p>
+
+<pre class="example" id="org5113128">
+hw.psm.trackpoint.sensitivity=150
+hw.psm.trackpoint.upper_plateau=125
+</pre>
+</div>
+</div>
+
+<div id="outline-container-org879d1e2" class="outline-2">
+<h2 id="org879d1e2">Веб-камера</h2>
+<div class="outline-text-2" id="text-org879d1e2">
+<p>
+Нужно произвести следующие изменения в следующих файлах:
+</p>
+
+<p>
+<code>/boot/loader.conf</code>:
+</p>
+
+<pre class="example" id="org8e02454">
+cuse_load="YES"
+</pre>
+
+<p>
+<code>/etc/rc.conf</code>:
+</p>
+
+<pre class="example" id="org7b952fb">
+webcamd_enable="YES"
+</pre>
+
+<p>
+<code>/etc/sysctl.conf</code>:
+</p>
+
+<pre class="example" id="org3dd5ee6">
+kern.evdev.rcpt_mask=12
+</pre>
+
+<p>
+После, добавить пользователя в группу <code>webcamd</code>:
+</p>
+
+<pre class="example" id="org2dc1b38">
+sudo pw groupmod webcamd -m &lt;username&gt;
+</pre>
+</div>
+</div>
+
+<div id="outline-container-orga0347be" class="outline-2">
+<h2 id="orga0347be">Сон</h2>
+<div class="outline-text-2" id="text-orga0347be">
+<p>
+Для начала должен быть загружен модуль <code>acpi_ibm</code>.
+</p>
+
+<p>
+Переход в режим сна делается командой: <code>acpiconf -s 3</code> от рута. Либо же, можно
+использовать команду <code>zzz</code>.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org021395a" class="outline-2">
+<h2 id="org021395a">Включение drm-kmod</h2>
+<div class="outline-text-2" id="text-org021395a">
+<p>
+Нужно установить пакет <code>graphics/drm-kmod</code>. Затем, надо включить загрузку модуля
+<code>i915kms.ko</code> добавлением следующей строки в <code>/etc/rc.conf</code>:
+</p>
+
+<pre class="example" id="orgfb95db0">
+kld_list="${kld_list} /boot/modules/i915kms.ko"
+</pre>
+</div>
+</div>
+
+<div id="outline-container-org97bd366" class="outline-2">
+<h2 id="org97bd366">Wi-Fi</h2>
+<div class="outline-text-2" id="text-org97bd366">
+<p>
+Нужно добавить в <code>/boot/loader.conf</code>:
+</p>
+
+<pre class="example" id="org875b086">
+if_iwn_load="YES"
+wlan_wep_load="YES"
+wlan_ccmp_load="YES"
+wlan_tkip_load="YES"
+</pre>
+
+<p>
+Потом, добавить в <code>/etc/rc.conf</code>:
+</p>
+
+<pre class="example" id="org6bb6b1f">
+wlans_iwn0="wlan0"
+ifconfig_wlan0="WPA DHCP powersave"
+create_args_wlan0="country RU regdomain NONE"
+</pre>
+
+<p>
+Для работы с WiFi-сетями нужно установить пакет <code>wpa_supplicant</code> и добавить в
+начало <code>/etc/wpa_supplicant.conf</code>:
+</p>
+
+<pre class="example" id="org6ba99a4">
+ctrl_interface=/var/run/wpa_supplicant
+eapol_version=2
+fast_reauth=1
+</pre>
+</div>
+</div>
+
+<div id="outline-container-org79c2d50" class="outline-2">
+<h2 id="org79c2d50">Разное</h2>
+<div class="outline-text-2" id="text-org79c2d50">
+<p>
+Можно добавить в <code>/boot/loader.conf</code>:
+</p>
+
+<pre class="example" id="org529a949">
+autoboot_delay="2"
+kern.maxproc="100000"
+kern.ipc.shmseg="1024"
+kern.ipc.shmmni="1024"
+cpuctl_load="YES"
+coretemp_load="YES"
+libiconv_load="YES"
+libmchain_load="YES"
+cd9660_iconv_load="YES"
+msdosfs_iconv_load="YES"
+</pre>
+
+<p>
+Это включит поддержку температурных сенсоров в системе, сделает задержку в две
+секунды перед загрузкой системы загрузчиком &#x2014; чтобы долго не ждать &#x2014; и так
+далее.
+</p>
+
+<p>
+Чтобы при загрузке системы DHCP client не тормозил весь процесс &#x2014; можно
+внести в <code>/etc/rc.conf</code> следующую строку:
+</p>
+
+<pre class="example" id="orgaa17097">
+background_dhclient="YES"
+</pre>
+
+<p>
+Для монтирования разделов вручную пользователем, отключения системного
+динамика и т.п. &#x2014; можно добавить в <code>/etc/sysctl.conf</code> следующее:
+</p>
+
+<pre class="example" id="org0185d63">
+vfs.read_max=128
+vfs.usermount=1
+hw.syscons.bell=0
+kern.vt.enable_bell=0
+</pre>
+</div>
+</div>
+
+<div id="outline-container-org9af2621" class="outline-2">
+<h2 id="org9af2621">Обновление 2024-04-28</h2>
+<div class="outline-text-2" id="text-org9af2621">
+<p>
+На данный момент в моем Thinkpad'е используется coreboot вместо BIOS, к
+материнской плате припаяна плата AGAN X230 для 2K-дисплея, а в качестве ОС
+используется FreeBSD 14.0. В связи со всем этим, я добавил обновление к
+статье:
+</p>
+</div>
+
+<div id="outline-container-org16925ed" class="outline-3">
+<h3 id="org16925ed">Корректная работа режима сна</h3>
+<div class="outline-text-3" id="text-org16925ed">
+<p>
+Из коробки, режим сна работал странно. Команда <code>sudo zzz</code> успешно уводила
+ноутбук в сон, потом он просыпался и даже успевал показать экран с i3wm, но
+потом <i>что-то</i> вызывало команду <code>shutdown -h now</code> и ноутбук выключался обычным
+образом. Перешерстив кучу постов на форуме FreeBSD я нашёл тему, где у
+человека ноутбук от HP в принципе не уходил в режим сна, но советы оттуда
+внезапно помогли и мне.
+</p>
+
+<p>
+В <code>/etc/sysctl.conf</code> надо было добавить следующие строки:
+</p>
+<pre class="example" id="orgdc67be6">
+hw.pci.do_power_suspend=0
+hw.pci.do_power_nodriver=1
+</pre>
+
+<p>
+А в <code>/boot/loader.conf</code> вот эти:
+</p>
+<pre class="example" id="org572c6d1">
+hint.p4tcc.0.disabled="1"
+hint.acpi_throttle.0.disabled="1"
+</pre>
+
+<p>
+После перезагрузки система вновь начала корректно выходить из режима сна, не
+выключаясь сразу после него.
+</p>
+
+<p>
+Чтобы ноутбук засыпал при закрытии крышки, как и раньше, в <code>/etc/sysctl.conf</code>
+понадобилось добавить ещё одну строчку:
+</p>
+<pre class="example" id="org709945d">
+hw.acpi.lid_switch_state=S3
+</pre>
+</div>
+</div>
+
+<div id="outline-container-org0b7795c" class="outline-3">
+<h3 id="org0b7795c">Вывод лога загрузки на «второй» 2K-монитор</h3>
+<div class="outline-text-3" id="text-org0b7795c">
+<p>
+Coreboot с SeaBIOS payload и загрузчик FreeBSD дружат очень плохо. Настолько
+плохо, что на экране сверху будет отображаться узкая полоска чего-то вроде
+видеопомех, вместо интерфейса загрузчика и лога загрузки.
+</p>
+
+<p>
+К счастью, поправить это достаточно просто. Сначала, надо вслепую, после
+запуска загрузчика, нажать на Esc, а потом ввести команду <code>vbe on</code> и нажать на
+Enter. После этого, загрузчик переключит видеорежим и на экране отобразится
+его консоль.
+</p>
+
+<p>
+Дальше, уже можно спокойно загрузиться в систему командой <code>boot</code> и надо будет
+добавить следующие настройки в <code>/boot/loader.conf</code>:
+</p>
+<pre class="example" id="orgef2ac73">
+hw.vga.textmode="0"
+kern.vty=vt
+i915kms_load="YES"
+vbe_max_resolution=2560x1440
+</pre>
+</div>
+</div>
+
+<div id="outline-container-org2727565" class="outline-3">
+<h3 id="org2727565">Уменьшение количества сообщений при загрузке</h3>
+<div class="outline-text-3" id="text-org2727565">
+<p>
+В <code>/boot/loader.conf</code> добавить:
+</p>
+<pre class="example" id="org6a3889f">
+boot_mute="YES"
+</pre>
+
+<p>
+А в <code>/etc/rc.conf</code>:
+</p>
+<pre class="example" id="org277205c">
+rc_startmsgs="NO"
+</pre>
+</div>
+</div>
+
+<div id="outline-container-org41aea9c" class="outline-3">
+<h3 id="org41aea9c">Энергосбережение для видеокарты</h3>
+<div class="outline-text-3" id="text-org41aea9c">
+<p>
+В <code>/boot/loader.conf</code> добавить строки:
+</p>
+<pre class="example" id="orge6727c5">
+drm.i915.enable_rc6="7"
+drm.i915.semaphores="1"
+drm.i915.intel_iommu_enabled="1"
+</pre>
+</div>
+</div>
+
+<div id="outline-container-orga088ddd" class="outline-3">
+<h3 id="orga088ddd">Intel 8260</h3>
+<div class="outline-text-3" id="text-orga088ddd">
+<p>
+В ноутбуке теперь стоит аналог WiFi-карты Intel 8260 и лучший способ заставить
+WiFi работать на полную катушку — это использовать <a href="https://man.freebsd.org/cgi/man.cgi?query=wifibox&amp;apropos=0&amp;sektion=8&amp;manpath=freebsd-ports&amp;format=html">wifibox</a>. Его настройка
+проста, выполняется за пять минут и подробно описана в этих двух статьях:
+</p>
+<ul class="org-ul">
+<li><a href="https://jrgsystems.com/posts/2022-04-20-802.11ac-on-freebsd-with-wifibox/">https://jrgsystems.com/posts/2022-04-20-802.11ac-on-freebsd-with-wifibox/</a></li>
+<li><a href="https://xyinn.org/md/freebsd/wifibox">https://xyinn.org/md/freebsd/wifibox</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org8d92f0c" class="outline-3">
+<h3 id="org8d92f0c">Звук и coreboot</h3>
+<div class="outline-text-3" id="text-org8d92f0c">
+<p>
+После замены оригинального BIOS на coreboot поменялись nID для звуковой карты
+и совет выше, из раздела <a href="#orgfbd367f">Звук</a>, перестал работать. Как и аудио в наушниках,
+подключенных через 3.5 мм джек.
+</p>
+
+<p>
+Список доступных nID можно увидеть в выводе команды:
+</p>
+<div class="org-src-container">
+<pre class="src src-bash">dmesg | grep pcm
+</pre>
+</div>
+
+<p>
+В итоге, звук в наушниках появился, после добавления таких строк в
+<code>/boot/device.hints</code>:
+</p>
+<pre class="example" id="org7a62618">
+hint.hdaa.0.nid31.config="as=1 seq=0 device=Speaker"
+hint.hdaa.0.nid35.config="as=1 seq=15 device=Headphones"
+</pre>
+</div>
+</div>
+
+<div id="outline-container-org9149fd5" class="outline-3">
+<h3 id="org9149fd5">Глитчи в GUI</h3>
+<div class="outline-text-3" id="text-org9149fd5">
+<p>
+Спустя какое-то время работы у меня возникали чёрные квадраты и (изредка)
+полосы на экране. Вероятно, это как-то связано с coreboot — замена драйвера
+<code>intel</code> на <code>modesetting</code> не помогла.
+</p>
+
+
+<div id="org1302e5c" class="figure">
+<p><img src="/assets/static/freebsd_intel_glitches.jpg" alt="FreeBSD Intel glitches" align="center" />
+</p>
+<p style="text-align: center"><i>Глитчи на экране ноутбука</i></p>
+</div>
+
+<p>
+Впрочем, благодаря <a href="https://forums.freebsd.org/threads/intel-video-and-screentearing.72085/">вот этому комментарию на форуме FreeBSD</a> и использованию
+<code>picom</code> с опцией <code>--no-vsync</code>, у меня получилось значительно снизить частоту
+появления глитчей.
+</p>
+
+<p>
+В итоге, мой <code>/usr/local/etc/X11/xorg.conf.d/10-intel.conf</code> выглядит так:
+</p>
+
+<pre class="example" id="orgcdcc802">
+Section "Device"
+    Identifier  "Card0"
+    Driver      "intel"
+    BusID       "PCI:0:2:0"
+    Option      "Accel"         "true"
+    Option      "AccelMethod"           "SNA"
+    Option      "DRI"                   "3"
+    Option      "TearFree"          "true"
+EndSection
+</pre>
+
+<p>
+А в <code>/boot/loader.conf</code> была добавлена опция:
+</p>
+<pre class="example" id="orga63643f">
+drm.i915.enable_fbc="1"
+</pre>
+</div>
+</div>
+
+<div id="outline-container-orge9da46b" class="outline-3">
+<h3 id="orge9da46b">Разное (2)</h3>
+<div class="outline-text-3" id="text-orge9da46b">
+<p>
+Для большей отзывчивости десктопа под высокой нагрузкой, я добавил в
+<code>/etc/sysctl.conf</code>:
+</p>
+<pre class="example" id="orga2025cd">
+kern.sched.preempt_thresh=224
+</pre>
+
+<p>
+Настройки, связанные с производительностью сетевого стека в <code>/boot/loader.conf</code>:
+</p>
+<pre class="example" id="org7110085">
+net.link.ifqmaxlen="2048"
+cc_htcp_load="YES"
+</pre>
+
+<p>
+Поддержка дока:
+</p>
+<pre class="example" id="org00d58bf">
+acpi_dock_load="YES"
+</pre>
+</div>
+</div>
+</div>

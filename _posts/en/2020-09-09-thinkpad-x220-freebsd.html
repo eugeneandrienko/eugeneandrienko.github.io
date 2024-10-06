@@ -1,0 +1,582 @@
+---
+layout: post
+title: Setting up FreeBSD for Lenovo Thinkpad X220 (2011 year)
+category: it
+date: 2020-09-26
+lang: en
+comments: true
+hidden:
+  - related_posts
+---
+
+<p>
+There are a bunch of tips and tricks about FreeBSD setup for Thinkpad X220 in
+this little note. I wrote it to not forget non-obvious actions, wchich should
+be done after system installation. Used Thinkpad came from 2011 year — from
+that times, when it used decent design from IBM with blue Enter and 7-row
+keyboard.
+</p>
+
+<p>
+This post based on information from the next pages:
+</p>
+<ul class="org-ul">
+<li><a href="https://cyber.dabamos.de/unix/x230/">https://cyber.dabamos.de/unix/x230/</a></li>
+<li><a href="https://unrelenting.technology/articles/freebsd-on-the-thinkpad-x240">https://unrelenting.technology/articles/freebsd-on-the-thinkpad-x240</a></li>
+<li><a href="https://github.com/grembo/xorg-udev-setup-check">https://github.com/grembo/xorg-udev-setup-check</a></li>
+<li><a href="https://www.c0ffee.net/blog/freebsd-on-a-laptop/">https://www.c0ffee.net/blog/freebsd-on-a-laptop/</a></li>
+<li><a href="https://cooltrainer.org/a-freebsd-desktop-howto/">https://cooltrainer.org/a-freebsd-desktop-howto/</a></li>
+<li><a href="https://wiki.archlinux.org/title/Lenovo_ThinkPad_X230">https://wiki.archlinux.org/title/Lenovo_ThinkPad_X230</a></li>
+</ul>
+
+<div id="outline-container-org5b9683e" class="outline-2">
+<h2 id="org5b9683e">Show ~ for current directory path in bash prompt</h2>
+<div class="outline-text-2" id="text-org5b9683e">
+<p>
+In FreeBSD all users' home catalogs placed in <code>/usr/home/</code>. The <code>/home/</code> is just a
+symbolic link to <code>/usr/home/</code>. So, thats why in command prompt <code>\w</code> will be
+substituted to <code>/usr/home/catalog_name</code>, not to <code>~/catalog_name</code>.
+</p>
+
+<p>
+To fix that you need to set path to home catalog directly to
+<code>/usr/home/user_catalog</code>, not to <code>/home/user_catalog</code>. Use <code>sudo chsh username</code> for
+this.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orga41c432" class="outline-2">
+<h2 id="orga41c432">Minimal set of groups</h2>
+<div class="outline-text-2" id="text-orga41c432">
+<dl class="org-dl">
+<dt><code>wheel</code></dt><dd>for sudo</dd>
+<dt><code>video</code></dt><dd>grants access to <code>/dev/dri/card*</code></dd>
+<dt><code>webcamd</code></dt><dd>grants access to web-camera.</dd>
+</dl>
+</div>
+</div>
+
+<div id="outline-container-org7f8658e" class="outline-2">
+<h2 id="org7f8658e">Power control</h2>
+<div class="outline-text-2" id="text-org7f8658e">
+<p>
+<code>/etc/rc.conf</code> settings:
+</p>
+
+<pre class="example" id="org40ba8cb">
+powerd_enable="YES"
+powerd_flags="-a hiadaptive -b adaptive -M 2000"
+performance_cx_lowest="Cmax"
+economy_cx_lowest="Cmax"
+</pre>
+
+<p>
+<code>/boot/loader.conf</code> settings:
+</p>
+
+<pre class="example" id="org9a4ddb4">
+cpufreq_load="YES"
+kern.hz=100
+</pre>
+
+<p>
+Thanks to these settings — notebook will become slowly but more energy-saving.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org10791b2" class="outline-2">
+<h2 id="org10791b2">Sound</h2>
+<div class="outline-text-2" id="text-org10791b2">
+<p>
+Need to load <code>snd_hda</code> module on system startup. Add this to <code>/boot/loader.conf</code>:
+</p>
+
+<pre class="example" id="orgeb0e314">
+snd_hda_load="YES"
+</pre>
+
+<p>
+To switch between speakers and earphone on the fly — add these lines to
+<code>/boot/device.hints</code>:
+</p>
+
+<pre class="example" id="org274c3b8">
+hint.hdaa.0.nid20.config="as=1 seq=0 device=Speaker"
+hint.hdaa.0.nid21.config="as=1 seq=15 device=Headphones"
+</pre>
+</div>
+</div>
+
+<div id="outline-container-org48ca9f6" class="outline-2">
+<h2 id="org48ca9f6">Brightness control</h2>
+<div class="outline-text-2" id="text-org48ca9f6">
+<p>
+Add these lines to <code>/boot/loader.conf</code>:
+</p>
+
+<pre class="example" id="orge9c9534">
+acpi_ibm_load="YES"
+acpi_video_load="YES"
+</pre>
+
+<p>
+First line loads kernel module to operate with Thinkpad peripherals —
+multimedia-keys, brightness-control keys, etc. Second line loads kernel module
+to control screen brightness via sysctl (use <code>hw.acpi.video.lcd0.brightness</code>
+setup).
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgc929de2" class="outline-2">
+<h2 id="orgc929de2">Multimedia keys</h2>
+<div class="outline-text-2" id="text-orgc929de2">
+<p>
+First, module <code>acpi_ibm</code> should be already loaded in system.
+</p>
+
+<p>
+The next strings should be added to <code>/etc/devd.conf</code>, with them devd could
+process Fn+Fkey keypresses and send it to our script:
+</p>
+
+<pre class="example" id="org24dc6a8">
+notify 10 {
+    match "system" "ACPI";
+    match "subsystem" "IBM";
+    action "/etc/acpi_thinkpad.sh $notify";
+};
+</pre>
+
+<p>
+Script content (incomplete):
+</p>
+
+<div class="org-src-container">
+<pre class="src src-bash"><span style="color: #93a1a1;">#</span><span style="color: #93a1a1;">!/bin/</span><span style="color: #859900; font-weight: bold;">sh</span>
+
+<span style="color: #268bd2;">ACPI_EVENT</span>=<span style="color: #2aa198;">"$1"</span>
+
+<span style="color: #859900; font-weight: bold;">case</span> <span style="color: #2aa198;">"$ACPI_EVENT"</span><span style="color: #859900; font-weight: bold;"> in</span>
+    <span style="color: #2aa198;">'0x04'</span>)
+        /usr/sbin/zzz
+        ;;
+<span style="color: #859900; font-weight: bold;">esac</span>
+</pre>
+</div>
+
+<p>
+To watch key scan-codes just stop devd and launch it from root with <code>-d</code>
+argument.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgb688d32" class="outline-2">
+<h2 id="orgb688d32">Touchpad and trackpoint</h2>
+<div class="outline-text-2" id="text-orgb688d32">
+<p>
+First, enable Synaptics touchpad and trackpoint support in <code>/boot/loader.conf</code>:
+</p>
+
+<pre class="example" id="org41428f2">
+hw.psm.synaptics_support=1
+hw.psm.trackpoint_support=1
+</pre>
+
+<p>
+Package <code>xf86-input-synaptics</code> should be replaced with <code>xf86-input-evdev</code>. With
+these changes — touchpad, trackpoint and middle mouse button above of touchpad
+will be working. Also, scrolling with middle button and trackpoint will work.
+</p>
+
+<p>
+I'd like sensitive trackpoint — so I add the next lines to <code>/etc/systcl.conf</code>:
+</p>
+
+<pre class="example" id="orgf67646d">
+hw.psm.trackpoint.sensitivity=150
+hw.psm.trackpoint.upper_plateau=125
+</pre>
+</div>
+</div>
+
+<div id="outline-container-orgcd2e22f" class="outline-2">
+<h2 id="orgcd2e22f">Web-camera</h2>
+<div class="outline-text-2" id="text-orgcd2e22f">
+<p>
+Make next changes in next files:
+</p>
+<dl class="org-dl">
+<dt><code>/boot/loader.conf</code></dt><dd><pre class="example" id="orgecb8205">
+cuse_load="YES"
+</pre></dd>
+<dt><code>/etc/rc.conf</code></dt><dd><pre class="example" id="org937d01b">
+webcamd_enable="YES"
+</pre></dd>
+<dt><code>/etc/sysctl.conf</code></dt><dd><pre class="example" id="orge4536a8">
+kern.evdev.rcpt_mask=12
+</pre></dd>
+</dl>
+
+<p>
+After that add user to <code>webcamd</code> group:
+</p>
+
+<pre class="example" id="org546648b">
+sudo pw groupmod webcamd -m &lt;username&gt;
+</pre>
+</div>
+</div>
+
+<div id="outline-container-org6d16ec1" class="outline-2">
+<h2 id="org6d16ec1">Sleep</h2>
+<div class="outline-text-2" id="text-org6d16ec1">
+<p>
+First, the module <code>acpi_ibm</code> should be loaded:
+</p>
+
+<p>
+Then, we can go to sleep mode via <code>acpiconf -s 3</code> command. Or via <code>zzz</code> command.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org1cf2f17" class="outline-2">
+<h2 id="org1cf2f17">Enable drm-kmod</h2>
+<div class="outline-text-2" id="text-org1cf2f17">
+<p>
+Install the package <code>graphics/drm-kmod</code>. After, enable module <code>i915kms.ko</code> — add
+next line to <code>/etc/rc.conf</code>:
+</p>
+
+<pre class="example" id="orgaeef16d">
+kld_list="${kld_list} /boot/modules/i915kms.ko"
+</pre>
+</div>
+</div>
+
+<div id="outline-container-org09d9d4f" class="outline-2">
+<h2 id="org09d9d4f">Wi-Fi</h2>
+<div class="outline-text-2" id="text-org09d9d4f">
+<p>
+Add next lines to <code>/boot/loader.conf</code>:
+</p>
+
+<pre class="example" id="orgad887ce">
+if_iwn_load="YES"
+wlan_wep_load="YES"
+wlan_ccmp_load="YES"
+wlan_tkip_load="YES"
+</pre>
+
+<p>
+And these lines to <code>/etc/rc.conf</code> (select proper country code in last line):
+</p>
+
+<pre class="example" id="org3b27d82">
+wlans_iwn0="wlan0"
+ifconfig_wlan0="WPA DHCP powersave"
+create_args_wlan0="country RU regdomain NONE"
+</pre>
+
+<p>
+Install package <code>wpa_supplicant</code> to operate with Wi-Fi networks from user
+mode. And add next lines to the start of <code>/etc/wpa_supplicant.conf</code>:
+</p>
+
+<pre class="example" id="org9139609">
+ctrl_interface=/var/run/wpa_supplicant
+eapol_version=2
+fast_reauth=1
+</pre>
+</div>
+</div>
+
+<div id="outline-container-org32d5d9f" class="outline-2">
+<h2 id="org32d5d9f">Miscellaneous</h2>
+<div class="outline-text-2" id="text-org32d5d9f">
+<p>
+You can add next lines to <code>/boot/loader.conf</code>:
+</p>
+
+<pre class="example" id="org72dbeb0">
+autoboot_delay="2"
+kern.maxproc="100000"
+kern.ipc.shmseg="1024"
+kern.ipc.shmmni="1024"
+cpuctl_load="YES"
+coretemp_load="YES"
+libiconv_load="YES"
+libmchain_load="YES"
+cd9660_iconv_load="YES"
+msdosfs_iconv_load="YES"
+</pre>
+
+<p>
+These lines enable support of temperature sensors in system, will reduce delay
+to two seconds before the system boots and so on.
+</p>
+
+<p>
+To load DHCP client in background on system startup and reduce system boot
+time — add next line to <code>/etc/rc.conf</code>:
+</p>
+
+<pre class="example" id="org1a9bb05">
+background_dhclient="YES"
+</pre>
+
+<p>
+To mount filesystems without root privileges, to disable system beeper and so
+on — add next lines to <code>/etc/sysctl.conf</code>:
+</p>
+
+<pre class="example" id="org92aace2">
+vfs.read_max=128
+vfs.usermount=1
+hw.syscons.bell=0
+kern.vt.enable_bell=0
+</pre>
+</div>
+</div>
+
+<div id="outline-container-org833d831" class="outline-2">
+<h2 id="org833d831">2024-04-28 update</h2>
+<div class="outline-text-2" id="text-org833d831">
+<p>
+Now, I am using coreboot instead of BIOS on my Thinkpad. Also, I soldered
+expansion board AGAN X230 to my motherboard to use nice and shiny
+2K-display. As operation system I use FreeBSD 14.0. Thats why I wrote this
+update:
+</p>
+</div>
+
+<div id="outline-container-org87f3b7f" class="outline-3">
+<h3 id="org87f3b7f">Working sleep mode (S3)</h3>
+<div class="outline-text-3" id="text-org87f3b7f">
+<p>
+Out of the box, the sleep mode is working incorrectly. Command <code>sudo zzz</code> nice
+switches laptop to sleep mode. <b>But</b>, after wakeup I can see screen with i3wm
+for seconds and after that system behaves like I have entered <code>sudo shutdown -h
+now</code> command. But I didn't enter it either!
+</p>
+
+<p>
+After digging on FreeBSD forum, I found a topic, where a man with HP laptop
+describing his issues with non-working sleep mode. Suddenly, but advice from
+this topic helped me a lot.
+</p>
+
+<p>
+There are should be the next lines in <code>/etc/sysctl.conf</code>:
+</p>
+<pre class="example" id="org5bd6f89">
+hw.pci.do_power_suspend=0
+hw.pci.do_power_nodriver=1
+</pre>
+
+<p>
+And next in <code>/boot/loader.conf</code>:
+</p>
+<pre class="example" id="org159dfa2">
+hint.p4tcc.0.disabled="1"
+hint.acpi_throttle.0.disabled="1"
+</pre>
+
+<p>
+After restart, sleep mode finally works well as before! Without strange
+shutdown after wake up.
+</p>
+
+<p>
+To enable sleeping after closing the lid, I've added one more line to
+<code>/etc/sysctl.conf</code>:
+</p>
+<pre class="example" id="org425b109">
+hw.acpi.lid_switch_state=S3
+</pre>
+</div>
+</div>
+
+<div id="outline-container-org6bd9be5" class="outline-3">
+<h3 id="org6bd9be5">Output boot-log to «secondary» 2K-display</h3>
+<div class="outline-text-3" id="text-org6bd9be5">
+<p>
+Coreboot with SeaBIOS payload FreeBSD bootloader don't works very well
+together. If you try to boot FreeBSD on the machine with coreboot, you'll see
+a thin line of something like video interference on the top of the screen.
+</p>
+
+<p>
+To fix that, you should blindly press Esc in the bootloader. After that, still
+<i>blindly</i> enter command <code>vbe on</code> and press Enter. Now, bootloader switch the video
+mode and it's interface will be displayed on the screen.
+</p>
+
+<p>
+Boot to the system with the <code>boot</code> command and add next lines to
+<code>/boot/loader.conf</code>:
+</p>
+<pre class="example" id="orga9a0126">
+hw.vga.textmode="0"
+kern.vty=vt
+i915kms_load="YES"
+vbe_max_resolution=2560x1440
+</pre>
+</div>
+</div>
+
+<div id="outline-container-orgb58e0a0" class="outline-3">
+<h3 id="orgb58e0a0">Reduce count of messages from system when booting</h3>
+<div class="outline-text-3" id="text-orgb58e0a0">
+<p>
+Add to <code>/boot/loader.conf</code>:
+</p>
+<pre class="example" id="orgff1f26c">
+boot_mute="YES"
+</pre>
+
+<p>
+To <code>/etc/rc.conf</code>:
+</p>
+<pre class="example" id="org7a45e57">
+rc_startmsgs="NO"
+</pre>
+</div>
+</div>
+
+<div id="outline-container-org8c8f45d" class="outline-3">
+<h3 id="org8c8f45d">Powersaving for videocard</h3>
+<div class="outline-text-3" id="text-org8c8f45d">
+<p>
+Add next lines to <code>/boot/loader.conf</code>:
+</p>
+<pre class="example" id="org9ab34b4">
+drm.i915.enable_rc6="7"
+drm.i915.semaphores="1"
+drm.i915.intel_iommu_enabled="1"
+</pre>
+</div>
+</div>
+
+<div id="outline-container-orgba2f1c4" class="outline-3">
+<h3 id="orgba2f1c4">Intel 8260</h3>
+<div class="outline-text-3" id="text-orgba2f1c4">
+<p>
+Because now I'm using WiFi-card Intel 8260 — it should be configured via
+<a href="https://man.freebsd.org/cgi/man.cgi?query=wifibox&amp;apropos=0&amp;sektion=8&amp;manpath=freebsd-ports&amp;format=html">wifibox</a> to use full power of WiFi. Wifibox configuration is simple, takes near
+5 minutes and described in these two articles:
+</p>
+<ul class="org-ul">
+<li><a href="https://jrgsystems.com/posts/2022-04-20-802.11ac-on-freebsd-with-wifibox/">https://jrgsystems.com/posts/2022-04-20-802.11ac-on-freebsd-with-wifibox/</a></li>
+<li><a href="https://xyinn.org/md/freebsd/wifibox">https://xyinn.org/md/freebsd/wifibox</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgd5d3140" class="outline-3">
+<h3 id="orgd5d3140">Sound and coreboot</h3>
+<div class="outline-text-3" id="text-orgd5d3140">
+<p>
+Some system internals (nIDs) changed after installation of coreboot instead of
+BIOS. As a result: there is no sound in headphones, connected via 3.5mm
+jack. Instruction from <a href="#org10791b2">Sound</a> section became unapplicable.
+</p>
+
+<p>
+To see, which nID I shoule use, there is the next command:
+</p>
+<div class="org-src-container">
+<pre class="src src-bash">dmesg | grep pcm
+</pre>
+</div>
+
+<p>
+As a result, I got my headphones working after adding next lines to
+<code>/boot/device.hints</code>:
+</p>
+<pre class="example" id="orgc6c056d">
+hint.hdaa.0.nid31.config="as=1 seq=0 device=Speaker"
+hint.hdaa.0.nid35.config="as=1 seq=15 device=Headphones"
+</pre>
+</div>
+</div>
+
+<div id="outline-container-orge96afd3" class="outline-3">
+<h3 id="orge96afd3">GUI glitches</h3>
+<div class="outline-text-3" id="text-orge96afd3">
+<p>
+After some time of working, there are black squares and (rarely) lines appears
+on the screen. Maybe there are because of coreboot. When I switch from <code>intel</code>
+to <code>modesetting</code> driver — it won't help.
+</p>
+
+
+<div id="org5331e08" class="figure">
+<p><img src="/assets/static/freebsd_intel_glitches.jpg" alt="FreeBSD Intel glitches" align="center" />
+</p>
+<p style="text-align: center"><i>Glitches on the laptop screen</i></p>
+</div>
+
+<p>
+But, thanks to <a href="https://forums.freebsd.org/threads/intel-video-and-screentearing.72085/">this FreeBSD forum message</a> and <code>picom</code> usage with <code>--no-vsync</code>
+option, I managed to noticeably decrease frequency of glithes appearance.
+</p>
+
+<p>
+As a result, my <code>/usr/local/etc/X11/xorg.conf.d/10-intel.conf</code> has the next
+contents:
+</p>
+
+<pre class="example" id="org3e1b7ee">
+Section "Device"
+    Identifier  "Card0"
+    Driver      "intel"
+    BusID       "PCI:0:2:0"
+    Option      "Accel"         "true"
+    Option      "AccelMethod"           "SNA"
+    Option      "DRI"                   "3"
+    Option      "TearFree"          "true"
+EndSection
+</pre>
+
+<p>
+And I add next option to <code>/boot/loader.conf</code>:
+</p>
+<pre class="example" id="org17c0952">
+drm.i915.enable_fbc="1"
+</pre>
+</div>
+</div>
+
+<div id="outline-container-org6a20716" class="outline-3">
+<h3 id="org6a20716">Miscellaneous (2)</h3>
+<div class="outline-text-3" id="text-org6a20716">
+<p>
+To decrease desktop latency under the high load, add next lines to
+<code>/etc/sysctl.conf</code>:
+</p>
+<pre class="example" id="orgcffd31e">
+kern.sched.preempt_thresh=224
+</pre>
+
+<p>
+Settings for network stack performance in <code>/boot/loader.conf</code>:
+</p>
+<pre class="example" id="orgea24c2b">
+net.link.ifqmaxlen="2048"
+cc_htcp_load="YES"
+</pre>
+
+<p>
+Dock-station support;
+</p>
+<pre class="example" id="orgfd172c1">
+acpi_dock_load="YES"
+</pre>
+</div>
+</div>
+</div>

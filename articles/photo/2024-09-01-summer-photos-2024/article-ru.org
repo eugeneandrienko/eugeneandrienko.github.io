@@ -1,0 +1,177 @@
+#+BEGIN_EXPORT html
+---
+layout: post
+title: Фотографии лета 2024
+category: photo
+date: 2024-09-01
+lang: ru
+comments: true
+hidden:
+  - related_posts
+banner:
+  image: /assets/static/header-summer-2024.jpg
+  opacity: 0.6
+---
+#+END_EXPORT
+
+* Стрит-фото
+
+Всякие «геометричные» фото, благо город даёт множество материала:
+
+#+CAPTION: Бетонные руины
+#+ATTR_HTML: :align center :alt Concrete ruins
+[[file:20240629_155114.JPG]]
+
+#+ATTR_HTML: :align center :alt Arcs
+[[file:20240629_181025.JPG]]
+
+#+CAPTION: Лампа HOPE
+#+ATTR_HTML: :align center :alt HOPE as lamp
+[[file:20240629_192522.JPG]]
+
+#+CAPTION: Отражение уличной жизни
+#+ATTR_HTML: :align center :alt Reflection of street life
+[[file:20240629_195620.JPG]]
+
+#+CAPTION: Подъездная доска объявлений
+#+ATTR_HTML: :align center :alt Bulletin board
+[[file:20240630_174348.JPG]]
+
+#+CAPTION: Вайбы Сейлор Мун
+#+ATTR_HTML: :align center :alt Sailor Moon vibes
+[[file:20240630_180103.JPG]]
+
+#+CAPTION: Угол
+#+ATTR_HTML: :align center :alt Angle
+[[file:20240630_192455.JPG]]
+
+#+CAPTION: Поребрик
+#+ATTR_HTML: :align center :alt Asphalt
+[[file:20240820_165209.JPG]]
+
+#+CAPTION: Силуэт Петропавловской крепости
+#+ATTR_HTML: :align center :alt Peter and Paul Fortress
+[[file:20240820_165244.JPG]]
+
+#+CAPTION: Отражение в поручне
+#+ATTR_HTML: :align center :alt Reflection at handrail
+[[file:20240820_190739.JPG]]
+
+#+CAPTION: Враг свободы
+#+ATTR_HTML: :align center :alt Enemy of freedom
+[[file:20240821_091937.JPG]]
+
+#+ATTR_HTML: :align center :alt Feather
+[[file:20240822_114817.JPG]]
+
+#+CAPTION: Opel Astra
+#+ATTR_HTML: :align center :alt Opel Astra
+[[file:20240822_115028.JPG]]
+
+#+ATTR_HTML: :align center :alt Apples
+[[file:20240822_115856.JPG]]
+
+#+ATTR_HTML: :align center :alt Daisies
+[[file:20240822_121429.JPG]]
+
+#+ATTR_HTML: :align center :alt Tree
+[[file:20240822_121717.JPG]]
+
+#+CAPTION: Сетка-рабица на столбе
+#+ATTR_HTML: :align center :alt Chain link fencing on the pole
+[[file:20240827_110557.JPG]]
+
+Чёрный кот, 1 шт:
+
+#+ATTR_HTML: :align center :alt Black cat
+[[file:20240630_183332.JPG]]
+
+-----------------------------------
+
+#+CAPTION: Игрушечный мост
+#+ATTR_HTML: :align center :alt Toy bridge
+[[file:20240630_185336.JPG]]
+
+#+ATTR_HTML: :align center :alt Someon...
+[[file:20240630_202909.JPG]]
+
+#+ATTR_HTML: :align center :alt End of epoch
+[[file:20240630_203433.JPG]]
+
+#+CAPTION: Салют
+#+ATTR_HTML: :align center :alt Fireworks
+[[file:20240630_222954.JPG]]
+
+#+CAPTION: Салют
+#+ATTR_HTML: :align center :alt Fireworks
+[[file:20240630_222957.JPG]]
+
+#+CAPTION: Прокатный вертолёт рядом с Петропавловской крепостью
+#+ATTR_HTML: :align center :alt Helicopter near the Peter and Paul Fortress
+[[file:20240713_180453.JPG]]
+
+#+CAPTION: Вертолётный выхлоп
+#+ATTR_HTML: :align center :alt Helicopter exhaust
+[[file:20240713_181404.JPG]]
+
+#+CAPTION: Огонь на Ростральных колоннах
+#+ATTR_HTML: :align center :alt Rostral columns fire
+[[file:20240713_235325.JPG]]
+
+#+CAPTION: Каменный орёл
+#+ATTR_HTML: :align center :alt Stone eagle
+[[file:20240820_165336.JPG]]
+
+* Птицы
+
+#+ATTR_HTML: :align center :alt Gulls
+[[file:20240629_163333.JPG]]
+
+#+CAPTION: На стиле
+#+ATTR_HTML: :align center :alt Walking with a style
+[[file:20240630_191848.JPG]]
+
+#+ATTR_HTML: :align center :alt Jumping sparrow
+[[file:20240820_121214.JPG]]
+
+#+ATTR_HTML: :align center :alt Jumping sparrow
+[[file:20240820_121215.JPG]]
+
+#+ATTR_HTML: :align center :alt Jumping sparrow
+[[file:20240820_121216.JPG]]
+
+#+CAPTION: А?
+#+ATTR_HTML: :align center :alt Huh?
+[[file:20240822_115154.JPG]]
+
+* Компьютеры
+
+Все фотографии с фестиваля [[https://chaosconstructions.ru/][Chaos Constructions]] 2024.
+
+#+CAPTION: Компьютер «Микроша»
+#+ATTR_HTML: :align center :alt Microsha
+[[file:20240824_163655.JPG]]
+
+#+CAPTION: PDP-11/04
+#+ATTR_HTML: :align center :alt PDP-11/04
+[[file:20240824_164736.JPG]]
+
+#+CAPTION: PDP-11/04
+#+ATTR_HTML: :align center :alt PDP-11/04
+[[file:20240824_164953.JPG]]
+
+#+ATTR_HTML: :align center :alt Nice terminal
+[[file:20240824_170530.JPG]]
+
+#+ATTR_HTML: :align center :alt Nice terminal 2
+[[file:20240824_200506.JPG]]
+
+#+ATTR_HTML: :align center :alt Nice code on the screen
+[[file:20240824_175244.JPG]]
+
+#+ATTR_HTML: :align center :alt Window
+[[file:20240824_180900.JPG]]
+
+#+CAPTION: Электроника БК 0010-01
+#+ATTR_HTML: :align center :alt Electronika BK 0010-01
+[[file:20240824_181012.JPG]]

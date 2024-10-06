@@ -1,0 +1,14 @@
+#+BEGIN_EXPORT html
+---
+layout: post
+title: {%NAME%}
+category: {%CATEGORY%}
+date: {%DATE%}
+lang: {%LANG%}
+comments: false
+hidden:
+  - related_posts
+{%ADDITIONAL%}
+---
+#+END_EXPORT
+

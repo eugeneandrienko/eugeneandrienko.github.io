@@ -67,7 +67,7 @@ chsh username</code>.
 Настройки для <code>/etc/rc.conf</code>:
 </p>
 
-<pre class="example" id="org851361b">
+<pre class="example" id="org1207800">
 powerd_enable="YES"
 powerd_flags="-a hiadaptive -b adaptive -M 2000"
 performance_cx_lowest="Cmax"
@@ -77,7 +77,7 @@ economy_cx_lowest="Cmax"
 <p>
 В <code>/boot/loader.conf</code> добавить:
 </p>
-<pre class="example" id="org3153706">
+<pre class="example" id="orgf06f656">
 cpufreq_load="YES"
 kern.hz=100
 </pre>
@@ -97,7 +97,7 @@ kern.hz=100
 <code>/boot/loader.conf</code>:
 </p>
 
-<pre class="example" id="org0e48083">
+<pre class="example" id="orge10ffcf">
 snd_hda_load="YES"
 </pre>
 
@@ -106,7 +106,7 @@ snd_hda_load="YES"
 <code>/boot/device.hints</code>:
 </p>
 
-<pre class="example" id="orge66f018">
+<pre class="example" id="org1fbc2ec">
 hint.hdaa.0.nid20.config="as=1 seq=0 device=Speaker"
 hint.hdaa.0.nid21.config="as=1 seq=15 device=Headphones"
 </pre>
@@ -120,7 +120,7 @@ hint.hdaa.0.nid21.config="as=1 seq=15 device=Headphones"
 В <code>/boot/loader.conf</code> надо добавить это:
 </p>
 
-<pre class="example" id="org0a31fc6">
+<pre class="example" id="orgf1856a6">
 acpi_ibm_load="YES"
 acpi_video_load="YES"
 </pre>
@@ -150,7 +150,7 @@ acpi_video_load="YES"
 научился ловить нажатия на Fn кнопки и отсылать их в наш скрипт:
 </p>
 
-<pre class="example" id="orgd0f7b10">
+<pre class="example" id="orgdbbf0e6">
 notify 10 {
     match "system" "ACPI";
     match "subsystem" "IBM";
@@ -190,7 +190,7 @@ notify 10 {
 <code>/boot/loader.conf</code>:
 </p>
 
-<pre class="example" id="org2fa5793">
+<pre class="example" id="org279c5b3">
 hw.psm.synaptics_support=1
 hw.psm.trackpoint_support=1
 </pre>
@@ -210,7 +210,7 @@ hw.psm.trackpoint_support=1
 должны быть следующие строки:
 </p>
 
-<pre class="example" id="org5113128">
+<pre class="example" id="org483e225">
 hw.psm.trackpoint.sensitivity=150
 hw.psm.trackpoint.upper_plateau=125
 </pre>
@@ -228,7 +228,7 @@ hw.psm.trackpoint.upper_plateau=125
 <code>/boot/loader.conf</code>:
 </p>
 
-<pre class="example" id="org8e02454">
+<pre class="example" id="org9a4b37e">
 cuse_load="YES"
 </pre>
 
@@ -236,7 +236,7 @@ cuse_load="YES"
 <code>/etc/rc.conf</code>:
 </p>
 
-<pre class="example" id="org7b952fb">
+<pre class="example" id="org7a4b61e">
 webcamd_enable="YES"
 </pre>
 
@@ -244,7 +244,7 @@ webcamd_enable="YES"
 <code>/etc/sysctl.conf</code>:
 </p>
 
-<pre class="example" id="org3dd5ee6">
+<pre class="example" id="orga7f5e4c">
 kern.evdev.rcpt_mask=12
 </pre>
 
@@ -252,7 +252,7 @@ kern.evdev.rcpt_mask=12
 После, добавить пользователя в группу <code>webcamd</code>:
 </p>
 
-<pre class="example" id="org2dc1b38">
+<pre class="example" id="orgfc41177">
 sudo pw groupmod webcamd -m &lt;username&gt;
 </pre>
 </div>
@@ -280,7 +280,7 @@ sudo pw groupmod webcamd -m &lt;username&gt;
 <code>i915kms.ko</code> добавлением следующей строки в <code>/etc/rc.conf</code>:
 </p>
 
-<pre class="example" id="orgfb95db0">
+<pre class="example" id="org3420fc3">
 kld_list="${kld_list} /boot/modules/i915kms.ko"
 </pre>
 </div>
@@ -293,7 +293,7 @@ kld_list="${kld_list} /boot/modules/i915kms.ko"
 Нужно добавить в <code>/boot/loader.conf</code>:
 </p>
 
-<pre class="example" id="org875b086">
+<pre class="example" id="orgfe10b76">
 if_iwn_load="YES"
 wlan_wep_load="YES"
 wlan_ccmp_load="YES"
@@ -304,7 +304,7 @@ wlan_tkip_load="YES"
 Потом, добавить в <code>/etc/rc.conf</code>:
 </p>
 
-<pre class="example" id="org6bb6b1f">
+<pre class="example" id="orga842600">
 wlans_iwn0="wlan0"
 ifconfig_wlan0="WPA DHCP powersave"
 create_args_wlan0="country RU regdomain NONE"
@@ -315,7 +315,7 @@ create_args_wlan0="country RU regdomain NONE"
 начало <code>/etc/wpa_supplicant.conf</code>:
 </p>
 
-<pre class="example" id="org6ba99a4">
+<pre class="example" id="orgce4131a">
 ctrl_interface=/var/run/wpa_supplicant
 eapol_version=2
 fast_reauth=1
@@ -330,7 +330,7 @@ fast_reauth=1
 Можно добавить в <code>/boot/loader.conf</code>:
 </p>
 
-<pre class="example" id="org529a949">
+<pre class="example" id="org811640f">
 autoboot_delay="2"
 kern.maxproc="100000"
 kern.ipc.shmseg="1024"
@@ -354,7 +354,7 @@ msdosfs_iconv_load="YES"
 внести в <code>/etc/rc.conf</code> следующую строку:
 </p>
 
-<pre class="example" id="orgaa17097">
+<pre class="example" id="orgdc2a02c">
 background_dhclient="YES"
 </pre>
 
@@ -363,7 +363,7 @@ background_dhclient="YES"
 динамика и т.п. &#x2014; можно добавить в <code>/etc/sysctl.conf</code> следующее:
 </p>
 
-<pre class="example" id="org0185d63">
+<pre class="example" id="org6e1fe3d">
 vfs.read_max=128
 vfs.usermount=1
 hw.syscons.bell=0
@@ -398,7 +398,7 @@ kern.vt.enable_bell=0
 <p>
 В <code>/etc/sysctl.conf</code> надо было добавить следующие строки:
 </p>
-<pre class="example" id="orgdc67be6">
+<pre class="example" id="orgf55b8c8">
 hw.pci.do_power_suspend=0
 hw.pci.do_power_nodriver=1
 </pre>
@@ -406,7 +406,7 @@ hw.pci.do_power_nodriver=1
 <p>
 А в <code>/boot/loader.conf</code> вот эти:
 </p>
-<pre class="example" id="org572c6d1">
+<pre class="example" id="org91d07b5">
 hint.p4tcc.0.disabled="1"
 hint.acpi_throttle.0.disabled="1"
 </pre>
@@ -420,7 +420,7 @@ hint.acpi_throttle.0.disabled="1"
 Чтобы ноутбук засыпал при закрытии крышки, как и раньше, в <code>/etc/sysctl.conf</code>
 понадобилось добавить ещё одну строчку:
 </p>
-<pre class="example" id="org709945d">
+<pre class="example" id="org3d0eaf0">
 hw.acpi.lid_switch_state=S3
 </pre>
 </div>
@@ -446,7 +446,7 @@ Enter. После этого, загрузчик переключит видео
 Дальше, уже можно спокойно загрузиться в систему командой <code>boot</code> и надо будет
 добавить следующие настройки в <code>/boot/loader.conf</code>:
 </p>
-<pre class="example" id="orgef2ac73">
+<pre class="example" id="org4cddc6f">
 hw.vga.textmode="0"
 kern.vty=vt
 i915kms_load="YES"
@@ -461,14 +461,14 @@ vbe_max_resolution=2560x1440
 <p>
 В <code>/boot/loader.conf</code> добавить:
 </p>
-<pre class="example" id="org6a3889f">
+<pre class="example" id="org3923d2a">
 boot_mute="YES"
 </pre>
 
 <p>
 А в <code>/etc/rc.conf</code>:
 </p>
-<pre class="example" id="org277205c">
+<pre class="example" id="org1baf1ae">
 rc_startmsgs="NO"
 </pre>
 </div>
@@ -480,7 +480,7 @@ rc_startmsgs="NO"
 <p>
 В <code>/boot/loader.conf</code> добавить строки:
 </p>
-<pre class="example" id="orge6727c5">
+<pre class="example" id="org5778064">
 drm.i915.enable_rc6="7"
 drm.i915.semaphores="1"
 drm.i915.intel_iommu_enabled="1"
@@ -524,7 +524,7 @@ WiFi работать на полную катушку — это исполь�
 В итоге, звук в наушниках появился, после добавления таких строк в
 <code>/boot/device.hints</code>:
 </p>
-<pre class="example" id="org7a62618">
+<pre class="example" id="org5aa4c00">
 hint.hdaa.0.nid31.config="as=1 seq=0 device=Speaker"
 hint.hdaa.0.nid35.config="as=1 seq=15 device=Headphones"
 </pre>
@@ -541,7 +541,7 @@ hint.hdaa.0.nid35.config="as=1 seq=15 device=Headphones"
 </p>
 
 
-<div id="org1302e5c" class="figure">
+<div id="org3c7f1c9" class="figure">
 <p><img src="/assets/static/freebsd_intel_glitches.jpg" alt="FreeBSD Intel glitches" align="center" />
 </p>
 <p style="text-align: center"><i>Глитчи на экране ноутбука</i></p>
@@ -557,7 +557,7 @@ hint.hdaa.0.nid35.config="as=1 seq=15 device=Headphones"
 В итоге, мой <code>/usr/local/etc/X11/xorg.conf.d/10-intel.conf</code> выглядит так:
 </p>
 
-<pre class="example" id="orgcdcc802">
+<pre class="example" id="orgb3859f5">
 Section "Device"
     Identifier  "Card0"
     Driver      "intel"
@@ -572,7 +572,7 @@ EndSection
 <p>
 А в <code>/boot/loader.conf</code> была добавлена опция:
 </p>
-<pre class="example" id="orga63643f">
+<pre class="example" id="orgeda4ebc">
 drm.i915.enable_fbc="1"
 </pre>
 </div>
@@ -585,14 +585,14 @@ drm.i915.enable_fbc="1"
 Для большей отзывчивости десктопа под высокой нагрузкой, я добавил в
 <code>/etc/sysctl.conf</code>:
 </p>
-<pre class="example" id="orga2025cd">
+<pre class="example" id="orgfe38fea">
 kern.sched.preempt_thresh=224
 </pre>
 
 <p>
 Настройки, связанные с производительностью сетевого стека в <code>/boot/loader.conf</code>:
 </p>
-<pre class="example" id="org7110085">
+<pre class="example" id="orgf4827a5">
 net.link.ifqmaxlen="2048"
 cc_htcp_load="YES"
 </pre>
@@ -600,7 +600,7 @@ cc_htcp_load="YES"
 <p>
 Поддержка дока:
 </p>
-<pre class="example" id="org00d58bf">
+<pre class="example" id="orgf822745">
 acpi_dock_load="YES"
 </pre>
 </div>

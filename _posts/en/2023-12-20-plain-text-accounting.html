@@ -38,7 +38,7 @@ to buying thermal paste</li>
 <li>and so on.</li>
 </ul>
 
-<pre class="example" id="org0d3f33d">
+<pre class="example" id="orge1c4090">
 |----------------+------------------+-------------------|
 | Budget item    | Planned expenses | Planned remainder |
 |----------------+------------------+-------------------|
@@ -62,7 +62,7 @@ wonder why your budget item went into the red.
 </p>
 
 
-<div id="orgc62ff5b" class="figure">
+<div id="orgcc05f53" class="figure">
 <p><img src="/assets/static/paper_budget.jpg" alt="paper_budget.jpg" />
 </p>
 </div>
@@ -202,7 +202,7 @@ Everything else builds on top of this functionality.
 </p>
 
 
-<div id="orga1f1ba7" class="figure">
+<div id="orgbfb8619" class="figure">
 <p><img src="/assets/static/main_ledger_window.png" alt="main_ledger_window.png" />
 </p>
 </div>
@@ -486,7 +486,7 @@ exchange rates every day!
 <h3 id="orgaa3fd9f">Spending statistics for each month</h3>
 <div class="outline-text-3" id="text-orgaa3fd9f">
 
-<div id="org5bc27b1" class="figure">
+<div id="org85f4c15" class="figure">
 <p><img src="/assets/static/expenses.png" alt="expenses.png" />
 </p>
 </div>
@@ -519,7 +519,7 @@ The file path does not need to be specified if it is already set in the
 But the output of this command (even if you remove <code>-O csv</code>) is not very
 readable:
 </p>
-<pre class="example" id="org9f3af94">
+<pre class="example" id="orgd6dddb6">
 "txnidx","date","code","description","account","amount","total"
 ...
 "0","2023-11-01","","","expenses:leisure","432.00 RUB","1437564.28 RUB"
@@ -550,7 +550,7 @@ magic of AWK comes to the rescue:
 <p>
 As a result, hledger output becomes:
 </p>
-<pre class="example" id="org5894bba">
+<pre class="example" id="orgd74b4c4">
 date,account,amount
 ...
 2023-11-01,expenses:leisure,432.00
@@ -587,7 +587,7 @@ entries in the table were <b>exactly</b> in right order:
 </pre>
 </div>
 
-<pre class="example" id="orgfa64414">
+<pre class="example" id="orge58f3df">
 +------------+------------------------+--------+
 |    date    |        account         | amount |
 +------------+------------------------+--------+
@@ -603,7 +603,7 @@ entries in the table were <b>exactly</b> in right order:
 Then I use the window function so that the account names go along the
 X-axis and the dates stay on Y-axis. Something like that:
 </p>
-<pre class="example" id="orgdae4c94">
+<pre class="example" id="org8468858">
 |------------+---------+-----------+-----|
 |       date | leisure | transport | hcs |
 |------------+---------+-----------+-----|
@@ -638,7 +638,7 @@ WINDOW expenses_win <span style="color: #859900; font-weight: bold;">AS</span>(P
 <p>
 Result looks like this:
 </p>
-<pre class="example" id="org03e7826">
+<pre class="example" id="org4e317e2">
 +------------+-----------+---------------+---------+-----------+
 |    date    | transport | psychotherapy | leisure | rownumber |
 +------------+-----------+---------------+---------+-----------+
@@ -669,7 +669,7 @@ Query for <code>last</code> table:
 </pre>
 </div>
 
-<pre class="example" id="orgd16d72f">
+<pre class="example" id="org1940f1b">
 +------------+--------------+
 |    date    | maxrownumber |
 +------------+--------------+
@@ -681,7 +681,7 @@ Query for <code>last</code> table:
 Finally, I can merge the <code>expenses</code> and the <code>last</code> tables. If use sqlite3
 option <code>=--table</code> instead of <code>--csv</code>, then I get this nice table:
 </p>
-<pre class="example" id="org7898e88">
+<pre class="example" id="orgffe30dd">
 +------------+---------+---------------+-----------+
 |    Date    | Leisure | Psychotherapy | Transport |
 +------------+---------+---------------+-----------+
@@ -717,7 +717,7 @@ With the next SQL-query:
 <h3 id="orgb6579a2">Savings data</h3>
 <div class="outline-text-3" id="text-orgb6579a2">
 
-<div id="org2a0bb1a" class="figure">
+<div id="org4fb3520" class="figure">
 <p><img src="/assets/static/savings.png" alt="savings.png" />
 </p>
 </div>

@@ -30,15 +30,15 @@ hidden:
 Земли по прежнему будет видно.
 </p>
 
-<div id="outline-container-orge47810f" class="outline-2">
-<h2 id="orge47810f">Настройка фотоаппарата (Olympus E-M10 II)</h2>
-<div class="outline-text-2" id="text-orge47810f">
+<div id="outline-container-org9d4bd9e" class="outline-2">
+<h2 id="org9d4bd9e">Настройка фотоаппарата (Olympus E-M10 II)</h2>
+<div class="outline-text-2" id="text-org9d4bd9e">
 <p>
 Интервальная съёмка в Olympus E-M10 II включается через «Меню съёмки 1»:
 </p>
 
 
-<div id="org8029798" class="figure">
+<div id="orgb7a9835" class="figure">
 <p><img src="/assets/static/interval_shooting.jpg" alt="interval_shooting.jpg" />
 </p>
 </div>
@@ -65,9 +65,9 @@ hidden:
 </div>
 </div>
 
-<div id="outline-container-orgce5b423" class="outline-2">
-<h2 id="orgce5b423">Обработка RAW-файлов</h2>
-<div class="outline-text-2" id="text-orgce5b423">
+<div id="outline-container-orga6c3043" class="outline-2">
+<h2 id="orga6c3043">Обработка RAW-файлов</h2>
+<div class="outline-text-2" id="text-orga6c3043">
 <p>
 Полученные гигабайты фотографий надо будет обработать: обрезать их под
 соотношение сторон 16:9, подкрутить экспокоррекцию, HSV, настройки шумодава,
@@ -81,7 +81,7 @@ hidden:
 </p>
 
 
-<div id="orgad4730a" class="figure">
+<div id="org4a9485f" class="figure">
 <p><img src="/assets/static/rawtherapee_profiles.png" alt="rawtherapee_profiles.png" />
 </p>
 </div>
@@ -95,9 +95,9 @@ hidden:
 </div>
 </div>
 
-<div id="outline-container-org277c8ea" class="outline-2">
-<h2 id="org277c8ea">Сборка timelapse-видео</h2>
-<div class="outline-text-2" id="text-org277c8ea">
+<div id="outline-container-org11b961c" class="outline-2">
+<h2 id="org11b961c">Сборка timelapse-видео</h2>
+<div class="outline-text-2" id="text-org11b961c">
 <p>
 В силу исторических причин, для работы с видео я использовал mencoder &#x2014;
 перекодировщик от команды MPlayer'а. И лишь для одного узкого случая &#x2014; для
@@ -109,7 +109,7 @@ hidden:
 запустить следующую команду:
 </p>
 
-<pre class="example" id="orge905d93">
+<pre class="example" id="org554f33c">
 mencoder mf://*.jpg -mf w=4616:h=3464:fps=10:type=jpg -ovc lavc -lavcopts
 vcodec=msmpeg4v2:vbitrate=16000:keyint=15:mbd=2:trell -oac copy -o lapse.avi
 </pre>
@@ -122,9 +122,9 @@ vcodec=msmpeg4v2:vbitrate=16000:keyint=15:mbd=2:trell -oac copy -o lapse.avi
 </div>
 </div>
 
-<div id="outline-container-org4e70d0b" class="outline-2">
-<h2 id="org4e70d0b">Подготовка видео для Instagram</h2>
-<div class="outline-text-2" id="text-org4e70d0b">
+<div id="outline-container-org206cffb" class="outline-2">
+<h2 id="org206cffb">Подготовка видео для Instagram</h2>
+<div class="outline-text-2" id="text-org206cffb">
 <p>
 Для Instagram требуется видео в формате MP4, к тому же &#x2014; не в огромном
 разрешении 4616x3464.
@@ -135,7 +135,7 @@ vcodec=msmpeg4v2:vbitrate=16000:keyint=15:mbd=2:trell -oac copy -o lapse.avi
 команду:
 </p>
 
-<pre class="example" id="org020dae9">
+<pre class="example" id="org33d1494">
 mencoder mf://*.jpg -mf w=4616:h=3464:fps=10:type=jpg -ovc lavc -lavcopts
 vcodec=msmpeg4v2:vbitrate=16000:keyint=15:mbd=2:trell -oac copy -vf
 scale=1154:-10 -o lapse_scaled.avi
@@ -152,7 +152,7 @@ scale=1154:-10 -o lapse_scaled.avi
 команда:
 </p>
 
-<pre class="example" id="orgbde7f0d">
+<pre class="example" id="org296cdf9">
 ffmpeg -i lapse_scaled.avi lapse_scaled.mp4
 </pre>
 </div>

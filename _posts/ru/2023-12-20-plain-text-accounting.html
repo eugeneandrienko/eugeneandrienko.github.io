@@ -17,9 +17,9 @@ summary: Ведение личного бюджета методом «дене�
 доходами (и, увы, менее приятно — на свои расходы).
 </p>
 
-<div id="outline-container-orgb93e04e" class="outline-2">
-<h2 id="orgb93e04e">Блокнот и ручка</h2>
-<div class="outline-text-2" id="text-orgb93e04e">
+<div id="outline-container-org79b799c" class="outline-2">
+<h2 id="org79b799c">Блокнот и ручка</h2>
+<div class="outline-text-2" id="text-org79b799c">
 <p>
 Изначально средством для ведения бюджета была просто перьевая ручка и блокнот,
 куда я записывал планируемые расходы на пару недель (от зарплаты до аванса и
@@ -39,7 +39,7 @@ summary: Ведение личного бюджета методом «дене�
 <li>и так далее.</li>
 </ul>
 
-<pre class="example" id="org9b6d3e6">
+<pre class="example" id="org09b9380">
 |----------------+------------------+-------------------|
 | Budget item    | Planned expenses | Planned remainder |
 |----------------+------------------+-------------------|
@@ -63,7 +63,7 @@ summary: Ведение личного бюджета методом «дене�
 </p>
 
 
-<div id="orgfa3c75e" class="figure">
+<div id="org25c0c41" class="figure">
 <p><img src="/assets/static/paper_budget.jpg" alt="paper_budget.jpg" />
 </p>
 </div>
@@ -75,9 +75,9 @@ summary: Ведение личного бюджета методом «дене�
 </div>
 </div>
 
-<div id="outline-container-org23937a9" class="outline-2">
-<h2 id="org23937a9">Emacs и Org Mode</h2>
-<div class="outline-text-2" id="text-org23937a9">
+<div id="outline-container-orgdd50fad" class="outline-2">
+<h2 id="orgdd50fad">Emacs и Org Mode</h2>
+<div class="outline-text-2" id="text-orgdd50fad">
 <p>
 Через пару лет мне надоело считать расходы на калькуляторе. К тому же,
 хотелось видеть ещё и реальный остаток по статьям бюджета, обновляемый в
@@ -170,9 +170,9 @@ machine-friendly интерфейса для работы с архивиров�
 </div>
 </div>
 
-<div id="outline-container-org898c4ca" class="outline-2">
-<h2 id="org898c4ca">Hledger и SQL-скрипты</h2>
-<div class="outline-text-2" id="text-org898c4ca">
+<div id="outline-container-org9d2170d" class="outline-2">
+<h2 id="org9d2170d">Hledger и SQL-скрипты</h2>
+<div class="outline-text-2" id="text-org9d2170d">
 <p>
 В этот момент я и задумался о каком-нибудь более простом способе ведения
 бюджета. Я уже что-то слышал о <a href="https://plaintextaccounting.org/">plain-text accounting'е</a>, да и к тому же мне
@@ -201,15 +201,15 @@ machine-friendly интерфейса для работы с архивиров�
 </p>
 
 
-<div id="org2510e71" class="figure">
+<div id="orgcf11190" class="figure">
 <p><img src="/assets/static/main_ledger_window.png" alt="main_ledger_window.png" />
 </p>
 </div>
 </div>
 
-<div id="outline-container-orgff8b970" class="outline-3">
-<h3 id="orgff8b970">«Денежные конверты» в hledger</h3>
-<div class="outline-text-3" id="text-orgff8b970">
+<div id="outline-container-orga7068d9" class="outline-3">
+<h3 id="orga7068d9">«Денежные конверты» в hledger</h3>
+<div class="outline-text-3" id="text-orga7068d9">
 <p>
 Чтобы методика «денежных конвертов» заработала в hledger, мне пришлось
 попотеть. К счастью, и до меня были люди, который пользовались ей и plain-text
@@ -374,9 +374,9 @@ YYYY-MM-DD</code>, с которыми hledger смотрел только на 
 </div>
 </div>
 
-<div id="outline-container-org009f3ec" class="outline-3">
-<h3 id="org009f3ec">Конвертация в рубли</h3>
-<div class="outline-text-3" id="text-org009f3ec">
+<div id="outline-container-org96ff150" class="outline-3">
+<h3 id="org96ff150">Конвертация в рубли</h3>
+<div class="outline-text-3" id="text-org96ff150">
 <p>
 Дальнейшую обработку всех этих финансовых данных сильно усложняет то, что
 некоторые из счетов мультивалютные. К счастью, hledger тут может помочь — он
@@ -483,11 +483,11 @@ rm -f <span style="color: #2aa198;">"$CBR_XSLT"</span>
 </div>
 </div>
 
-<div id="outline-container-orgb8233fb" class="outline-3">
-<h3 id="orgb8233fb">Статистика по расходам за каждый месяц</h3>
-<div class="outline-text-3" id="text-orgb8233fb">
+<div id="outline-container-org1a455f7" class="outline-3">
+<h3 id="org1a455f7">Статистика по расходам за каждый месяц</h3>
+<div class="outline-text-3" id="text-org1a455f7">
 
-<div id="org46f8aa9" class="figure">
+<div id="orgf55d895" class="figure">
 <p><img src="/assets/static/expenses.png" alt="expenses.png" />
 </p>
 </div>
@@ -521,7 +521,7 @@ hledger.
 Но вывод этой команды (даже если убрать <code>-O csv</code>) не сильно пригоден для чтения
 человеком:
 </p>
-<pre class="example" id="org2556918">
+<pre class="example" id="org7ba471d">
 "txnidx","date","code","description","account","amount","total"
 ...
 "0","2023-11-01","","","expenses:leisure","432.00 RUB","1437564.28 RUB"
@@ -552,7 +552,7 @@ hledger.
 <p>
 В итоге вывод hledger превращается в:
 </p>
-<pre class="example" id="org8e5fef4">
+<pre class="example" id="orga6dfdc2">
 date,account,amount
 ...
 2023-11-01,expenses:leisure,432.00
@@ -589,7 +589,7 @@ date,account,amount
 </pre>
 </div>
 
-<pre class="example" id="org3a7ea8f">
+<pre class="example" id="org4be98b8">
 +------------+------------------------+--------+
 |    date    |        account         | amount |
 +------------+------------------------+--------+
@@ -605,7 +605,7 @@ date,account,amount
 Потом использую оконную функцию, чтобы имена счетов шли по оси X, а даты
 так и оставались на оси Y. Примерно вот так:
 </p>
-<pre class="example" id="org906a68d">
+<pre class="example" id="orgedfaca1">
 |------------+---------+-----------+-----|
 |       date | leisure | transport | hcs |
 |------------+---------+-----------+-----|
@@ -640,7 +640,7 @@ WINDOW expenses_win <span style="color: #859900; font-weight: bold;">AS</span>(P
 <p>
 Результат получается примерно вот таким:
 </p>
-<pre class="example" id="org0a42c59">
+<pre class="example" id="org7a7242e">
 +------------+-----------+---------------+---------+-----------+
 |    date    | transport | psychotherapy | leisure | rownumber |
 +------------+-----------+---------------+---------+-----------+
@@ -671,7 +671,7 @@ WINDOW expenses_win <span style="color: #859900; font-weight: bold;">AS</span>(P
 </pre>
 </div>
 
-<pre class="example" id="orgc10e470">
+<pre class="example" id="orgb102a19">
 +------------+--------------+
 |    date    | maxrownumber |
 +------------+--------------+
@@ -683,7 +683,7 @@ WINDOW expenses_win <span style="color: #859900; font-weight: bold;">AS</span>(P
 Ну и наконец я могу объединить таблицы <code>expenses</code> и <code>last</code>. Если у sqlite3
 поменять опцию <code>--csv</code> на <code>--table</code>, то получается вот такая красивая таблица:
 </p>
-<pre class="example" id="org2e6c4d4">
+<pre class="example" id="org5f433ed">
 +------------+---------+---------------+-----------+
 |    Date    | Leisure | Psychotherapy | Transport |
 +------------+---------+---------------+-----------+
@@ -715,11 +715,11 @@ WINDOW expenses_win <span style="color: #859900; font-weight: bold;">AS</span>(P
 </div>
 </div>
 
-<div id="outline-container-orge710615" class="outline-3">
-<h3 id="orge710615">Данные по накоплениям</h3>
-<div class="outline-text-3" id="text-orge710615">
+<div id="outline-container-orgab1e29c" class="outline-3">
+<h3 id="orgab1e29c">Данные по накоплениям</h3>
+<div class="outline-text-3" id="text-orgab1e29c">
 
-<div id="orgfd5c65f" class="figure">
+<div id="orgcbc3d93" class="figure">
 <p><img src="/assets/static/savings.png" alt="savings.png" />
 </p>
 </div>
@@ -731,9 +731,9 @@ WINDOW expenses_win <span style="color: #859900; font-weight: bold;">AS</span>(P
 </div>
 </div>
 
-<div id="outline-container-org6f99cd6" class="outline-3">
-<h3 id="org6f99cd6">Планирование нового бюджета</h3>
-<div class="outline-text-3" id="text-org6f99cd6">
+<div id="outline-container-org92bd481" class="outline-3">
+<h3 id="org92bd481">Планирование нового бюджета</h3>
+<div class="outline-text-3" id="text-org92bd481">
 <p>
 Планирование бюджета происходит через bash-скрипт с dialog:
 </p>

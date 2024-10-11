@@ -30,9 +30,9 @@ Lenovo ThinkPad X220 &#x2014; чтобы не забыть неочевидны�
 <li><a href="https://wiki.archlinux.org/title/Lenovo_ThinkPad_X230">https://wiki.archlinux.org/title/Lenovo_ThinkPad_X230</a></li>
 </ul>
 
-<div id="outline-container-org307e366" class="outline-2">
-<h2 id="org307e366">Корректное отображение ~ в пути, в приглашении bash</h2>
-<div class="outline-text-2" id="text-org307e366">
+<div class="outline-2">
+<h2>Корректное отображение ~ в пути, в приглашении bash</h2>
+<div class="outline-text-2">
 <p>
 Поскольку все домашние каталоги пользователей расположены по пути <code>/usr/home/</code>,
 а <code>/home/</code> лишь символическая ссылка на вышеуказанный каталог &#x2013; в приглашении
@@ -49,9 +49,9 @@ chsh username</code>.
 </div>
 </div>
 
-<div id="outline-container-org8705e57" class="outline-2">
-<h2 id="org8705e57">Минимальный набор групп для доступа к устройствам ноутбука</h2>
-<div class="outline-text-2" id="text-org8705e57">
+<div class="outline-2">
+<h2>Минимальный набор групп для доступа к устройствам ноутбука</h2>
+<div class="outline-text-2">
 <ul class="org-ul">
 <li>wheel &#x2014; нужен для sudo;</li>
 <li>video &#x2013; для доступа к <code>/dev/dri/card*</code>;</li>
@@ -60,14 +60,14 @@ chsh username</code>.
 </div>
 </div>
 
-<div id="outline-container-orged18a8a" class="outline-2">
-<h2 id="orged18a8a">Управление питанием</h2>
-<div class="outline-text-2" id="text-orged18a8a">
+<div class="outline-2">
+<h2>Управление питанием</h2>
+<div class="outline-text-2">
 <p>
 Настройки для <code>/etc/rc.conf</code>:
 </p>
 
-<pre class="example" id="org5280dc5">
+<pre class="example">
 powerd_enable="YES"
 powerd_flags="-a hiadaptive -b adaptive -M 2000"
 performance_cx_lowest="Cmax"
@@ -77,7 +77,7 @@ economy_cx_lowest="Cmax"
 <p>
 В <code>/boot/loader.conf</code> добавить:
 </p>
-<pre class="example" id="orgd3223e5">
+<pre class="example">
 cpufreq_load="YES"
 kern.hz=100
 </pre>
@@ -89,15 +89,15 @@ kern.hz=100
 </div>
 </div>
 
-<div id="outline-container-org2e6f7c0" class="outline-2">
-<h2 id="org2e6f7c0">Звук</h2>
-<div class="outline-text-2" id="text-org2e6f7c0">
+<div class="outline-2">
+<h2>Звук</h2>
+<div class="outline-text-2">
 <p>
 Нужно загружать модуль <code>snd_hda</code> при старте системы — для этого добавляем в
 <code>/boot/loader.conf</code>:
 </p>
 
-<pre class="example" id="org18c0931">
+<pre class="example">
 snd_hda_load="YES"
 </pre>
 
@@ -106,21 +106,21 @@ snd_hda_load="YES"
 <code>/boot/device.hints</code>:
 </p>
 
-<pre class="example" id="org1165088">
+<pre class="example">
 hint.hdaa.0.nid20.config="as=1 seq=0 device=Speaker"
 hint.hdaa.0.nid21.config="as=1 seq=15 device=Headphones"
 </pre>
 </div>
 </div>
 
-<div id="outline-container-org3969e79" class="outline-2">
-<h2 id="org3969e79">Управление яркостью</h2>
-<div class="outline-text-2" id="text-org3969e79">
+<div class="outline-2">
+<h2>Управление яркостью</h2>
+<div class="outline-text-2">
 <p>
 В <code>/boot/loader.conf</code> надо добавить это:
 </p>
 
-<pre class="example" id="org32ff3f9">
+<pre class="example">
 acpi_ibm_load="YES"
 acpi_video_load="YES"
 </pre>
@@ -138,9 +138,9 @@ acpi_video_load="YES"
 </div>
 </div>
 
-<div id="outline-container-org9f90b81" class="outline-2">
-<h2 id="org9f90b81">Мультимедиа-клавиши</h2>
-<div class="outline-text-2" id="text-org9f90b81">
+<div class="outline-2">
+<h2>Мультимедиа-клавиши</h2>
+<div class="outline-text-2">
 <p>
 Сначала надо проверить, что модуль <code>acpi_ibm</code> уже загружен в системе.
 </p>
@@ -150,7 +150,7 @@ acpi_video_load="YES"
 научился ловить нажатия на Fn кнопки и отсылать их в наш скрипт:
 </p>
 
-<pre class="example" id="orge170f50">
+<pre class="example">
 notify 10 {
     match "system" "ACPI";
     match "subsystem" "IBM";
@@ -182,15 +182,15 @@ notify 10 {
 </div>
 </div>
 
-<div id="outline-container-orge8be954" class="outline-2">
-<h2 id="orge8be954">Тачпад и трекпойнт</h2>
-<div class="outline-text-2" id="text-orge8be954">
+<div class="outline-2">
+<h2>Тачпад и трекпойнт</h2>
+<div class="outline-text-2">
 <p>
 Для начала надо включить поддержку Synaptics touchpad и трекпойнта в
 <code>/boot/loader.conf</code>:
 </p>
 
-<pre class="example" id="orga10f3b8">
+<pre class="example">
 hw.psm.synaptics_support=1
 hw.psm.trackpoint_support=1
 </pre>
@@ -210,16 +210,16 @@ hw.psm.trackpoint_support=1
 должны быть следующие строки:
 </p>
 
-<pre class="example" id="orgb55f29a">
+<pre class="example">
 hw.psm.trackpoint.sensitivity=150
 hw.psm.trackpoint.upper_plateau=125
 </pre>
 </div>
 </div>
 
-<div id="outline-container-orga028506" class="outline-2">
-<h2 id="orga028506">Веб-камера</h2>
-<div class="outline-text-2" id="text-orga028506">
+<div class="outline-2">
+<h2>Веб-камера</h2>
+<div class="outline-text-2">
 <p>
 Нужно произвести следующие изменения в следующих файлах:
 </p>
@@ -228,7 +228,7 @@ hw.psm.trackpoint.upper_plateau=125
 <code>/boot/loader.conf</code>:
 </p>
 
-<pre class="example" id="org0da2684">
+<pre class="example">
 cuse_load="YES"
 </pre>
 
@@ -236,7 +236,7 @@ cuse_load="YES"
 <code>/etc/rc.conf</code>:
 </p>
 
-<pre class="example" id="org7297adb">
+<pre class="example">
 webcamd_enable="YES"
 </pre>
 
@@ -244,7 +244,7 @@ webcamd_enable="YES"
 <code>/etc/sysctl.conf</code>:
 </p>
 
-<pre class="example" id="org9db6186">
+<pre class="example">
 kern.evdev.rcpt_mask=12
 </pre>
 
@@ -252,15 +252,15 @@ kern.evdev.rcpt_mask=12
 После, добавить пользователя в группу <code>webcamd</code>:
 </p>
 
-<pre class="example" id="org1486f88">
+<pre class="example">
 sudo pw groupmod webcamd -m &lt;username&gt;
 </pre>
 </div>
 </div>
 
-<div id="outline-container-orgaafebac" class="outline-2">
-<h2 id="orgaafebac">Сон</h2>
-<div class="outline-text-2" id="text-orgaafebac">
+<div class="outline-2">
+<h2>Сон</h2>
+<div class="outline-text-2">
 <p>
 Для начала должен быть загружен модуль <code>acpi_ibm</code>.
 </p>
@@ -272,28 +272,28 @@ sudo pw groupmod webcamd -m &lt;username&gt;
 </div>
 </div>
 
-<div id="outline-container-orgd8d0c26" class="outline-2">
-<h2 id="orgd8d0c26">Включение drm-kmod</h2>
-<div class="outline-text-2" id="text-orgd8d0c26">
+<div class="outline-2">
+<h2>Включение drm-kmod</h2>
+<div class="outline-text-2">
 <p>
 Нужно установить пакет <code>graphics/drm-kmod</code>. Затем, надо включить загрузку модуля
 <code>i915kms.ko</code> добавлением следующей строки в <code>/etc/rc.conf</code>:
 </p>
 
-<pre class="example" id="orgb8c0331">
+<pre class="example">
 kld_list="${kld_list} /boot/modules/i915kms.ko"
 </pre>
 </div>
 </div>
 
-<div id="outline-container-org44b08a7" class="outline-2">
-<h2 id="org44b08a7">Wi-Fi</h2>
-<div class="outline-text-2" id="text-org44b08a7">
+<div class="outline-2">
+<h2>Wi-Fi</h2>
+<div class="outline-text-2">
 <p>
 Нужно добавить в <code>/boot/loader.conf</code>:
 </p>
 
-<pre class="example" id="orgd451103">
+<pre class="example">
 if_iwn_load="YES"
 wlan_wep_load="YES"
 wlan_ccmp_load="YES"
@@ -304,7 +304,7 @@ wlan_tkip_load="YES"
 Потом, добавить в <code>/etc/rc.conf</code>:
 </p>
 
-<pre class="example" id="orgada577c">
+<pre class="example">
 wlans_iwn0="wlan0"
 ifconfig_wlan0="WPA DHCP powersave"
 create_args_wlan0="country RU regdomain NONE"
@@ -315,7 +315,7 @@ create_args_wlan0="country RU regdomain NONE"
 начало <code>/etc/wpa_supplicant.conf</code>:
 </p>
 
-<pre class="example" id="org5d07bad">
+<pre class="example">
 ctrl_interface=/var/run/wpa_supplicant
 eapol_version=2
 fast_reauth=1
@@ -323,14 +323,14 @@ fast_reauth=1
 </div>
 </div>
 
-<div id="outline-container-org7c33bcc" class="outline-2">
-<h2 id="org7c33bcc">Разное</h2>
-<div class="outline-text-2" id="text-org7c33bcc">
+<div class="outline-2">
+<h2>Разное</h2>
+<div class="outline-text-2">
 <p>
 Можно добавить в <code>/boot/loader.conf</code>:
 </p>
 
-<pre class="example" id="org925b849">
+<pre class="example">
 autoboot_delay="2"
 kern.maxproc="100000"
 kern.ipc.shmseg="1024"
@@ -354,7 +354,7 @@ msdosfs_iconv_load="YES"
 внести в <code>/etc/rc.conf</code> следующую строку:
 </p>
 
-<pre class="example" id="org3efd556">
+<pre class="example">
 background_dhclient="YES"
 </pre>
 
@@ -363,7 +363,7 @@ background_dhclient="YES"
 динамика и т.п. &#x2014; можно добавить в <code>/etc/sysctl.conf</code> следующее:
 </p>
 
-<pre class="example" id="org247b89e">
+<pre class="example">
 vfs.read_max=128
 vfs.usermount=1
 hw.syscons.bell=0
@@ -372,9 +372,9 @@ kern.vt.enable_bell=0
 </div>
 </div>
 
-<div id="outline-container-org39ebc0b" class="outline-2">
-<h2 id="org39ebc0b">Обновление 2024-04-28</h2>
-<div class="outline-text-2" id="text-org39ebc0b">
+<div class="outline-2">
+<h2>Обновление 2024-04-28</h2>
+<div class="outline-text-2">
 <p>
 На данный момент в моем Thinkpad'е используется coreboot вместо BIOS, к
 материнской плате припаяна плата AGAN X230 для 2K-дисплея, а в качестве ОС
@@ -383,9 +383,9 @@ kern.vt.enable_bell=0
 </p>
 </div>
 
-<div id="outline-container-orga792e11" class="outline-3">
-<h3 id="orga792e11">Корректная работа режима сна</h3>
-<div class="outline-text-3" id="text-orga792e11">
+<div class="outline-3">
+<h3>Корректная работа режима сна</h3>
+<div class="outline-text-3">
 <p>
 Из коробки, режим сна работал странно. Команда <code>sudo zzz</code> успешно уводила
 ноутбук в сон, потом он просыпался и даже успевал показать экран с i3wm, но
@@ -398,7 +398,7 @@ kern.vt.enable_bell=0
 <p>
 В <code>/etc/sysctl.conf</code> надо было добавить следующие строки:
 </p>
-<pre class="example" id="org9202e10">
+<pre class="example">
 hw.pci.do_power_suspend=0
 hw.pci.do_power_nodriver=1
 </pre>
@@ -406,7 +406,7 @@ hw.pci.do_power_nodriver=1
 <p>
 А в <code>/boot/loader.conf</code> вот эти:
 </p>
-<pre class="example" id="org1153f69">
+<pre class="example">
 hint.p4tcc.0.disabled="1"
 hint.acpi_throttle.0.disabled="1"
 </pre>
@@ -420,15 +420,15 @@ hint.acpi_throttle.0.disabled="1"
 Чтобы ноутбук засыпал при закрытии крышки, как и раньше, в <code>/etc/sysctl.conf</code>
 понадобилось добавить ещё одну строчку:
 </p>
-<pre class="example" id="orge4932b1">
+<pre class="example">
 hw.acpi.lid_switch_state=S3
 </pre>
 </div>
 </div>
 
-<div id="outline-container-orge7f6047" class="outline-3">
-<h3 id="orge7f6047">Вывод лога загрузки на «второй» 2K-монитор</h3>
-<div class="outline-text-3" id="text-orge7f6047">
+<div class="outline-3">
+<h3>Вывод лога загрузки на «второй» 2K-монитор</h3>
+<div class="outline-text-3">
 <p>
 Coreboot с SeaBIOS payload и загрузчик FreeBSD дружат очень плохо. Настолько
 плохо, что на экране сверху будет отображаться узкая полоска чего-то вроде
@@ -446,7 +446,7 @@ Enter. После этого, загрузчик переключит видео
 Дальше, уже можно спокойно загрузиться в систему командой <code>boot</code> и надо будет
 добавить следующие настройки в <code>/boot/loader.conf</code>:
 </p>
-<pre class="example" id="org3b05132">
+<pre class="example">
 hw.vga.textmode="0"
 kern.vty=vt
 i915kms_load="YES"
@@ -455,32 +455,32 @@ vbe_max_resolution=2560x1440
 </div>
 </div>
 
-<div id="outline-container-org40e5505" class="outline-3">
-<h3 id="org40e5505">Уменьшение количества сообщений при загрузке</h3>
-<div class="outline-text-3" id="text-org40e5505">
+<div class="outline-3">
+<h3>Уменьшение количества сообщений при загрузке</h3>
+<div class="outline-text-3">
 <p>
 В <code>/boot/loader.conf</code> добавить:
 </p>
-<pre class="example" id="org23b4e43">
+<pre class="example">
 boot_mute="YES"
 </pre>
 
 <p>
 А в <code>/etc/rc.conf</code>:
 </p>
-<pre class="example" id="org087dae5">
+<pre class="example">
 rc_startmsgs="NO"
 </pre>
 </div>
 </div>
 
-<div id="outline-container-org0a44dd9" class="outline-3">
-<h3 id="org0a44dd9">Энергосбережение для видеокарты</h3>
-<div class="outline-text-3" id="text-org0a44dd9">
+<div class="outline-3">
+<h3>Энергосбережение для видеокарты</h3>
+<div class="outline-text-3">
 <p>
 В <code>/boot/loader.conf</code> добавить строки:
 </p>
-<pre class="example" id="org3348007">
+<pre class="example">
 drm.i915.enable_rc6="7"
 drm.i915.semaphores="1"
 drm.i915.intel_iommu_enabled="1"
@@ -488,9 +488,9 @@ drm.i915.intel_iommu_enabled="1"
 </div>
 </div>
 
-<div id="outline-container-org3e49a1c" class="outline-3">
-<h3 id="org3e49a1c">Intel 8260</h3>
-<div class="outline-text-3" id="text-org3e49a1c">
+<div class="outline-3">
+<h3>Intel 8260</h3>
+<div class="outline-text-3">
 <p>
 В ноутбуке теперь стоит аналог WiFi-карты Intel 8260 и лучший способ заставить
 WiFi работать на полную катушку — это использовать <a href="https://man.freebsd.org/cgi/man.cgi?query=wifibox&amp;apropos=0&amp;sektion=8&amp;manpath=freebsd-ports&amp;format=html">wifibox</a>. Его настройка
@@ -503,9 +503,9 @@ WiFi работать на полную катушку — это исполь�
 </div>
 </div>
 
-<div id="outline-container-orgd5d4c1e" class="outline-3">
-<h3 id="orgd5d4c1e">Звук и coreboot</h3>
-<div class="outline-text-3" id="text-orgd5d4c1e">
+<div class="outline-3">
+<h3>Звук и coreboot</h3>
+<div class="outline-text-3">
 <p>
 После замены оригинального BIOS на coreboot поменялись nID для звуковой карты
 и совет выше, из раздела <a href="#org2e6f7c0">Звук</a>, перестал работать. Как и аудио в наушниках,
@@ -524,16 +524,16 @@ WiFi работать на полную катушку — это исполь�
 В итоге, звук в наушниках появился, после добавления таких строк в
 <code>/boot/device.hints</code>:
 </p>
-<pre class="example" id="org68ccdb5">
+<pre class="example">
 hint.hdaa.0.nid31.config="as=1 seq=0 device=Speaker"
 hint.hdaa.0.nid35.config="as=1 seq=15 device=Headphones"
 </pre>
 </div>
 </div>
 
-<div id="outline-container-org6911346" class="outline-3">
-<h3 id="org6911346">Глитчи в GUI</h3>
-<div class="outline-text-3" id="text-org6911346">
+<div class="outline-3">
+<h3>Глитчи в GUI</h3>
+<div class="outline-text-3">
 <p>
 Спустя какое-то время работы у меня возникали чёрные квадраты и (изредка)
 полосы на экране. Вероятно, это как-то связано с coreboot — замена драйвера
@@ -541,7 +541,7 @@ hint.hdaa.0.nid35.config="as=1 seq=15 device=Headphones"
 </p>
 
 
-<div id="orgada3e70" class="figure">
+<div class="figure">
 <p><img src="/assets/static/freebsd_intel_glitches.jpg" alt="FreeBSD Intel glitches" align="center" />
 </p>
 <p style="text-align: center"><i>Глитчи на экране ноутбука</i></p>
@@ -557,7 +557,7 @@ hint.hdaa.0.nid35.config="as=1 seq=15 device=Headphones"
 В итоге, мой <code>/usr/local/etc/X11/xorg.conf.d/10-intel.conf</code> выглядит так:
 </p>
 
-<pre class="example" id="org8b4da88">
+<pre class="example">
 Section "Device"
     Identifier  "Card0"
     Driver      "intel"
@@ -572,27 +572,27 @@ EndSection
 <p>
 А в <code>/boot/loader.conf</code> была добавлена опция:
 </p>
-<pre class="example" id="org37478cd">
+<pre class="example">
 drm.i915.enable_fbc="1"
 </pre>
 </div>
 </div>
 
-<div id="outline-container-org4238f95" class="outline-3">
-<h3 id="org4238f95">Разное (2)</h3>
-<div class="outline-text-3" id="text-org4238f95">
+<div class="outline-3">
+<h3>Разное (2)</h3>
+<div class="outline-text-3">
 <p>
 Для большей отзывчивости десктопа под высокой нагрузкой, я добавил в
 <code>/etc/sysctl.conf</code>:
 </p>
-<pre class="example" id="org80167c9">
+<pre class="example">
 kern.sched.preempt_thresh=224
 </pre>
 
 <p>
 Настройки, связанные с производительностью сетевого стека в <code>/boot/loader.conf</code>:
 </p>
-<pre class="example" id="orga7d0c82">
+<pre class="example">
 net.link.ifqmaxlen="2048"
 cc_htcp_load="YES"
 </pre>
@@ -600,7 +600,7 @@ cc_htcp_load="YES"
 <p>
 Поддержка дока:
 </p>
-<pre class="example" id="org33a8e56">
+<pre class="example">
 acpi_dock_load="YES"
 </pre>
 </div>

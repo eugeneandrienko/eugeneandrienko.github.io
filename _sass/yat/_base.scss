@@ -213,18 +213,14 @@ pre {
 table {
   display: block;
   margin-bottom: $spacing-unit;
-  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  width: fit-content;
   text-align: $table-text-align;
   color: lighten($text-color, 5%);
   background-color: #fdf6e3;
   border-collapse: collapse;
   overflow: auto;
-
-  tr {
-      &:nth-child(even) {
-          background-color: lightyellow;
-      }
-  }
 
   th, td {
     padding: ($spacing-unit / 3) ($spacing-unit / 2);

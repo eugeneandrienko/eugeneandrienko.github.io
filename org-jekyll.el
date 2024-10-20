@@ -88,42 +88,36 @@
   "https://eugene-andrienko.com"
   "Blog URL."
   :type 'string
-  :safe 'stringp
   :group 'org-jekyll)
 
 (defcustom org-jekyll-base-path
   "~/rsync/blog"
   "Path to the base directory of my blog."
   :type 'directory
-  :safe 'file-accessible-directory-p
   :group 'org-jekyll-paths)
 
 (defcustom org-jekyll-articles-path
   (concat org-jekyll-base-path "/articles")
   "Path to directory with original articles in Org format."
   :type 'directory
-  :safe 'file-accessible-directory-p
   :group 'org-jekyll-paths)
 
 (defcustom org-jekyll-template-path
   (concat org-jekyll-articles-path "/_post_template.org")
   "Path to post template."
   :type '(file :must-match t)
-  :safe 'file-exists-p
   :group 'org-jekyll-paths)
 
 (defcustom org-jekyll-exclude-regex
   "\\(_post_template\\.org\\)\\|\\(\\.project\\)"
   "Regex to exclude unwanted files."
   :type 'regexp
-  :safe 'stringp
   :group 'org-jekyll)
 
 (defcustom org-jekyll-languages
   '("ru" "en")
   "Blog languages."
   :type 'sexp
-  :safe (lambda (x) (> (length x) 0))
   :group 'org-jekyll)
 
 ;; OrgMode publication settings:
@@ -288,7 +282,8 @@ PROPERTY-LIST is a list of properties from
          (dirname (concat path "/" category "/" date "-" permalink))
          (filename (concat dirname "/" "article-" language ".org")))
     (make-directory dirname t)
-    (copy-file banner (concat dirname "/" (file-name-nondirectory banner)))
+    (if use-banner
+        (copy-file banner (concat dirname "/" (file-name-nondirectory banner))))
     (with-temp-buffer
       (insert-file-contents template)
       (mapc

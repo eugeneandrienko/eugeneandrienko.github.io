@@ -215,7 +215,7 @@
   }
 
   .post-date {
-      font-family: Noto Sans Mono
+      font-family: Hack, monospace;
   }
   
   .post-title {
@@ -653,7 +653,7 @@
   }
 
   .post-meta {
-      font-family: Noto Sans Mono;
+      font-family: Hack, monospace;
       font-size: $small-font-size;
       color: $grey-color;
   }
@@ -703,4 +703,15 @@
               transform: translate(-50%,-50%);
         }
     }
+}
+
+/**
+ * Code
+ */
+.example {
+    font-family: Hack, monospace;
+}
+
+.src {
+    font-family: Hack, monospace;
 }

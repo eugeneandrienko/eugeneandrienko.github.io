@@ -46,6 +46,24 @@
 ;;; files with article itself. `LANG' is two-letter language code for
 ;;; language used in corresponding file with article. For example:
 ;;; `ru' or `en'.
+;;;
+;;; To use this plugin:
+;;;
+;;; 1) Load it in Emacs configuration file like this:
+;;;
+;;;        (use-package org-jekyll
+;;;          :load-path "~/rsync/blog/"
+;;;          :ensure nil
+;;;          :demand t
+;;;          :requires (org prodigy htmlize)
+;;;          :after org)
+;;;
+;;; 2) Place to the root directory of the blog (see
+;;; `org-jekyll-base-path' variable) file `.dir-locals.el' with the
+;;; next content:
+;;;
+;;;        (("articles/"
+;;;          . ((org-mode . ((eval . (org-jekyll-mode)))))))
 
 
 ;;; Code:
@@ -70,36 +88,42 @@
   "https://eugene-andrienko.com"
   "Blog URL."
   :type 'string
+  :safe 'stringp
   :group 'org-jekyll)
 
 (defcustom org-jekyll-base-path
   "~/rsync/blog"
   "Path to the base directory of my blog."
   :type 'directory
+  :safe 'file-accessible-directory-p
   :group 'org-jekyll-paths)
 
 (defcustom org-jekyll-articles-path
   (concat org-jekyll-base-path "/articles")
   "Path to directory with original articles in Org format."
   :type 'directory
+  :safe 'file-accessible-directory-p
   :group 'org-jekyll-paths)
 
 (defcustom org-jekyll-template-path
   (concat org-jekyll-articles-path "/_post_template.org")
   "Path to post template."
   :type '(file :must-match t)
+  :safe 'file-exists-p
   :group 'org-jekyll-paths)
 
 (defcustom org-jekyll-exclude-regex
   "\\(_post_template\\.org\\)\\|\\(\\.project\\)"
   "Regex to exclude unwanted files."
   :type 'regexp
+  :safe 'stringp
   :group 'org-jekyll)
 
 (defcustom org-jekyll-languages
   '("ru" "en")
   "Blog languages."
   :type 'sexp
+  :safe (lambda (x) (> (length x) 0))
   :group 'org-jekyll)
 
 ;; OrgMode publication settings:

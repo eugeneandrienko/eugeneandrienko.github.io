@@ -10,7 +10,6 @@
 ;; Package-Requires: ((emacs "29.4")
 ;;                    (htmlize "20240915.1657")
 ;;                    (org "9.6.15")
-;;                    (prodigy "20240929.1820")
 ;;                    (transient "0.6.0"))
 
 ;; This file is not part of GNU Emacs.
@@ -70,7 +69,6 @@
 
 (require 'htmlize)
 (require 'ox-publish)
-(require 'prodigy)
 (require 'transient)
 
 
@@ -303,120 +301,59 @@ PROPERTY-LIST is a list of properties from
     (with-current-buffer (find-file filename)
       (goto-char (point-max)))))
 
-;; Prodigy services to operate with Jekyll:
-
-(defvar-local org-jekyll--build-service-name
-    "Blog Build"
-  "Name of service to build blog.")
-
-(defvar-local org-jekyll--serve-service-name
-    "Blog Serve"
-  "Name of service to serve blog.")
-
-(defvar-local org-jekyll--clean-service-name
-    "Blog Clean"
-  "Name of service to clean blog directory.")
-
-(prodigy-define-status
-  :id 'done
-  :face 'prodigy-green-face)
-
-(prodigy-define-tag
-  :name 'jekyll
-  :env '(("LANG" "en_US.UTF-8")
-         ("LC_ALL" "en_US.UTF-8")))
-
-(prodigy-define-service :name org-jekyll--build-service-name
-  :command "bundle"
-  :args '("exec" "jekyll" "build")
-  :cwd org-jekyll-base-path
-  :tags '(jekyll)
-  :truncate-output 200
-  :init (lambda () (progn
-                (org-publish-project "org-jekyll" t nil)))
-  :on-output (lambda (&rest args)
-               (let ((output (plist-get args :output))
-                     (service (plist-get args :service)))
-                 (when (s-matches? "Configuration file" output)
-                   (prodigy-set-status service 'ready))
-                 (when (s-matches? "done in " output)
-                   (progn
-                     (message "%s" (propertize "Blog built" 'face '(:foreground "blue")))
-                     (prodigy-set-status service 'done)))
-                 (when (s-matches? "error" output)
-                   (progn
-                     (message "$s" (propertize "Blog build: error" 'face '(:foreground "red")))
-                     (prodigy-set-status service 'failed)))
-                 (when (s-matches? "exception" output)
-                   (progn
-                     (message "$s" (propertize "Blog build: exception" 'face '(:foreground "red")))
-                     (prodigy-set-status service 'failed))))))
-
-(prodigy-define-service :name org-jekyll--serve-service-name
-  :command "bundle"
-  :args '("exec" "jekyll" "serve")
-  :url "http://127.0.0.1:8000"
-  :cwd org-jekyll-base-path
-  :tags '(jekyll)
-  :truncate-output 100
-  :on-output (lambda (&rest args)
-               (let ((output (plist-get args :output))
-                     (service (plist-get args :service)))
-                 (when (s-matches? "Server running..." output)
-                   (progn
-                     (message "%s" (propertize "Blog served" 'face '(:foreground "blue")))
-                     (prodigy-set-status service 'ready)))
-                 (when (s-matches? "...done" output)
-                   (prodigy-set-status service 'ready))
-                 (when (s-matches? "error" output)
-                   (progn
-                     (message "%s" (propertize "Blog serve: error" 'face '(:foreground "red")))
-                     (prodigy-set-status service 'failed)))
-                 (when (s-matches? "exception" output)
-                   (progn
-                     (message "%s" (propertize "Blog serve: exception" 'face '(:foreground "red")))
-                     (prodigy-set-status service 'failed))))))
-
-(prodigy-define-service :name org-jekyll--clean-service-name
-  :command "bundle"
-  :args '("exec" "jekyll" "clean")
-  :cwd org-jekyll-base-path
-  :tags '(jekyll)
-  :truncate-output 100
-  :kill-process-buffer-on-stop t)
-
 ;; Transient sufficies:
 
 (defun org-jekyll--suffix-build ()
   "Build the blog."
   (interactive)
-  (let ((service (prodigy-find-service org-jekyll--build-service-name)))
-    (prodigy-start-service service)))
+  (cd (expand-file-name org-jekyll-paths-base-path))
+  (org-publish-project "org-jekyll" t nil)
+  (make-process
+   :name "jekyll-build"
+   :buffer "jekyll-build"
+   :command '("bundle" "exec" "jekyll" "build")
+   :sentinel (lambda (process state)
+               (cond
+                ((and (eq (process-status process) 'exit)
+                      (zerop (process-exit-status process)))
+                 (message "%s" (propertize "Blog built" 'face '(:foreground "blue"))))
+                ((eq (process-status process) 'run)
+                 (accept-process-output process))
+                (t (error (concat "Jekyll Build: " state)))))))
 
 (defun org-jekyll--suffix-serve-toggle ()
   "Serve blog or stop serving the blog."
   (interactive)
-  (let ((service (prodigy-find-service org-jekyll--serve-service-name)))
-    (if (prodigy-service-started-p service)
-        (prodigy-stop-service service nil
-          (lambda () (message "%s" (propertize "Blog serve: stopped" 'face '(:foreground "blue")))))
-      (prodigy-start-service service))))
+  (if (eq (process-status "jekyll-serve") ' run)
+      (interrupt-process "jekyll-serve")
+    (cd (expand-file-name org-jekyll-paths-base-path))
+    (make-process
+     :name "jekyll-serve"
+     :buffer "jekyll-serve"
+     :command '("bundle" "exec" "jekyll" "serve")
+     :sentinel (lambda (process state)
+                 (cond
+                  ((and (eq (process-status process) 'exit)
+                        (zerop (process-exit-status process)))
+                   (message "%s" (propertize "Blog serve: stopped" 'face '(:foreground "blue"))))
+                  ((eq (process-status process) 'run)
+                   (accept-process-output process))
+                  (t (error (concat "Jekyll Serve: " state))))))))
 
 (defun org-jekyll--suffix-open-build-log ()
   "Open build log."
   (interactive)
-  (let ((service (prodigy-find-service org-jekyll--build-service-name)))
-    (prodigy-switch-to-process-buffer service)))
+  (switch-to-buffer "jekyll-build" t))
 
 (defun org-jekyll--suffix-open-serve-log ()
   "Open serve log."
   (interactive)
-  (let ((service (prodigy-find-service org-jekyll--serve-service-name)))
-    (prodigy-switch-to-process-buffer service)))
+  (switch-to-buffer "jekyll-serve" t))
 
 (defun org-jekyll--suffix-clear ()
   "Clear blog files."
   (interactive)
+  (cd (expand-file-name org-jekyll-paths-base-path))
   (mapc (lambda (x)
           (mapc (lambda (file)
                   (delete-file file nil))
@@ -432,19 +369,33 @@ PROPERTY-LIST is a list of properties from
                                                     "\\|"
                                                     "\\.org$\\|\\.gif$\\|\\.gpx$"))
           (("/_articles") . "\\.org$")))
-  (prodigy-start-service (prodigy-find-service org-jekyll--clean-service-name))
-  (message "%s" (propertize "Blog cleaned" 'face '(:foreground "blue"))))
+  (make-process
+   :name "jekyll-clean"
+   :buffer "jekyll-clean"
+   :command '("bundle" "exec" "jekyll" "clean")
+   :sentinel (lambda (process state)
+               (cond
+                ((and (eq (process-status process) 'exit)
+                      (zerop (process-exit-status process)))
+                 (message "%s" (propertize "Blog cleaned" 'face '(:foreground "blue"))))
+                ((eq (process-status process) 'run)
+                 (accept-process-output process))
+                (t (error (concat "Jekyll Clean: " state)))))))
 
 (defun org-jekyll--suffix-open-blog ()
   "Open locally served blog."
   (interactive)
-  (let* ((service (prodigy-find-service org-jekyll--serve-service-name))
-         (url (prodigy-service-url service)))
-    (browse-url url)))
+  (browse-url "http://127.0.0.1:8000/"))
+
+(defun org-jekyll--suffix-open-remote-blog ()
+  "Open remote blog."
+  (interactive)
+  (browse-url org-jekyll-url))
 
 (defun org-jekyll--suffix-create-post ()
   "Create new blog post."
   (interactive)
+  (cd (expand-file-name org-jekyll-paths-base-path))
   (org-jekyll--create-new-post))
 
 ;; Transient keys description:
@@ -455,11 +406,11 @@ PROPERTY-LIST is a list of properties from
                 ["Development"
                  ("b" "Build blog" org-jekyll--suffix-build)
                  ("s" org-jekyll--suffix-serve-toggle
-                  :description (lambda () (if (prodigy-service-started-p
-                                          (prodigy-find-service "Blog Serve"))
+                  :description (lambda () (if (eq (process-status "jekyll-serve") 'run)
                                          "Stop serving local blog"
                                        "Serve local blog")))
                  ("o" "Open served blog" org-jekyll--suffix-open-blog)
+                 ("O" "Open blog in Web" org-jekyll--suffix-open-remote-blog)
                  ("B" "Open build log" org-jekyll--suffix-open-build-log)
                  ("l" "Open serve log" org-jekyll--suffix-open-serve-log)
                  ("C" "Clear blog directory" org-jekyll--suffix-clear)]

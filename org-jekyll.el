@@ -75,12 +75,15 @@
 
 
 (defgroup org-jekyll ()
-  "Custom group for org-jekyll plugin."
-  :group 'local)
+  "Emacs mode to write on OrgMode for Jekyll blog."
+  :group 'local
+  :prefix "org-jekyll-"
+  :link '(url-link :tag "Source code" "https://github.com/eugeneandrienko/eugeneandrienko.github.io"))
 
 (defgroup org-jekyll-paths nil
-  "Custom group for filesystem paths related to org-jekyll plugin."
-  :group 'org-jekyll)
+  "Paths for emacs mode to write on OrgMode for Jekyll blog."
+  :group 'org-jekyll
+  :prefix "org-jekyll-paths-")
 
 ;; Customizable options:
 
@@ -89,24 +92,6 @@
   "Blog URL."
   :type 'string
   :group 'org-jekyll)
-
-(defcustom org-jekyll-base-path
-  "~/rsync/blog"
-  "Path to the base directory of my blog."
-  :type 'directory
-  :group 'org-jekyll-paths)
-
-(defcustom org-jekyll-articles-path
-  (concat org-jekyll-base-path "/articles")
-  "Path to directory with original articles in Org format."
-  :type 'directory
-  :group 'org-jekyll-paths)
-
-(defcustom org-jekyll-template-path
-  (concat org-jekyll-articles-path "/_post_template.org")
-  "Path to post template."
-  :type '(file :must-match t)
-  :group 'org-jekyll-paths)
 
 (defcustom org-jekyll-exclude-regex
   "\\(_post_template\\.org\\)\\|\\(\\.project\\)"
@@ -120,13 +105,31 @@
   :type 'sexp
   :group 'org-jekyll)
 
+(defcustom org-jekyll-paths-base-path
+  "~/rsync/blog"
+  "Path to the base directory of my blog."
+  :type 'directory
+  :group 'org-jekyll-paths)
+
+(defcustom org-jekyll-paths-articles-path
+  (concat org-jekyll-paths-base-path "/articles")
+  "Path to directory with original articles in Org format."
+  :type 'directory
+  :group 'org-jekyll-paths)
+
+(defcustom org-jekyll-paths-template-path
+  (concat org-jekyll-paths-articles-path "/_post_template.org")
+  "Path to post template."
+  :type '(file :must-match t)
+  :group 'org-jekyll-paths)
+
 ;; OrgMode publication settings:
 
 (set (make-local-variable 'org-publish-project-alist)
      `(("org-jekyll-org"
-        :base-directory ,(concat org-jekyll-base-path "/_articles")
+        :base-directory ,(concat org-jekyll-paths-base-path "/_articles")
         :base-extension "org"
-        :publishing-directory ,(concat org-jekyll-base-path "/_posts")
+        :publishing-directory ,(concat org-jekyll-paths-base-path "/_posts")
         :preparation-function org-jekyll--prepare-articles
         :completion-function org-jekyll--complete-articles
         :publishing-function org-html-publish-to-html
@@ -144,13 +147,13 @@
         :exclude ,org-jekyll-exclude-regex
         :recursive t)
        ("org-jekyll-static"
-        :base-directory ,(concat org-jekyll-base-path "/_static")
-         :base-extension "jpg\\|JPG\\|jpeg\\|png\\|gif\\|webm\\|webp\\|gpx\\|tar.bz2"
-         :publishing-directory ,(concat org-jekyll-base-path "/assets/static")
-         :publishing-function org-publish-attachment
-         :preparation-function org-jekyll--prepare-static
-         :exclude ,org-jekyll-exclude-regex
-         :recursive t)
+        :base-directory ,(concat org-jekyll-paths-base-path "/_static")
+        :base-extension "jpg\\|JPG\\|jpeg\\|png\\|gif\\|webm\\|webp\\|gpx\\|tar.bz2"
+        :publishing-directory ,(concat org-jekyll-paths-base-path "/assets/static")
+        :publishing-function org-publish-attachment
+        :preparation-function org-jekyll--prepare-static
+        :exclude ,org-jekyll-exclude-regex
+        :recursive t)
        ("org-jekyll" :components ("org-jekyll-org" "org-jekyll-static"))))
 
 ;; OrgMode publication functions:
@@ -160,7 +163,7 @@
 
 Modify OrgMode file before publish it. ARTICLE is a path to
 OrgMode file with article. Files, stored in `_articles/' will be
-modified, not original articles from `org-jekyll-articles-path'
+modified, not original articles from `org-jekyll-paths-articles-path'
 path."
   (with-temp-buffer
     (insert-file-contents article)
@@ -179,7 +182,7 @@ PROPERTY-LIST is a list of properties from
   (mapc (lambda (article)
           (progn
             (string-match
-             (concat org-jekyll-articles-path
+             (concat org-jekyll-paths-articles-path
                      "/\\(\\w+\\)/\\([0-9-]+\\)-\\([[:alnum:]-]+\\)/article-\\([[:lower:]]\\{2\\}\\)\\.org$")
              article)
             (let*
@@ -199,7 +202,7 @@ PROPERTY-LIST is a list of properties from
                       (and
                        (not (string-match org-jekyll-exclude-regex path))
                        (not (string-match "\\(draft-\\)\\|\\(hidden-\\)" path))))
-                    (directory-files-recursively org-jekyll-articles-path "\\.org$" nil nil nil))))
+                    (directory-files-recursively org-jekyll-paths-articles-path "\\.org$" nil nil nil))))
 
 (defun org-jekyll--complete-articles (property-list)
   "Change published html-files via regular expressions.
@@ -238,7 +241,7 @@ PROPERTY-LIST is a list of properties from
     (make-directory static-directory t)
     (mapc (lambda (filename)
             (progn
-              (string-match (concat org-jekyll-articles-path "/[[:alnum:]-/]+/\\([[:alnum:][:blank:]-_.]+\\)$") filename)
+              (string-match (concat org-jekyll-paths-articles-path "/[[:alnum:]-/]+/\\([[:alnum:][:blank:]-_.]+\\)$") filename)
               (let
                   ((static-filename (match-string 1 filename)))
                 (copy-file filename (concat static-directory "/" static-filename) t t t t))))
@@ -246,7 +249,7 @@ PROPERTY-LIST is a list of properties from
                         (not (string-match
                               (concat org-jekyll-exclude-regex "\\|\\(article-[[:lower:]]+\\.org\\)")
                               path)))
-                      (directory-files-recursively org-jekyll-articles-path "." nil nil nil)))))
+                      (directory-files-recursively org-jekyll-paths-articles-path "." nil nil nil)))))
 
 ;; Function which creates new blog post:
 
@@ -256,7 +259,7 @@ PROPERTY-LIST is a list of properties from
   (let* ((category (completing-read "Enter category: "
                                     (seq-filter
                                      (lambda (category) (string-match "^[[:lower:]]+$" category))
-                                     (directory-files org-jekyll-articles-path nil
+                                     (directory-files org-jekyll-paths-articles-path nil
                                                       directory-files-no-dot-files-regexp
                                                       nil nil))
                                     nil t))
@@ -270,8 +273,8 @@ PROPERTY-LIST is a list of properties from
          (banner (if use-banner
                      (read-file-name "Path to banner image: " nil nil t nil nil)
                    nil))
-         (path org-jekyll-articles-path)
-         (template org-jekyll-template-path)
+         (path org-jekyll-paths-articles-path)
+         (template org-jekyll-paths-template-path)
          (additional (concat (if use-banner
                                  (concat "banner:\n"
                                          "  image: /assets/static/" (file-name-nondirectory banner) "\n"
@@ -418,7 +421,7 @@ PROPERTY-LIST is a list of properties from
           (mapc (lambda (file)
                   (delete-file file nil))
                 (mapcan (lambda (directory)
-                          (directory-files-recursively (concat org-jekyll-base-path directory) (cdr x) nil nil nil))
+                          (directory-files-recursively (concat org-jekyll-paths-base-path directory) (cdr x) nil nil nil))
                         (car x))))
         `((("/_posts/en" "/_posts/ru") . "\\.html$")
           (("/assets/static" "/_static") . ,(concat "\\.png\\|\\.jpg$\\|\\.jpeg$"

@@ -46,23 +46,13 @@
 ;;; language used in corresponding file with article. For example:
 ;;; `ru' or `en'.
 ;;;
-;;; To use this plugin:
+;;; To use this plugin load it in Emacs configuration file like this:
 ;;;
-;;; 1) Load it in Emacs configuration file like this:
-;;;
-;;;        (use-package org-jekyll
-;;;          :load-path "~/rsync/blog/"
-;;;          :ensure nil
-;;;          :demand t
-;;;          :requires (org prodigy htmlize)
-;;;          :after org)
-;;;
-;;; 2) Place to the root directory of the blog (see
-;;; `org-jekyll-base-path' variable) file `.dir-locals.el' with the
-;;; next content:
-;;;
-;;;        (("articles/"
-;;;          . ((org-mode . ((eval . (org-jekyll-mode)))))))
+;;;    (use-package org-jekyll
+;;;      :load-path "~/rsync/blog/"
+;;;      :ensure nil
+;;;      :commands org-jekyll-init
+;;;      :hook (org-mode . org-jekyll-init))
 
 
 ;;; Code:
@@ -445,10 +435,10 @@ PROPERTY-LIST is a list of properties from
     (keymap-local-unset "C-c b")))
 
 ;;;###autoload
-(defun org-jekyll-mode-hook ()
-  "Hook to enable this mode only for articles."
+(defun org-jekyll-init ()
   (if (string-match "^/.+/article-[[:lower:]]\\{2\\}\\.org" (buffer-file-name))
       (org-jekyll-mode 1)))
+
 
 (provide 'org-jekyll)
 

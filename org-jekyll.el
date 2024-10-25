@@ -465,18 +465,11 @@ PROPERTY-LIST is a list of properties from
 
 ;; Function to call main menu:
 
+;;;###autoload
 (defun org-jekyll-menu ()
   "Open blog control center."
   (interactive)
   (org-jekyll-layout-descriptions))
-
-;; Keymap:
-
-(defvar org-jekyll-mode-map
-  (let ((map (make-sparse-keymap)))
-    (define-key map (kbd "C-c b") #'org-jekyll-menu)
-    map)
-  "Mode map for `org-jekyll'.")
 
 ;; Minor mode:
 
@@ -488,23 +481,20 @@ PROPERTY-LIST is a list of properties from
   :init-value nil
   (if org-jekyll-mode
       (progn
-        (use-local-map org-jekyll-mode-map))
+        (keymap-local-set "C-c b" #'org-jekyll-menu))
     (mapc #'kill-local-variable '(org-jekyll-url
-                                  org-jekyll-base-path
-                                  org-jekyll-articles-path
-                                  org-jekyll-template-path
+                                  org-jekyll-paths-base-path
+                                  org-jekyll-paths-articles-path
+                                  org-jekyll-paths-template-path
                                   org-jekyll-exclude-regex
                                   org-jekyll-languages))
-    (mapc (lambda (service-name)
-            (let ((service (prodigy-find-service service-name)))
-              (if service
-                  (progn (if (prodigy-service-started-p service)
-                             (prodigy-stop-service service t nil))))))
-          '(org-jekyll--build-service-name
-            org-jekyll--serve-service-name
-            org-jekyll--clean-service-name))
-    (unload-feature 'org-jekyll t)))
+    (keymap-local-unset "C-c b")))
 
+;;;###autoload
+(defun org-jekyll-mode-hook ()
+  "Hook to enable this mode only for articles."
+  (if (string-match "^/.+/article-[[:lower:]]\\{2\\}\\.org" (buffer-file-name))
+      (org-jekyll-mode 1)))
 
 (provide 'org-jekyll)
 

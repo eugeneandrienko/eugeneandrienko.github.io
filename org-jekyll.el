@@ -323,6 +323,10 @@ PROPERTY-LIST is a list of properties from
      :buffer "jekyll-serve"
      :command '("bundle" "exec" "jekyll" "serve")
      :delete-exited-processes t
+     :filter (lambda (process text)
+               (if (string-match ".*done in [0-9.]+ seconds.*" text)
+                   (message "%s" (propertize "Blog serve: running" 'face '(:foreground "blue"))))
+               (internal-default-process-filter process text))
      :sentinel (lambda (process state)
                  (cond
                   ((and (eq (process-status process) 'exit)

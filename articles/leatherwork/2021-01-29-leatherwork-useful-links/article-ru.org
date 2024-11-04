@@ -13,8 +13,26 @@ hidden:
 
 В этом периодически обновляемом посте будут разные полезные ссылки, которые я
 использовал при освоении кожевенного дела.
+
+* TOC                                                            :TOC_2_blog:
+- [[* Магазины][Магазины]]
+  - [[* Кожа][Кожа]]
+  - [[* Инструменты][Инструменты]]
+  - [[* Фурнитура][Фурнитура]]
+- [[* Курсы][Курсы]]
+- [[* YouTube][YouTube]]
+- [[* Блоги][Блоги]]
+- [[* Литература][Литература]]
+- [[* ВК][ВК]]
+
 * Магазины
+:PROPERTIES:
+:CUSTOM_ID: stores
+:END:
 ** Кожа
+:PROPERTIES:
+:CUSTOM_ID: leather
+:END:
 - [[https://s-leder.ru][«S-Leder»]]. Расположен в Санкт-Петербурге по адресу Ломаная, 11. Рекомендую
   там брать кожу -- её там /невообразимо много/, а также химию — вроде красок
   для уреза, воска, Tokonole и т.д. Есть и фурнитура.
@@ -23,6 +41,9 @@ hidden:
 - [[https://vk.com/monia_leather][Кожа от Мони]]
 
 ** Инструменты
+:PROPERTIES:
+:CUSTOM_ID: tools
+:END:
 - [[https://vk.com/americanbalms][«Tools & Toys | Магазин для кожевников»]] — тоже интернет-магазин из
   Петербурга. Продают зарубежные (не китайские) и российские
   инструменты. Дорого, зато красиво и качественно.
@@ -47,6 +68,9 @@ hidden:
 - [[https://pava.pro][Пава]] (Новосибирск).
 
 ** Фурнитура
+:PROPERTIES:
+:CUSTOM_ID: furniture
+:END:
 - [[https://www.zadi.ru][«Заточка дилетанта»]]
 - [[https://vk.com/klass.prjazki][КЛАССНЫЕ ПРЯЖКИ]]
 - [[https://vk.com/mereya_leather][Mereya Leather |Натуральная кожа]] — есть много разной фурнитуры, в том числе
@@ -72,11 +96,17 @@ hidden:
 Инструменты и фурнитура из Китая: [[https://vk.com/kozhcraft][Сундук кожевника]].
 
 * Курсы
+:PROPERTIES:
+:CUSTOM_ID: courses
+:END:
 - [[https://tech-school.ru/craft-school/leather-making-course][Курс по пошиву из кожи]] в «Технаре». Именно на этом курсе я получал исходные
   знания по работе с кожей.
 - [[https://vk.com/ilovecraftspb][I LOVE CRAFT | Обучение работе с кожей]]
 
 * YouTube
+:PROPERTIES:
+:CUSTOM_ID: courses
+:END:
 - [[https://www.youtube.com/channel/UCHnr2OKRAvI7tiM2y70tS5A][Канал «LaKrono для Ремесленников»]] — полезные видео для начинающих. В первых
   видео слишком тихий звук.
 
@@ -119,6 +149,9 @@ hidden:
 - Англоязычный канал [[https://www.youtube.com/channel/UCw_8PUaXqvjSq3p1lYouXzQ][Cechaflo]].
 
 * Блоги
+:PROPERTIES:
+:CUSTOM_ID: blogs
+:END:
 - [[https://leatherstory.info][Кожевенное дело для Чайников]]. Блог интересный, в нём попадаются полезные
   лайфхаки для начинающих. Но в то же время есть и различные непонятные мне
   места -- так, например, автор пробивает отверстия на толстой коже, тогда как
@@ -138,6 +171,9 @@ hidden:
     установщики, не пресс TEP-2.
 
 * Литература
+:PROPERTIES:
+:CUSTOM_ID: literature
+:END:
 - Al Stohlman: «Leathercraft tools»
 - [[https://www.leathercrafting-journal.ru][Журнал «Кожевенное дело»]]
 - Al Stohlman: «Craftool tech-tips»
@@ -159,6 +195,9 @@ hidden:
   кожгалантерейных изделий»
 
 * ВК
+:PROPERTIES:
+:CUSTOM_ID: vk
+:END:
 - [[https://vk.com/lakrono][LaKrono для Ремесленников]]
 - [[https://vk.com/mayak_leather][Маяк: Максимально Адекватно и Ясно о Коже]] — огромное количество
   [[https://vk.com/@mayak_leather-mayak-viki][разнообразнейшей информации]] о коже и о кожевенном деле.

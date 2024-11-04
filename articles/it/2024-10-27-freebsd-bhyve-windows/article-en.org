@@ -38,7 +38,19 @@ kernel module for VirtualBox and VirtualBox Guest Addons in the guest
 system. But for now I can simply use «standard» FreeBSD capabilities — [[https://bhyve.org/][bhyve]]
 hypervisor and [[https://github.com/churchers/vm-bhyve][vm-bhyve]] virtual machines manager, which supports Windows.
 
+* TOC                                                            :TOC_2_blog:
+- [[* ZFS dataset for my VMs (optional part)][ZFS dataset for my VMs (optional part)]]
+- [[* Setup bhyve and vm-bhyve][Setup bhyve and vm-bhyve]]
+- [[* Windows profile for VM][Windows profile for VM]]
+- [[* Network setup][Network setup]]
+- [[* Windows installation][Windows installation]]
+- [[* RDP client][RDP client]]
+- [[* Basic commands to operate with VM][Basic commands to operate with VM]]
+
 * ZFS dataset for my VMs (optional part)
+:PROPERTIES:
+:CUSTOM_ID: zfs-dataset
+:END:
 
 I had an 2.5" hard drive on my shelf. It was in use and once I accidentally
 dropped it, so I was afraid to use it to store valuable data. But it works
@@ -72,6 +84,9 @@ The =hdd/vms= dataset is required for vm-bhyve to store all vm-bhyve-related
 files on this hard drive, rather than on the two main system disks.
 
 * Setup bhyve and vm-bhyve
+:PROPERTIES:
+:CUSTOM_ID: bhyve-setup
+:END:
 
 Again, all the steps are standard:
 1. Setup necessary packages:
@@ -107,6 +122,9 @@ Again, all the steps are standard:
    #+end_example
 
 * Windows profile for VM
+:PROPERTIES:
+:CUSTOM_ID: vm-profile
+:END:
 
 By default there is only one =default= profile in =/hdd/vms/.templates/=. With
 this profile the Windows VM will not have graphics, sound and enough memory.
@@ -134,6 +152,9 @@ lot. I took the profile from that post and made a few changes:
   This profile is stored in =/hdd/vms/.templates/windows.conf=.
 
 * Network setup
+:PROPERTIES:
+:CUSTOM_ID: network-setup
+:END:
 
 For unknown reasons, this step is missing from many instructions. As a result,
 there is no network access from the host to the guest.
@@ -161,6 +182,9 @@ public  standard  vm-public  169.254.0.1/16  no       -    -     -
 #+end_example
 
 * Windows installation
+:PROPERTIES:
+:CUSTOM_ID: windows-setup
+:END:
 
 There is the most non-trivial part. Most instructions recommend patching the
 distribution ISO to add the virtio drivers. Fortunately, a custom "ZverDVD"
@@ -209,6 +233,9 @@ Preparation to installation is simple:
    [[file:windows7_setup.jpg]]
 
 * RDP client
+:PROPERTIES:
+:CUSTOM_ID: rdp-client
+:END:
 
 As a Vermaden, I decided to connect to the working system via RDP. It is very
 useful to be able to connect to the system and mount host system catalogues at
@@ -245,6 +272,9 @@ To enable RDP in Windows the following steps are required:
   ignored. In some cases this can be useful.
 
 * Basic commands to operate with VM
+:PROPERTIES:
+:CUSTOM_ID: main-bhyve-vm-commands
+:END:
 
 1. Launch VM:
    #+begin_example

@@ -31,8 +31,39 @@ Lenovo ThinkPad X220 &#x2014; чтобы не забыть неочевидны�
 </ul>
 
 <div class="outline-2">
-<h2>Корректное отображение ~ в пути, в приглашении bash</h2>
+<h2>TOC&#xa0;&#xa0;&#xa0;<span class="tag"></span></h2>
 <div class="outline-text-2">
+<ul class="org-ul">
+<li><a href="#home-directory">Корректное отображение ~ в пути, в приглашении bash</a></li>
+<li><a href="#minimal-set-of-groups">Минимальный набор групп для доступа к устройствам ноутбука</a></li>
+<li><a href="#power-control">Управление питанием</a></li>
+<li><a href="#sound">Звук</a></li>
+<li><a href="#brightness">Управление яркостью</a></li>
+<li><a href="#multimedia-keys">Мультимедиа-клавиши</a></li>
+<li><a href="#touchpad-and-trackpoint">Тачпад и трекпойнт</a></li>
+<li><a href="#web-camera">Веб-камера</a></li>
+<li><a href="#sleep">Сон</a></li>
+<li><a href="#drm-kmod">Включение drm-kmod</a></li>
+<li><a href="#wifi">Wi-Fi</a></li>
+<li><a href="#misc">Разное</a></li>
+<li><a href="#update-2024-04-28">Обновление 2024-04-28</a>
+<ul class="org-ul">
+<li><a href="#s3-mode">Корректная работа режима сна</a></li>
+<li><a href="#bootlog-2k-display">Вывод лога загрузки на «второй» 2K-монитор</a></li>
+<li><a href="#boot-mess-reduce">Уменьшение количества сообщений при загрузке</a></li>
+<li><a href="#videocard-powersave">Энергосбережение для видеокарты</a></li>
+<li><a href="#intel-8260">Intel 8260</a></li>
+<li><a href="#coreboot-sound">Звук и coreboot</a></li>
+<li><a href="#gui-glitches">Глитчи в GUI</a></li>
+<li><a href="#misc-2">Разное (2)</a></li>
+</ul></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-home-directory" class="outline-2">
+<h2 id="home-directory">Корректное отображение ~ в пути, в приглашении bash</h2>
+<div class="outline-text-2" id="text-home-directory">
 <p>
 Поскольку все домашние каталоги пользователей расположены по пути <code>/usr/home/</code>,
 а <code>/home/</code> лишь символическая ссылка на вышеуказанный каталог &#x2013; в приглашении
@@ -49,9 +80,9 @@ chsh username</code>.
 </div>
 </div>
 
-<div class="outline-2">
-<h2>Минимальный набор групп для доступа к устройствам ноутбука</h2>
-<div class="outline-text-2">
+<div id="outline-container-minimal-set-of-groups" class="outline-2">
+<h2 id="minimal-set-of-groups">Минимальный набор групп для доступа к устройствам ноутбука</h2>
+<div class="outline-text-2" id="text-minimal-set-of-groups">
 <ul class="org-ul">
 <li>wheel &#x2014; нужен для sudo;</li>
 <li>video &#x2013; для доступа к <code>/dev/dri/card*</code>;</li>
@@ -60,9 +91,9 @@ chsh username</code>.
 </div>
 </div>
 
-<div class="outline-2">
-<h2>Управление питанием</h2>
-<div class="outline-text-2">
+<div id="outline-container-power-control" class="outline-2">
+<h2 id="power-control">Управление питанием</h2>
+<div class="outline-text-2" id="text-power-control">
 <p>
 Настройки для <code>/etc/rc.conf</code>:
 </p>
@@ -89,9 +120,9 @@ kern.hz=100
 </div>
 </div>
 
-<div class="outline-2">
-<h2>Звук</h2>
-<div class="outline-text-2">
+<div id="outline-container-sound" class="outline-2">
+<h2 id="sound">Звук</h2>
+<div class="outline-text-2" id="text-sound">
 <p>
 Нужно загружать модуль <code>snd_hda</code> при старте системы — для этого добавляем в
 <code>/boot/loader.conf</code>:
@@ -113,9 +144,9 @@ hint.hdaa.0.nid21.config="as=1 seq=15 device=Headphones"
 </div>
 </div>
 
-<div class="outline-2">
-<h2>Управление яркостью</h2>
-<div class="outline-text-2">
+<div id="outline-container-brightness" class="outline-2">
+<h2 id="brightness">Управление яркостью</h2>
+<div class="outline-text-2" id="text-brightness">
 <p>
 В <code>/boot/loader.conf</code> надо добавить это:
 </p>
@@ -138,9 +169,9 @@ acpi_video_load="YES"
 </div>
 </div>
 
-<div class="outline-2">
-<h2>Мультимедиа-клавиши</h2>
-<div class="outline-text-2">
+<div id="outline-container-multimedia-keys" class="outline-2">
+<h2 id="multimedia-keys">Мультимедиа-клавиши</h2>
+<div class="outline-text-2" id="text-multimedia-keys">
 <p>
 Сначала надо проверить, что модуль <code>acpi_ibm</code> уже загружен в системе.
 </p>
@@ -182,9 +213,9 @@ notify 10 {
 </div>
 </div>
 
-<div class="outline-2">
-<h2>Тачпад и трекпойнт</h2>
-<div class="outline-text-2">
+<div id="outline-container-touchpad-and-trackpoint" class="outline-2">
+<h2 id="touchpad-and-trackpoint">Тачпад и трекпойнт</h2>
+<div class="outline-text-2" id="text-touchpad-and-trackpoint">
 <p>
 Для начала надо включить поддержку Synaptics touchpad и трекпойнта в
 <code>/boot/loader.conf</code>:
@@ -217,9 +248,9 @@ hw.psm.trackpoint.upper_plateau=125
 </div>
 </div>
 
-<div class="outline-2">
-<h2>Веб-камера</h2>
-<div class="outline-text-2">
+<div id="outline-container-web-camera" class="outline-2">
+<h2 id="web-camera">Веб-камера</h2>
+<div class="outline-text-2" id="text-web-camera">
 <p>
 Нужно произвести следующие изменения в следующих файлах:
 </p>
@@ -258,9 +289,9 @@ sudo pw groupmod webcamd -m &lt;username&gt;
 </div>
 </div>
 
-<div class="outline-2">
-<h2>Сон</h2>
-<div class="outline-text-2">
+<div id="outline-container-sleep" class="outline-2">
+<h2 id="sleep">Сон</h2>
+<div class="outline-text-2" id="text-sleep">
 <p>
 Для начала должен быть загружен модуль <code>acpi_ibm</code>.
 </p>
@@ -272,9 +303,9 @@ sudo pw groupmod webcamd -m &lt;username&gt;
 </div>
 </div>
 
-<div class="outline-2">
-<h2>Включение drm-kmod</h2>
-<div class="outline-text-2">
+<div id="outline-container-drm-kmod" class="outline-2">
+<h2 id="drm-kmod">Включение drm-kmod</h2>
+<div class="outline-text-2" id="text-drm-kmod">
 <p>
 Нужно установить пакет <code>graphics/drm-kmod</code>. Затем, надо включить загрузку модуля
 <code>i915kms.ko</code> добавлением следующей строки в <code>/etc/rc.conf</code>:
@@ -286,9 +317,9 @@ kld_list="${kld_list} /boot/modules/i915kms.ko"
 </div>
 </div>
 
-<div class="outline-2">
-<h2>Wi-Fi</h2>
-<div class="outline-text-2">
+<div id="outline-container-wifi" class="outline-2">
+<h2 id="wifi">Wi-Fi</h2>
+<div class="outline-text-2" id="text-wifi">
 <p>
 Нужно добавить в <code>/boot/loader.conf</code>:
 </p>
@@ -323,9 +354,9 @@ fast_reauth=1
 </div>
 </div>
 
-<div class="outline-2">
-<h2>Разное</h2>
-<div class="outline-text-2">
+<div id="outline-container-misc" class="outline-2">
+<h2 id="misc">Разное</h2>
+<div class="outline-text-2" id="text-misc">
 <p>
 Можно добавить в <code>/boot/loader.conf</code>:
 </p>
@@ -372,9 +403,9 @@ kern.vt.enable_bell=0
 </div>
 </div>
 
-<div class="outline-2">
-<h2>Обновление 2024-04-28</h2>
-<div class="outline-text-2">
+<div id="outline-container-update-2024-04-28" class="outline-2">
+<h2 id="update-2024-04-28">Обновление 2024-04-28</h2>
+<div class="outline-text-2" id="text-update-2024-04-28">
 <p>
 На данный момент в моем Thinkpad'е используется coreboot вместо BIOS, к
 материнской плате припаяна плата AGAN X230 для 2K-дисплея, а в качестве ОС
@@ -383,9 +414,9 @@ kern.vt.enable_bell=0
 </p>
 </div>
 
-<div class="outline-3">
-<h3>Корректная работа режима сна</h3>
-<div class="outline-text-3">
+<div id="outline-container-s3-mode" class="outline-3">
+<h3 id="s3-mode">Корректная работа режима сна</h3>
+<div class="outline-text-3" id="text-s3-mode">
 <p>
 Из коробки, режим сна работал странно. Команда <code>sudo zzz</code> успешно уводила
 ноутбук в сон, потом он просыпался и даже успевал показать экран с i3wm, но
@@ -426,9 +457,9 @@ hw.acpi.lid_switch_state=S3
 </div>
 </div>
 
-<div class="outline-3">
-<h3>Вывод лога загрузки на «второй» 2K-монитор</h3>
-<div class="outline-text-3">
+<div id="outline-container-bootlog-2k-display" class="outline-3">
+<h3 id="bootlog-2k-display">Вывод лога загрузки на «второй» 2K-монитор</h3>
+<div class="outline-text-3" id="text-bootlog-2k-display">
 <p>
 Coreboot с SeaBIOS payload и загрузчик FreeBSD дружат очень плохо. Настолько
 плохо, что на экране сверху будет отображаться узкая полоска чего-то вроде
@@ -455,9 +486,9 @@ vbe_max_resolution=2560x1440
 </div>
 </div>
 
-<div class="outline-3">
-<h3>Уменьшение количества сообщений при загрузке</h3>
-<div class="outline-text-3">
+<div id="outline-container-boot-mess-reduce" class="outline-3">
+<h3 id="boot-mess-reduce">Уменьшение количества сообщений при загрузке</h3>
+<div class="outline-text-3" id="text-boot-mess-reduce">
 <p>
 В <code>/boot/loader.conf</code> добавить:
 </p>
@@ -474,9 +505,9 @@ rc_startmsgs="NO"
 </div>
 </div>
 
-<div class="outline-3">
-<h3>Энергосбережение для видеокарты</h3>
-<div class="outline-text-3">
+<div id="outline-container-videocard-powersave" class="outline-3">
+<h3 id="videocard-powersave">Энергосбережение для видеокарты</h3>
+<div class="outline-text-3" id="text-videocard-powersave">
 <p>
 В <code>/boot/loader.conf</code> добавить строки:
 </p>
@@ -488,9 +519,9 @@ drm.i915.intel_iommu_enabled="1"
 </div>
 </div>
 
-<div class="outline-3">
-<h3>Intel 8260</h3>
-<div class="outline-text-3">
+<div id="outline-container-intel-8260" class="outline-3">
+<h3 id="intel-8260">Intel 8260</h3>
+<div class="outline-text-3" id="text-intel-8260">
 <p>
 В ноутбуке теперь стоит аналог WiFi-карты Intel 8260 и лучший способ заставить
 WiFi работать на полную катушку — это использовать <a href="https://man.freebsd.org/cgi/man.cgi?query=wifibox&amp;apropos=0&amp;sektion=8&amp;manpath=freebsd-ports&amp;format=html">wifibox</a>. Его настройка
@@ -503,12 +534,12 @@ WiFi работать на полную катушку — это исполь�
 </div>
 </div>
 
-<div class="outline-3">
-<h3>Звук и coreboot</h3>
-<div class="outline-text-3">
+<div id="outline-container-coreboot-sound" class="outline-3">
+<h3 id="coreboot-sound">Звук и coreboot</h3>
+<div class="outline-text-3" id="text-coreboot-sound">
 <p>
 После замены оригинального BIOS на coreboot поменялись nID для звуковой карты
-и совет выше, из раздела <a href="#org2e6f7c0">Звук</a>, перестал работать. Как и аудио в наушниках,
+и совет выше, из раздела <a href="#sound">Звук</a>, перестал работать. Как и аудио в наушниках,
 подключенных через 3.5 мм джек.
 </p>
 
@@ -531,9 +562,9 @@ hint.hdaa.0.nid35.config="as=1 seq=15 device=Headphones"
 </div>
 </div>
 
-<div class="outline-3">
-<h3>Глитчи в GUI</h3>
-<div class="outline-text-3">
+<div id="outline-container-gui-glitches" class="outline-3">
+<h3 id="gui-glitches">Глитчи в GUI</h3>
+<div class="outline-text-3" id="text-gui-glitches">
 <p>
 Спустя какое-то время работы у меня возникали чёрные квадраты и (изредка)
 полосы на экране. Вероятно, это как-то связано с coreboot — замена драйвера
@@ -578,9 +609,9 @@ drm.i915.enable_fbc="1"
 </div>
 </div>
 
-<div class="outline-3">
-<h3>Разное (2)</h3>
-<div class="outline-text-3">
+<div id="outline-container-misc-2" class="outline-3">
+<h3 id="misc-2">Разное (2)</h3>
+<div class="outline-text-3" id="text-misc-2">
 <p>
 Для большей отзывчивости десктопа под высокой нагрузкой, я добавил в
 <code>/etc/sysctl.conf</code>:

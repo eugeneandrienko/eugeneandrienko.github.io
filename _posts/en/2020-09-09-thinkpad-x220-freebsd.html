@@ -30,8 +30,39 @@ This post based on information from the next pages:
 </ul>
 
 <div class="outline-2">
-<h2>Show ~ for current directory path in bash prompt</h2>
+<h2>TOC&#xa0;&#xa0;&#xa0;<span class="tag"></span></h2>
 <div class="outline-text-2">
+<ul class="org-ul">
+<li><a href="#home-directory">Show ~ for current directory path in bash prompt</a></li>
+<li><a href="#minimal-set-of-groups">Minimal set of groups</a></li>
+<li><a href="#power-control">Power control</a></li>
+<li><a href="#sound">Sound</a></li>
+<li><a href="#brightness">Brightness control</a></li>
+<li><a href="#multimedia-keys">Multimedia keys</a></li>
+<li><a href="#touchpad-and-trackpoint">Touchpad and trackpoint</a></li>
+<li><a href="#web-camera">Web-camera</a></li>
+<li><a href="#sleep">Sleep</a></li>
+<li><a href="#drm-kmod">Enable drm-kmod</a></li>
+<li><a href="#wifi">Wi-Fi</a></li>
+<li><a href="#misc">Miscellaneous</a></li>
+<li><a href="#update-2024-04-28">2024-04-28 update</a>
+<ul class="org-ul">
+<li><a href="#s3-mode">Working sleep mode (S3)</a></li>
+<li><a href="#bootlog-2k-display">Output boot-log to «secondary» 2K-display</a></li>
+<li><a href="#boot-mess-reduce">Reduce count of messages from system when booting</a></li>
+<li><a href="#videocard-powersave">Powersaving for videocard</a></li>
+<li><a href="#intel-8260">Intel 8260</a></li>
+<li><a href="#coreboot-sound">Sound and coreboot</a></li>
+<li><a href="#gui-glitches">GUI glitches</a></li>
+<li><a href="#misc-2">Miscellaneous (2)</a></li>
+</ul></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-home-directory" class="outline-2">
+<h2 id="home-directory">Show ~ for current directory path in bash prompt</h2>
+<div class="outline-text-2" id="text-home-directory">
 <p>
 In FreeBSD all users' home catalogs placed in <code>/usr/home/</code>. The <code>/home/</code> is just a
 symbolic link to <code>/usr/home/</code>. So, thats why in command prompt <code>\w</code> will be
@@ -46,9 +77,9 @@ this.
 </div>
 </div>
 
-<div class="outline-2">
-<h2>Minimal set of groups</h2>
-<div class="outline-text-2">
+<div id="outline-container-minimal-set-of-groups" class="outline-2">
+<h2 id="minimal-set-of-groups">Minimal set of groups</h2>
+<div class="outline-text-2" id="text-minimal-set-of-groups">
 <dl class="org-dl">
 <dt><code>wheel</code></dt><dd>for sudo</dd>
 <dt><code>video</code></dt><dd>grants access to <code>/dev/dri/card*</code></dd>
@@ -57,9 +88,9 @@ this.
 </div>
 </div>
 
-<div class="outline-2">
-<h2>Power control</h2>
-<div class="outline-text-2">
+<div id="outline-container-power-control" class="outline-2">
+<h2 id="power-control">Power control</h2>
+<div class="outline-text-2" id="text-power-control">
 <p>
 <code>/etc/rc.conf</code> settings:
 </p>
@@ -86,9 +117,9 @@ Thanks to these settings — notebook will become slowly but more energy-saving.
 </div>
 </div>
 
-<div class="outline-2">
-<h2>Sound</h2>
-<div class="outline-text-2">
+<div id="outline-container-sound" class="outline-2">
+<h2 id="sound">Sound</h2>
+<div class="outline-text-2" id="text-sound">
 <p>
 Need to load <code>snd_hda</code> module on system startup. Add this to <code>/boot/loader.conf</code>:
 </p>
@@ -109,9 +140,9 @@ hint.hdaa.0.nid21.config="as=1 seq=15 device=Headphones"
 </div>
 </div>
 
-<div class="outline-2">
-<h2>Brightness control</h2>
-<div class="outline-text-2">
+<div id="outline-container-brightness" class="outline-2">
+<h2 id="brightness">Brightness control</h2>
+<div class="outline-text-2" id="text-brightness">
 <p>
 Add these lines to <code>/boot/loader.conf</code>:
 </p>
@@ -130,9 +161,9 @@ setup).
 </div>
 </div>
 
-<div class="outline-2">
-<h2>Multimedia keys</h2>
-<div class="outline-text-2">
+<div id="outline-container-multimedia-keys" class="outline-2">
+<h2 id="multimedia-keys">Multimedia keys</h2>
+<div class="outline-text-2" id="text-multimedia-keys">
 <p>
 First, module <code>acpi_ibm</code> should be already loaded in system.
 </p>
@@ -174,9 +205,9 @@ argument.
 </div>
 </div>
 
-<div class="outline-2">
-<h2>Touchpad and trackpoint</h2>
-<div class="outline-text-2">
+<div id="outline-container-touchpad-and-trackpoint" class="outline-2">
+<h2 id="touchpad-and-trackpoint">Touchpad and trackpoint</h2>
+<div class="outline-text-2" id="text-touchpad-and-trackpoint">
 <p>
 First, enable Synaptics touchpad and trackpoint support in <code>/boot/loader.conf</code>:
 </p>
@@ -203,9 +234,9 @@ hw.psm.trackpoint.upper_plateau=125
 </div>
 </div>
 
-<div class="outline-2">
-<h2>Web-camera</h2>
-<div class="outline-text-2">
+<div id="outline-container-web-camera" class="outline-2">
+<h2 id="web-camera">Web-camera</h2>
+<div class="outline-text-2" id="text-web-camera">
 <p>
 Make next changes in next files:
 </p>
@@ -231,9 +262,9 @@ sudo pw groupmod webcamd -m &lt;username&gt;
 </div>
 </div>
 
-<div class="outline-2">
-<h2>Sleep</h2>
-<div class="outline-text-2">
+<div id="outline-container-sleep" class="outline-2">
+<h2 id="sleep">Sleep</h2>
+<div class="outline-text-2" id="text-sleep">
 <p>
 First, the module <code>acpi_ibm</code> should be loaded:
 </p>
@@ -244,9 +275,9 @@ Then, we can go to sleep mode via <code>acpiconf -s 3</code> command. Or via <co
 </div>
 </div>
 
-<div class="outline-2">
-<h2>Enable drm-kmod</h2>
-<div class="outline-text-2">
+<div id="outline-container-drm-kmod" class="outline-2">
+<h2 id="drm-kmod">Enable drm-kmod</h2>
+<div class="outline-text-2" id="text-drm-kmod">
 <p>
 Install the package <code>graphics/drm-kmod</code>. After, enable module <code>i915kms.ko</code> — add
 next line to <code>/etc/rc.conf</code>:
@@ -258,9 +289,9 @@ kld_list="${kld_list} /boot/modules/i915kms.ko"
 </div>
 </div>
 
-<div class="outline-2">
-<h2>Wi-Fi</h2>
-<div class="outline-text-2">
+<div id="outline-container-wifi" class="outline-2">
+<h2 id="wifi">Wi-Fi</h2>
+<div class="outline-text-2" id="text-wifi">
 <p>
 Add next lines to <code>/boot/loader.conf</code>:
 </p>
@@ -295,9 +326,9 @@ fast_reauth=1
 </div>
 </div>
 
-<div class="outline-2">
-<h2>Miscellaneous</h2>
-<div class="outline-text-2">
+<div id="outline-container-misc" class="outline-2">
+<h2 id="misc">Miscellaneous</h2>
+<div class="outline-text-2" id="text-misc">
 <p>
 You can add next lines to <code>/boot/loader.conf</code>:
 </p>
@@ -343,9 +374,9 @@ kern.vt.enable_bell=0
 </div>
 </div>
 
-<div class="outline-2">
-<h2>2024-04-28 update</h2>
-<div class="outline-text-2">
+<div id="outline-container-update-2024-04-28" class="outline-2">
+<h2 id="update-2024-04-28">2024-04-28 update</h2>
+<div class="outline-text-2" id="text-update-2024-04-28">
 <p>
 Now, I am using coreboot instead of BIOS on my Thinkpad. Also, I soldered
 expansion board AGAN X230 to my motherboard to use nice and shiny
@@ -354,9 +385,9 @@ update:
 </p>
 </div>
 
-<div class="outline-3">
-<h3>Working sleep mode (S3)</h3>
-<div class="outline-text-3">
+<div id="outline-container-s3-mode" class="outline-3">
+<h3 id="s3-mode">Working sleep mode (S3)</h3>
+<div class="outline-text-3" id="text-s3-mode">
 <p>
 Out of the box, the sleep mode is working incorrectly. Command <code>sudo zzz</code> nice
 switches laptop to sleep mode. <b>But</b>, after wakeup I can see screen with i3wm
@@ -401,9 +432,9 @@ hw.acpi.lid_switch_state=S3
 </div>
 </div>
 
-<div class="outline-3">
-<h3>Output boot-log to «secondary» 2K-display</h3>
-<div class="outline-text-3">
+<div id="outline-container-bootlog-2k-display" class="outline-3">
+<h3 id="bootlog-2k-display">Output boot-log to «secondary» 2K-display</h3>
+<div class="outline-text-3" id="text-bootlog-2k-display">
 <p>
 Coreboot with SeaBIOS payload FreeBSD bootloader don't works very well
 together. If you try to boot FreeBSD on the machine with coreboot, you'll see
@@ -429,9 +460,9 @@ vbe_max_resolution=2560x1440
 </div>
 </div>
 
-<div class="outline-3">
-<h3>Reduce count of messages from system when booting</h3>
-<div class="outline-text-3">
+<div id="outline-container-boot-mess-reduce" class="outline-3">
+<h3 id="boot-mess-reduce">Reduce count of messages from system when booting</h3>
+<div class="outline-text-3" id="text-boot-mess-reduce">
 <p>
 Add to <code>/boot/loader.conf</code>:
 </p>
@@ -448,9 +479,9 @@ rc_startmsgs="NO"
 </div>
 </div>
 
-<div class="outline-3">
-<h3>Powersaving for videocard</h3>
-<div class="outline-text-3">
+<div id="outline-container-videocard-powersave" class="outline-3">
+<h3 id="videocard-powersave">Powersaving for videocard</h3>
+<div class="outline-text-3" id="text-videocard-powersave">
 <p>
 Add next lines to <code>/boot/loader.conf</code>:
 </p>
@@ -462,9 +493,9 @@ drm.i915.intel_iommu_enabled="1"
 </div>
 </div>
 
-<div class="outline-3">
-<h3>Intel 8260</h3>
-<div class="outline-text-3">
+<div id="outline-container-intel-8260" class="outline-3">
+<h3 id="intel-8260">Intel 8260</h3>
+<div class="outline-text-3" id="text-intel-8260">
 <p>
 Because now I'm using WiFi-card Intel 8260 — it should be configured via
 <a href="https://man.freebsd.org/cgi/man.cgi?query=wifibox&amp;apropos=0&amp;sektion=8&amp;manpath=freebsd-ports&amp;format=html">wifibox</a> to use full power of WiFi. Wifibox configuration is simple, takes near
@@ -477,13 +508,13 @@ Because now I'm using WiFi-card Intel 8260 — it should be configured via
 </div>
 </div>
 
-<div class="outline-3">
-<h3>Sound and coreboot</h3>
-<div class="outline-text-3">
+<div id="outline-container-coreboot-sound" class="outline-3">
+<h3 id="coreboot-sound">Sound and coreboot</h3>
+<div class="outline-text-3" id="text-coreboot-sound">
 <p>
 Some system internals (nIDs) changed after installation of coreboot instead of
 BIOS. As a result: there is no sound in headphones, connected via 3.5mm
-jack. Instruction from <a href="#org8786025">Sound</a> section became unapplicable.
+jack. Instruction from <a href="#sound">Sound</a> section became unapplicable.
 </p>
 
 <p>
@@ -505,9 +536,9 @@ hint.hdaa.0.nid35.config="as=1 seq=15 device=Headphones"
 </div>
 </div>
 
-<div class="outline-3">
-<h3>GUI glitches</h3>
-<div class="outline-text-3">
+<div id="outline-container-gui-glitches" class="outline-3">
+<h3 id="gui-glitches">GUI glitches</h3>
+<div class="outline-text-3" id="text-gui-glitches">
 <p>
 After some time of working, there are black squares and (rarely) lines appears
 on the screen. Maybe there are because of coreboot. When I switch from <code>intel</code>
@@ -552,9 +583,9 @@ drm.i915.enable_fbc="1"
 </div>
 </div>
 
-<div class="outline-3">
-<h3>Miscellaneous (2)</h3>
-<div class="outline-text-3">
+<div id="outline-container-misc-2" class="outline-3">
+<h3 id="misc-2">Miscellaneous (2)</h3>
+<div class="outline-text-3" id="text-misc-2">
 <p>
 To decrease desktop latency under the high load, add next lines to
 <code>/etc/sysctl.conf</code>:

@@ -47,8 +47,23 @@ FreeBSD же работать с виртуальными машинами ещ�
 </p>
 
 <div class="outline-2">
-<h2>ZFS dataset под виртуальные машины (необязательная часть)</h2>
+<h2>TOC&#xa0;&#xa0;&#xa0;<span class="tag"></span></h2>
 <div class="outline-text-2">
+<ul class="org-ul">
+<li><a href="#zfs-dataset">ZFS dataset под виртуальные машины (необязательная часть)</a></li>
+<li><a href="#bhyve-setup">Установка bhyve и vm-bhyve</a></li>
+<li><a href="#vm-profile">Профиль VM для Windows</a></li>
+<li><a href="#network-setup">Настройка сети</a></li>
+<li><a href="#windows-setup">Установка Windows</a></li>
+<li><a href="#rdp-client">RDP клиент</a></li>
+<li><a href="#main-bhyve-vm-commands">Основные команды для работы с VM</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-zfs-dataset" class="outline-2">
+<h2 id="zfs-dataset">ZFS dataset под виртуальные машины (необязательная часть)</h2>
+<div class="outline-text-2" id="text-zfs-dataset">
 <p>
 У меня как раз валялся на полке ненужный 2.5" дюймовый жёсткий диск на
 500 Гб. Он мне достался уже б/у, к тому же я его разок уронил и потому не
@@ -90,9 +105,9 @@ Dataset <code>hdd/vms</code> нужен будет для vm-bhyve, чтобы �
 </div>
 </div>
 
-<div class="outline-2">
-<h2>Установка bhyve и vm-bhyve</h2>
-<div class="outline-text-2">
+<div id="outline-container-bhyve-setup" class="outline-2">
+<h2 id="bhyve-setup">Установка bhyve и vm-bhyve</h2>
+<div class="outline-text-2" id="text-bhyve-setup">
 <p>
 Тут тоже всё достаточно стандартно:
 </p>
@@ -141,9 +156,9 @@ drwxr-xr-x  2 root wheel    4B Oct 27 10:53 .templates/
 </div>
 </div>
 
-<div class="outline-2">
-<h2>Профиль VM для Windows</h2>
-<div class="outline-text-2">
+<div id="outline-container-vm-profile" class="outline-2">
+<h2 id="vm-profile">Профиль VM для Windows</h2>
+<div class="outline-text-2" id="text-vm-profile">
 <p>
 По умолчанию в <code>/hdd/vms/.templates/</code> лежит только профиль <code>default</code>, с которым у
 виртуальной машины с Windows не будет ни графики, ни звука, ни достаточной
@@ -183,9 +198,9 @@ bhyve_options="-s 8,hda,play=/dev/dsp,rec=/dev/dsp"
 </div>
 </div>
 
-<div class="outline-2">
-<h2>Настройка сети</h2>
-<div class="outline-text-2">
+<div id="outline-container-network-setup" class="outline-2">
+<h2 id="network-setup">Настройка сети</h2>
+<div class="outline-text-2" id="text-network-setup">
 <p>
 Почему-то этот пункт пропускается во многих руководствах — в итоге из хоста
 нет доступа к установленной гостевой системе по сети.
@@ -226,9 +241,9 @@ public  standard  vm-public  169.254.0.1/16  no       -    -     -
 </div>
 </div>
 
-<div class="outline-2">
-<h2>Установка Windows</h2>
-<div class="outline-text-2">
+<div id="outline-container-windows-setup" class="outline-2">
+<h2 id="windows-setup">Установка Windows</h2>
+<div class="outline-text-2" id="text-windows-setup">
 <p>
 Это самая нетривиальная часть. Во многих руководствах пишут, что надо
 специальным образом патчить ISO с дистрибутивом, чтобы подсунуть туда нужные
@@ -300,9 +315,9 @@ windows  default    uefi    2    6G      0.0.0.0:5900  No    Locked (freebsd)
 </div>
 </div>
 
-<div class="outline-2">
-<h2>RDP клиент</h2>
-<div class="outline-text-2">
+<div id="outline-container-rdp-client" class="outline-2">
+<h2 id="rdp-client">RDP клиент</h2>
+<div class="outline-text-2" id="text-rdp-client">
 <p>
 Как и Vermaden, я решил, что удобнее всего будет подключаться к системе по
 RDP. Слишком уж ценна возможность одновременно пробросить каталоги с хоста в
@@ -365,9 +380,9 @@ X-сервера в гостевую систему и обратно.
 </div>
 </div>
 
-<div class="outline-2">
-<h2>Основные команды для работы с VM</h2>
-<div class="outline-text-2">
+<div id="outline-container-main-bhyve-vm-commands" class="outline-2">
+<h2 id="main-bhyve-vm-commands">Основные команды для работы с VM</h2>
+<div class="outline-text-2" id="text-main-bhyve-vm-commands">
 <ol class="org-ol">
 <li><p>
 Запуск виртуальной машины:

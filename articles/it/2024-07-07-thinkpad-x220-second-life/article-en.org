@@ -72,7 +72,26 @@ someone has to keep doing fun things, right?
 #+ATTR_HTML: :align center :alt meme
 [[file:d71f964b-c3d0-d724-a205-dfe2fcbe9d5a-en.jpg]]
 
+* TOC                                                            :TOC_2_blog:
+- [[* Installing a new 2K screen][Installing a new 2K screen]]
+  - [[* Flashing the coreboot][Flashing the coreboot]]
+  - [[* Installing the new display][Installing the new display]]
+  - [[* New display and FreeBSD][New display and FreeBSD]]
+- [[* Replacing the WiFi module][Replacing the WiFi module]]
+- [[* Replacing the keyboard][Replacing the keyboard]]
+- [[* Laptop power][Laptop power]]
+  - [[* Battery recelling][Battery recelling]]
+  - [[* Second battery for the laptop (unfinished)][Second battery for the laptop (unfinished)]]
+- [[* Additional connectors and buttons][Additional connectors and buttons]]
+- [[* Stitching a new case][Stitching a new case]]
+- [[* Final result][Final result]]
+- [[* 17.07.2024 update][17.07.2024 update]]
+- [[* Notes][Notes]]
+
 * Installing a new 2K screen
+:PROPERTIES:
+:CUSTOM_ID: new-screen-installation
+:END:
 
 Of course, I started with the thing that bothered me the most — the display. I
 wanted my X220 to have a matte display with a resolution like a MacBook's
@@ -230,6 +249,9 @@ from the first time. So I can say that this is not the most difficult stage of
 laptop modification, the main thing is not to hurry and solder carefully.
 
 ** Flashing the coreboot
+:PROPERTIES:
+:CUSTOM_ID: coreboot-flashing
+:END:
 
 Unfortunately, the new display didn't work in BIOS or GRUB — only in Linux:
 
@@ -432,6 +454,9 @@ need a bit more equipment than I have now, and a few more motherboards and
 on the only (out of two) working boards.
 
 ** Installing the new display
+:PROPERTIES:
+:CUSTOM_ID: set-new-display
+:END:
 
 What remains is ... to install the display in its rightful place.
 
@@ -550,6 +575,9 @@ really like them.
 [[file:peakperformance.jpg]]
 
 ** New display and FreeBSD
+:PROPERTIES:
+:CUSTOM_ID: new-display-freebsd
+:END:
 
 Naturally, the new expansion board and the new display required certain
 changes in the software as well. First, I adjusted the DPI according [[https://wiki.archlinux.org/title/HiDPI#X_Resources][to the
@@ -683,6 +711,9 @@ https://github.com/eugeneandrienko/brightness_x220_agan2k, the manual is also
 there.
 
 * Replacing the WiFi module
+:PROPERTIES:
+:CUSTOM_ID: wifi-module-replacement
+:END:
 
 After that there was nothing to stop me. Having replaced the original BIOS
 with coreboot, I realized that I could plug any suitable peripheral inside my
@@ -771,6 +802,9 @@ exposed it's features and I was forced to use wifibox.
 [[file:wifi.jpg]]
 
 * Replacing the keyboard
+:PROPERTIES:
+:CUSTOM_ID: keyboard-replacement
+:END:
 
 Originally, my laptop had a keyboard with a UK[fn:kbd_layouts] layout, which I
 really dislike — I've always used keyboards with an US layout. Having to
@@ -836,6 +870,9 @@ some reason.
 [[file:left_ctrl.jpg]]
 
 * Laptop power
+:PROPERTIES:
+:CUSTOM_ID: notebook-power
+:END:
 
 Here I started by replacing the charger. In principle, the original charger is
 excellent in its reliability and unbreakability and there is no need to change
@@ -862,6 +899,9 @@ gave up on this idea. Such a connector doesn't look particularly reliable —
 I'd rather go for a traditional "barrel", it looks more reliable for me.
 
 ** Battery recelling
+:PROPERTIES:
+:CUSTOM_ID: battery-recelling
+:END:
 
 I had two, time-affected batteries:
 1. Thinkpad Battery 29+ 6-cell battery — with it, the laptop lived for about
@@ -1031,6 +1071,9 @@ battery I received was fine — it charged properly and provided 5-6 hours of
 battery life while surfing the web.
 
 ** Second battery for the laptop (unfinished)
+:PROPERTIES:
+:CUSTOM_ID: second-battery
+:END:
 
 For a long time, I've wanted to add a second battery to my laptop — the
 [[https://www.thinkwiki.org/wiki/ThinkPad_Battery_19%2B][ThinkPad Battery 19+]]. It's a big, heavy, and reliable 6-cell battery that
@@ -1139,6 +1182,9 @@ Someday I will think about the problem of embedding the battery into the
 docking station, but not now....
 
 * Additional connectors and buttons
+:PROPERTIES:
+:CUSTOM_ID: additional-ports
+:END:
 
 However, I can still use the docking station to keep all sorts of connectors
 behind the laptop — no wires to prevent me from putting a mug of tea on the
@@ -1337,6 +1383,9 @@ slot, didn't get warm and didn't turn off after ~10 minutes in use.
 [[file:bc398_notebook.jpg]]
 
 * Stitching a new case
+:PROPERTIES:
+:CUSTOM_ID: new-case
+:END:
 
 With such a laptop you don't want to use an ordinary cloth case from
 mass-market. And let's be honest, you can't find a case for such a machine
@@ -1415,6 +1464,9 @@ The notebook fits in it like a glove — obviously it couldn't be otherwise, if
 everything was carefully measured and calculated beforehand :-).
 
 * Final result
+:PROPERTIES:
+:CUSTOM_ID: results
+:END:
 
 #+CAPTION: Laptop before all modifications
 #+ATTR_HTML: :align center :alt notebook before modifications
@@ -1442,6 +1494,9 @@ eating up 8 GB per tab, it's going to be tough.
 -----------------------------------------------------------------------------
 
 * 17.07.2024 update
+:PROPERTIES:
+:CUSTOM_ID: update-17-07-2024
+:END:
 
 Unfortunately, the display died after a couple months of use. After the laptop
 was turned on in the sunlight so that the sun was shining on the bottom
@@ -1468,6 +1523,9 @@ At the moment the screen is stable again and is not going to break.
 -----------------------------------------------------------------------------
 
 * Notes
+:PROPERTIES:
+:CUSTOM_ID: notes
+:END:
 
 [fn:pause] I use the =Pause= button to pause applications that load the
 processor to 100% but I need it for something else. I also use it to save

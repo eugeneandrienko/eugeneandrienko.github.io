@@ -123,6 +123,29 @@ For example:
 ,#+end_export
 #+end_src
 
+** Table Of Contents
+It is realized via [[https://github.com/snosov1/toc-org][toc-org]] plugin with the next configuration:
+#+begin_src emacs-lisp
+(use-package toc-org
+  :pin melpa
+  :hook (org-mode . toc-org-mode)
+  :config
+  (defun toc-org-hrefify-blog (str &optional hash)
+    (concat "* " (toc-org-format-visible-link str))))
+#+end_src
+
+Every header with 1st or 2nd level should have "custom ID" defined:
+#+begin_src org
+,* Header
+  ,:PROPERTIES:
+  ,:CUSTOM_ID: header-id
+  ,:END:
+#+end_src
+
+To generate TOC a special heading *after* any preamble text and before first
+heading of 1st level should be inserted. This header should has =TOC_2_blog=
+tag. After file save, a valid TOC will be automatically generated.
+
 * How to build blog
 
 Just eval =org-jekyll.org= file in Emacs, enable =org-jekyll-mode= minor mode and

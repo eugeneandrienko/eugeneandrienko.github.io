@@ -94,8 +94,34 @@ WiFi-карты и прочую внутреннюю периферию, кот�
 </div>
 
 <div class="outline-2">
-<h2>Установка нового 2K экрана</h2>
+<h2>TOC&#xa0;&#xa0;&#xa0;<span class="tag"></span></h2>
 <div class="outline-text-2">
+<ul class="org-ul">
+<li><a href="#new-screen-installation">Установка нового 2K экрана</a>
+<ul class="org-ul">
+<li><a href="#coreboot-flashing">Прошивка coreboot</a></li>
+<li><a href="#set-new-display">Установка нового дисплея</a></li>
+<li><a href="#new-display-freebsd">Новый дисплей и FreeBSD</a></li>
+</ul></li>
+<li><a href="#wifi-module-replacement">Замена WiFi модуля</a></li>
+<li><a href="#keyboard-replacement">Замена клавиатуры</a></li>
+<li><a href="#notebook-power">Питание ноутбука</a>
+<ul class="org-ul">
+<li><a href="#battery-recelling">Battery recelling</a></li>
+<li><a href="#second-battery">Встраивание второго аккумулятора в ноутбук (незаконченное)</a></li>
+</ul></li>
+<li><a href="#additional-ports">Дополнительные разъёмы и кнопочки</a></li>
+<li><a href="#new-case">Прошивка нового чехла</a></li>
+<li><a href="#results">Итоговые результаты</a></li>
+<li><a href="#update-17-07-2024">Апдейт за 17.07.2024</a></li>
+<li><a href="#notes">Примечания</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-new-screen-installation" class="outline-2">
+<h2 id="new-screen-installation">Установка нового 2K экрана</h2>
+<div class="outline-text-2" id="text-new-screen-installation">
 <p>
 Естественно, я начал с того, что беспокоило меня больше всего — с
 дисплея. Хотелось, чтобы у моего X220 был экран с разрешением как у макбука и
@@ -322,9 +348,9 @@ Lenovo — закинул в угол сломанную плату и пост
 </p>
 </div>
 
-<div class="outline-3">
-<h3>Прошивка coreboot</h3>
-<div class="outline-text-3">
+<div id="outline-container-coreboot-flashing" class="outline-3">
+<h3 id="coreboot-flashing">Прошивка coreboot</h3>
+<div class="outline-text-3" id="text-coreboot-flashing">
 <p>
 К сожалению, новый дисплей не работал ни в BIOS, ни в GRUB — только в Linux:
 </p>
@@ -607,9 +633,9 @@ coreboot «с нуля» я включил пару опций, которых �
 </div>
 </div>
 
-<div class="outline-3">
-<h3>Установка нового дисплея</h3>
-<div class="outline-text-3">
+<div id="outline-container-set-new-display" class="outline-3">
+<h3 id="set-new-display">Установка нового дисплея</h3>
+<div class="outline-text-3" id="text-set-new-display">
 <p>
 Осталось &#x2026; установить дисплей на его законное место.
 </p>
@@ -792,9 +818,9 @@ coreboot «с нуля» я включил пару опций, которых �
 </div>
 </div>
 
-<div class="outline-3">
-<h3>Новый дисплей и FreeBSD</h3>
-<div class="outline-text-3">
+<div id="outline-container-new-display-freebsd" class="outline-3">
+<h3 id="new-display-freebsd">Новый дисплей и FreeBSD</h3>
+<div class="outline-text-3" id="text-new-display-freebsd">
 <p>
 Естественно, что новая плата, припаянная к материнке, и новый дисплей
 потребовали определённых изменений и в софте. Сначала я настроил DPI <a href="https://wiki.archlinux.org/title/HiDPI#X_Resources">по
@@ -977,9 +1003,9 @@ Linux. Правда, вместо правила для devd придётся и
 </div>
 </div>
 
-<div class="outline-2">
-<h2>Замена WiFi модуля</h2>
-<div class="outline-text-2">
+<div id="outline-container-wifi-module-replacement" class="outline-2">
+<h2 id="wifi-module-replacement">Замена WiFi модуля</h2>
+<div class="outline-text-2" id="text-wifi-module-replacement">
 <p>
 Дальше меня было уже не остановить. Заменив оригинальный BIOS на coreboot, я
 столкнулся с тем, что могу воткнуть в ноутбук любое подходящее периферийное
@@ -1118,9 +1144,9 @@ WiFi с телефона — она работает без нареканий.
 </div>
 </div>
 
-<div class="outline-2">
-<h2>Замена клавиатуры</h2>
-<div class="outline-text-2">
+<div id="outline-container-keyboard-replacement" class="outline-2">
+<h2 id="keyboard-replacement">Замена клавиатуры</h2>
+<div class="outline-text-2" id="text-keyboard-replacement">
 <p>
 Изначально, на моём ноутбуке была установлена клавиатура с британской
 раскладкой<sup><a id="fnr.7" class="footref" href="#fn.7" role="doc-backlink">7</a></sup>, которая мне очень не нравится — я всегда пользовался
@@ -1212,9 +1238,9 @@ WiFi с телефона — она работает без нареканий.
 </div>
 </div>
 
-<div class="outline-2">
-<h2>Питание ноутбука</h2>
-<div class="outline-text-2">
+<div id="outline-container-notebook-power" class="outline-2">
+<h2 id="notebook-power">Питание ноутбука</h2>
+<div class="outline-text-2" id="text-notebook-power">
 <p>
 Здесь я начал с замены зарядника. В принципе, оригинальный зарядник прекрасен
 в своей надёжности и неубиваемости и менять его на что-то другое в общем-то и
@@ -1248,9 +1274,9 @@ Baseus — действительно, они одновременно заря
 </p>
 </div>
 
-<div class="outline-3">
-<h3>Battery recelling</h3>
-<div class="outline-text-3">
+<div id="outline-container-battery-recelling" class="outline-3">
+<h3 id="battery-recelling">Battery recelling</h3>
+<div class="outline-text-3" id="text-battery-recelling">
 <p>
 У меня было два, пострадавших от времени, аккумулятора:
 </p>
@@ -1489,9 +1515,9 @@ SMD-деталь с выводами <b>под ней</b>, расположен�
 </div>
 </div>
 
-<div class="outline-3">
-<h3>Встраивание второго аккумулятора в ноутбук (незаконченное)</h3>
-<div class="outline-text-3">
+<div id="outline-container-second-battery" class="outline-3">
+<h3 id="second-battery">Встраивание второго аккумулятора в ноутбук (незаконченное)</h3>
+<div class="outline-text-3" id="text-second-battery">
 <p>
 Уже очень давно я хотел добавить к ноутбуку вторую батарею — <a href="https://www.thinkwiki.org/wiki/ThinkPad_Battery_19%2B">ThinkPad Battery
 19+</a>. Это большая, тяжёлая и надёжная батарея на 6 ячеек, которая крепится
@@ -1661,9 +1687,9 @@ ThinkPad'а — был слив для воды. Естественно, что
 </div>
 </div>
 
-<div class="outline-2">
-<h2>Дополнительные разъёмы и кнопочки</h2>
-<div class="outline-text-2">
+<div id="outline-container-additional-ports" class="outline-2">
+<h2 id="additional-ports">Дополнительные разъёмы и кнопочки</h2>
+<div class="outline-text-2" id="text-additional-ports">
 <p>
 Тем не менее, можно по прежнему использовать док-станцию, чтобы всякие разъёмы
 были позади ноутбука — никакие провода не помешают мне поставить кружку с чаем
@@ -1678,7 +1704,7 @@ ThinkPad'а — был слив для воды. Естественно, что
 
 <p>
 Но, после установки платы 2K-модификации уже не получится просто так
-подключить док-станцию к ноутбуку! Как видно из раздела «<a href="#orgc75a5ca">Новый дисплей и
+подключить док-станцию к ноутбуку! Как видно из раздела «<a href="#new-display-freebsd">Новый дисплей и
 FreeBSD</a>», эта плата занимает линии интерфейса Display Port и пару линий
 USB. Следовательно, надо отсоединить линии Display Port от соответствующего
 разъёма на стороне док-станции. И заодно проверить — не использует ли
@@ -2027,9 +2053,9 @@ pcib2: Timed out waiting for Data Link Layer Active
 </div>
 </div>
 
-<div class="outline-2">
-<h2>Прошивка нового чехла</h2>
-<div class="outline-text-2">
+<div id="outline-container-new-case" class="outline-2">
+<h2 id="new-case">Прошивка нового чехла</h2>
+<div class="outline-text-2" id="text-new-case">
 <p>
 С таким ноутбуком уже не хочется использовать обычный тряпичный чехол из
 массмаркета. Да и будем честны, чехол под такую машинку уже не найдёшь — всё
@@ -2149,9 +2175,9 @@ pcib2: Timed out waiting for Data Link Layer Active
 </div>
 </div>
 
-<div class="outline-2">
-<h2>Итоговые результаты</h2>
-<div class="outline-text-2">
+<div id="outline-container-results" class="outline-2">
+<h2 id="results">Итоговые результаты</h2>
+<div class="outline-text-2" id="text-results">
 
 <div class="figure">
 <p><img src="/assets/static/notebook_before.jpg" alt="notebook before modifications" align="center" />
@@ -2232,9 +2258,9 @@ pcib2: Timed out waiting for Data Link Layer Active
 </div>
 </div>
 
-<div class="outline-2">
-<h2>Апдейт за 17.07.2024</h2>
-<div class="outline-text-2">
+<div id="outline-container-update-17-07-2024" class="outline-2">
+<h2 id="update-17-07-2024">Апдейт за 17.07.2024</h2>
+<div class="outline-text-2" id="text-update-17-07-2024">
 <p>
 К несчастью, дисплей помер после пары месяцев работы. После того как ноутбук
 постоял включённым на солнечном свету так, что солнце светило на нижнюю
@@ -2271,9 +2297,9 @@ pcib2: Timed out waiting for Data Link Layer Active
 </div>
 </div>
 
-<div class="outline-2">
-<h2>Примечания</h2>
-<div class="outline-text-2">
+<div id="outline-container-notes" class="outline-2">
+<h2 id="notes">Примечания</h2>
+<div class="outline-text-2" id="text-notes">
 </div>
 </div>
 <div id="footnotes">

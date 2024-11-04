@@ -25,7 +25,33 @@ This post based on information from the next pages:
 - [[https://cooltrainer.org/a-freebsd-desktop-howto/]]
 - [[https://wiki.archlinux.org/title/Lenovo_ThinkPad_X230]]
 
+* TOC                                                            :TOC_2_blog:
+- [[* Show ~ for current directory path in bash prompt][Show ~ for current directory path in bash prompt]]
+- [[* Minimal set of groups][Minimal set of groups]]
+- [[* Power control][Power control]]
+- [[* Sound][Sound]]
+- [[* Brightness control][Brightness control]]
+- [[* Multimedia keys][Multimedia keys]]
+- [[* Touchpad and trackpoint][Touchpad and trackpoint]]
+- [[* Web-camera][Web-camera]]
+- [[* Sleep][Sleep]]
+- [[* Enable drm-kmod][Enable drm-kmod]]
+- [[* Wi-Fi][Wi-Fi]]
+- [[* Miscellaneous][Miscellaneous]]
+- [[* 2024-04-28 update][2024-04-28 update]]
+  - [[* Working sleep mode (S3)][Working sleep mode (S3)]]
+  - [[* Output boot-log to «secondary» 2K-display][Output boot-log to «secondary» 2K-display]]
+  - [[* Reduce count of messages from system when booting][Reduce count of messages from system when booting]]
+  - [[* Powersaving for videocard][Powersaving for videocard]]
+  - [[* Intel 8260][Intel 8260]]
+  - [[* Sound and coreboot][Sound and coreboot]]
+  - [[* GUI glitches][GUI glitches]]
+  - [[* Miscellaneous (2)][Miscellaneous (2)]]
+
 * Show ~ for current directory path in bash prompt
+:PROPERTIES:
+:CUSTOM_ID: home-directory
+:END:
 
 In FreeBSD all users' home catalogs placed in =/usr/home/=. The =/home/= is just a
 symbolic link to =/usr/home/=. So, thats why in command prompt =\w= will be
@@ -36,12 +62,18 @@ To fix that you need to set path to home catalog directly to
 this.
 
 * Minimal set of groups
+:PROPERTIES:
+:CUSTOM_ID: minimal-set-of-groups
+:END:
 
 - =wheel= :: for sudo
 - =video= :: grants access to =/dev/dri/card*=
 - =webcamd= :: grants access to web-camera.
 
 * Power control
+:PROPERTIES:
+:CUSTOM_ID: power-control
+:END:
 
 =/etc/rc.conf= settings:
 
@@ -62,6 +94,9 @@ kern.hz=100
 Thanks to these settings — notebook will become slowly but more energy-saving.
 
 * Sound
+:PROPERTIES:
+:CUSTOM_ID: sound
+:END:
 
 Need to load =snd_hda= module on system startup. Add this to =/boot/loader.conf=:
 
@@ -78,6 +113,9 @@ hint.hdaa.0.nid21.config="as=1 seq=15 device=Headphones"
 #+end_example
 
 * Brightness control
+:PROPERTIES:
+:CUSTOM_ID: brightness
+:END:
 
 Add these lines to =/boot/loader.conf=:
 
@@ -92,6 +130,9 @@ to control screen brightness via sysctl (use =hw.acpi.video.lcd0.brightness=
 setup).
 
 * Multimedia keys
+:PROPERTIES:
+:CUSTOM_ID: multimedia-keys
+:END:
 
 First, module =acpi_ibm= should be already loaded in system.
 
@@ -124,6 +165,9 @@ To watch key scan-codes just stop devd and launch it from root with =-d=
 argument.
 
 * Touchpad and trackpoint
+:PROPERTIES:
+:CUSTOM_ID: touchpad-and-trackpoint
+:END:
 
 First, enable Synaptics touchpad and trackpoint support in =/boot/loader.conf=:
 
@@ -144,6 +188,9 @@ hw.psm.trackpoint.upper_plateau=125
 #+end_example
 
 * Web-camera
+:PROPERTIES:
+:CUSTOM_ID: web-camera
+:END:
 
 Make next changes in next files:
 - =/boot/loader.conf= ::
@@ -166,12 +213,18 @@ sudo pw groupmod webcamd -m <username>
 #+end_example
 
 * Sleep
+:PROPERTIES:
+:CUSTOM_ID: sleep
+:END:
 
 First, the module =acpi_ibm= should be loaded:
 
 Then, we can go to sleep mode via =acpiconf -s 3= command. Or via =zzz= command.
 
 * Enable drm-kmod
+:PROPERTIES:
+:CUSTOM_ID: drm-kmod
+:END:
 
 Install the package =graphics/drm-kmod=. After, enable module =i915kms.ko= — add
 next line to =/etc/rc.conf=:
@@ -181,6 +234,9 @@ kld_list="${kld_list} /boot/modules/i915kms.ko"
 #+end_example
 
 * Wi-Fi
+:PROPERTIES:
+:CUSTOM_ID: wifi
+:END:
 
 Add next lines to =/boot/loader.conf=:
 
@@ -209,6 +265,9 @@ fast_reauth=1
 #+end_example
 
 * Miscellaneous
+:PROPERTIES:
+:CUSTOM_ID: misc
+:END:
 
 You can add next lines to =/boot/loader.conf=:
 
@@ -246,6 +305,9 @@ kern.vt.enable_bell=0
 #+end_example
 
 * 2024-04-28 update
+:PROPERTIES:
+:CUSTOM_ID: update-2024-04-28
+:END:
 
 Now, I am using coreboot instead of BIOS on my Thinkpad. Also, I soldered
 expansion board AGAN X230 to my motherboard to use nice and shiny
@@ -253,6 +315,9 @@ expansion board AGAN X230 to my motherboard to use nice and shiny
 update:
 
 ** Working sleep mode (S3)
+:PROPERTIES:
+:CUSTOM_ID: s3-mode
+:END:
 
 Out of the box, the sleep mode is working incorrectly. Command =sudo zzz= nice
 switches laptop to sleep mode. *But*, after wakeup I can see screen with i3wm
@@ -285,6 +350,9 @@ hw.acpi.lid_switch_state=S3
 #+end_example
 
 ** Output boot-log to «secondary» 2K-display
+:PROPERTIES:
+:CUSTOM_ID: bootlog-2k-display
+:END:
 
 Coreboot with SeaBIOS payload FreeBSD bootloader don't works very well
 together. If you try to boot FreeBSD on the machine with coreboot, you'll see
@@ -304,6 +372,9 @@ vbe_max_resolution=2560x1440
 #+end_example
 
 ** Reduce count of messages from system when booting
+:PROPERTIES:
+:CUSTOM_ID: boot-mess-reduce
+:END:
 
 Add to =/boot/loader.conf=:
 #+begin_example
@@ -316,6 +387,9 @@ rc_startmsgs="NO"
 #+end_example
 
 ** Powersaving for videocard
+:PROPERTIES:
+:CUSTOM_ID: videocard-powersave
+:END:
 
 Add next lines to =/boot/loader.conf=:
 #+begin_example
@@ -325,6 +399,9 @@ drm.i915.intel_iommu_enabled="1"
 #+end_example
 
 ** Intel 8260
+:PROPERTIES:
+:CUSTOM_ID: intel-8260
+:END:
 
 Because now I'm using WiFi-card Intel 8260 — it should be configured via
 [[https://man.freebsd.org/cgi/man.cgi?query=wifibox&apropos=0&sektion=8&manpath=freebsd-ports&format=html][wifibox]] to use full power of WiFi. Wifibox configuration is simple, takes near
@@ -333,6 +410,9 @@ Because now I'm using WiFi-card Intel 8260 — it should be configured via
 - https://xyinn.org/md/freebsd/wifibox
 
 ** Sound and coreboot
+:PROPERTIES:
+:CUSTOM_ID: coreboot-sound
+:END:
 
 Some system internals (nIDs) changed after installation of coreboot instead of
 BIOS. As a result: there is no sound in headphones, connected via 3.5mm
@@ -351,6 +431,9 @@ hint.hdaa.0.nid35.config="as=1 seq=15 device=Headphones"
 #+end_example
 
 ** GUI glitches
+:PROPERTIES:
+:CUSTOM_ID: gui-glitches
+:END:
 
 After some time of working, there are black squares and (rarely) lines appears
 on the screen. Maybe there are because of coreboot. When I switch from =intel=
@@ -384,6 +467,9 @@ drm.i915.enable_fbc="1"
 #+end_example
 
 ** Miscellaneous (2)
+:PROPERTIES:
+:CUSTOM_ID: misc-2
+:END:
 
 To decrease desktop latency under the high load, add next lines to
 =/etc/sysctl.conf=:

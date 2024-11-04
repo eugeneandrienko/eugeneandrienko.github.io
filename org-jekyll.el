@@ -215,7 +215,8 @@ PROPERTY-LIST is a list of properties from
                       ("<h2 class=\"footnotes\">Footnotes: </h2>" . "")
                       (" id=\"org[[:xdigit:]]\\{7\\}\"" . "")
                       (" id=\"outline-container-org[[:xdigit:]]\\{7\\}\"" . "")
-                      (" id=\"text-org[[:xdigit:]]\\{7\\}\"" . "")))
+                      (" id=\"text-org[[:xdigit:]]\\{7\\}\"" . "")
+                      ("<span class=\"TOC_2_blog\">TOC_2_blog</span>" . "")))
               (write-file html)))
           (directory-files-recursively publishing-directory "\\.html$" nil nil nil))))
 

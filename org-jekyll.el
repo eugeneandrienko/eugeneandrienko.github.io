@@ -302,6 +302,7 @@ PROPERTY-LIST is a list of properties from
    :name "jekyll-build"
    :buffer "jekyll-build"
    :command '("bundle" "exec" "jekyll" "build")
+   :delete-exited-processes t
    :sentinel (lambda (process state)
                (cond
                 ((and (eq (process-status process) 'exit)
@@ -321,6 +322,7 @@ PROPERTY-LIST is a list of properties from
      :name "jekyll-serve"
      :buffer "jekyll-serve"
      :command '("bundle" "exec" "jekyll" "serve")
+     :delete-exited-processes t
      :sentinel (lambda (process state)
                  (cond
                   ((and (eq (process-status process) 'exit)
@@ -363,6 +365,7 @@ PROPERTY-LIST is a list of properties from
    :name "jekyll-clean"
    :buffer "jekyll-clean"
    :command '("bundle" "exec" "jekyll" "clean")
+   :delete-exited-processes t
    :sentinel (lambda (process state)
                (cond
                 ((and (eq (process-status process) 'exit)

@@ -1,0 +1,400 @@
+---
+layout: post
+title: Launching Windows in FreeBSD bhyve hypervisor
+category: it
+date: 2024-10-27
+lang: en
+comments: false
+hidden:
+  - related_posts
+banner:
+  image: /assets/static/freebsd_win.jpg
+  opacity: 0.6
+summary: Launching Windows in FreeBSD bhyve hypervisor
+tags: 
+---
+
+<p>
+In this relatively small article I'll describe the steps required to run
+Windows 7 as guest under the Bhyve hypervisor in a FreeBSD host. I will also
+cover any pitfails I encountered.
+</p>
+
+<p>
+This note is based on the Vermaden's article: <a href="https://vermaden.wordpress.com/2023/08/18/freebsd-bhyve-virtualization/">FreeBSD Bhyve
+Virtualization</a>. When I followed the instructions in that article, I got
+Windows, which hung on boot, with no network access and no remote access. So,
+I wrote my version of the instruction, with two additional steps.
+</p>
+
+<p>
+All started from an old Windows program, that I was needed. Before, I used to
+use only Wine for this. But nowadays in 64-bit system I can install only
+64-bit version of Wine — which simply can't run installer of necessary program
+and ask for 32-bit version of Wine for the every action. Of course, I can do
+it with <code>pkg32.sh</code> script from FreeBSD Wine maintainers. <i>But</i>, even with all the
+necessary files installed, I can't run the installer of my program.
+</p>
+
+<p>
+That's where the old tricks come in. A few years ago I'd just install Windows
+inside the VirtualBox. It is worked fast and reliable enough — if I used
+kernel module for VirtualBox and VirtualBox Guest Addons in the guest
+system. But for now I can simply use «standard» FreeBSD capabilities — <a href="https://bhyve.org/">bhyve</a>
+hypervisor and <a href="https://github.com/churchers/vm-bhyve">vm-bhyve</a> virtual machines manager, which supports Windows.
+</p>
+
+<div class="outline-2">
+<h2>ZFS dataset for my VMs (optional part)</h2>
+<div class="outline-text-2">
+<p>
+I had an 2.5" hard drive on my shelf. It was in use and once I accidentally
+dropped it, so I was afraid to use it to store valuable data. But it works
+well for "experimental" virtual machines! I immediately connected this HDD to
+my <a href="https://eugene-andrienko.com/en/it/2024/07/07/thinkpad-x220-second-life">Thinkpad X220</a> via OptiBay.
+</p>
+
+<p>
+The next steps were standard. I've created separate zfs poll and dataset for
+virtual machines:
+</p>
+<pre class="example">
+# zpool create hdd /dev/ada1
+# zfs create hdd/vms
+# zfs set compression=gzip hdd/vms
+# zpool status
+  pool: hdd
+ state: ONLINE
+  scan: scrub repaired 0B in 00:00:01 with 0 errors on Sun Oct 27 01:51:43 2024
+config:
+
+        NAME        STATE     READ WRITE CKSUM
+        hdd         ONLINE       0     0     0
+          ada1      ONLINE       0     0     0
+
+errors: No known data errors
+# zfs list
+NAME                                           USED  AVAIL  REFER  MOUNTPOINT
+hdd                                           14.2G   435G    96K  /hdd
+hdd/vms                                       14.2G   435G  8.07G  /hdd/vms
+</pre>
+
+<p>
+The <code>hdd/vms</code> dataset is required for vm-bhyve to store all vm-bhyve-related
+files on this hard drive, rather than on the two main system disks.
+</p>
+</div>
+</div>
+
+<div class="outline-2">
+<h2>Setup bhyve and vm-bhyve</h2>
+<div class="outline-text-2">
+<p>
+Again, all the steps are standard:
+</p>
+<ol class="org-ol">
+<li><p>
+Setup necessary packages:
+</p>
+<pre class="example">
+# pkg install bhyve-firmware vm-bhyve rdesktop
+</pre></li>
+<li><p>
+Enable vm-bhyve in <code>/etc/rc.conf</code> and instruct it to use the previously
+created dataset:
+</p>
+<pre class="example">
+vm_enable="YES"
+vm_dir="zfs:hdd/vms"
+</pre></li>
+<li><p>
+Start vm-bhyve:
+</p>
+<pre class="example">
+# /usr/local/etc/rc.d/vm start
+</pre></li>
+<li><p>
+Initialize dataset with bm-bhyve data:
+</p>
+<pre class="example">
+# vm init
+</pre>
+
+<p>
+After this, there are should be vm-bhyve service catalogues in the <code>/hdd/vms</code>
+path:
+</p>
+<pre class="example">
+/hdd/vms % ls -la
+total 12
+drwxr-xr-x  7 root wheel    7B Oct 27 11:42 ./
+drwxr-xr-x  3 root wheel    3B Oct 27 10:52 ../
+drwxr-xr-x  2 root wheel    4B Oct 27 12:43 .config/
+drwxr-xr-x  2 root wheel    2B Oct 27 01:46 .img/
+drwxr-xr-x  2 root wheel    4B Oct 27 11:07 .iso/
+drwxr-xr-x  2 root wheel    4B Oct 27 10:53 .templates/
+</pre></li>
+</ol>
+</div>
+</div>
+
+<div class="outline-2">
+<h2>Windows profile for VM</h2>
+<div class="outline-text-2">
+<p>
+By default there is only one <code>default</code> profile in <code>/hdd/vms/.templates/</code>. With
+this profile the Windows VM will not have graphics, sound and enough memory.
+</p>
+
+<p>
+Here is an article by Vermaden: <a href="https://vermaden.wordpress.com/2023/08/18/freebsd-bhyve-virtualization/">FreeBSD Bhyve Virtualization</a> — helped me a
+lot. I took the profile from that post and made a few changes:
+</p>
+<ul class="org-ul">
+<li>Remove the <code>xhci_mouse</code> setting — if it is enabled, the installed system hangs
+on load.</li>
+<li><p>
+Add more memory:
+</p>
+<pre class="example">
+loader="uefi"
+graphics="yes"
+cpu=2
+memory=6G
+ahci_device_limit="8"
+network0_type="e1000"
+network0_switch="public"
+disk0_type="ahci-hd"
+disk0_name="disk0.img"
+disk0_opts="sectorsize=512"
+utctime="no"
+bhyve_options="-s 8,hda,play=/dev/dsp,rec=/dev/dsp"
+</pre>
+
+<p>
+This profile is stored in <code>/hdd/vms/.templates/windows.conf</code>.
+</p></li>
+</ul>
+</div>
+</div>
+
+<div class="outline-2">
+<h2>Network setup</h2>
+<div class="outline-text-2">
+<p>
+For unknown reasons, this step is missing from many instructions. As a result,
+there is no network access from the host to the guest.
+</p>
+
+<p>
+First, create the switch <code>public</code> (used in the <code>windows</code> profile from above):
+</p>
+<pre class="example">
+# vm switch create public
+</pre>
+
+<p>
+Then set the correct address for switch:
+</p>
+<pre class="example">
+# vm switch address public 169.254.0.1/16
+</pre>
+
+<p>
+I set the switch address after Windows installation — just take the VM network
+settings from <code>ipconfig</code>:
+</p>
+<ul class="org-ul">
+<li>IP address: 169.254.122.106</li>
+<li>Netmask: 255.255.0.0</li>
+</ul>
+
+<p>
+And set the appropriate address for the switch:
+</p>
+<pre class="example">
+s vm switch list
+NAME    TYPE      IFACE      ADDRESS         PRIVATE  MTU  VLAN  PORTS
+public  standard  vm-public  169.254.0.1/16  no       -    -     -
+</pre>
+</div>
+</div>
+
+<div class="outline-2">
+<h2>Windows installation</h2>
+<div class="outline-text-2">
+<p>
+There is the most non-trivial part. Most instructions recommend patching the
+distribution ISO to add the virtio drivers. Fortunately, a custom "ZverDVD"
+distribution, which I used, already has the necessary drivers. Or maybe these
+drivers are not necessary for installation for now.
+</p>
+
+<p>
+What's interesting is that not every distribution ISO works — some of them
+just don't load. I haven't found out why this happens. So, you should spend a
+some time to find a suitable ISO&#x2026;
+</p>
+
+<p>
+ISO file should be placed to <code>/hdd/vms/.iso/</code>. After that it should appear in
+the <code>vm iso</code> output:
+</p>
+<pre class="example">
+# vm iso
+DATASTORE           FILENAME
+default             windows_eagle.iso
+</pre>
+
+<p>
+It is a good idea to have any VNC client installed on the host machine before
+installing Windows. It is necessary to connect to the Windows installer GUI
+and complete the process. I used <a href="https://wiki.gnome.org/Apps/Vinagre">Vinagre</a> because it can scale the working area
+in the right way.
+</p>
+
+<p>
+Preparation to installation is simple:
+</p>
+<ol class="org-ol">
+<li><p>
+Create VM with 50 Gb disk and with <code>windows</code> profile:
+</p>
+<pre class="example">
+# vm create -t windows -s 50G windows
+</pre></li>
+<li><p>
+Start booting from bootable ISO:
+</p>
+<pre class="example">
+# vm install windows windows_eagle.iso
+Starting windows
+* found guest in /hdd/vms/windows
+* booting...
+</pre></li>
+<li><p>
+After step 2 the system will wait for VNC client connection on the address
+from table:
+</p>
+<pre class="example">
+# vm list
+NAME      DATASTORE  LOADER  CPU  MEMORY  VNC           AUTO  STATE
+windows  default    uefi    2    6G      0.0.0.0:5900  No    Locked (freebsd)
+</pre></li>
+<li><p>
+And then it's business as usual :-)
+</p>
+
+<div class="figure">
+<p><img src="/assets/static/windows7_setup.jpg" alt="windows 7 setup" align="center" />
+</p>
+<p style="text-align: center"><i>Windows installation</i></p>
+</div></li>
+</ol>
+</div>
+</div>
+
+<div class="outline-2">
+<h2>RDP client</h2>
+<div class="outline-text-2">
+<p>
+As a Vermaden, I decided to connect to the working system via RDP. It is very
+useful to be able to connect to the system and mount host system catalogues at
+the same time.
+</p>
+
+<p>
+To enable RDP in Windows the following steps are required:
+</p>
+<ul class="org-ul">
+<li>Set the password for the account that will be used under RDP.</li>
+<li><p>
+Enable remote access to the system:
+</p>
+
+<div class="figure">
+<p><img src="/assets/static/windows7_remote_control.jpg" alt="windows 7 remote control settings" align="center" />
+</p>
+<p style="text-align: center"><i>Windows remote access</i></p>
+</div></li>
+<li><p>
+Obtain the IP address of the guest system via <code>ipconfig</code>:
+</p>
+
+<div class="figure">
+<p><img src="/assets/static/windows7_ipconfig.jpg" alt="windows cmd and ipconfig output" align="center" />
+</p>
+</div>
+
+<p>
+And now it is possible to connect to the guest-Windows from FreeBSD-host
+via:
+</p>
+<pre class="example">
+$ rdesktop -u user -p 1234 -P -N -z -g 1600x900 -a 24 -r sound:local -r disk:DWNL=/home/drag0n/downloads/ 169.254.122.106
+</pre>
+
+<p>
+You should use your own <code>login/password</code> pair instead of <code>user/1234</code>. Option <code>-r
+  disk</code> mounts <code>/home/drag0n/downloads/</code> from the host to the guest as a network
+drive with the name <code>DWNL</code>. The <code>-r clipboard</code> option allows you to have the
+same clipboard contents in both OS.
+</p>
+
+
+<div class="figure">
+<p><img src="/assets/static/windows7_dwnl.jpg" alt="Catalog from FreeBSD host as DWNL network storage" align="center" />
+</p>
+<p style="text-align: center"><i>Mounted FreeBSD-host catalog</i></p>
+</div>
+
+<p>
+The <code>-g 1600x900</code> option sets the resolution of the guest desktop in the
+rdesktop window. However, if you are using tiling wm, the rdesktop window
+will be stretched to the size of the physical screen and this option will be
+ignored. In some cases this can be useful.
+</p></li>
+</ul>
+</div>
+</div>
+
+<div class="outline-2">
+<h2>Basic commands to operate with VM</h2>
+<div class="outline-text-2">
+<ol class="org-ol">
+<li><p>
+Launch VM:
+</p>
+<pre class="example">
+# vm start windows
+Starting windows
+* found guest in /hdd/vms/windows
+* booting...
+</pre></li>
+<li><p>
+VM stop:
+</p>
+<pre class="example">
+shutdown /s /t 0
+</pre>
+<p>
+:-)
+</p></li>
+<li><p>
+List VMs:
+</p>
+<pre class="example">
+# vm list
+NAME     DATASTORE  LOADER  CPU  MEMORY  VNC  AUTO  STATE
+windows  default    uefi    2    6G      -    No    Stopped
+</pre></li>
+<li><p>
+Turn of VM by power (if Windows is hang):
+</p>
+<pre class="example">
+# vm poweroff windows
+Are you sure you want to forcefully poweroff this virtual machine (y/n)?
+</pre></li>
+</ol>
+</div>
+</div>

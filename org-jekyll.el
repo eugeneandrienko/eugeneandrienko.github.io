@@ -423,16 +423,7 @@ PROPERTY-LIST is a list of properties from
   :lighter " oj"
   :global nil
   :init-value nil
-  (if org-jekyll-mode
-      (progn
-        (keymap-local-set "C-c b" #'org-jekyll-menu))
-    (mapc #'kill-local-variable '(org-jekyll-url
-                                  org-jekyll-paths-base-path
-                                  org-jekyll-paths-articles-path
-                                  org-jekyll-paths-template-path
-                                  org-jekyll-exclude-regex
-                                  org-jekyll-languages))
-    (keymap-local-unset "C-c b")))
+  :keymap (list (cons (kbd "C-c b") #'org-jekyll-menu)))
 
 ;;;###autoload
 (defun org-jekyll-init ()

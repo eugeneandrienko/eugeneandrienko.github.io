@@ -137,9 +137,9 @@ It is realized via [[https://github.com/snosov1/toc-org][toc-org]] plugin with t
 Every header with 1st or 2nd level should have "custom ID" defined:
 #+begin_src org
 ,* Header
-  ,:PROPERTIES:
-  ,:CUSTOM_ID: header-id
-  ,:END:
+  :PROPERTIES:
+  :CUSTOM_ID: header-id
+  :END:
 #+end_src
 
 To generate TOC a special heading *after* any preamble text and before first

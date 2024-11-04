@@ -436,7 +436,8 @@ PROPERTY-LIST is a list of properties from
 
 ;;;###autoload
 (defun org-jekyll-init ()
-  (if (string-match "^/.+/article-[[:lower:]]\\{2\\}\\.org" (buffer-file-name))
+  (if (and buffer-file-name
+           (string-match "^/.+/article-[[:lower:]]\\{2\\}\\.org" (buffer-file-name)))
       (org-jekyll-mode 1)))
 
 

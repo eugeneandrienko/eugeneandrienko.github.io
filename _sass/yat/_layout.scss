@@ -122,10 +122,6 @@
       margin: 0 25px;
     }
   }
-
-  @include media-query(1024px) {
-    display: none;
-  }
 }
 
 /**

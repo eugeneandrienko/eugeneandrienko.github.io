@@ -12,7 +12,7 @@ banner:
   image: /assets/static/freebsd_win.jpg
   opacity: 0.6
 summary: Launching Windows in FreeBSD bhyve hypervisor
-tags: 
+tags: freebsd
 ---
 #+END_EXPORT
 

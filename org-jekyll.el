@@ -111,39 +111,6 @@
   :type '(file :must-match t)
   :group 'org-jekyll-paths)
 
-;; OrgMode publication settings:
-
-(set (make-local-variable 'org-publish-project-alist)
-     `(("org-jekyll-org"
-        :base-directory ,(concat org-jekyll-paths-base-path "/_articles")
-        :base-extension "org"
-        :publishing-directory ,(concat org-jekyll-paths-base-path "/_posts")
-        :preparation-function org-jekyll--prepare-articles
-        :completion-function org-jekyll--complete-articles
-        :publishing-function org-html-publish-to-html
-        :html-extension "html"
-        :headline-levels 5
-        :html-toplevel-hlevel 2
-        :html-html5-fancy t
-        :html-table-attributes (:border "2" :cellspacing "0" :cellpadding "6" :frame "void")
-        :section-numbers nil
-        :html-inline-images t
-        :htmlized-source t
-        :with-toc nil
-        :with-sub-superscript nil
-        :body-only t
-        :exclude ,org-jekyll-exclude-regex
-        :recursive t)
-       ("org-jekyll-static"
-        :base-directory ,(concat org-jekyll-paths-base-path "/_static")
-        :base-extension "jpg\\|JPG\\|jpeg\\|png\\|gif\\|webm\\|webp\\|gpx\\|tar.bz2"
-        :publishing-directory ,(concat org-jekyll-paths-base-path "/assets/static")
-        :publishing-function org-publish-attachment
-        :preparation-function org-jekyll--prepare-static
-        :exclude ,org-jekyll-exclude-regex
-        :recursive t)
-       ("org-jekyll" :components ("org-jekyll-org" "org-jekyll-static"))))
-
 ;; OrgMode publication functions:
 
 (defun org-jekyll--prepare-article (article)
@@ -298,7 +265,36 @@ PROPERTY-LIST is a list of properties from
   "Build the blog."
   (interactive)
   (cd (expand-file-name org-jekyll-paths-base-path))
-  (org-publish-project "org-jekyll" t nil)
+  (let ((org-publish-project-alist `(("org-jekyll-org"
+                                      :base-directory ,(concat org-jekyll-paths-base-path "/_articles")
+                                      :base-extension "org"
+                                      :publishing-directory ,(concat org-jekyll-paths-base-path "/_posts")
+                                      :preparation-function org-jekyll--prepare-articles
+                                      :completion-function org-jekyll--complete-articles
+                                      :publishing-function org-html-publish-to-html
+                                      :html-extension "html"
+                                      :headline-levels 5
+                                      :html-toplevel-hlevel 2
+                                      :html-html5-fancy t
+                                      :html-table-attributes (:border "2" :cellspacing "0" :cellpadding "6" :frame "void")
+                                      :section-numbers nil
+                                      :html-inline-images t
+                                      :htmlized-source t
+                                      :with-toc nil
+                                      :with-sub-superscript nil
+                                      :body-only t
+                                      :exclude ,org-jekyll-exclude-regex
+                                      :recursive t)
+                                     ("org-jekyll-static"
+                                      :base-directory ,(concat org-jekyll-paths-base-path "/_static")
+                                      :base-extension "jpg\\|JPG\\|jpeg\\|png\\|gif\\|webm\\|webp\\|gpx\\|tar.bz2"
+                                      :publishing-directory ,(concat org-jekyll-paths-base-path "/assets/static")
+                                      :publishing-function org-publish-attachment
+                                      :preparation-function org-jekyll--prepare-static
+                                      :exclude ,org-jekyll-exclude-regex
+                                      :recursive t)
+                                     ("org-jekyll" :components ("org-jekyll-org" "org-jekyll-static")))))
+    (org-publish-project "org-jekyll" t nil))
   (make-process
    :name "jekyll-build"
    :buffer "jekyll-build"

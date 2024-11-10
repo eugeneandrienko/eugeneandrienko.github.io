@@ -8,6 +8,7 @@ lang: en
 comments: false
 hidden:
   - related_posts
+image: /assets/static/freebsd_win.jpg
 banner:
   image: /assets/static/freebsd_win.jpg
   opacity: 0.6

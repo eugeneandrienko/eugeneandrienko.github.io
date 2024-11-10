@@ -8,6 +8,7 @@ lang: en
 comments: true
 hidden:
   - related_posts
+image: /assets/static/header-life-in-console.jpg
 banner:
   image: /assets/static/header-life-in-console.jpg
   opacity: 0.6

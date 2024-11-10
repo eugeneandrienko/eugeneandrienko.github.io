@@ -232,7 +232,8 @@ PROPERTY-LIST is a list of properties from
          (path org-jekyll-paths-articles-path)
          (template org-jekyll-paths-template-path)
          (additional (concat (if use-banner
-                                 (concat "banner:\n"
+                                 (concat "image: /assets/static/" (file-name-nondirectory banner) "\n"
+                                         "banner:\n"
                                          "  image: /assets/static/" (file-name-nondirectory banner) "\n"
                                          "  opacity: 0.6\n")
                                "")

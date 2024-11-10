@@ -8,6 +8,7 @@ lang: ru
 comments: true
 hidden:
   - related_posts
+image: /assets/static/aurora10.jpg
 banner:
   image: /assets/static/aurora10.jpg
   opacity: 0.6

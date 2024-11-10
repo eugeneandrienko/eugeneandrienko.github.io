@@ -8,6 +8,7 @@ lang: ru
 comments: true
 hidden:
   - related_posts
+image: /assets/static/strava.jpg
 banner:
   image: /assets/static/strava.jpg
   opacity: 0.6

@@ -711,3 +711,49 @@
 .src {
     font-family: Hack, monospace;
 }
+
+/**
+ * Footnotes
+ */
+@keyframes footnote-animation {
+    0% {
+        background-color: $background-color;
+    }
+    25% {
+        background-color: #ede6d3;
+    }
+    50% {
+        background-color: #ddd6c3;
+    }
+    75% {
+        background-color: #ede6d3;
+    }
+    100% {
+        background-color: $background-color;
+    }
+}
+#text-footnotes {
+    .footdef {
+        display: table;
+        border-spacing: 2px;
+        sup {
+            display: table-cell;
+            a {
+                animation-name: footnote-animation;
+                animation-duration: 4s;
+                animation-iteration-count: infinite;
+                animation-timing-function: ease-in-out;
+                animation-fill-mode: backwards;
+                border-radius: 50%;
+                text-align: center;
+            }
+        }
+        .footnum {
+            display: table-cell;
+            font-size: $base-font-size;
+        }
+        .footpara {
+            display: table-cell;
+        }
+    }
+}

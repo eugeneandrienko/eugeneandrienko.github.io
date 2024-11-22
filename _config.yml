@@ -8,7 +8,6 @@ social:
   links:
     - https://mas.to/@evgandr
 logo: "/assets/images/home.jpg"
-copyright: "Dragon's blog (cleft): 2020-{currentYear} {author}"
 url: "https://eugene-andrienko.com"
 yat:
   date_format: "%d %b %Y"

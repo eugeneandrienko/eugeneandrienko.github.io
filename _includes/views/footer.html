@@ -2,16 +2,20 @@
   <div class="wrapper">
     <div class="site-footer-inner">
         {%- assign currentYear = 'now' | date: "%Y" -%}
-        {%- assign copyright = site.copyright
-            | replace: '{currentYear}', currentYear
-            | replace: '{author}', site.author
-            | replace: '(c)', '&copy;'
-            | replace: '(p)', '℗'
-            | replace: '(cleft)', '<span class="copyleft">&copy;</span>'
-        -%}
-        <div>{{ copyright }}.&nbsp;
+        <!- CC BY 4.0 -->
+        <div xmlns:cc="http://creativecommons.org/ns#">
+          <a rel="cc:attributionURL" href="https://eugene-andrienko.com/">This blog</a>
+          &copy;&nbsp;2020-{{ currentYear }} by
+          <a rel="cc:attributionURL dct:creator" property="cc:attributionName" href="https://eugene-andrienko.com/about">{{ site.author }}</a>
+          is licensed under
+          <a href="https://creativecommons.org/licenses/by/4.0/?ref=chooser-v1" target="_blank" rel="license noopener noreferrer" style="display:inline-block;">
+            CC BY 4.0
+          </a>
+          <img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="/assets/images/cc.svg" alt="CC">
+          <img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="/assets/images/by.svg" alt="BY">.
           Powered by <a title="Jekyll is a simple, blog-aware, static site
-                               generator." href="https://jekyllrb.com/">Jekyll</a>.</div>
+                               generator." href="https://jekyllrb.com/">Jekyll</a>.
+        </div>
 
         <!-- Old but gold buttons -->
         <nav>

@@ -28,6 +28,7 @@ This post based on information from the next pages:
 <li><a href="https://www.c0ffee.net/blog/freebsd-on-a-laptop/">https://www.c0ffee.net/blog/freebsd-on-a-laptop/</a></li>
 <li><a href="https://cooltrainer.org/a-freebsd-desktop-howto/">https://cooltrainer.org/a-freebsd-desktop-howto/</a></li>
 <li><a href="https://wiki.archlinux.org/title/Lenovo_ThinkPad_X230">https://wiki.archlinux.org/title/Lenovo_ThinkPad_X230</a></li>
+<li><a href="https://www.sacredheartsc.com/blog/freebsd-14-on-the-desktop/">https://www.sacredheartsc.com/blog/freebsd-14-on-the-desktop/</a></li>
 </ul>
 
 <div class="outline-2">
@@ -56,6 +57,18 @@ This post based on information from the next pages:
 <li><a href="#coreboot-sound">Sound and coreboot</a></li>
 <li><a href="#gui-glitches">GUI glitches</a></li>
 <li><a href="#misc-2">Miscellaneous (2)</a></li>
+</ul></li>
+<li><a href="#update-2024-11-30">2024-11-30 update</a>
+<ul class="org-ul">
+<li><a href="#pci-powersaving">PCI powersaving</a></li>
+<li><a href="#intel-graphics-optimizations">Intel graphics optimizations</a></li>
+<li><a href="#faster-soreceive">Fast soreceive()</a></li>
+<li><a href="#nqueue-len">Increase queue size for network interfaces</a></li>
+<li><a href="#much-more-powersaving">More options for powersaving</a></li>
+<li><a href="#orgc3ce130">Settings to increase perfomance of network stack</a></li>
+<li><a href="#intel-microcode">Intel microcode</a></li>
+<li><a href="#oss-tui">Alsamixer, but for OSS</a></li>
+<li><a href="#misc-3">Miscellaneous (3)</a></li>
 </ul></li>
 </ul>
 </div>
@@ -608,6 +621,190 @@ Dock-station support;
 </p>
 <pre class="example">
 acpi_dock_load="YES"
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-update-2024-11-30" class="outline-2">
+<h2 id="update-2024-11-30">2024-11-30 update</h2>
+<div class="outline-text-2" id="text-update-2024-11-30">
+<p>
+There are a lot of people in Mastodon, who writing about FreeBSD — and I took some settings from them posts.
+</p>
+</div>
+
+<div id="outline-container-pci-powersaving" class="outline-3">
+<h3 id="pci-powersaving">PCI powersaving</h3>
+<div class="outline-text-3" id="text-pci-powersaving">
+<p>
+<code>/boot/loader.conf</code>:
+</p>
+
+<pre class="example">
+hw.pci.do_power_nodriver="3"
+</pre>
+</div>
+</div>
+
+<div id="outline-container-intel-graphics-optimizations" class="outline-3">
+<h3 id="intel-graphics-optimizations">Intel graphics optimizations</h3>
+<div class="outline-text-3" id="text-intel-graphics-optimizations">
+<p>
+<code>/boot/loader.conf</code>:
+</p>
+<pre class="example">
+drm.i915.enable_fbc="1"
+drm.i915.fastboot="1"
+</pre>
+</div>
+</div>
+
+<div id="outline-container-faster-soreceive" class="outline-3">
+<h3 id="faster-soreceive">Fast soreceive()</h3>
+<div class="outline-text-3" id="text-faster-soreceive">
+<p>
+<code>/boot/loader.conf</code>:
+</p>
+<pre class="example">
+net.inet.tcp.soreceive_stream="1"
+</pre>
+</div>
+</div>
+
+<div id="outline-container-nqueue-len" class="outline-3">
+<h3 id="nqueue-len">Increase queue size for network interfaces</h3>
+<div class="outline-text-3" id="text-nqueue-len">
+<p>
+<code>/boot/loader.conf</code>:
+</p>
+<pre class="example">
+net.isr.defaultqlimit="2048"
+net.link.ifqmaxlen="2048"
+</pre>
+</div>
+</div>
+
+<div id="outline-container-much-more-powersaving" class="outline-3">
+<h3 id="much-more-powersaving">More options for powersaving</h3>
+<div class="outline-text-3" id="text-much-more-powersaving">
+<p>
+<code>/boot/loader.conf</code>:
+</p>
+<pre class="example">
+# Increase ZFS transaction timeout to save battery.
+vfs.zfs.txg.timeout="10"
+
+# Power saving for Intel graphics.
+compat.linuxkpi.i915_disable_power_well="1"
+compat.linuxkpi.i915_enable_dc="2"
+</pre>
+</div>
+</div>
+
+<div class="outline-3">
+<h3>Settings to increase perfomance of network stack</h3>
+<div class="outline-text-3">
+<p>
+Taken from: <a href="https://www.sacredheartsc.com/blog/freebsd-14-on-the-desktop/">https://www.sacredheartsc.com/blog/freebsd-14-on-the-desktop/</a>
+</p>
+
+<p>
+<code>/etc/sysctl.conf</code>:
+</p>
+<pre class="example">
+##################################
+# Network performance tuning
+#
+# The default values for many of these sysctls are optimized for the latencies
+# of a local network. The modifications below should result in better TCP
+# performance over connections with a larger RTT (like the internet), but at
+# the expense of higher memory utilization.
+#
+# source: trust me, bro
+###############################
+kern.ipc.maxsockbuf=2097152
+kern.ipc.soacceptqueue=1024
+kern.ipc.somaxconn=1024
+net.inet.tcp.abc_l_var=44
+net.inet.tcp.cc.abe=1
+net.inet.tcp.cc.algorithm=htcp
+net.inet.tcp.cc.htcp.adaptive_backoff=1
+net.inet.tcp.cc.htcp.rtt_scaling=1
+net.inet.tcp.ecn.enable=1
+net.inet.tcp.fast_finwait2_recycle=1
+net.inet.tcp.fastopen.server_enable=1
+net.inet.tcp.finwait2_timeout=5000
+net.inet.tcp.initcwnd_segments=44
+net.inet.tcp.keepcnt=2
+net.inet.tcp.keepidle=62000
+net.inet.tcp.keepinit=5000
+net.inet.tcp.minmss=536
+net.inet.tcp.msl=2500
+net.inet.tcp.mssdflt=1448
+net.inet.tcp.nolocaltimewait=1
+net.inet.tcp.recvbuf_max=2097152
+net.inet.tcp.recvspace=65536
+net.inet.tcp.sendbuf_inc=65536
+net.inet.tcp.sendbuf_max=2097152
+net.inet.tcp.sendspace=65536
+net.local.stream.recvspace=65536
+net.local.stream.sendspace=65536
+</pre>
+</div>
+</div>
+
+<div id="outline-container-intel-microcode" class="outline-3">
+<h3 id="intel-microcode">Intel microcode</h3>
+<div class="outline-text-3" id="text-intel-microcode">
+<p>
+First, the package <code>cpu-microcode</code> should be installed. After that add next
+lines to <code>/boot/loader.conf</code>:
+</p>
+<pre class="example">
+cpu_microcode_load="YES"
+cpu_microcode_name="/boot/firmware/intel-ucode.bin"
+</pre>
+</div>
+</div>
+
+<div id="outline-container-oss-tui" class="outline-3">
+<h3 id="oss-tui">Alsamixer, but for OSS</h3>
+<div class="outline-text-3" id="text-oss-tui">
+<pre class="example">
+pkg install mixertui
+</pre>
+</div>
+</div>
+
+<div id="outline-container-misc-3" class="outline-3">
+<h3 id="misc-3">Miscellaneous (3)</h3>
+<div class="outline-text-3" id="text-misc-3">
+<p>
+<code>/etc/sysctl.conf</code>:
+</p>
+<pre class="example">
+#######################
+# Desktop optimizations
+#######################
+# Prevent shared memory from being swapped to disk.
+kern.ipc.shm_use_phys=1
+
+# Increase scheduler preemption threshold for snappier GUI experience.
+kern.sched.preempt_thresh=224
+
+# Allow unprivileged users to mount things.
+vfs.usermount=1
+
+# Don't switch virtual consoles back and forth on suspend.
+# With some graphics cards, switching to a different VT breaks hardware acceleration.
+# https://github.com/freebsd/drm-kmod/issues/175
+kern.vt.suspendswitch=0
+
+########################
+# Power saving (laptops)
+########################
+hw.snd.latency=7
 </pre>
 </div>
 </div>

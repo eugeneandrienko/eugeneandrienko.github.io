@@ -26,6 +26,7 @@ Lenovo ThinkPad X220 --- чтобы не забыть неочевидные д�
 - [[https://www.c0ffee.net/blog/freebsd-on-a-laptop/]]
 - [[https://cooltrainer.org/a-freebsd-desktop-howto/]]
 - [[https://wiki.archlinux.org/title/Lenovo_ThinkPad_X230]]
+- https://www.sacredheartsc.com/blog/freebsd-14-on-the-desktop/
 
 * TOC                                                            :TOC_2_blog:
 - [[* Корректное отображение ~ в пути, в приглашении bash][Корректное отображение ~ в пути, в приглашении bash]]
@@ -49,6 +50,16 @@ Lenovo ThinkPad X220 --- чтобы не забыть неочевидные д�
   - [[* Звук и coreboot][Звук и coreboot]]
   - [[* Глитчи в GUI][Глитчи в GUI]]
   - [[* Разное (2)][Разное (2)]]
+- [[* Обновление 2024-11-30][Обновление 2024-11-30]]
+  - [[* Энергосбережение PCI][Энергосбережение PCI]]
+  - [[* Оптимизации для графики Intel][Оптимизации для графики Intel]]
+  - [[* Быстрая реализация soreceive()][Быстрая реализация soreceive()]]
+  - [[* Увеличенный размер очереди для сетевых интерфейсов][Увеличенный размер очереди для сетевых интерфейсов]]
+  - [[* Ещё опции для энергосбережения][Ещё опции для энергосбережения]]
+  - [[* Настройки для повышения производительности сетевого стека][Настройки для повышения производительности сетевого стека]]
+  - [[* Установка microcode от Intel][Установка microcode от Intel]]
+  - [[* Alsamixer, но для OSS][Alsamixer, но для OSS]]
+  - [[* Разное (3)][Разное (3)]]
 
 * Корректное отображение ~ в пути, в приглашении bash
 :PROPERTIES:
@@ -492,4 +503,166 @@ cc_htcp_load="YES"
 Поддержка дока:
 #+begin_example
 acpi_dock_load="YES"
+#+end_example
+
+* Обновление 2024-11-30
+:PROPERTIES:
+:CUSTOM_ID: update-2024-11-30
+:END:
+
+В Mastodon'е полным полно людей, пишущих о FreeBSD — из их статей я взял
+следующие настройки:
+
+** Энергосбережение PCI
+:PROPERTIES:
+:CUSTOM_ID: pci-powersaving
+:END:
+
+=/boot/loader.conf=:
+
+#+begin_example
+hw.pci.do_power_nodriver="3"
+#+end_example
+
+** Оптимизации для графики Intel
+:PROPERTIES:
+:CUSTOM_ID: intel-graphics-optimizations
+:END:
+
+=/boot/loader.conf=:
+#+begin_example
+drm.i915.enable_fbc="1"
+drm.i915.fastboot="1"
+#+end_example
+
+** Быстрая реализация soreceive()
+:PROPERTIES:
+:CUSTOM_ID: faster-soreceive
+:END:
+
+=/boot/loader.conf=:
+#+begin_example
+net.inet.tcp.soreceive_stream="1"
+#+end_example
+
+** Увеличенный размер очереди для сетевых интерфейсов
+:PROPERTIES:
+:CUSTOM_ID: nqueue-len
+:END:
+
+=/boot/loader.conf=:
+#+begin_example
+net.isr.defaultqlimit="2048"
+net.link.ifqmaxlen="2048"
+#+end_example
+
+** Ещё опции для энергосбережения
+:PROPERTIES:
+:CUSTOM_ID: much-more-powersaving
+:END:
+
+=/boot/loader.conf=:
+#+begin_example
+# Increase ZFS transaction timeout to save battery.
+vfs.zfs.txg.timeout="10"
+
+# Power saving for Intel graphics.
+compat.linuxkpi.i915_disable_power_well="1"
+compat.linuxkpi.i915_enable_dc="2"
+#+end_example
+
+** Настройки для повышения производительности сетевого стека
+
+Взяты отсюда: https://www.sacredheartsc.com/blog/freebsd-14-on-the-desktop/
+
+=/etc/sysctl.conf=:
+#+begin_example
+##################################
+# Network performance tuning
+#
+# The default values for many of these sysctls are optimized for the latencies
+# of a local network. The modifications below should result in better TCP
+# performance over connections with a larger RTT (like the internet), but at
+# the expense of higher memory utilization.
+#
+# source: trust me, bro
+###############################
+kern.ipc.maxsockbuf=2097152
+kern.ipc.soacceptqueue=1024
+kern.ipc.somaxconn=1024
+net.inet.tcp.abc_l_var=44
+net.inet.tcp.cc.abe=1
+net.inet.tcp.cc.algorithm=htcp
+net.inet.tcp.cc.htcp.adaptive_backoff=1
+net.inet.tcp.cc.htcp.rtt_scaling=1
+net.inet.tcp.ecn.enable=1
+net.inet.tcp.fast_finwait2_recycle=1
+net.inet.tcp.fastopen.server_enable=1
+net.inet.tcp.finwait2_timeout=5000
+net.inet.tcp.initcwnd_segments=44
+net.inet.tcp.keepcnt=2
+net.inet.tcp.keepidle=62000
+net.inet.tcp.keepinit=5000
+net.inet.tcp.minmss=536
+net.inet.tcp.msl=2500
+net.inet.tcp.mssdflt=1448
+net.inet.tcp.nolocaltimewait=1
+net.inet.tcp.recvbuf_max=2097152
+net.inet.tcp.recvspace=65536
+net.inet.tcp.sendbuf_inc=65536
+net.inet.tcp.sendbuf_max=2097152
+net.inet.tcp.sendspace=65536
+net.local.stream.recvspace=65536
+net.local.stream.sendspace=65536
+#+end_example
+
+** Установка microcode от Intel
+:PROPERTIES:
+:CUSTOM_ID: intel-microcode
+:END:
+
+Сначала, нужно установить пакет =cpu-microcode=, а потом добавить следующие
+строки в =/boot/loader.conf=:
+#+begin_example
+cpu_microcode_load="YES"
+cpu_microcode_name="/boot/firmware/intel-ucode.bin"
+#+end_example
+
+** Alsamixer, но для OSS
+:PROPERTIES:
+:CUSTOM_ID: oss-tui
+:END:
+
+#+begin_example
+pkg install mixertui
+#+end_example
+
+** Разное (3)
+:PROPERTIES:
+:CUSTOM_ID: misc-3
+:END:
+
+=/etc/sysctl.conf=:
+#+begin_example
+#######################
+# Desktop optimizations
+#######################
+# Prevent shared memory from being swapped to disk.
+kern.ipc.shm_use_phys=1
+
+# Increase scheduler preemption threshold for snappier GUI experience.
+kern.sched.preempt_thresh=224
+
+# Allow unprivileged users to mount things.
+vfs.usermount=1
+
+# Don't switch virtual consoles back and forth on suspend.
+# With some graphics cards, switching to a different VT breaks hardware acceleration.
+# https://github.com/freebsd/drm-kmod/issues/175
+kern.vt.suspendswitch=0
+
+########################
+# Power saving (laptops)
+########################
+hw.snd.latency=7
 #+end_example

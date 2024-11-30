@@ -205,7 +205,11 @@ PROPERTY-LIST is a list of properties from
                         (not (string-match
                               (concat org-jekyll-exclude-regex "\\|\\(article-[[:lower:]]+\\.org\\)")
                               path)))
-                      (directory-files-recursively org-jekyll-paths-articles-path "." nil nil nil)))))
+                      (directory-files-recursively org-jekyll-paths-articles-path "." nil nil nil)))
+    ;; Copy org-babel results to /_static catalog too:
+    (mapc (lambda (filename)
+            (copy-file filename (concat static-directory "/") t t t t))
+          (directory-files-recursively (concat org-jekyll-paths-base-path "/_articles") "\\.png$\\|\\.svg$" nil nil nil))))
 
 ;; Function which creates new blog post:
 
@@ -265,7 +269,6 @@ PROPERTY-LIST is a list of properties from
 (defun org-jekyll--suffix-build ()
   "Build the blog."
   (interactive)
-  (cd (expand-file-name org-jekyll-paths-base-path))
   (let ((org-publish-project-alist `(("org-jekyll-org"
                                       :base-directory ,(concat org-jekyll-paths-base-path "/_articles")
                                       :base-extension "org"
@@ -288,51 +291,56 @@ PROPERTY-LIST is a list of properties from
                                       :recursive t)
                                      ("org-jekyll-static"
                                       :base-directory ,(concat org-jekyll-paths-base-path "/_static")
-                                      :base-extension "jpg\\|JPG\\|jpeg\\|png\\|gif\\|webm\\|webp\\|gpx\\|tar.bz2"
+                                      :base-extension "jpg\\|JPG\\|jpeg\\|png\\|gif\\|webm\\|webp\\|gpx\\|tar.bz2\\|svg"
                                       :publishing-directory ,(concat org-jekyll-paths-base-path "/assets/static")
                                       :publishing-function org-publish-attachment
                                       :preparation-function org-jekyll--prepare-static
                                       :exclude ,org-jekyll-exclude-regex
                                       :recursive t)
-                                     ("org-jekyll" :components ("org-jekyll-org" "org-jekyll-static")))))
-    (org-publish-project "org-jekyll" t nil))
-  (make-process
-   :name "jekyll-build"
-   :buffer "jekyll-build"
-   :command '("bundle" "exec" "jekyll" "build")
-   :delete-exited-processes t
-   :sentinel (lambda (process state)
-               (cond
-                ((and (eq (process-status process) 'exit)
-                      (zerop (process-exit-status process)))
-                 (message "%s" (propertize "Blog built" 'face '(:foreground "blue"))))
-                ((eq (process-status process) 'run)
-                 (accept-process-output process))
-                (t (error (concat "Jekyll Build: " state)))))))
-
-(defun org-jekyll--suffix-serve-toggle ()
-  "Serve blog or stop serving the blog."
-  (interactive)
-  (if (eq (process-status "jekyll-serve") ' run)
-      (interrupt-process "jekyll-serve")
+                                     ("org-jekyll" :components ("org-jekyll-org" "org-jekyll-static"))))
+        (current-path (file-name-directory buffer-file-name)))
     (cd (expand-file-name org-jekyll-paths-base-path))
+    (org-publish-project "org-jekyll" t nil)
     (make-process
-     :name "jekyll-serve"
-     :buffer "jekyll-serve"
-     :command '("bundle" "exec" "jekyll" "serve")
+     :name "jekyll-build"
+     :buffer "jekyll-build"
+     :command '("bundle" "exec" "jekyll" "build")
      :delete-exited-processes t
-     :filter (lambda (process text)
-               (if (string-match ".*done in [0-9.]+ seconds.*" text)
-                   (message "%s" (propertize "Blog serve: running" 'face '(:foreground "blue"))))
-               (internal-default-process-filter process text))
      :sentinel (lambda (process state)
                  (cond
                   ((and (eq (process-status process) 'exit)
                         (zerop (process-exit-status process)))
-                   (message "%s" (propertize "Blog serve: stopped" 'face '(:foreground "blue"))))
+                   (message "%s" (propertize "Blog built" 'face '(:foreground "blue"))))
                   ((eq (process-status process) 'run)
                    (accept-process-output process))
-                  (t (error (concat "Jekyll Serve: " state))))))))
+                  (t (error (concat "Jekyll Build: " state))))))
+    (cd current-path)))
+
+(defun org-jekyll--suffix-serve-toggle ()
+  "Serve blog or stop serving the blog."
+  (interactive)
+  (let ((current-path (file-name-directory buffer-file-name)))
+    (if (eq (process-status "jekyll-serve") ' run)
+        (interrupt-process "jekyll-serve")
+      (cd (expand-file-name org-jekyll-paths-base-path))
+      (make-process
+       :name "jekyll-serve"
+       :buffer "jekyll-serve"
+       :command '("bundle" "exec" "jekyll" "serve")
+       :delete-exited-processes t
+       :filter (lambda (process text)
+                 (if (string-match ".*done in [0-9.]+ seconds.*" text)
+                     (message "%s" (propertize "Blog serve: running" 'face '(:foreground "blue"))))
+                 (internal-default-process-filter process text))
+       :sentinel (lambda (process state)
+                   (cond
+                    ((and (eq (process-status process) 'exit)
+                          (zerop (process-exit-status process)))
+                     (message "%s" (propertize "Blog serve: stopped" 'face '(:foreground "blue"))))
+                    ((eq (process-status process) 'run)
+                     (accept-process-output process))
+                    (t (error (concat "Jekyll Serve: " state))))))
+      (cd current-path))))
 
 (defun org-jekyll--suffix-open-build-log ()
   "Open build log."
@@ -347,35 +355,38 @@ PROPERTY-LIST is a list of properties from
 (defun org-jekyll--suffix-clear ()
   "Clear blog files."
   (interactive)
-  (cd (expand-file-name org-jekyll-paths-base-path))
-  (mapc (lambda (x)
-          (mapc (lambda (file)
-                  (delete-file file nil))
-                (mapcan (lambda (directory)
-                          (directory-files-recursively (concat org-jekyll-paths-base-path directory) (cdr x) nil nil nil))
-                        (car x))))
-        `((("/_posts/en" "/_posts/ru") . "\\.html$")
-          (("/assets/static" "/_static") . ,(concat "\\.png\\|\\.jpg$\\|\\.jpeg$"
-                                                    "\\|"
-                                                    "\\.JPG$\\|\\.svg$\\|\\.webm$"
-                                                    "\\|"
-                                                    "\\.webp$\\|\\.html$\\|\\.tar.bz2$"
-                                                    "\\|"
-                                                    "\\.org$\\|\\.gif$\\|\\.gpx$"))
-          (("/_articles") . "\\.org$")))
-  (make-process
-   :name "jekyll-clean"
-   :buffer "jekyll-clean"
-   :command '("bundle" "exec" "jekyll" "clean")
-   :delete-exited-processes t
-   :sentinel (lambda (process state)
-               (cond
-                ((and (eq (process-status process) 'exit)
-                      (zerop (process-exit-status process)))
-                 (message "%s" (propertize "Blog cleaned" 'face '(:foreground "blue"))))
-                ((eq (process-status process) 'run)
-                 (accept-process-output process))
-                (t (error (concat "Jekyll Clean: " state)))))))
+  (let ((current-path (file-name-directory buffer-file-name)))
+    (cd (expand-file-name org-jekyll-paths-base-path))
+    (mapc (lambda (x)
+            (mapc (lambda (file)
+                    (delete-file file nil))
+                  (mapcan (lambda (directory)
+                            (directory-files-recursively (concat org-jekyll-paths-base-path directory) (cdr x) nil nil nil))
+                          (car x))))
+          `((("/_posts/en" "/_posts/ru") . "\\.html$")
+            (("/assets/static" "/_static") . ,(concat "\\.png$\\|\\.jpg$\\|\\.jpeg$"
+                                                      "\\|"
+                                                      "\\.JPG$\\|\\.svg$\\|\\.webm$"
+                                                      "\\|"
+                                                      "\\.webp$\\|\\.html$\\|\\.tar.bz2$"
+                                                      "\\|"
+                                                      "\\.org$\\|\\.gif$\\|\\.gpx$"
+                                                      "\\|"
+                                                      "\\.svg$"))
+            (("/_articles") . "\\.org$\\|\\.png$")))
+    (make-process
+     :name "jekyll-clean"
+     :buffer "jekyll-clean"
+     :command '("bundle" "exec" "jekyll" "clean")
+     :delete-exited-processes t
+     :sentinel (lambda (process state)
+                 (cond
+                  ((and (eq (process-status process) 'exit)
+                        (zerop (process-exit-status process)))
+                   (message "%s" (propertize "Blog cleaned" 'face '(:foreground "blue"))))
+                  ((eq (process-status process) 'run)
+                   (accept-process-output process))
+                  (t (error (concat "Jekyll Clean: " state))))))))
 
 (defun org-jekyll--suffix-open-blog ()
   "Open locally served blog."

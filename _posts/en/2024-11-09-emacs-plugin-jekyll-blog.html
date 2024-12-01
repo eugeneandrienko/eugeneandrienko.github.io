@@ -1,0 +1,1831 @@
+---
+layout: post
+title: How I wrote an Emacs plugin to build my blog
+category: it
+date: 2024-11-09
+lang: en
+comments: false
+hidden:
+  - related_posts
+image: /assets/static/emacs-plugin-jekyll-blog-header.png
+banner:
+  image: /assets/static/emacs-plugin-jekyll-blog-header.png
+  opacity: 0.6
+summary: Emacs Lisp program that makes it easy to build a Jekyll blog from org files
+tags: emacs
+---
+
+<div class="outline-2">
+<h2>TOC&#xa0;&#xa0;&#xa0;<span class="tag"></span></h2>
+<div class="outline-text-2">
+<ul class="org-ul">
+<li><a href="#preface">Introduction</a></li>
+<li><a href="#generator-first-version">First version of OrgMode to HTML translator</a></li>
+<li><a href="#emacs-lisp-jekyll-gen">Jekyll-blog generation with Emacs Lisp</a>
+<ul class="org-ul">
+<li><a href="#convert-org2html">Org to HTML conversion</a></li>
+<li><a href="#copy-2-tmp-catalog">Custom function to copy files in temporary catalog</a></li>
+<li><a href="#html-file-editing">HTML files patching</a></li>
+<li><a href="#static-files-export">Static files export</a></li>
+<li><a href="#jekyll-build-from-emacs">Call Jekyll from Emacs</a></li>
+<li><a href="#create-new-post">New blogpost creation</a></li>
+<li><a href="#jekyll-local-server">Local server start</a></li>
+<li><a href="#jekyll-clean">Jekyll's working directory cleanup</a></li>
+<li><a href="#transient-ui">UI (transient)</a></li>
+<li><a href="#emacs-plugin">Emacs plugin specific code</a></li>
+<li><a href="#loading-plugin-in-emacs">Loading plugin in Emacs</a></li>
+</ul></li>
+<li><a href="#source-code">Source code</a></li>
+<li><a href="#plugin-improvement">What else could be improved?</a></li>
+<li><a href="#notes">Notes</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-preface" class="outline-2">
+<h2 id="preface">Introduction</h2>
+<div class="outline-text-2" id="text-preface">
+<p>
+In this post I'll tell you about my little Emacs plugin, that makes it easy to
+work with a blog, built on top of a static site engine. It is possible to
+write posts on OrgMode, although the almost all static site generators support
+only Markdown, rarely reStructuredText, or HTML🌚.
+</p>
+
+<p>
+I used a lot of things:
+</p>
+<ul class="org-ul">
+<li>Wrote my blog in LiveJournal</li>
+<li>Self-hosted Wordpress blog on top of LAMP</li>
+<li>Wrote blog in Blogger.com</li>
+<li>Self-hosted my blog again. In this iteration, it was built using the Pelican
+static-site generator. Comments were added using Disqus.</li>
+<li>Tried <a href="https://hackage.haskell.org/package/pencil">pencil</a></li>
+<li>and so on&#x2026;</li>
+</ul>
+
+<p>
+In the end, I was tired of administering Apache/Nginx, MySQL/PostgreSQL,
+php-fpm and so on. Also, I was also tired of useless WYSIWYG editors and
+unnecessary "updates" of blogging platforms. Almost at that time, various
+"virtue signaling" came on the scene — and because of that I
+lost<sup><a id="fnr.1" class="footref" href="#fn.1" role="doc-backlink">1</a></sup> my VPS (it provides the clear access to the Internet
+for me — like before, in the 1990s and 2000s, when were the really global
+network with possibility to communicate with different people around the
+world, without the censorship, GeoIP blocks and DPI). Also, I almost lost my
+domain name<sup><a id="fnr.2" class="footref" href="#fn.2" role="doc-backlink">2</a></sup>.
+</p>
+
+<p>
+As a result I stared using <a href="https://jekyllrb.com/">Jekyll</a><sup><a id="fnr.3" class="footref" href="#fn.3" role="doc-backlink">3</a></sup>. Now, the copy of my blog, with
+all HTML and CSS files, is stored on my computer, independent of third-party
+CDN, libraries and other stuff, to which I can lose access at any moment. I
+"slightly" modified the <a href="https://github.com/jeffreytse/jekyll-theme-yat">Yat</a> theme, to remove JavaScript from
+it<sup><a id="fnr.4" class="footref" href="#fn.4" role="doc-backlink">4</a></sup>, and loading of third-party resources from CDN. The only
+remaining dependency — from the Jekyll itself, and from it's plugins. But this
+stuff is already on my hard drive and it's not going anywhere (don't forget
+about backups!).
+</p>
+
+<p>
+I also thought about how to achieve the next things:
+</p>
+<ol class="org-ol">
+<li>My blog post sources should not be tightly coupled with a static site
+generator. I should be able to switch from one generator to another,
+without much pain. Or even write my own generator. This should be usable if
+Jekyll developers <i>suddenly</i> decide to <a href="https://en.wikipedia.org/wiki/Discrimination_based_on_nationality">discriminate people by nationality or
+location</a>.</li>
+<li><p>
+My blog should not be tightly coupled to a foreign infrastructure. One
+dependency I still can't get rid of is the dependency on domain name
+registar. For now, I can only evade registars, who discriminate clients or
+who work under the jurisdiction of my current place of residence.
+</p>
+
+<p>
+To host static blog — any microwave oven can be used, if it is placed in
+the right place — in a place where where the connectivity of the global
+network is not destroyed/destroing.
+</p></li>
+<li>I'll be able to edit blog posts my way — in Emacs with OrgMode. Not in a
+WYSIWYG online editor or forced to use the Markdown markup language.</li>
+<li>I'll be able to use my catalog structure to store blog post source, images
+and other related files.</li>
+</ol>
+
+<p>
+If I can't solve item #2 with some Emacs Lisp code, then over items can be
+solved this way.
+</p>
+</div>
+</div>
+
+<div id="outline-container-generator-first-version" class="outline-2">
+<h2 id="generator-first-version">First version of OrgMode to HTML translator</h2>
+<div class="outline-text-2" id="text-generator-first-version">
+<p>
+First version of OrgMode to HTML translator was based on the bash, sed, pandoc
+and my own Java filter for pandoc. I used it for almost a year.
+</p>
+
+<p>
+All my posts that were processed by this translator were in the <code>articles/</code>
+directory. Each post was stored in its own subdirectory:
+</p>
+
+<pre class="example">
+rsync/blog (master) % tree --noreport articles
+articles/
+├── arms/
+├── cycling/
+│   ├── 2020-05-17-thanks-for-living/
+│   │   ├── article-ru.org
+│   │   ├── hate of car drivers.jpg
+│   │   ├── kamennoostrovskii.jpg
+│   │   ├── trollface.jpg
+│   │   ├── truck.gif
+│   │   └── ushakovski most.jpg
+│   ├── 2021-04-08-vk-cyclist-types/
+│   │   ├── article-ru.org
+│   │   ├── hate of car drivers.jpg
+│   │   ├── usual-seat-as-urbanist-thinks.jpg
+│   │   └── usual-seat.jpg
+├── it/
+│   ├── 2020-09-09-thinkpad-x220-freebsd/
+│   │   ├── article-en.org
+│   │   ├── article-ru.org
+│   │   └── freebsd_intel_glitches.jpg
+│   ├── 2023-12-20-plain-text-accounting/
+│   ├── 2024-01-02-life-in-console/
+│   ├── 2024-07-07-thinkpad-x220-second-life/
+│   ├── 2024-10-27-freebsd-bhyve-windows/
+│   ├── 2024-11-09-emacs-plugin-jekyll-blog/
+│   ├── draft-palm-tung-e2-archaeological/
+│   │   ├── 20231223_141710.jpg
+│   │   ├── 20231223_142550.jpg
+│   │   ├── 20231230_200500.jpg
+│   │   ├── 20231231_144949.jpg
+│   │   ├── 20231231_205901.jpg
+│   │   ├── 20240101_162620.jpg
+│   │   ├── 20240101_215815.jpg
+│   │   ├── 20240101_215908.jpg
+│   │   ├── article-ru.org
+├── leatherwork/
+│   └── 2021-01-29-leatherwork-useful-links/
+│       └── article-ru.org
+└── photo/
+</pre>
+
+<p>
+Today I still use this tree-like structure. It allows to see all related to
+blog post files in one catalog. Also, I'm able to open an org-file with
+blogpost text in Emacs and will see text almost as it will be in the blog
+itself:
+</p>
+
+
+<div class="figure">
+<p><img src="/assets/static/emacs-blog-post.png" alt="Post's draft, opened in Emacs" align="center" />
+</p>
+<p style="text-align: center"><i>Blogpost text, opened in Emacs</i></p>
+</div>
+
+<p>
+Inside the catalog with the blog files there was a special <code>Makefile</code> that
+executed <i>the special</i> bash script. This script scanned the <code>articles/</code> catalog
+and put the found blogpost files to the next conveyor:
+</p>
+
+
+<div class="figure">
+<p><img src="/assets/static/first_generator.png" alt="Conveyor for Org2HTML transformation" align="center" />
+</p>
+<p style="text-align: center"><i>Conveyor for OrgMode to HTML transformation</i></p>
+</div>
+
+<p>
+You can see the code of this conveyor <a href="https://github.com/eugeneandrienko/eugeneandrienko.github.io/blob/3b70ec4997a063fdd3c1bf4c23c3c9a5d78b78e3/README.org">in the next commit</a>, in the <code>README.org</code>
+file. Source code for pandoc's Java filter <a href="https://github.com/eugeneandrienko/pandoc_jekyll">is in a separate repository</a>.
+</p>
+
+<p>
+Obviously it was overcomplicated. It will be much simpler if the resulting
+HTML file is generated by OrgMode functions, without unnecessary additional
+transformations. By the way, there are a lot of functions in OrgMode to
+convert org-files into different formats.
+</p>
+
+<p>
+At that time I found <a href="https://mastodon.social/@fabrik42">Christian Dewein's</a> article in Mastodon: <a href="https://christiandewein.com/publishing-with-jekyll-emacs-org-mode">Publishing on the
+web with Jekyll, Emacs and Org-Mode</a>&#x2026;
+</p>
+</div>
+</div>
+
+<div id="outline-container-emacs-lisp-jekyll-gen" class="outline-2">
+<h2 id="emacs-lisp-jekyll-gen">Jekyll-blog generation with Emacs Lisp</h2>
+<div class="outline-text-2" id="text-emacs-lisp-jekyll-gen">
+<p>
+As I realized, I can throw away my <code>sed</code> + <code>awk</code> + <code>pandoc</code> + <code>Java-фильтр</code> conveyor
+and replace it with a single call to the
+<code>org-publish-project</code><sup><a id="fnr.5" class="footref" href="#fn.5" role="doc-backlink">5</a></sup> function. And Markdown⇒HTML
+conversion became unnecessary.
+</p>
+
+<p>
+I had some experience in Lisp <code>programming</code> (I programmed few things with
+Clojure<sup><a id="fnr.6" class="footref" href="#fn.6" role="doc-backlink">6</a></sup>). So I started to write my own plugin, using <a href="https://mastodon.social/@fabrik42">Christian
+Dewein's</a> code as a reference.
+</p>
+
+<p>
+Emacs Lisp programming in Emacs is such a joy! You have a built-in help system
+via <code>C-h f</code>, <code>C-h v</code> and so on. And you have a built-in REPL (<code>M-x ielm</code>). And you
+already have a built-in debugger. I can calmly play with <a href="https://www.s-expressions.org/home">S-expressions</a>,
+immediately check how it works in REPL, and build my program "brick by brick".
+</p>
+</div>
+
+<div id="outline-container-convert-org2html" class="outline-3">
+<h3 id="convert-org2html">Org to HTML conversion</h3>
+<div class="outline-text-3" id="text-convert-org2html">
+<p>
+The above-mentioned <code>org-publish-project</code> function is able to take files from a
+specified catalog, convert them to a specified format and save new files to
+another catalog. All <code>org-publish-project</code> settings are stored in the
+<code>org-publish-project-alist</code> list.
+</p>
+
+<p>
+For example, to convert org files from <code>~/test</code> to HTML files for Jekyll in
+<code>~/results</code>, I can use the following code:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #2aa198;">(</span><span style="color: #859900; font-weight: bold;">let</span> <span style="color: #b58900;">(</span><span style="color: #268bd2;">(</span>org-publish-project-alist `<span style="color: #6c71c4;">(</span><span style="color: #859900;">(</span><span style="color: #2aa198;">"org-jekyll-org"</span>
+                                    <span style="color: #657b83; font-weight: bold;">:base-directory</span> <span style="color: #2aa198;">"~/test"</span>
+                                    <span style="color: #657b83; font-weight: bold;">:base-extension</span> <span style="color: #2aa198;">"org"</span>
+                                    <span style="color: #657b83; font-weight: bold;">:publishing-directory</span> <span style="color: #2aa198;">"~/results"</span>
+                                    <span style="color: #657b83; font-weight: bold;">:publishing-function</span> org-html-publish-to-html
+                                    <span style="color: #657b83; font-weight: bold;">:html-extension</span> <span style="color: #2aa198;">"html"</span>
+                                    <span style="color: #657b83; font-weight: bold;">:headline-levels</span> 5
+                                    <span style="color: #657b83; font-weight: bold;">:html-toplevel-hlevel</span> 2
+                                    <span style="color: #657b83; font-weight: bold;">:html-html5-fancy</span> t
+                                    <span style="color: #657b83; font-weight: bold;">:html-table-attributes</span> <span style="color: #b58900;">(</span><span style="color: #657b83; font-weight: bold;">:border</span> <span style="color: #2aa198;">"2"</span> <span style="color: #657b83; font-weight: bold;">:cellspacing</span> <span style="color: #2aa198;">"0"</span> <span style="color: #657b83; font-weight: bold;">:cellpadding</span> <span style="color: #2aa198;">"6"</span> <span style="color: #657b83; font-weight: bold;">:frame</span> <span style="color: #2aa198;">"void"</span><span style="color: #b58900;">)</span>
+                                    <span style="color: #657b83; font-weight: bold;">:section-numbers</span> nil
+                                    <span style="color: #657b83; font-weight: bold;">:html-inline-images</span> t
+                                    <span style="color: #657b83; font-weight: bold;">:htmlized-source</span> t
+                                    <span style="color: #657b83; font-weight: bold;">:with-toc</span> nil
+                                    <span style="color: #657b83; font-weight: bold;">:with-sub-superscript</span> nil
+                                    <span style="color: #657b83; font-weight: bold;">:body-only</span> t
+                                    <span style="color: #657b83; font-weight: bold;">:recursive</span> t<span style="color: #859900;">)</span><span style="color: #6c71c4;">)</span><span style="color: #268bd2;">)</span><span style="color: #b58900;">)</span>
+  <span style="color: #b58900;">(</span>org-publish-project <span style="color: #2aa198;">"org-jekyll-org"</span> t nil<span style="color: #b58900;">)</span><span style="color: #2aa198;">)</span>
+</pre>
+</div>
+
+<p>
+Here are the next important parameters:
+</p>
+<ul class="org-ul">
+<li><code>:base-directory</code> — path to directory containing org files for export.</li>
+<li><code>:base-extension</code> — extension(s) for source files.</li>
+<li><code>:publishing-directory</code> — path to directory with export results.</li>
+</ul>
+
+<p>
+There are some tweaks for HTML conversion in other parameters. I use it to get
+HTML files suitable for use inside Jekyll.
+</p>
+
+<p>
+It will be good to change some paths without editing the source code. To
+achieve this, the <code>defcustom</code><sup><a id="fnr.7" class="footref" href="#fn.7" role="doc-backlink">7</a></sup> function from Emacs Lisp can be
+used. This function allows you to describe the plugin's settings in a way that
+they can be edited in generally accepted methods — via <code>M-x customize</code> or via
+the <code>:custom</code> section in the <code>use-package</code>:
+</p>
+
+
+<div class="figure">
+<p><img src="/assets/static/customize.png" alt="Emacs M-x customize" align="center" />
+</p>
+<p style="text-align: center"><i>M-x customize interface</i></p>
+</div>
+
+<p>
+I have described the path to catalog with blog and the path to catalog with
+blog's articles in the next way:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #2aa198;">(</span><span style="color: #859900; font-weight: bold;">defgroup</span> <span style="color: #b58900;">org-jekyll</span> <span style="color: #b58900;">()</span>
+  <span style="color: #2aa198;">"Emacs mode to write on OrgMode for Jekyll blog."</span>
+  <span style="color: #657b83; font-weight: bold;">:group</span> 'local
+  <span style="color: #657b83; font-weight: bold;">:prefix</span> <span style="color: #2aa198;">"org-jekyll-"</span>
+  <span style="color: #657b83; font-weight: bold;">:link</span> '<span style="color: #b58900;">(</span>url-link <span style="color: #657b83; font-weight: bold;">:tag</span> <span style="color: #2aa198;">"Source code"</span> <span style="color: #2aa198;">"https://github.com/eugeneandrienko/eugeneandrienko.github.io"</span><span style="color: #b58900;">)</span><span style="color: #2aa198;">)</span>
+
+<span style="color: #2aa198;">(</span><span style="color: #859900; font-weight: bold;">defgroup</span> <span style="color: #b58900;">org-jekyll-paths</span> nil
+  <span style="color: #2aa198;">"Paths for emacs mode to write on OrgMode for Jekyll blog."</span>
+  <span style="color: #657b83; font-weight: bold;">:group</span> 'org-jekyll
+  <span style="color: #657b83; font-weight: bold;">:prefix</span> <span style="color: #2aa198;">"org-jekyll-paths-"</span><span style="color: #2aa198;">)</span>
+
+<span style="color: #2aa198;">(</span><span style="color: #859900; font-weight: bold;">defcustom</span> <span style="color: #268bd2;">org-jekyll-paths-base-path</span>
+  <span style="color: #2aa198;">"~/rsync/blog"</span>
+  <span style="color: #2aa198;">"Path to the base directory of my blog."</span>
+  <span style="color: #657b83; font-weight: bold;">:type</span> 'directory
+  <span style="color: #657b83; font-weight: bold;">:group</span> 'org-jekyll-paths<span style="color: #2aa198;">)</span>
+
+<span style="color: #2aa198;">(</span><span style="color: #859900; font-weight: bold;">defcustom</span> <span style="color: #268bd2;">org-jekyll-paths-articles-path</span>
+  <span style="color: #b58900;">(</span>concat org-jekyll-paths-base-path <span style="color: #2aa198;">"/articles"</span><span style="color: #b58900;">)</span>
+  <span style="color: #2aa198;">"Path to directory with original articles in Org format."</span>
+  <span style="color: #657b83; font-weight: bold;">:type</span> 'directory
+  <span style="color: #657b83; font-weight: bold;">:group</span> 'org-jekyll-paths<span style="color: #2aa198;">)</span>
+</pre>
+</div>
+
+<p>
+The first S-expression describes a new menu item in the Emacs settings. The
+second S-expression creates a submenu item inside the previous menu
+item. Inside the last item are two settings — path to directory with blog and
+path to blogpost source files.
+</p>
+
+<p>
+As a result, the <code>org-publish-project</code> call from above can be rewritten in the
+next way:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #2aa198;">(</span><span style="color: #859900; font-weight: bold;">let</span> <span style="color: #b58900;">(</span><span style="color: #268bd2;">(</span>org-publish-project-alist `<span style="color: #6c71c4;">(</span><span style="color: #859900;">(</span><span style="color: #2aa198;">"org-jekyll-org"</span>
+                                    <span style="color: #657b83; font-weight: bold;">:base-directory</span> ,org-jekyll-paths-articles-path
+                                    <span style="color: #657b83; font-weight: bold;">:base-extension</span> <span style="color: #2aa198;">"org"</span>
+                                    <span style="color: #657b83; font-weight: bold;">:publishing-directory</span> ,<span style="color: #b58900;">(</span>concat org-jekyll-paths-base-path <span style="color: #2aa198;">"/_posts"</span><span style="color: #b58900;">)</span>
+                                    <span style="color: #657b83; font-weight: bold;">:publishing-function</span> org-html-publish-to-html
+</pre>
+</div>
+
+<p>
+Here we have a special syntax for lists that contain executable code
+inside. The normal list declaration can't evaluate the code inside:
+</p>
+
+<pre class="example">
+&gt; '("a" (concat "b" "2") "c")
+
+("a"
+ (concat "b" "2")
+ "c")
+</pre>
+
+<p>
+But when backquoting is used<sup><a id="fnr.8" class="footref" href="#fn.8" role="doc-backlink">8</a></sup>, it becomes possible to include and
+evaluate code within the list:
+</p>
+
+<pre class="example">
+&gt; `("a" ,(concat "b" "2") "c")
+("a" "b2" "c")
+</pre>
+
+<p>
+The aforementioned <code>org-publish-project</code> call is enough to convert org-files to
+HTML in an ideal case. But, <i>in my case,</i> I can't use it — all my blogpost org
+files are not stored in one catalog, but in separate subdirectories!
+</p>
+
+<p>
+This means, that I need to call <i>a special, custom function</i> before calling
+<code>org-publish-project</code>. This <i>custom function</i> should copy all the org files from
+the subdirectories to the temporary directory for <code>org-publilsh-project</code>.
+</p>
+
+<p>
+To call this <i>custom function</i> before calling <code>org-publish-project</code> there is a
+<code>:preparation-function</code> parameter:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #2aa198;">(</span><span style="color: #859900; font-weight: bold;">let</span> <span style="color: #b58900;">(</span><span style="color: #268bd2;">(</span>org-publish-project-alist `<span style="color: #6c71c4;">(</span><span style="color: #859900;">(</span><span style="color: #2aa198;">"org-jekyll-org"</span>
+                                    <span style="color: #657b83; font-weight: bold;">:base-directory</span> ,<span style="color: #b58900;">(</span>concat org-jekyll-paths-base-path <span style="color: #2aa198;">"/_articles"</span><span style="color: #b58900;">)</span>
+                                    <span style="color: #657b83; font-weight: bold;">:base-extension</span> <span style="color: #2aa198;">"org"</span>
+                                    <span style="color: #657b83; font-weight: bold;">:publishing-directory</span> ,<span style="color: #b58900;">(</span>concat org-jekyll-paths-base-path <span style="color: #2aa198;">"/_posts"</span><span style="color: #b58900;">)</span>
+                                    <span style="color: #657b83; font-weight: bold;">:preparation-function</span> org-jekyll--prepare-articles
+</pre>
+</div>
+
+<p>
+As you can see, here I change the <code>:base-directory</code> parameter to the path of the
+temporary catalog containing the articles.
+</p>
+</div>
+</div>
+
+<div id="outline-container-copy-2-tmp-catalog" class="outline-3">
+<h3 id="copy-2-tmp-catalog">Custom function to copy files in temporary catalog</h3>
+<div class="outline-text-3" id="text-copy-2-tmp-catalog">
+<p>
+First, I need to get a list of org-files with blogposts from <code>articles/</code>
+catalog. This list can be returned with the
+<code>directory-files-recursively</code><sup><a id="fnr.9" class="footref" href="#fn.9" role="doc-backlink">9</a></sup> function:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #2aa198;">(</span>directory-files-recursively org-jekyll-paths-articles-path <span style="color: #2aa198;">"\\.org$"</span> nil nil nil<span style="color: #2aa198;">)</span>
+
+<span style="color: #2aa198;">(</span><span style="color: #2aa198;">"~/rsync/blog/articles/cycling/2020-05-17-thanks-for-living/article-ru.org"</span>
+ <span style="color: #2aa198;">"~/rsync/blog/articles/cycling/2021-04-08-vk-cyclist-types/article-ru.org"</span>
+ <span style="color: #2aa198;">"~/rsync/blog/articles/cycling/2021-04-12-balticstar-north-open-2021/article-ru.org"</span>
+ <span style="color: #2aa198;">"~/rsync/blog/articles/cycling/2021-05-17-insled-open/article-ru.org"</span>
+ <span style="color: #2aa198;">"~/rsync/blog/articles/cycling/draft-osmand-howto/article-ru.org"</span>
+ <span style="color: #2aa198;">"~/rsync/blog/articles/cycling/draft-qmapshack-howto/article-ru.org"</span>
+ ...
+ <span style="color: #2aa198;">"~/rsync/blog/articles/_post_template.org"</span><span style="color: #2aa198;">)</span>
+</pre>
+</div>
+
+<p>
+But there are a lot of unnecessary files in the result of this function —
+drafts, hidden posts and template. It can be filtered using
+<code>seq-filter</code><sup><a id="fnr.10" class="footref" href="#fn.10" role="doc-backlink">10</a></sup> function:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #2aa198;">(</span>seq-filter <span style="color: #b58900;">(</span><span style="color: #859900; font-weight: bold;">lambda</span> <span style="color: #268bd2;">(</span>path<span style="color: #268bd2;">)</span>
+              <span style="color: #268bd2;">(</span><span style="color: #859900; font-weight: bold;">and</span>
+               <span style="color: #6c71c4;">(</span>not <span style="color: #859900;">(</span>string-match org-jekyll-exclude-regex path<span style="color: #859900;">)</span><span style="color: #6c71c4;">)</span>
+               <span style="color: #6c71c4;">(</span>not <span style="color: #859900;">(</span>string-match <span style="color: #2aa198;">"</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">(</span><span style="color: #2aa198;">draft-</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">)</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">|</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">(</span><span style="color: #2aa198;">hidden-</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">)</span><span style="color: #2aa198;">"</span> path<span style="color: #859900;">)</span><span style="color: #6c71c4;">)</span><span style="color: #268bd2;">)</span><span style="color: #b58900;">)</span>
+            <span style="color: #b58900;">(</span>directory-files-recursively org-jekyll-paths-articles-path <span style="color: #2aa198;">"\\.org$"</span> nil nil nil<span style="color: #b58900;">)</span><span style="color: #2aa198;">)</span>
+</pre>
+</div>
+
+<p>
+This function removes items from the list (second parameter) that do not match
+the predicate (first parameter) check(s). The predicate — is just a lambda
+function that checks whether the path is not a draft/hidden file or a template
+file.
+</p>
+
+<p>
+The <code>org-jekyll-exclude-regex</code> variable — is just a regular expression to throw
+away inappropriate paths:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #2aa198;">(</span><span style="color: #859900; font-weight: bold;">defcustom</span> <span style="color: #268bd2;">org-jekyll-exclude-regex</span>
+  <span style="color: #2aa198;">"</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">(</span><span style="color: #2aa198;">_post_template\\.org</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">)</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">|</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">(</span><span style="color: #2aa198;">\\.project</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">)</span><span style="color: #2aa198;">"</span>
+  <span style="color: #2aa198;">"Regex to exclude unwanted files."</span>
+  <span style="color: #657b83; font-weight: bold;">:type</span> 'regexp
+  <span style="color: #657b83; font-weight: bold;">:group</span> 'org-jekyll<span style="color: #2aa198;">)</span>
+</pre>
+</div>
+
+<p>
+Now we have <i>a right</i> list of paths and should pass each element of it to copy
+files function. This can be achieved with the <code>mapc</code><sup><a id="fnr.11" class="footref" href="#fn.11" role="doc-backlink">11</a></sup> function, which
+applies the lambda function from the first argument to each element of the
+list that is passed as the seccond argument:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #2aa198;">(</span>mapc <span style="color: #b58900;">(</span><span style="color: #859900; font-weight: bold;">lambda</span> <span style="color: #268bd2;">(</span>article<span style="color: #268bd2;">)</span>
+        <span style="color: #268bd2;">(</span>
+         <span style="color: #93a1a1;">;; </span><span style="color: #93a1a1;">copy file in `</span><span style="color: #268bd2; font-weight: bold;">article</span><span style="color: #93a1a1;">' path here</span>
+         <span style="color: #268bd2;">)</span>
+        <span style="color: #268bd2;">(</span>seq-filter <span style="color: #6c71c4;">(</span><span style="color: #859900; font-weight: bold;">lambda</span> <span style="color: #859900;">(</span>path<span style="color: #859900;">)</span>
+              <span style="color: #859900;">(</span><span style="color: #859900; font-weight: bold;">and</span>
+               <span style="color: #b58900;">(</span>not <span style="color: #268bd2;">(</span>string-match org-jekyll-exclude-regex path<span style="color: #268bd2;">)</span><span style="color: #b58900;">)</span>
+               <span style="color: #b58900;">(</span>not <span style="color: #268bd2;">(</span>string-match <span style="color: #2aa198;">"</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">(</span><span style="color: #2aa198;">draft-</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">)</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">|</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">(</span><span style="color: #2aa198;">hidden-</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">)</span><span style="color: #2aa198;">"</span> path<span style="color: #268bd2;">)</span><span style="color: #b58900;">)</span><span style="color: #859900;">)</span><span style="color: #6c71c4;">)</span>
+                    <span style="color: #6c71c4;">(</span>directory-files-recursively org-jekyll-paths-articles-path <span style="color: #2aa198;">"\\.org$"</span> nil nil nil<span style="color: #6c71c4;">)</span><span style="color: #268bd2;">)</span>
+</pre>
+</div>
+
+<p>
+I use path elements from <code>article</code> variable: date, URL and language
+code<sup><a id="fnr.12" class="footref" href="#fn.12" role="doc-backlink">12</a></sup> — to create an unique filename for intermediate file. To
+cut necessary chunks from string with path, the regexes with capturing groups
+are used. For this purpose there are functions <code>string-match</code> and
+<code>match-string</code><sup><a id="fnr.13" class="footref" href="#fn.13" role="doc-backlink">13</a></sup> in Emacs Lisp:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #2aa198;">(</span>string-match
+ <span style="color: #b58900;">(</span>concat org-jekyll-paths-articles-path
+         <span style="color: #2aa198;">"/</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">(</span><span style="color: #2aa198;">\\w+</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">)</span><span style="color: #2aa198;">/</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">(</span><span style="color: #2aa198;">[0-9-]+</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">)</span><span style="color: #2aa198;">-</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">(</span><span style="color: #2aa198;">[[:alnum:]-]+</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">)</span><span style="color: #2aa198;">/article-</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">(</span><span style="color: #2aa198;">[[:lower:]]\\{</span><span style="color: #268bd2;">2\\</span><span style="color: #2aa198;">}</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">)</span><span style="color: #2aa198;">\\.org$"</span><span style="color: #b58900;">)</span>
+ <span style="color: #2aa198;">"~/rsync/blog/articles/photo/2024-09-01-summer-photos-2024/article-en.org"</span><span style="color: #2aa198;">)</span>
+0 <span style="color: #2aa198;">(</span>#o0, #x0, ?\C-@<span style="color: #2aa198;">)</span>
+
+<span style="color: #2aa198;">(</span>match-string 1 <span style="color: #2aa198;">"~/rsync/blog/articles/photo/2024-09-01-summer-photos-2024/article-en.org"</span><span style="color: #2aa198;">)</span>
+<span style="color: #2aa198;">"photo"</span>
+
+<span style="color: #2aa198;">(</span>match-string 2 <span style="color: #2aa198;">"~/rsync/blog/articles/photo/2024-09-01-summer-photos-2024/article-en.org"</span><span style="color: #2aa198;">)</span>
+<span style="color: #2aa198;">"2024-09-01"</span>
+
+<span style="color: #2aa198;">(</span>match-string 3 <span style="color: #2aa198;">"~/rsync/blog/articles/photo/2024-09-01-summer-photos-2024/article-en.org"</span><span style="color: #2aa198;">)</span>
+<span style="color: #2aa198;">"summer-photos-2024"</span>
+
+<span style="color: #2aa198;">(</span>match-string 4 <span style="color: #2aa198;">"~/rsync/blog/articles/photo/2024-09-01-summer-photos-2024/article-en.org"</span><span style="color: #2aa198;">)</span>
+<span style="color: #2aa198;">"en"</span>
+</pre>
+</div>
+
+<p>
+Inside the lambda-function's code I wrap it all in <code>let*</code><sup><a id="fnr.14" class="footref" href="#fn.14" role="doc-backlink">14</a></sup> for
+simplicity:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #2aa198;">(</span><span style="color: #859900; font-weight: bold;">lambda</span> <span style="color: #b58900;">(</span>article<span style="color: #b58900;">)</span>
+          <span style="color: #b58900;">(</span><span style="color: #859900; font-weight: bold;">progn</span>
+            <span style="color: #268bd2;">(</span>string-match
+             <span style="color: #6c71c4;">(</span>concat org-jekyll-paths-articles-path
+                     <span style="color: #2aa198;">"/</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">(</span><span style="color: #2aa198;">\\w+</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">)</span><span style="color: #2aa198;">/</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">(</span><span style="color: #2aa198;">[0-9-]+</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">)</span><span style="color: #2aa198;">-</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">(</span><span style="color: #2aa198;">[[:alnum:]-]+</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">)</span><span style="color: #2aa198;">/article-</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">(</span><span style="color: #2aa198;">[[:lower:]]\\{</span><span style="color: #268bd2;">2\\</span><span style="color: #2aa198;">}</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">)</span><span style="color: #2aa198;">\\.org$"</span><span style="color: #6c71c4;">)</span>
+             article<span style="color: #268bd2;">)</span>
+            <span style="color: #268bd2;">(</span><span style="color: #859900; font-weight: bold;">let*</span>
+                <span style="color: #6c71c4;">(</span><span style="color: #859900;">(</span>article-category <span style="color: #b58900;">(</span>match-string 1 article<span style="color: #b58900;">)</span><span style="color: #859900;">)</span>
+                 <span style="color: #859900;">(</span>article-date <span style="color: #b58900;">(</span>match-string 2 article<span style="color: #b58900;">)</span><span style="color: #859900;">)</span>
+                 <span style="color: #859900;">(</span>article-slug <span style="color: #b58900;">(</span>match-string 3 article<span style="color: #b58900;">)</span><span style="color: #859900;">)</span>
+                 <span style="color: #859900;">(</span>article-lang <span style="color: #b58900;">(</span>match-string 4 article<span style="color: #b58900;">)</span><span style="color: #859900;">)</span><span style="color: #6c71c4;">)</span>
+              <span style="color: #6c71c4;">(</span>
+                                        <span style="color: #93a1a1;">;</span><span style="color: #93a1a1;">copy-file-here</span>
+               <span style="color: #6c71c4;">)</span><span style="color: #268bd2;">)</span><span style="color: #b58900;">)</span>
+</pre>
+</div>
+
+<p>
+For convenience I'll add two more variables:
+</p>
+<ol class="org-ol">
+<li><p>
+Variable with intermediate catalog name: path to <code>_articles/</code> +
+<code>article-lang</code>. Path to <code>_articles/</code> is accessible from <code>"org-jekyll-org"</code>
+project settings — list with these settings is passed as single parameter
+to <code>org-jekyll--prepare-articles</code> function. By the name of parameter
+(<code>:base-directory</code>) the necessary value can be taken<sup><a id="fnr.15" class="footref" href="#fn.15" role="doc-backlink">15</a></sup>:
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #2aa198;">(</span>article-new-catalog <span style="color: #b58900;">(</span>concat
+                      <span style="color: #268bd2;">(</span>plist-get property-list '<span style="color: #657b83; font-weight: bold;">:base-directory</span><span style="color: #268bd2;">)</span>
+                      <span style="color: #2aa198;">"/"</span>
+                      article-lang<span style="color: #b58900;">)</span><span style="color: #2aa198;">)</span>
+</pre>
+</div></li>
+<li><p>
+Variable with unique path to file containing blogpost in intermediate
+catalog:
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #2aa198;">(</span>article-processed <span style="color: #b58900;">(</span>concat article-new-catalog <span style="color: #2aa198;">"/"</span> article-date <span style="color: #2aa198;">"-"</span> article-slug <span style="color: #2aa198;">".org"</span><span style="color: #b58900;">)</span><span style="color: #2aa198;">)</span>
+</pre>
+</div></li>
+</ol>
+
+<p>
+For example, if the <code>article</code> is equals to
+<code>~/rsync/blog/articles/photo/2024-09-01-summer-photos-2024/article-en.org</code>, then
+at the end of execution the <code>article-processed</code> variable is equal to:
+<code>~/rsync/blog/_articles/en/2024-09-01-summer-photos-2024.org</code>.
+</p>
+
+<p>
+Creating the new temporary catalog (if it does not already exists) and copying
+the files can be done with the next two functions inside the <code>let*</code> body:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #2aa198;">(</span>make-directory article-new-catalog t<span style="color: #2aa198;">)</span>
+<span style="color: #2aa198;">(</span>copy-file article article-processed t t t t<span style="color: #2aa198;">)</span>
+</pre>
+</div>
+
+<p>
+The resulting code of <code>org-jekyll--prepare-articles</code> function:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #2aa198;">(</span><span style="color: #859900; font-weight: bold;">defun</span> <span style="color: #268bd2;">org-jekyll--prepare-articles</span> <span style="color: #b58900;">(</span>property-list<span style="color: #b58900;">)</span>
+  <span style="color: #2aa198;">"Copy articles to `</span><span style="color: #268bd2; font-weight: bold;">_articles/</span><span style="color: #2aa198;">' catalog before publishing. Rename</span>
+<span style="color: #2aa198;">article file from `</span><span style="color: #268bd2; font-weight: bold;">article-LANG.org</span><span style="color: #2aa198;">' to</span>
+<span style="color: #2aa198;">`</span><span style="color: #268bd2; font-weight: bold;">YYYY-MM-DD-short-url.org</span><span style="color: #2aa198;">'.</span>
+
+<span style="color: #2aa198;">PROPERTY-LIST is a list of properties from</span>
+<span style="color: #2aa198;">`</span><span style="color: #268bd2; font-weight: bold;">org-publish-project-alist</span><span style="color: #2aa198;">'."</span>
+  <span style="color: #b58900;">(</span>mapc <span style="color: #268bd2;">(</span><span style="color: #859900; font-weight: bold;">lambda</span> <span style="color: #6c71c4;">(</span>article<span style="color: #6c71c4;">)</span>
+          <span style="color: #6c71c4;">(</span><span style="color: #859900; font-weight: bold;">progn</span>
+            <span style="color: #859900;">(</span>string-match
+             <span style="color: #b58900;">(</span>concat org-jekyll-paths-articles-path
+                     <span style="color: #2aa198;">"/</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">(</span><span style="color: #2aa198;">\\w+</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">)</span><span style="color: #2aa198;">/</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">(</span><span style="color: #2aa198;">[0-9-]+</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">)</span><span style="color: #2aa198;">-</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">(</span><span style="color: #2aa198;">[[:alnum:]-]+</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">)</span><span style="color: #2aa198;">/article-</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">(</span><span style="color: #2aa198;">[[:lower:]]\\{</span><span style="color: #268bd2;">2\\</span><span style="color: #2aa198;">}</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">)</span><span style="color: #2aa198;">\\.org$"</span><span style="color: #b58900;">)</span>
+             article<span style="color: #859900;">)</span>
+            <span style="color: #859900;">(</span><span style="color: #859900; font-weight: bold;">let*</span>
+                <span style="color: #b58900;">(</span><span style="color: #268bd2;">(</span>article-category <span style="color: #6c71c4;">(</span>match-string 1 article<span style="color: #6c71c4;">)</span><span style="color: #268bd2;">)</span>
+                 <span style="color: #268bd2;">(</span>article-date <span style="color: #6c71c4;">(</span>match-string 2 article<span style="color: #6c71c4;">)</span><span style="color: #268bd2;">)</span>
+                 <span style="color: #268bd2;">(</span>article-slug <span style="color: #6c71c4;">(</span>match-string 3 article<span style="color: #6c71c4;">)</span><span style="color: #268bd2;">)</span>
+                 <span style="color: #268bd2;">(</span>article-lang <span style="color: #6c71c4;">(</span>match-string 4 article<span style="color: #6c71c4;">)</span><span style="color: #268bd2;">)</span>
+                 <span style="color: #268bd2;">(</span>article-new-catalog <span style="color: #6c71c4;">(</span>concat
+                                       <span style="color: #859900;">(</span>plist-get property-list '<span style="color: #657b83; font-weight: bold;">:base-directory</span><span style="color: #859900;">)</span>
+                                       <span style="color: #2aa198;">"/"</span>
+                                       article-lang<span style="color: #6c71c4;">)</span><span style="color: #268bd2;">)</span>
+                 <span style="color: #268bd2;">(</span>article-processed <span style="color: #6c71c4;">(</span>concat article-new-catalog <span style="color: #2aa198;">"/"</span> article-date <span style="color: #2aa198;">"-"</span> article-slug <span style="color: #2aa198;">".org"</span><span style="color: #6c71c4;">)</span><span style="color: #268bd2;">)</span><span style="color: #b58900;">)</span>
+              <span style="color: #b58900;">(</span>make-directory article-new-catalog t<span style="color: #b58900;">)</span>
+              <span style="color: #b58900;">(</span>copy-file article article-processed t t t t<span style="color: #b58900;">)</span><span style="color: #859900;">)</span><span style="color: #6c71c4;">)</span><span style="color: #268bd2;">)</span>
+        <span style="color: #268bd2;">(</span>seq-filter <span style="color: #6c71c4;">(</span><span style="color: #859900; font-weight: bold;">lambda</span> <span style="color: #859900;">(</span>path<span style="color: #859900;">)</span>
+                      <span style="color: #859900;">(</span><span style="color: #859900; font-weight: bold;">and</span>
+                       <span style="color: #b58900;">(</span>not <span style="color: #268bd2;">(</span>string-match org-jekyll-exclude-regex path<span style="color: #268bd2;">)</span><span style="color: #b58900;">)</span>
+                       <span style="color: #b58900;">(</span>not <span style="color: #268bd2;">(</span>string-match <span style="color: #2aa198;">"</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">(</span><span style="color: #2aa198;">draft-</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">)</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">|</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">(</span><span style="color: #2aa198;">hidden-</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">)</span><span style="color: #2aa198;">"</span> path<span style="color: #268bd2;">)</span><span style="color: #b58900;">)</span><span style="color: #859900;">)</span><span style="color: #6c71c4;">)</span>
+                    <span style="color: #6c71c4;">(</span>directory-files-recursively org-jekyll-paths-articles-path <span style="color: #2aa198;">"\\.org$"</span> nil nil nil<span style="color: #6c71c4;">)</span><span style="color: #268bd2;">)</span><span style="color: #b58900;">)</span><span style="color: #2aa198;">)</span>
+</pre>
+</div>
+
+<p>
+This function works good in tandem with <code>org-publish-project</code>. But &#x2026; there are
+broken links to images in the resulting HTML file. This happens, because in
+the source file there are relative paths to images — relative to the
+subdirectory containing the blogpost files. And these paths are passed
+unchanged to HTML.
+</p>
+
+<p>
+But in Jekyll these static files exist in <code>/assets/static</code> catalog. Solution is
+simple — change paths inside copied temporary file after <code>copy-file</code> call. I
+wrote a new function for this:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #2aa198;">(</span><span style="color: #859900; font-weight: bold;">defun</span> <span style="color: #268bd2;">org-jekyll--prepare-article</span> <span style="color: #b58900;">(</span>article<span style="color: #b58900;">)</span>
+  <span style="color: #2aa198;">"Prepare article's text for Jekyll.</span>
+
+<span style="color: #2aa198;">Modify OrgMode file before publish it. ARTICLE is a path to</span>
+<span style="color: #2aa198;">OrgMode file with article. Files, stored in `</span><span style="color: #268bd2; font-weight: bold;">_articles/</span><span style="color: #2aa198;">' will be</span>
+<span style="color: #2aa198;">modified, not original articles from `</span><span style="color: #268bd2; font-weight: bold;">org-jekyll-paths-articles-path</span><span style="color: #2aa198;">'</span>
+<span style="color: #2aa198;">path.</span>
+
+<span style="color: #2aa198;">ARTICLE is a path to intermediate org-file with article text"</span>
+  <span style="color: #b58900;">(</span><span style="color: #859900; font-weight: bold;">with-temp-buffer</span>
+    <span style="color: #268bd2;">(</span>insert-file-contents article<span style="color: #268bd2;">)</span>
+    <span style="color: #268bd2;">(</span>goto-char <span style="color: #6c71c4;">(</span>point-min<span style="color: #6c71c4;">)</span><span style="color: #268bd2;">)</span>
+    <span style="color: #268bd2;">(</span><span style="color: #859900; font-weight: bold;">while</span> <span style="color: #6c71c4;">(</span>search-forward <span style="color: #2aa198;">"[&#8206;file:"</span> nil t<span style="color: #6c71c4;">)</span>
+      <span style="color: #6c71c4;">(</span>replace-match <span style="color: #2aa198;">"[&#8207;/assets/static/"</span> t t<span style="color: #6c71c4;">)</span><span style="color: #268bd2;">)</span>
+    <span style="color: #268bd2;">(</span>write-file article<span style="color: #268bd2;">)</span><span style="color: #b58900;">)</span><span style="color: #2aa198;">)</span>
+</pre>
+</div>
+
+<p>
+This function simply takes the org file with the path from the <code>article</code>
+variable and replaces links like <code>[f‎ile:somefile.ext]</code> with
+<code>[f‎ile://assets/static/somefile.ext]</code>.
+</p>
+</div>
+</div>
+
+<div id="outline-container-html-file-editing" class="outline-3">
+<h3 id="html-file-editing">HTML files patching</h3>
+<div class="outline-text-3" id="text-html-file-editing">
+<p>
+Unfortunately, <code>org-publish-project</code> inserts things into the HTML files that I
+don't want to see:
+</p>
+<ul class="org-ul">
+<li>Randomly generated IDs in HTML tags</li>
+<li>Image numbering.</li>
+<li>Tag <code>:TOC_2_blog:</code> after «TOC» heading. This tag is needed in the OrgMode file
+to automatically generate the TOC with <a href="https://github.com/snosov1/toc-org/">toc-org</a><sup><a id="fnr.16" class="footref" href="#fn.16" role="doc-backlink">16</a></sup>.</li>
+<li>Extra heading for annotations not in post language.</li>
+</ul>
+
+<p>
+Solution is simple — we need one another function to delete all unnecessary
+stuff from HTML files with regular expressions. We can specify such function
+in settings of <code>org-publish-project</code> to call it right after export to HTML is
+completed (see parameter <code>:completion-function</code>).
+</p>
+
+<p>
+The function itself is quite simple. First, we get the path to the catalog
+containing the exported HTML files from <code>org-publish-project</code> settings. Next, we
+get a list of paths to HTML files, which we pass to the lambda function:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #2aa198;">(</span><span style="color: #859900; font-weight: bold;">defun</span> <span style="color: #268bd2;">org-jekyll--complete-articles</span> <span style="color: #b58900;">(</span>property-list<span style="color: #b58900;">)</span>
+  <span style="color: #2aa198;">"Change published html-files via regular expressions.</span>
+
+<span style="color: #2aa198;">Fix links to attached files. Remove \"Footnotes:\" section from</span>
+<span style="color: #2aa198;">generated file. Remove autogenerated Org ids from html tags.</span>
+
+<span style="color: #2aa198;">PROPERTY-LIST is a list of properties from</span>
+<span style="color: #2aa198;">`</span><span style="color: #268bd2; font-weight: bold;">org-publish-project-alist</span><span style="color: #2aa198;">'."</span>
+  <span style="color: #b58900;">(</span><span style="color: #859900; font-weight: bold;">let*</span>
+      <span style="color: #268bd2;">(</span><span style="color: #6c71c4;">(</span>publishing-directory <span style="color: #859900;">(</span>plist-get property-list '<span style="color: #657b83; font-weight: bold;">:publishing-directory</span><span style="color: #859900;">)</span><span style="color: #6c71c4;">)</span><span style="color: #268bd2;">)</span>
+    <span style="color: #268bd2;">(</span>mapc <span style="color: #6c71c4;">(</span><span style="color: #859900; font-weight: bold;">lambda</span> <span style="color: #859900;">(</span>html<span style="color: #859900;">)</span>
+            <span style="color: #93a1a1;">; </span><span style="color: #93a1a1;">process `</span><span style="color: #268bd2; font-weight: bold;">html</span><span style="color: #93a1a1;">' file</span>
+            <span style="color: #6c71c4;">)</span>
+          <span style="color: #6c71c4;">(</span>directory-files-recursively publishing-directory <span style="color: #2aa198;">"\\.html$"</span> nil nil nil<span style="color: #6c71c4;">)</span><span style="color: #268bd2;">)</span><span style="color: #b58900;">)</span><span style="color: #2aa198;">)</span>
+</pre>
+</div>
+
+<p>
+Inside this lambda function there is a <code>mapc</code> call what works with regular
+expression list:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #2aa198;">(</span>mapc <span style="color: #b58900;">(</span><span style="color: #859900; font-weight: bold;">lambda</span> <span style="color: #268bd2;">(</span>x<span style="color: #268bd2;">)</span>
+        <span style="color: #268bd2;">(</span><span style="color: #859900; font-weight: bold;">progn</span>
+          <span style="color: #6c71c4;">(</span>goto-char <span style="color: #859900;">(</span>point-min<span style="color: #859900;">)</span><span style="color: #6c71c4;">)</span>
+          <span style="color: #6c71c4;">(</span><span style="color: #859900; font-weight: bold;">while</span> <span style="color: #859900;">(</span>re-search-forward <span style="color: #b58900;">(</span>car x<span style="color: #b58900;">)</span> nil t<span style="color: #859900;">)</span>
+            <span style="color: #859900;">(</span>replace-match <span style="color: #b58900;">(</span>cdr x<span style="color: #b58900;">)</span> t nil<span style="color: #859900;">)</span><span style="color: #6c71c4;">)</span><span style="color: #268bd2;">)</span><span style="color: #b58900;">)</span>
+      '<span style="color: #b58900;">(</span><span style="color: #268bd2;">(</span><span style="color: #2aa198;">"/"</span> . <span style="color: #2aa198;">"/"</span><span style="color: #268bd2;">)</span>
+        <span style="color: #268bd2;">(</span><span style="color: #2aa198;">"&lt;p&gt;&lt;span class=\"figure-number\"&gt;[[:alnum:] :]+&lt;/span&gt;</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">(</span><span style="color: #2aa198;">.+</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">)</span><span style="color: #2aa198;">&lt;/p&gt;"</span> . <span style="color: #2aa198;">"&lt;p style=\"text-align: center\"&gt;&lt;i&gt;\\1&lt;/i&gt;&lt;/p&gt;"</span><span style="color: #268bd2;">)</span>
+        <span style="color: #268bd2;">(</span><span style="color: #2aa198;">"&lt;h2 class=\"footnotes\"&gt;Footnotes: &lt;/h2&gt;"</span> . <span style="color: #2aa198;">""</span><span style="color: #268bd2;">)</span>
+        <span style="color: #268bd2;">(</span><span style="color: #2aa198;">" id=\"org[[:xdigit:]]\\{</span><span style="color: #268bd2;">7\\</span><span style="color: #2aa198;">}\""</span> . <span style="color: #2aa198;">""</span><span style="color: #268bd2;">)</span>
+        <span style="color: #268bd2;">(</span><span style="color: #2aa198;">" id=\"outline-container-org[[:xdigit:]]\\{</span><span style="color: #268bd2;">7\\</span><span style="color: #2aa198;">}\""</span> . <span style="color: #2aa198;">""</span><span style="color: #268bd2;">)</span>
+        <span style="color: #268bd2;">(</span><span style="color: #2aa198;">" id=\"text-org[[:xdigit:]]\\{</span><span style="color: #268bd2;">7\\</span><span style="color: #2aa198;">}\""</span> . <span style="color: #2aa198;">""</span><span style="color: #268bd2;">)</span>
+        <span style="color: #268bd2;">(</span><span style="color: #2aa198;">"&lt;span class=\"TOC_2_blog\"&gt;TOC_2_blog&lt;/span&gt;"</span> . <span style="color: #2aa198;">""</span><span style="color: #268bd2;">)</span><span style="color: #b58900;">)</span><span style="color: #2aa198;">)</span>
+</pre>
+</div>
+
+<p>
+Here, each element of list is just another list of two elements. First element
+is a regular expression to search for text to replace. Second element is some
+replacement text. We retrieve these elements using <code>(car x)</code> and <code>(cdr x)</code>. The
+text replacement is done using the standard Emacs Lisp functions for working
+with regular expressions.
+</p>
+
+<p>
+Resulting code of <code>org-jekyll--complete-articles</code>:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #2aa198;">(</span><span style="color: #859900; font-weight: bold;">defun</span> <span style="color: #268bd2;">org-jekyll--complete-articles</span> <span style="color: #b58900;">(</span>property-list<span style="color: #b58900;">)</span>
+  <span style="color: #2aa198;">"Change published html-files via regular expressions.</span>
+
+<span style="color: #2aa198;">Fix links to attached files. Remove \"Footnotes:\" section from</span>
+<span style="color: #2aa198;">generated file. Remove autogenerated Org ids from html tags.</span>
+
+<span style="color: #2aa198;">PROPERTY-LIST is a list of properties from</span>
+<span style="color: #2aa198;">`</span><span style="color: #268bd2; font-weight: bold;">org-publish-project-alist</span><span style="color: #2aa198;">'."</span>
+  <span style="color: #b58900;">(</span><span style="color: #859900; font-weight: bold;">let*</span>
+      <span style="color: #268bd2;">(</span><span style="color: #6c71c4;">(</span>publishing-directory <span style="color: #859900;">(</span>plist-get property-list '<span style="color: #657b83; font-weight: bold;">:publishing-directory</span><span style="color: #859900;">)</span><span style="color: #6c71c4;">)</span><span style="color: #268bd2;">)</span>
+    <span style="color: #268bd2;">(</span>mapc <span style="color: #6c71c4;">(</span><span style="color: #859900; font-weight: bold;">lambda</span> <span style="color: #859900;">(</span>html<span style="color: #859900;">)</span>
+            <span style="color: #859900;">(</span><span style="color: #859900; font-weight: bold;">with-temp-buffer</span>
+              <span style="color: #b58900;">(</span>insert-file-contents html<span style="color: #b58900;">)</span>
+              <span style="color: #b58900;">(</span>mapc <span style="color: #268bd2;">(</span><span style="color: #859900; font-weight: bold;">lambda</span> <span style="color: #6c71c4;">(</span>x<span style="color: #6c71c4;">)</span>
+                      <span style="color: #6c71c4;">(</span><span style="color: #859900; font-weight: bold;">progn</span>
+                        <span style="color: #859900;">(</span>goto-char <span style="color: #2aa198;">(</span>point-min<span style="color: #2aa198;">)</span><span style="color: #859900;">)</span>
+                        <span style="color: #859900;">(</span><span style="color: #859900; font-weight: bold;">while</span> <span style="color: #2aa198;">(</span>re-search-forward <span style="color: #b58900;">(</span>car x<span style="color: #b58900;">)</span> nil t<span style="color: #2aa198;">)</span>
+                          <span style="color: #2aa198;">(</span>replace-match <span style="color: #b58900;">(</span>cdr x<span style="color: #b58900;">)</span> t nil<span style="color: #2aa198;">)</span><span style="color: #859900;">)</span><span style="color: #6c71c4;">)</span><span style="color: #268bd2;">)</span>
+                    '<span style="color: #268bd2;">(</span><span style="color: #6c71c4;">(</span><span style="color: #2aa198;">"/"</span> . <span style="color: #2aa198;">"/"</span><span style="color: #6c71c4;">)</span>
+                      <span style="color: #6c71c4;">(</span><span style="color: #2aa198;">"&lt;p&gt;&lt;span class=\"figure-number\"&gt;[[:alnum:] :]+&lt;/span&gt;</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">(</span><span style="color: #2aa198;">.+</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">)</span><span style="color: #2aa198;">&lt;/p&gt;"</span> . <span style="color: #2aa198;">"&lt;p style=\"text-align: center\"&gt;&lt;i&gt;\\1&lt;/i&gt;&lt;/p&gt;"</span><span style="color: #6c71c4;">)</span>
+                      <span style="color: #6c71c4;">(</span><span style="color: #2aa198;">"&lt;h2 class=\"footnotes\"&gt;Footnotes: &lt;/h2&gt;"</span> . <span style="color: #2aa198;">""</span><span style="color: #6c71c4;">)</span>
+                      <span style="color: #6c71c4;">(</span><span style="color: #2aa198;">" id=\"org[[:xdigit:]]\\{</span><span style="color: #268bd2;">7\\</span><span style="color: #2aa198;">}\""</span> . <span style="color: #2aa198;">""</span><span style="color: #6c71c4;">)</span>
+                      <span style="color: #6c71c4;">(</span><span style="color: #2aa198;">" id=\"outline-container-org[[:xdigit:]]\\{</span><span style="color: #268bd2;">7\\</span><span style="color: #2aa198;">}\""</span> . <span style="color: #2aa198;">""</span><span style="color: #6c71c4;">)</span>
+                      <span style="color: #6c71c4;">(</span><span style="color: #2aa198;">" id=\"text-org[[:xdigit:]]\\{</span><span style="color: #268bd2;">7\\</span><span style="color: #2aa198;">}\""</span> . <span style="color: #2aa198;">""</span><span style="color: #6c71c4;">)</span>
+                      <span style="color: #6c71c4;">(</span><span style="color: #2aa198;">"&lt;span class=\"TOC_2_blog\"&gt;TOC_2_blog&lt;/span&gt;"</span> . <span style="color: #2aa198;">""</span><span style="color: #6c71c4;">)</span><span style="color: #268bd2;">)</span><span style="color: #b58900;">)</span>
+              <span style="color: #b58900;">(</span>write-file html<span style="color: #b58900;">)</span><span style="color: #859900;">)</span><span style="color: #6c71c4;">)</span>
+          <span style="color: #6c71c4;">(</span>directory-files-recursively publishing-directory <span style="color: #2aa198;">"\\.html$"</span> nil nil nil<span style="color: #6c71c4;">)</span><span style="color: #268bd2;">)</span><span style="color: #b58900;">)</span><span style="color: #2aa198;">)</span>
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-static-files-export" class="outline-3">
+<h3 id="static-files-export">Static files export</h3>
+<div class="outline-text-3" id="text-static-files-export">
+<p>
+Obviously HTML files are not enough for a blog. Images and other attachments
+are necessary too.
+</p>
+
+<p>
+These files can also be copied with <code>org-publish-project</code> call. And the settings
+are much easier in this case:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #2aa198;">(</span><span style="color: #859900; font-weight: bold;">let</span> <span style="color: #b58900;">(</span><span style="color: #268bd2;">(</span>org-publish-project-alist `<span style="color: #6c71c4;">(</span><span style="color: #859900;">(</span><span style="color: #2aa198;">"org-jekyll-static"</span>
+                                    <span style="color: #657b83; font-weight: bold;">:base-directory</span> ,<span style="color: #b58900;">(</span>concat org-jekyll-paths-base-path <span style="color: #2aa198;">"/_static"</span><span style="color: #b58900;">)</span>
+                                    <span style="color: #657b83; font-weight: bold;">:base-extension</span> <span style="color: #2aa198;">"jpg</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">|</span><span style="color: #2aa198;">JPG</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">|</span><span style="color: #2aa198;">jpeg</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">|</span><span style="color: #2aa198;">png</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">|</span><span style="color: #2aa198;">gif</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">|</span><span style="color: #2aa198;">webm</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">|</span><span style="color: #2aa198;">webp</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">|</span><span style="color: #2aa198;">gpx</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">|</span><span style="color: #2aa198;">tar.bz2</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">|</span><span style="color: #2aa198;">uxf"</span>
+                                    <span style="color: #657b83; font-weight: bold;">:publishing-directory</span> ,<span style="color: #b58900;">(</span>concat org-jekyll-paths-base-path <span style="color: #2aa198;">"/assets/static"</span><span style="color: #b58900;">)</span>
+                                    <span style="color: #657b83; font-weight: bold;">:publishing-function</span> org-publish-attachment
+                                    <span style="color: #657b83; font-weight: bold;">:preparation-function</span> org-jekyll--prepare-static
+                                    <span style="color: #657b83; font-weight: bold;">:exclude</span> ,org-jekyll-exclude-regex
+                                    <span style="color: #657b83; font-weight: bold;">:recursive</span> t<span style="color: #859900;">)</span><span style="color: #6c71c4;">)</span><span style="color: #268bd2;">)</span><span style="color: #b58900;">)</span><span style="color: #2aa198;">)</span>
+</pre>
+</div>
+
+<p>
+Here, the <code>:base-extension</code> parameter specifies extensions for exporting static
+files.
+</p>
+
+<p>
+Exporting HTML files and exporting static files can be combined under one
+"project", to execute both tasks with one function call:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #2aa198;">(</span><span style="color: #859900; font-weight: bold;">let</span> <span style="color: #b58900;">(</span><span style="color: #268bd2;">(</span>org-publish-project-alist `<span style="color: #6c71c4;">(</span><span style="color: #859900;">(</span><span style="color: #2aa198;">"org-jekyll-org"</span>
+                                    ...<span style="color: #859900;">)</span>
+                                   <span style="color: #859900;">(</span><span style="color: #2aa198;">"org-jekyll-static"</span>
+                                    ...<span style="color: #859900;">)</span>
+                                   <span style="color: #859900;">(</span><span style="color: #2aa198;">"org-jekyll"</span> <span style="color: #657b83; font-weight: bold;">:components</span> <span style="color: #b58900;">(</span><span style="color: #2aa198;">"org-jekyll-org"</span> <span style="color: #2aa198;">"org-jekyll-static"</span><span style="color: #b58900;">)</span><span style="color: #859900;">)</span><span style="color: #6c71c4;">)</span><span style="color: #268bd2;">)</span><span style="color: #b58900;">)</span>
+  <span style="color: #b58900;">(</span>org-publish-project <span style="color: #2aa198;">"org-jekyll"</span> t nil<span style="color: #b58900;">)</span><span style="color: #2aa198;">)</span>
+</pre>
+</div>
+
+
+<p>
+As you can see, we use another <code>:preparation-function</code> when copying static
+files — <code>org-jekyll--prepare-static</code>. This function works the same as
+<code>org-jekyll--prepare-articles</code> — it just copies static files from different
+subdirectories to a temporary directory for the <code>org-jekyll-project</code> function.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #2aa198;">(</span><span style="color: #859900; font-weight: bold;">defun</span> <span style="color: #268bd2;">org-jekyll--prepare-static</span> <span style="color: #b58900;">(</span>property-list<span style="color: #b58900;">)</span>
+  <span style="color: #2aa198;">"Copy static files to `</span><span style="color: #268bd2; font-weight: bold;">/_static</span><span style="color: #2aa198;">' directory.</span>
+
+<span style="color: #2aa198;">PROPERTY-LIST is a list of properties from</span>
+<span style="color: #2aa198;">`</span><span style="color: #268bd2; font-weight: bold;">org-publish-project-alist</span><span style="color: #2aa198;">'."</span>
+  <span style="color: #b58900;">(</span><span style="color: #859900; font-weight: bold;">let</span>
+      <span style="color: #268bd2;">(</span><span style="color: #6c71c4;">(</span>static-directory <span style="color: #859900;">(</span>plist-get property-list `<span style="color: #657b83; font-weight: bold;">:base-directory</span><span style="color: #859900;">)</span><span style="color: #6c71c4;">)</span><span style="color: #268bd2;">)</span>
+    <span style="color: #268bd2;">(</span>make-directory static-directory t<span style="color: #268bd2;">)</span>
+    <span style="color: #268bd2;">(</span>mapc <span style="color: #6c71c4;">(</span><span style="color: #859900; font-weight: bold;">lambda</span> <span style="color: #859900;">(</span>filename<span style="color: #859900;">)</span>
+            <span style="color: #859900;">(</span><span style="color: #859900; font-weight: bold;">progn</span>
+              <span style="color: #b58900;">(</span>string-match <span style="color: #268bd2;">(</span>concat org-jekyll-paths-articles-path <span style="color: #2aa198;">"/[[:alnum:]-/]+/</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">(</span><span style="color: #2aa198;">[[:alnum:][:blank:]-_.]+</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">)</span><span style="color: #2aa198;">$"</span><span style="color: #268bd2;">)</span> filename<span style="color: #b58900;">)</span>
+              <span style="color: #b58900;">(</span><span style="color: #859900; font-weight: bold;">let</span>
+                  <span style="color: #268bd2;">(</span><span style="color: #6c71c4;">(</span>static-filename <span style="color: #859900;">(</span>match-string 1 filename<span style="color: #859900;">)</span><span style="color: #6c71c4;">)</span><span style="color: #268bd2;">)</span>
+                <span style="color: #268bd2;">(</span>copy-file filename <span style="color: #6c71c4;">(</span>concat static-directory <span style="color: #2aa198;">"/"</span> static-filename<span style="color: #6c71c4;">)</span> t t t t<span style="color: #268bd2;">)</span><span style="color: #b58900;">)</span><span style="color: #859900;">)</span><span style="color: #6c71c4;">)</span>
+          <span style="color: #6c71c4;">(</span>seq-filter <span style="color: #859900;">(</span><span style="color: #859900; font-weight: bold;">lambda</span> <span style="color: #b58900;">(</span>path<span style="color: #b58900;">)</span>
+                        <span style="color: #b58900;">(</span>not <span style="color: #268bd2;">(</span>string-match
+                              <span style="color: #6c71c4;">(</span>concat org-jekyll-exclude-regex <span style="color: #2aa198;">"</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">|</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">(</span><span style="color: #2aa198;">article-[[:lower:]]+\\.org</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">)</span><span style="color: #2aa198;">"</span><span style="color: #6c71c4;">)</span>
+                              path<span style="color: #268bd2;">)</span><span style="color: #b58900;">)</span><span style="color: #859900;">)</span>
+                      <span style="color: #859900;">(</span>directory-files-recursively org-jekyll-paths-articles-path <span style="color: #2aa198;">"."</span> nil nil nil<span style="color: #859900;">)</span><span style="color: #6c71c4;">)</span><span style="color: #268bd2;">)</span><span style="color: #b58900;">)</span><span style="color: #2aa198;">)</span>
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-jekyll-build-from-emacs" class="outline-3">
+<h3 id="jekyll-build-from-emacs">Call Jekyll from Emacs</h3>
+<div class="outline-text-3" id="text-jekyll-build-from-emacs">
+<p>
+After we have prepared all necessary HTML and static files — we should call
+Jekyll to build our static blog inside <code>_site/</code> catalog. Usually, the console
+command <code>bundle exec jekyll build</code> is used for this.
+</p>
+
+<p>
+In <a href="https://mastodon.social/@fabrik42">Christian Dewein's</a> article, the <a href="https://github.com/rejeep/prodigy.el">Prodigy</a> plugin is used to call this console
+command. I decided that this is too complicated and just execute a new process
+using the <code>make-process</code><sup><a id="fnr.17" class="footref" href="#fn.17" role="doc-backlink">17</a></sup> function:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #2aa198;">(</span>make-process
+ <span style="color: #657b83; font-weight: bold;">:name</span> <span style="color: #2aa198;">"jekyll-build"</span>
+ <span style="color: #657b83; font-weight: bold;">:buffer</span> <span style="color: #2aa198;">"jekyll-build"</span>
+ <span style="color: #657b83; font-weight: bold;">:command</span> '<span style="color: #b58900;">(</span><span style="color: #2aa198;">"bundle"</span> <span style="color: #2aa198;">"exec"</span> <span style="color: #2aa198;">"jekyll"</span> <span style="color: #2aa198;">"build"</span><span style="color: #b58900;">)</span>
+ <span style="color: #657b83; font-weight: bold;">:delete-exited-processes</span> t
+ <span style="color: #657b83; font-weight: bold;">:sentinel</span> <span style="color: #b58900;">(</span><span style="color: #859900; font-weight: bold;">lambda</span> <span style="color: #268bd2;">(</span>process state<span style="color: #268bd2;">)</span>
+             <span style="color: #268bd2;">(</span><span style="color: #859900; font-weight: bold;">cond</span>
+              <span style="color: #6c71c4;">(</span><span style="color: #859900;">(</span><span style="color: #859900; font-weight: bold;">and</span> <span style="color: #b58900;">(</span>eq <span style="color: #268bd2;">(</span>process-status process<span style="color: #268bd2;">)</span> 'exit<span style="color: #b58900;">)</span>
+                    <span style="color: #b58900;">(</span>zerop <span style="color: #268bd2;">(</span>process-exit-status process<span style="color: #268bd2;">)</span><span style="color: #b58900;">)</span><span style="color: #859900;">)</span>
+               <span style="color: #859900;">(</span>message <span style="color: #2aa198;">"%s"</span> <span style="color: #b58900;">(</span>propertize <span style="color: #2aa198;">"Blog built"</span> 'face '<span style="color: #268bd2;">(</span><span style="color: #657b83; font-weight: bold;">:foreground</span> <span style="color: #2aa198;">"blue"</span><span style="color: #268bd2;">)</span><span style="color: #b58900;">)</span><span style="color: #859900;">)</span><span style="color: #6c71c4;">)</span>
+              <span style="color: #6c71c4;">(</span><span style="color: #859900;">(</span>eq <span style="color: #b58900;">(</span>process-status process<span style="color: #b58900;">)</span> 'run<span style="color: #859900;">)</span>
+               <span style="color: #859900;">(</span>accept-process-output process<span style="color: #859900;">)</span><span style="color: #6c71c4;">)</span>
+              <span style="color: #6c71c4;">(</span>t <span style="color: #859900;">(</span><span style="color: #cb4b16; font-weight: bold;">error</span> <span style="color: #b58900;">(</span>concat <span style="color: #2aa198;">"Jekyll Build: "</span> state<span style="color: #b58900;">)</span><span style="color: #859900;">)</span><span style="color: #6c71c4;">)</span><span style="color: #268bd2;">)</span><span style="color: #b58900;">)</span><span style="color: #2aa198;">)</span>
+</pre>
+</div>
+
+<p>
+In this code, console command output is processed inside a lambda function,
+which either prints message about successful execution or prints an error to
+the user. User messages are printed to a minibuffer using the
+<code>message</code><sup><a id="fnr.18" class="footref" href="#fn.18" role="doc-backlink">18</a></sup> function, with text colored blue (coloring is done using
+<code>propertize</code><sup><a id="fnr.19" class="footref" href="#fn.19" role="doc-backlink">19</a></sup>):
+</p>
+
+
+<div class="figure">
+<p><img src="/assets/static/message.png" alt="message function output" align="center" />
+</p>
+</div>
+
+<p>
+The output of the executed process is sent to the <code>jekyll-build</code> buffer. This
+buffer is used to watch the build log, if necessary.
+</p>
+
+<p>
+File export and <code>bundle exec</code> execution are combined in <code>org-jekyll--suffix-build</code>
+function. This allows to build the static blog with single call of function.
+</p>
+
+<p>
+Since the current directory for buffer with opened blog post is not an
+<code>org-jekyll-path-base-path</code>, we should change directory before execute the build
+process. After the build is finished, we should change the directory back to
+continue editing the post.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #2aa198;">(</span><span style="color: #859900; font-weight: bold;">defun</span> <span style="color: #268bd2;">org-jekyll--suffix-build</span> <span style="color: #b58900;">()</span>
+  <span style="color: #2aa198;">"Build the blog."</span>
+  <span style="color: #b58900;">(</span><span style="color: #859900; font-weight: bold;">interactive</span><span style="color: #b58900;">)</span>
+  <span style="color: #b58900;">(</span>cd <span style="color: #268bd2;">(</span>expand-file-name org-jekyll-paths-base-path<span style="color: #268bd2;">)</span><span style="color: #b58900;">)</span>
+  <span style="color: #b58900;">(</span><span style="color: #859900; font-weight: bold;">let</span> <span style="color: #268bd2;">(</span><span style="color: #6c71c4;">(</span>org-publish-project-alist `<span style="color: #859900;">(</span><span style="color: #b58900;">(</span><span style="color: #2aa198;">"org-jekyll-org"</span>
+                                      ...<span style="color: #b58900;">)</span>
+                                     <span style="color: #b58900;">(</span><span style="color: #2aa198;">"org-jekyll-static"</span>
+                                      ...<span style="color: #b58900;">)</span>
+                                     <span style="color: #b58900;">(</span><span style="color: #2aa198;">"org-jekyll"</span> <span style="color: #657b83; font-weight: bold;">:components</span> <span style="color: #268bd2;">(</span><span style="color: #2aa198;">"org-jekyll-org"</span> <span style="color: #2aa198;">"org-jekyll-static"</span><span style="color: #268bd2;">)</span><span style="color: #b58900;">)</span><span style="color: #859900;">)</span><span style="color: #6c71c4;">)</span>
+        <span style="color: #6c71c4;">(</span>current-path <span style="color: #859900;">(</span>file-name-directory buffer-file-name<span style="color: #859900;">)</span><span style="color: #6c71c4;">)</span><span style="color: #268bd2;">)</span>
+    <span style="color: #268bd2;">(</span>cd <span style="color: #6c71c4;">(</span>expand-file-name org-jekyll-paths-base-path<span style="color: #6c71c4;">)</span><span style="color: #268bd2;">)</span>
+    <span style="color: #268bd2;">(</span>org-publish-project <span style="color: #2aa198;">"org-jekyll"</span> t nil<span style="color: #268bd2;">)</span><span style="color: #b58900;">)</span>
+  <span style="color: #b58900;">(</span>make-process
+   <span style="color: #657b83; font-weight: bold;">:name</span> <span style="color: #2aa198;">"jekyll-build"</span>
+   <span style="color: #657b83; font-weight: bold;">:buffer</span> <span style="color: #2aa198;">"jekyll-build"</span>
+   <span style="color: #657b83; font-weight: bold;">:command</span> '<span style="color: #268bd2;">(</span><span style="color: #2aa198;">"bundle"</span> <span style="color: #2aa198;">"exec"</span> <span style="color: #2aa198;">"jekyll"</span> <span style="color: #2aa198;">"build"</span><span style="color: #268bd2;">)</span>
+   <span style="color: #657b83; font-weight: bold;">:delete-exited-processes</span> t
+   <span style="color: #657b83; font-weight: bold;">:sentinel</span> <span style="color: #268bd2;">(</span><span style="color: #859900; font-weight: bold;">lambda</span> <span style="color: #6c71c4;">(</span>process state<span style="color: #6c71c4;">)</span>
+               ...<span style="color: #268bd2;">)</span><span style="color: #b58900;">)</span>
+  <span style="color: #b58900;">(</span>cd current-path<span style="color: #b58900;">)</span><span style="color: #2aa198;">)</span>
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-create-new-post" class="outline-3">
+<h3 id="create-new-post">New blogpost creation</h3>
+<div class="outline-text-3" id="text-create-new-post">
+<p>
+I wanted to have a special function to semi-automatically create new post. I
+don't want to create a new subdirectory for the post in the appropriate
+directory, copy Jekyll's frontmatter, image for the post banner, etc. It will
+be very useful if Emacs asks me all the necessary questions and creates all
+the necessary directories and files itself.
+</p>
+
+<p>
+There are a lot of functions to work with user input in Emacs. But it is
+enough for me to use the four simple functions:
+</p>
+<ul class="org-ul">
+<li><code>read-string</code>: prompts the user in a minibuffer and returns the string,
+entered by the user.</li>
+<li><code>completing-read</code>: prints menu to minibuffer and returns user's choice.</li>
+<li><code>y-or-n-p</code>: prompts user in minibuffer and waits for user's "Yes" or "No"
+answer. Returns <code>t</code> or <code>nil</code>.</li>
+<li><code>read-file-name</code>: outputs a file selection menu and returns the path to the
+selected file.</li>
+</ul>
+
+<p>
+Quickly enough, I sketched out the following S-expressions, which ask
+everything necessary and store the results in separate variables:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #2aa198;">(</span><span style="color: #859900; font-weight: bold;">let*</span> <span style="color: #b58900;">(</span><span style="color: #268bd2;">(</span>category <span style="color: #6c71c4;">(</span>completing-read <span style="color: #2aa198;">"Enter category: "</span>
+                                  <span style="color: #859900;">(</span>seq-filter
+                                   <span style="color: #b58900;">(</span><span style="color: #859900; font-weight: bold;">lambda</span> <span style="color: #268bd2;">(</span>category<span style="color: #268bd2;">)</span> <span style="color: #268bd2;">(</span>string-match <span style="color: #2aa198;">"^[[:lower:]]+$"</span> category<span style="color: #268bd2;">)</span><span style="color: #b58900;">)</span>
+                                   <span style="color: #b58900;">(</span>directory-files org-jekyll-paths-articles-path nil
+                                                    directory-files-no-dot-files-regexp
+                                                    nil nil<span style="color: #b58900;">)</span><span style="color: #859900;">)</span>
+                                  nil t<span style="color: #6c71c4;">)</span><span style="color: #268bd2;">)</span>
+       <span style="color: #268bd2;">(</span>name <span style="color: #6c71c4;">(</span>read-string <span style="color: #2aa198;">"Enter title: "</span><span style="color: #6c71c4;">)</span><span style="color: #268bd2;">)</span>
+       <span style="color: #268bd2;">(</span>summary <span style="color: #6c71c4;">(</span>read-string <span style="color: #2aa198;">"Enter summary: "</span><span style="color: #6c71c4;">)</span><span style="color: #268bd2;">)</span>
+       <span style="color: #268bd2;">(</span>tags <span style="color: #6c71c4;">(</span>read-string <span style="color: #2aa198;">"Enter tags (space separated): "</span><span style="color: #6c71c4;">)</span><span style="color: #268bd2;">)</span>
+       <span style="color: #268bd2;">(</span>permalink <span style="color: #6c71c4;">(</span>read-string <span style="color: #2aa198;">"Enter permalink: "</span><span style="color: #6c71c4;">)</span><span style="color: #268bd2;">)</span>
+       <span style="color: #268bd2;">(</span>language <span style="color: #6c71c4;">(</span>completing-read <span style="color: #2aa198;">"Enter post language: "</span> org-jekyll-languages nil t<span style="color: #6c71c4;">)</span><span style="color: #268bd2;">)</span>
+       <span style="color: #268bd2;">(</span>use-banner <span style="color: #6c71c4;">(</span>y-or-n-p <span style="color: #2aa198;">"Use banner?"</span><span style="color: #6c71c4;">)</span><span style="color: #268bd2;">)</span>
+       <span style="color: #268bd2;">(</span>banner <span style="color: #6c71c4;">(</span><span style="color: #859900; font-weight: bold;">if</span> use-banner
+                   <span style="color: #859900;">(</span>read-file-name <span style="color: #2aa198;">"Path to banner image: "</span> nil nil t nil nil<span style="color: #859900;">)</span>
+                 nil<span style="color: #6c71c4;">)</span><span style="color: #268bd2;">)</span><span style="color: #b58900;">)</span><span style="color: #2aa198;">)</span>
+</pre>
+</div>
+
+
+<div class="figure">
+<p><img src="/assets/static/create_new_post.jpg" alt="new post creation UI" align="center" />
+</p>
+<p style="text-align: center"><i>New post creation UI</i></p>
+</div>
+
+<p>
+Within the same <code>let*</code> I compute:
+</p>
+<ul class="org-ul">
+<li><p>
+Part of the front matter with Jekyll's banner insertion code:
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #2aa198;">(</span>additional <span style="color: #b58900;">(</span>concat <span style="color: #268bd2;">(</span><span style="color: #859900; font-weight: bold;">if</span> use-banner
+                        <span style="color: #6c71c4;">(</span>concat <span style="color: #2aa198;">"image: /assets/static/"</span> <span style="color: #859900;">(</span>file-name-nondirectory banner<span style="color: #859900;">)</span> <span style="color: #2aa198;">"\n"</span>
+                                <span style="color: #2aa198;">"banner:\n"</span>
+                                <span style="color: #2aa198;">"  image: /assets/static/"</span> <span style="color: #859900;">(</span>file-name-nondirectory banner<span style="color: #859900;">)</span> <span style="color: #2aa198;">"\n"</span>
+                                <span style="color: #2aa198;">"  opacity: 0.6\n"</span><span style="color: #6c71c4;">)</span>
+                      <span style="color: #2aa198;">""</span><span style="color: #268bd2;">)</span>
+                    <span style="color: #268bd2;">(</span>concat <span style="color: #2aa198;">"summary: "</span> summary <span style="color: #2aa198;">"\n"</span><span style="color: #268bd2;">)</span>
+                    <span style="color: #268bd2;">(</span>concat <span style="color: #2aa198;">"tags: "</span> tags<span style="color: #268bd2;">)</span><span style="color: #b58900;">)</span><span style="color: #2aa198;">)</span>
+</pre>
+</div></li>
+<li><p>
+Path to new post:
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #2aa198;">(</span>dirname <span style="color: #b58900;">(</span>concat path <span style="color: #2aa198;">"/"</span> category <span style="color: #2aa198;">"/"</span> date <span style="color: #2aa198;">"-"</span> permalink<span style="color: #b58900;">)</span><span style="color: #2aa198;">)</span>
+</pre>
+</div></li>
+<li><p>
+Post's filename — concatenate <code>article</code> with entered language code:
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #2aa198;">(</span>filename <span style="color: #b58900;">(</span>concat dirname <span style="color: #2aa198;">"/"</span> <span style="color: #2aa198;">"article-"</span> language <span style="color: #2aa198;">".org"</span><span style="color: #b58900;">)</span><span style="color: #2aa198;">)</span>
+</pre>
+</div></li>
+</ul>
+
+<p>
+After evaluating all variables, there are inside <code>let*</code> body:
+</p>
+<ol class="org-ol">
+<li><p>
+Create subdirectory with files for new post:
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #2aa198;">(</span>make-directory dirname t<span style="color: #2aa198;">)</span>
+</pre>
+</div></li>
+<li><p>
+If we chose to use banner image for post, then copy appropriate image to
+previously created directory:
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #2aa198;">(</span><span style="color: #859900; font-weight: bold;">if</span> use-banner
+    <span style="color: #b58900;">(</span>copy-file banner <span style="color: #268bd2;">(</span>concat dirname <span style="color: #2aa198;">"/"</span> <span style="color: #6c71c4;">(</span>file-name-nondirectory banner<span style="color: #6c71c4;">)</span><span style="color: #268bd2;">)</span><span style="color: #b58900;">)</span><span style="color: #2aa198;">)</span>
+</pre>
+</div></li>
+<li><p>
+Replace template placeholders in <code>org-jekyll-paths-template-path</code> path and
+save new file with <code>filename</code> name: {% raw %}
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #2aa198;">(</span><span style="color: #859900; font-weight: bold;">with-temp-buffer</span>
+  <span style="color: #b58900;">(</span>insert-file-contents template<span style="color: #b58900;">)</span>
+  <span style="color: #b58900;">(</span>mapc
+   <span style="color: #268bd2;">(</span><span style="color: #859900; font-weight: bold;">lambda</span> <span style="color: #6c71c4;">(</span>x<span style="color: #6c71c4;">)</span> <span style="color: #6c71c4;">(</span><span style="color: #859900; font-weight: bold;">progn</span>
+                 <span style="color: #859900;">(</span>goto-char <span style="color: #b58900;">(</span>point-min<span style="color: #b58900;">)</span><span style="color: #859900;">)</span>
+                 <span style="color: #859900;">(</span><span style="color: #859900; font-weight: bold;">while</span> <span style="color: #b58900;">(</span>search-forward <span style="color: #268bd2;">(</span>car x<span style="color: #268bd2;">)</span> nil t<span style="color: #b58900;">)</span>
+                   <span style="color: #b58900;">(</span>replace-match <span style="color: #268bd2;">(</span>cdr x<span style="color: #268bd2;">)</span> t t<span style="color: #b58900;">)</span><span style="color: #859900;">)</span><span style="color: #6c71c4;">)</span><span style="color: #268bd2;">)</span>
+   `<span style="color: #268bd2;">(</span><span style="color: #6c71c4;">(</span><span style="color: #2aa198;">"{%NAME%}"</span> . ,name<span style="color: #6c71c4;">)</span>
+     <span style="color: #6c71c4;">(</span><span style="color: #2aa198;">"{%CATEGORY%}"</span> . ,category<span style="color: #6c71c4;">)</span>
+     <span style="color: #6c71c4;">(</span><span style="color: #2aa198;">"{%DATE%}"</span> . ,date<span style="color: #6c71c4;">)</span>
+     <span style="color: #6c71c4;">(</span><span style="color: #2aa198;">"{%LANG%}"</span> . ,language<span style="color: #6c71c4;">)</span>
+     <span style="color: #6c71c4;">(</span><span style="color: #2aa198;">"{%ADDITIONAL%}"</span> . ,additional<span style="color: #6c71c4;">)</span><span style="color: #268bd2;">)</span><span style="color: #b58900;">)</span>
+  <span style="color: #b58900;">(</span>write-file filename<span style="color: #b58900;">)</span><span style="color: #2aa198;">)</span>
+</pre>
+</div>
+<p>
+{% endraw %}
+</p></li>
+<li><p>
+Previously created file is opened in current buffer and cursor is moved to
+the end of file:
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #2aa198;">(</span><span style="color: #859900; font-weight: bold;">with-current-buffer</span> <span style="color: #b58900;">(</span>find-file filename<span style="color: #b58900;">)</span>
+  <span style="color: #b58900;">(</span>goto-char <span style="color: #268bd2;">(</span>point-max<span style="color: #268bd2;">)</span><span style="color: #b58900;">)</span><span style="color: #2aa198;">)</span>
+</pre>
+</div></li>
+</ol>
+
+<p>
+Path to template stored in <code>org-jekyll-paths-template-path</code> variable (copied to
+<code>template</code> variable inside <code>let*</code> for convenience):
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #2aa198;">(</span><span style="color: #859900; font-weight: bold;">defcustom</span> <span style="color: #268bd2;">org-jekyll-paths-template-path</span>
+  <span style="color: #b58900;">(</span>concat org-jekyll-paths-articles-path <span style="color: #2aa198;">"/_post_template.org"</span><span style="color: #b58900;">)</span>
+  <span style="color: #2aa198;">"Path to post template."</span>
+  <span style="color: #657b83; font-weight: bold;">:type</span> '<span style="color: #b58900;">(</span>file <span style="color: #657b83; font-weight: bold;">:must-match</span> t<span style="color: #b58900;">)</span>
+  <span style="color: #657b83; font-weight: bold;">:group</span> 'org-jekyll-paths<span style="color: #2aa198;">)</span>
+</pre>
+</div>
+
+<p>
+In my settings this variable is <code>~/rsync/blog/articles/_post_template.org</code>. The
+file itself looks like this:
+</p>
+
+<p>
+{% raw %}
+</p>
+<pre class="example">
+#+BEGIN_EXPORT html
+---
+layout: post
+title: {%NAME%}
+category: {%CATEGORY%}
+date: {%DATE%}
+lang: {%LANG%}
+comments: false
+hidden:
+  - related_posts
+{%ADDITIONAL%}
+---
+#+END_EXPORT
+
+
+</pre>
+<p>
+{% endraw %}
+</p>
+
+<p>
+As you can see, there is only a Jekyll's front matter and nothing else.
+</p>
+</div>
+</div>
+
+<div id="outline-container-jekyll-local-server" class="outline-3">
+<h3 id="jekyll-local-server">Local server start</h3>
+<div class="outline-text-3" id="text-jekyll-local-server">
+<p>
+For new, blog building and new post creation via Emacs Lisp is ready. Among
+the most frequently used actions, I still have the local server startup and
+the Jekyll's working directory cleanup.
+</p>
+
+<p>
+Starting the local server is easy — just call the <code>make-process</code> with the
+necessary arguments:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #2aa198;">(</span>make-process
+ <span style="color: #657b83; font-weight: bold;">:name</span> <span style="color: #2aa198;">"jekyll-serve"</span>
+ <span style="color: #657b83; font-weight: bold;">:buffer</span> <span style="color: #2aa198;">"jekyll-serve"</span>
+ <span style="color: #657b83; font-weight: bold;">:command</span> '<span style="color: #b58900;">(</span><span style="color: #2aa198;">"bundle"</span> <span style="color: #2aa198;">"exec"</span> <span style="color: #2aa198;">"jekyll"</span> <span style="color: #2aa198;">"serve"</span><span style="color: #b58900;">)</span>
+ <span style="color: #657b83; font-weight: bold;">:delete-exited-processes</span> t
+ <span style="color: #657b83; font-weight: bold;">:filter</span> <span style="color: #b58900;">(</span><span style="color: #859900; font-weight: bold;">lambda</span> <span style="color: #268bd2;">(</span>process text<span style="color: #268bd2;">)</span>
+           <span style="color: #268bd2;">(</span><span style="color: #859900; font-weight: bold;">if</span> <span style="color: #6c71c4;">(</span>string-match <span style="color: #2aa198;">".*done in [0-9.]+ seconds.*"</span> text<span style="color: #6c71c4;">)</span>
+               <span style="color: #6c71c4;">(</span>message <span style="color: #2aa198;">"%s"</span> <span style="color: #859900;">(</span>propertize <span style="color: #2aa198;">"Blog serve: running"</span> 'face '<span style="color: #b58900;">(</span><span style="color: #657b83; font-weight: bold;">:foreground</span> <span style="color: #2aa198;">"blue"</span><span style="color: #b58900;">)</span><span style="color: #859900;">)</span><span style="color: #6c71c4;">)</span><span style="color: #268bd2;">)</span>
+           <span style="color: #268bd2;">(</span>internal-default-process-filter process text<span style="color: #268bd2;">)</span><span style="color: #b58900;">)</span>
+ <span style="color: #657b83; font-weight: bold;">:sentinel</span> <span style="color: #b58900;">(</span><span style="color: #859900; font-weight: bold;">lambda</span> <span style="color: #268bd2;">(</span>process state<span style="color: #268bd2;">)</span>
+             <span style="color: #268bd2;">(</span><span style="color: #859900; font-weight: bold;">cond</span>
+              <span style="color: #6c71c4;">(</span><span style="color: #859900;">(</span><span style="color: #859900; font-weight: bold;">and</span> <span style="color: #b58900;">(</span>eq <span style="color: #268bd2;">(</span>process-status process<span style="color: #268bd2;">)</span> 'exit<span style="color: #b58900;">)</span>
+                    <span style="color: #b58900;">(</span>zerop <span style="color: #268bd2;">(</span>process-exit-status process<span style="color: #268bd2;">)</span><span style="color: #b58900;">)</span><span style="color: #859900;">)</span>
+               <span style="color: #859900;">(</span>message <span style="color: #2aa198;">"%s"</span> <span style="color: #b58900;">(</span>propertize <span style="color: #2aa198;">"Blog serve: stopped"</span> 'face '<span style="color: #268bd2;">(</span><span style="color: #657b83; font-weight: bold;">:foreground</span> <span style="color: #2aa198;">"blue"</span><span style="color: #268bd2;">)</span><span style="color: #b58900;">)</span><span style="color: #859900;">)</span><span style="color: #6c71c4;">)</span>
+              <span style="color: #6c71c4;">(</span><span style="color: #859900;">(</span>eq <span style="color: #b58900;">(</span>process-status process<span style="color: #b58900;">)</span> 'run<span style="color: #859900;">)</span>
+               <span style="color: #859900;">(</span>accept-process-output process<span style="color: #859900;">)</span><span style="color: #6c71c4;">)</span>
+              <span style="color: #6c71c4;">(</span>t <span style="color: #859900;">(</span><span style="color: #cb4b16; font-weight: bold;">error</span> <span style="color: #b58900;">(</span>concat <span style="color: #2aa198;">"Jekyll Serve: "</span> state<span style="color: #b58900;">)</span><span style="color: #859900;">)</span><span style="color: #6c71c4;">)</span><span style="color: #268bd2;">)</span><span style="color: #b58900;">)</span><span style="color: #2aa198;">)</span>
+</pre>
+</div>
+
+<p>
+For convenience, I want the one function to start and stop the local
+server. The logic to achieve this is simple:
+</p>
+<ul class="org-ul">
+<li>If <code>jekyll-serve</code> process exists, then kill it.</li>
+<li>If process doesn't exist — start the server.</li>
+</ul>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #2aa198;">(</span><span style="color: #859900; font-weight: bold;">defun</span> <span style="color: #268bd2;">org-jekyll--suffix-serve-toggle</span> <span style="color: #b58900;">()</span>
+  <span style="color: #2aa198;">"Serve blog or stop serving the blog."</span>
+  <span style="color: #b58900;">(</span><span style="color: #859900; font-weight: bold;">interactive</span><span style="color: #b58900;">)</span>
+  <span style="color: #b58900;">(</span><span style="color: #859900; font-weight: bold;">let</span> <span style="color: #268bd2;">(</span><span style="color: #6c71c4;">(</span>current-path <span style="color: #859900;">(</span>file-name-directory buffer-file-name<span style="color: #859900;">)</span><span style="color: #6c71c4;">)</span><span style="color: #268bd2;">)</span>
+    <span style="color: #268bd2;">(</span><span style="color: #859900; font-weight: bold;">if</span> <span style="color: #6c71c4;">(</span>eq <span style="color: #859900;">(</span>process-status <span style="color: #2aa198;">"jekyll-serve"</span><span style="color: #859900;">)</span> ' run<span style="color: #6c71c4;">)</span>
+        <span style="color: #6c71c4;">(</span>interrupt-process <span style="color: #2aa198;">"jekyll-serve"</span><span style="color: #6c71c4;">)</span>
+      <span style="color: #6c71c4;">(</span>cd <span style="color: #859900;">(</span>expand-file-name org-jekyll-paths-base-path<span style="color: #859900;">)</span><span style="color: #6c71c4;">)</span>
+      <span style="color: #6c71c4;">(</span>make-process ...<span style="color: #6c71c4;">)</span>
+      <span style="color: #6c71c4;">(</span>cd current-path<span style="color: #6c71c4;">)</span><span style="color: #268bd2;">)</span><span style="color: #b58900;">)</span><span style="color: #2aa198;">)</span>
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-jekyll-clean" class="outline-3">
+<h3 id="jekyll-clean">Jekyll's working directory cleanup</h3>
+<div class="outline-text-3" id="text-jekyll-clean">
+<p>
+Cleanup of the working directory is not so simple. For the <code>bundle exec jekyl
+clean</code>, a new call to <code>make-process</code> is enough:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #2aa198;">(</span>make-process
+ <span style="color: #657b83; font-weight: bold;">:name</span> <span style="color: #2aa198;">"jekyll-clean"</span>
+ <span style="color: #657b83; font-weight: bold;">:buffer</span> <span style="color: #2aa198;">"jekyll-clean"</span>
+ <span style="color: #657b83; font-weight: bold;">:command</span> '<span style="color: #b58900;">(</span><span style="color: #2aa198;">"bundle"</span> <span style="color: #2aa198;">"exec"</span> <span style="color: #2aa198;">"jekyll"</span> <span style="color: #2aa198;">"clean"</span><span style="color: #b58900;">)</span>
+ <span style="color: #657b83; font-weight: bold;">:delete-exited-processes</span> t
+ <span style="color: #657b83; font-weight: bold;">:sentinel</span> <span style="color: #b58900;">(</span><span style="color: #859900; font-weight: bold;">lambda</span> <span style="color: #268bd2;">(</span>process state<span style="color: #268bd2;">)</span>
+             <span style="color: #268bd2;">(</span><span style="color: #859900; font-weight: bold;">cond</span>
+              <span style="color: #6c71c4;">(</span><span style="color: #859900;">(</span><span style="color: #859900; font-weight: bold;">and</span> <span style="color: #b58900;">(</span>eq <span style="color: #268bd2;">(</span>process-status process<span style="color: #268bd2;">)</span> 'exit<span style="color: #b58900;">)</span>
+                    <span style="color: #b58900;">(</span>zerop <span style="color: #268bd2;">(</span>process-exit-status process<span style="color: #268bd2;">)</span><span style="color: #b58900;">)</span><span style="color: #859900;">)</span>
+               <span style="color: #859900;">(</span>message <span style="color: #2aa198;">"%s"</span> <span style="color: #b58900;">(</span>propertize <span style="color: #2aa198;">"Blog cleaned"</span> 'face '<span style="color: #268bd2;">(</span><span style="color: #657b83; font-weight: bold;">:foreground</span> <span style="color: #2aa198;">"blue"</span><span style="color: #268bd2;">)</span><span style="color: #b58900;">)</span><span style="color: #859900;">)</span><span style="color: #6c71c4;">)</span>
+              <span style="color: #6c71c4;">(</span><span style="color: #859900;">(</span>eq <span style="color: #b58900;">(</span>process-status process<span style="color: #b58900;">)</span> 'run<span style="color: #859900;">)</span>
+               <span style="color: #859900;">(</span>accept-process-output process<span style="color: #859900;">)</span><span style="color: #6c71c4;">)</span>
+              <span style="color: #6c71c4;">(</span>t <span style="color: #859900;">(</span><span style="color: #cb4b16; font-weight: bold;">error</span> <span style="color: #b58900;">(</span>concat <span style="color: #2aa198;">"Jekyll Clean: "</span> state<span style="color: #b58900;">)</span><span style="color: #859900;">)</span><span style="color: #6c71c4;">)</span><span style="color: #268bd2;">)</span><span style="color: #b58900;">)</span><span style="color: #2aa198;">)</span>
+</pre>
+</div>
+
+<p>
+But we also need to clean up the OrgMode export artifacts before the
+<code>make-process</code> call. The <code>_articles/</code>, <code>_static/</code> and <code>_post/</code> catalogs should also be
+cleaned up. I did this using the next S-expression:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #2aa198;">(</span>mapc <span style="color: #b58900;">(</span><span style="color: #859900; font-weight: bold;">lambda</span> <span style="color: #268bd2;">(</span>x<span style="color: #268bd2;">)</span>
+        <span style="color: #268bd2;">(</span>mapc <span style="color: #6c71c4;">(</span><span style="color: #859900; font-weight: bold;">lambda</span> <span style="color: #859900;">(</span>file<span style="color: #859900;">)</span>
+                <span style="color: #859900;">(</span>delete-file file nil<span style="color: #859900;">)</span><span style="color: #6c71c4;">)</span>
+              <span style="color: #6c71c4;">(</span>mapcan <span style="color: #859900;">(</span><span style="color: #859900; font-weight: bold;">lambda</span> <span style="color: #b58900;">(</span>directory<span style="color: #b58900;">)</span>
+                        <span style="color: #b58900;">(</span>directory-files-recursively <span style="color: #268bd2;">(</span>concat org-jekyll-paths-base-path directory<span style="color: #268bd2;">)</span> <span style="color: #268bd2;">(</span>cdr x<span style="color: #268bd2;">)</span> nil nil nil<span style="color: #b58900;">)</span><span style="color: #859900;">)</span>
+                        <span style="color: #859900;">(</span>car x<span style="color: #859900;">)</span><span style="color: #6c71c4;">)</span><span style="color: #268bd2;">)</span><span style="color: #b58900;">)</span>
+      `<span style="color: #b58900;">(</span><span style="color: #268bd2;">(</span><span style="color: #6c71c4;">(</span><span style="color: #2aa198;">"/_posts/en"</span> <span style="color: #2aa198;">"/_posts/ru"</span><span style="color: #6c71c4;">)</span> . <span style="color: #2aa198;">"\\.html$"</span><span style="color: #268bd2;">)</span>
+        <span style="color: #268bd2;">(</span><span style="color: #6c71c4;">(</span><span style="color: #2aa198;">"/assets/static"</span> <span style="color: #2aa198;">"/_static"</span><span style="color: #6c71c4;">)</span> . ,<span style="color: #6c71c4;">(</span>concat <span style="color: #2aa198;">"\\.png</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">|</span><span style="color: #2aa198;">\\.jpg$</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">|</span><span style="color: #2aa198;">\\.jpeg$"</span>
+                                                  <span style="color: #2aa198;">"</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">|</span><span style="color: #2aa198;">"</span>
+                                                  <span style="color: #2aa198;">"\\.JPG$</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">|</span><span style="color: #2aa198;">\\.svg$</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">|</span><span style="color: #2aa198;">\\.webm$"</span>
+                                                  <span style="color: #2aa198;">"</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">|</span><span style="color: #2aa198;">"</span>
+                                                  <span style="color: #2aa198;">"\\.webp$</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">|</span><span style="color: #2aa198;">\\.html$</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">|</span><span style="color: #2aa198;">\\.tar.bz2$"</span>
+                                                  <span style="color: #2aa198;">"</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">|</span><span style="color: #2aa198;">"</span>
+                                                  <span style="color: #2aa198;">"\\.org$</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">|</span><span style="color: #2aa198;">\\.gif$</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">|</span><span style="color: #2aa198;">\\.gpx$"</span>
+                                                  <span style="color: #2aa198;">"</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">|</span><span style="color: #2aa198;">"</span>
+                                                  <span style="color: #2aa198;">"\\.uxf$"</span><span style="color: #6c71c4;">)</span><span style="color: #268bd2;">)</span>
+        <span style="color: #268bd2;">(</span><span style="color: #6c71c4;">(</span><span style="color: #2aa198;">"/_articles"</span><span style="color: #6c71c4;">)</span> . <span style="color: #2aa198;">"\\.org$"</span><span style="color: #268bd2;">)</span><span style="color: #b58900;">)</span><span style="color: #2aa198;">)</span>
+</pre>
+</div>
+
+<p>
+The code may look overly complicated at first glance, but all it does is
+iterate through the specified directories and delete files that match with the
+specified regular expression.
+</p>
+
+<p>
+The first lambda function <code>(lambda (x) ...)</code> simply passes each element of the
+main list (for example, the first element is: <code>(("/_posts/en" "/_posts/ru")
+. "\\.html$")</code>) into the next S-expression:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #2aa198;">(</span>mapc <span style="color: #b58900;">(</span><span style="color: #859900; font-weight: bold;">lambda</span> <span style="color: #268bd2;">(</span>file<span style="color: #268bd2;">)</span>
+        <span style="color: #268bd2;">(</span>delete-file file nil<span style="color: #268bd2;">)</span><span style="color: #b58900;">)</span>
+      <span style="color: #b58900;">(</span>mapcan <span style="color: #268bd2;">(</span><span style="color: #859900; font-weight: bold;">lambda</span> <span style="color: #6c71c4;">(</span>directory<span style="color: #6c71c4;">)</span>
+                <span style="color: #6c71c4;">(</span>directory-files-recursively <span style="color: #859900;">(</span>concat org-jekyll-paths-base-path directory<span style="color: #859900;">)</span> <span style="color: #859900;">(</span>cdr x<span style="color: #859900;">)</span> nil nil nil<span style="color: #6c71c4;">)</span><span style="color: #268bd2;">)</span>
+              <span style="color: #268bd2;">(</span>car x<span style="color: #268bd2;">)</span><span style="color: #b58900;">)</span><span style="color: #2aa198;">)</span>
+</pre>
+</div>
+
+<p>
+This is where things get complicated. The second <code>mapc</code> parameter is not just an
+<code>x</code> variable with a list element inside, but one another S-expression. This
+expression is evaluated first, and it's result (one another list of files) is
+processed with a lambda function that simply deletes the file:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #2aa198;">(</span><span style="color: #859900; font-weight: bold;">lambda</span> <span style="color: #b58900;">(</span>file<span style="color: #b58900;">)</span>
+  <span style="color: #b58900;">(</span>delete-file file nil<span style="color: #b58900;">)</span><span style="color: #2aa198;">)</span>
+</pre>
+</div>
+
+<p>
+<code>mapcan</code><sup><a id="fnr.20" class="footref" href="#fn.20" role="doc-backlink">20</a></sup> S-expression does the following:
+</p>
+<ol class="org-ol">
+<li>Takes the first element of the list containing paths/regexes with <code>(car
+   x)</code>. Result will be one another list with paths to directories, for example:
+<code>("/_posts/en" "/_posts/ru")</code>.</li>
+<li>Inside the lambda function, the <code>directory-files-recursively</code> function is
+used to get list of files in the catalog that match the regular
+expression. The regex is the last element of the <code>x</code> list and can be accessed
+via <code>(cdr x)</code>.</li>
+<li><p>
+Result looks like this: <code>(("/_posts/en/article1/file.org"
+   "/_posts/en/article2/file.org") ("/_posts/ru/article1/file.org"
+   "/_posts/ru/article2/file.org"))</code>. If I were using <code>mapc</code>, then lambda
+function for file deletion will cause error — because function will receive
+list instead of string.
+</p>
+
+<p>
+For example, the following code prints <code>file</code> variable contents in case of
+using <code>mapc</code>:
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #2aa198;">(</span>mapc <span style="color: #b58900;">(</span><span style="color: #859900; font-weight: bold;">lambda</span> <span style="color: #268bd2;">(</span>file<span style="color: #268bd2;">)</span>
+        <span style="color: #268bd2;">(</span>print file<span style="color: #268bd2;">)</span><span style="color: #b58900;">)</span>
+      <span style="color: #b58900;">(</span>mapc <span style="color: #268bd2;">(</span><span style="color: #859900; font-weight: bold;">lambda</span> <span style="color: #6c71c4;">(</span>directory<span style="color: #6c71c4;">)</span>
+              directory<span style="color: #268bd2;">)</span>
+            '<span style="color: #268bd2;">(</span><span style="color: #6c71c4;">(</span><span style="color: #2aa198;">"a"</span> <span style="color: #2aa198;">"b"</span><span style="color: #6c71c4;">)</span> <span style="color: #6c71c4;">(</span><span style="color: #2aa198;">"c"</span> <span style="color: #2aa198;">"d"</span><span style="color: #6c71c4;">)</span><span style="color: #268bd2;">)</span><span style="color: #b58900;">)</span><span style="color: #2aa198;">)</span>
+
+<span style="color: #2aa198;">(</span><span style="color: #2aa198;">"a"</span> <span style="color: #2aa198;">"b"</span><span style="color: #2aa198;">)</span>
+<span style="color: #2aa198;">(</span><span style="color: #2aa198;">"c"</span> <span style="color: #2aa198;">"d"</span><span style="color: #2aa198;">)</span>
+</pre>
+</div></li>
+<li><p>
+We need to flatten the list. And <code>mapcan</code> function can just do that. It can
+transfrom list from item #3 to: <code>("/_posts/en/article1/file.org"
+   "/_posts/en/article2/file.org" "/_posts/ru/article1/file.org"
+   "/_posts/ru/article2/file.org")</code>. And returns the result to the upper <code>mapc</code>.
+</p>
+
+<p>
+For example, there is the content of <code>file</code> variable inside lambda function
+when we use <code>mapcan</code>:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #2aa198;">(</span>mapc <span style="color: #b58900;">(</span><span style="color: #859900; font-weight: bold;">lambda</span> <span style="color: #268bd2;">(</span>file<span style="color: #268bd2;">)</span>
+        <span style="color: #268bd2;">(</span>print file<span style="color: #268bd2;">)</span><span style="color: #b58900;">)</span>
+      <span style="color: #b58900;">(</span>mapcan <span style="color: #268bd2;">(</span><span style="color: #859900; font-weight: bold;">lambda</span> <span style="color: #6c71c4;">(</span>directory<span style="color: #6c71c4;">)</span>
+                directory<span style="color: #268bd2;">)</span>
+              '<span style="color: #268bd2;">(</span><span style="color: #6c71c4;">(</span><span style="color: #2aa198;">"a"</span> <span style="color: #2aa198;">"b"</span><span style="color: #6c71c4;">)</span> <span style="color: #6c71c4;">(</span><span style="color: #2aa198;">"c"</span> <span style="color: #2aa198;">"d"</span><span style="color: #6c71c4;">)</span><span style="color: #268bd2;">)</span><span style="color: #b58900;">)</span><span style="color: #2aa198;">)</span>
+
+<span style="color: #2aa198;">"a"</span>
+<span style="color: #2aa198;">"b"</span>
+<span style="color: #2aa198;">"c"</span>
+<span style="color: #2aa198;">"d"</span>
+</pre>
+</div></li>
+</ol>
+
+<p>
+The resulting code of the function to clean up Jekyll's working directory:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #2aa198;">(</span><span style="color: #859900; font-weight: bold;">defun</span> <span style="color: #268bd2;">org-jekyll--suffix-clear</span> <span style="color: #b58900;">()</span>
+  <span style="color: #2aa198;">"Clear blog files."</span>
+  <span style="color: #b58900;">(</span><span style="color: #859900; font-weight: bold;">interactive</span><span style="color: #b58900;">)</span>
+  <span style="color: #b58900;">(</span><span style="color: #859900; font-weight: bold;">let</span> <span style="color: #268bd2;">(</span><span style="color: #6c71c4;">(</span>current-path <span style="color: #859900;">(</span>file-name-directory buffer-file-name<span style="color: #859900;">)</span><span style="color: #6c71c4;">)</span><span style="color: #268bd2;">)</span>
+    <span style="color: #268bd2;">(</span>cd <span style="color: #6c71c4;">(</span>expand-file-name org-jekyll-paths-base-path<span style="color: #6c71c4;">)</span><span style="color: #268bd2;">)</span>
+    <span style="color: #268bd2;">(</span>mapc <span style="color: #6c71c4;">(</span><span style="color: #859900; font-weight: bold;">lambda</span> <span style="color: #859900;">(</span>x<span style="color: #859900;">)</span>
+            <span style="color: #859900;">(</span>mapc <span style="color: #b58900;">(</span><span style="color: #859900; font-weight: bold;">lambda</span> <span style="color: #268bd2;">(</span>file<span style="color: #268bd2;">)</span>
+                    <span style="color: #268bd2;">(</span>delete-file file nil<span style="color: #268bd2;">)</span><span style="color: #b58900;">)</span>
+                  <span style="color: #b58900;">(</span>mapcan <span style="color: #268bd2;">(</span><span style="color: #859900; font-weight: bold;">lambda</span> <span style="color: #6c71c4;">(</span>directory<span style="color: #6c71c4;">)</span>
+                            <span style="color: #6c71c4;">(</span>directory-files-recursively <span style="color: #859900;">(</span>concat org-jekyll-paths-base-path directory<span style="color: #859900;">)</span> <span style="color: #859900;">(</span>cdr x<span style="color: #859900;">)</span> nil nil nil<span style="color: #6c71c4;">)</span><span style="color: #268bd2;">)</span>
+                          <span style="color: #268bd2;">(</span>car x<span style="color: #268bd2;">)</span><span style="color: #b58900;">)</span><span style="color: #859900;">)</span><span style="color: #6c71c4;">)</span>
+          `<span style="color: #6c71c4;">(</span><span style="color: #859900;">(</span><span style="color: #b58900;">(</span><span style="color: #2aa198;">"/_posts/en"</span> <span style="color: #2aa198;">"/_posts/ru"</span><span style="color: #b58900;">)</span> . <span style="color: #2aa198;">"\\.html$"</span><span style="color: #859900;">)</span>
+            <span style="color: #859900;">(</span><span style="color: #b58900;">(</span><span style="color: #2aa198;">"/assets/static"</span> <span style="color: #2aa198;">"/_static"</span><span style="color: #b58900;">)</span> . ,<span style="color: #b58900;">(</span>concat <span style="color: #2aa198;">"\\.png$</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">|</span><span style="color: #2aa198;">\\.jpg$</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">|</span><span style="color: #2aa198;">\\.jpeg$"</span>
+                                                      <span style="color: #2aa198;">"</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">|</span><span style="color: #2aa198;">"</span>
+                                                      <span style="color: #2aa198;">"\\.JPG$</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">|</span><span style="color: #2aa198;">\\.svg$</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">|</span><span style="color: #2aa198;">\\.webm$"</span>
+                                                      <span style="color: #2aa198;">"</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">|</span><span style="color: #2aa198;">"</span>
+                                                      <span style="color: #2aa198;">"\\.webp$</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">|</span><span style="color: #2aa198;">\\.html$</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">|</span><span style="color: #2aa198;">\\.tar.bz2$"</span>
+                                                      <span style="color: #2aa198;">"</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">|</span><span style="color: #2aa198;">"</span>
+                                                      <span style="color: #2aa198;">"\\.org$</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">|</span><span style="color: #2aa198;">\\.gif$</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">|</span><span style="color: #2aa198;">\\.gpx$"</span>
+                                                      <span style="color: #2aa198;">"</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">|</span><span style="color: #2aa198;">"</span>
+                                                      <span style="color: #2aa198;">"\\.svg$"</span><span style="color: #b58900;">)</span><span style="color: #859900;">)</span>
+            <span style="color: #859900;">(</span><span style="color: #b58900;">(</span><span style="color: #2aa198;">"/_articles"</span><span style="color: #b58900;">)</span> . <span style="color: #2aa198;">"\\.org$</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">|</span><span style="color: #2aa198;">\\.png$"</span><span style="color: #859900;">)</span><span style="color: #6c71c4;">)</span><span style="color: #268bd2;">)</span>
+    <span style="color: #268bd2;">(</span>make-process
+     <span style="color: #657b83; font-weight: bold;">:name</span> <span style="color: #2aa198;">"jekyll-clean"</span>
+     <span style="color: #657b83; font-weight: bold;">:buffer</span> <span style="color: #2aa198;">"jekyll-clean"</span>
+     <span style="color: #657b83; font-weight: bold;">:command</span> '<span style="color: #6c71c4;">(</span><span style="color: #2aa198;">"bundle"</span> <span style="color: #2aa198;">"exec"</span> <span style="color: #2aa198;">"jekyll"</span> <span style="color: #2aa198;">"clean"</span><span style="color: #6c71c4;">)</span>
+     <span style="color: #657b83; font-weight: bold;">:delete-exited-processes</span> t
+     <span style="color: #657b83; font-weight: bold;">:sentinel</span> <span style="color: #6c71c4;">(</span><span style="color: #859900; font-weight: bold;">lambda</span> <span style="color: #859900;">(</span>process state<span style="color: #859900;">)</span>
+                 <span style="color: #859900;">(</span><span style="color: #859900; font-weight: bold;">cond</span>
+                  <span style="color: #b58900;">(</span><span style="color: #268bd2;">(</span><span style="color: #859900; font-weight: bold;">and</span> <span style="color: #6c71c4;">(</span>eq <span style="color: #859900;">(</span>process-status process<span style="color: #859900;">)</span> 'exit<span style="color: #6c71c4;">)</span>
+                        <span style="color: #6c71c4;">(</span>zerop <span style="color: #859900;">(</span>process-exit-status process<span style="color: #859900;">)</span><span style="color: #6c71c4;">)</span><span style="color: #268bd2;">)</span>
+                   <span style="color: #268bd2;">(</span>message <span style="color: #2aa198;">"%s"</span> <span style="color: #6c71c4;">(</span>propertize <span style="color: #2aa198;">"Blog cleaned"</span> 'face '<span style="color: #859900;">(</span><span style="color: #657b83; font-weight: bold;">:foreground</span> <span style="color: #2aa198;">"blue"</span><span style="color: #859900;">)</span><span style="color: #6c71c4;">)</span><span style="color: #268bd2;">)</span><span style="color: #b58900;">)</span>
+                  <span style="color: #b58900;">(</span><span style="color: #268bd2;">(</span>eq <span style="color: #6c71c4;">(</span>process-status process<span style="color: #6c71c4;">)</span> 'run<span style="color: #268bd2;">)</span>
+                   <span style="color: #268bd2;">(</span>accept-process-output process<span style="color: #268bd2;">)</span><span style="color: #b58900;">)</span>
+                  <span style="color: #b58900;">(</span>t <span style="color: #268bd2;">(</span><span style="color: #cb4b16; font-weight: bold;">error</span> <span style="color: #6c71c4;">(</span>concat <span style="color: #2aa198;">"Jekyll Clean: "</span> state<span style="color: #6c71c4;">)</span><span style="color: #268bd2;">)</span><span style="color: #b58900;">)</span><span style="color: #859900;">)</span><span style="color: #6c71c4;">)</span><span style="color: #268bd2;">)</span><span style="color: #b58900;">)</span><span style="color: #2aa198;">)</span>
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-transient-ui" class="outline-3">
+<h3 id="transient-ui">UI (transient)</h3>
+<div class="outline-text-3" id="text-transient-ui">
+<p>
+I wanted to add <i>a comfortable for Emacs users</i> interface to all these set of
+functions. Here I didn't reinvent the wheel and just used the <a href="https://jd.codes/posts/transient-emacs/">Transient</a>
+library as in <a href="https://mastodon.social/@fabrik42">Christian Dewein's</a> code. The result looks like this:
+</p>
+
+
+<div class="figure">
+<p><img src="/assets/static/transient_panel.png" alt="Panel with blog actions" align="center" />
+</p>
+<p style="text-align: center"><i>UI of org-jekyll plugin</i></p>
+</div>
+
+<p>
+Some suffixes (functions that a called when the corresponding menu item is
+selected) have already been described above. A prefix (code that describes the
+panel) looks like this:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #93a1a1;">;; </span><span style="color: #93a1a1;">Transient keys description:</span>
+
+<span style="color: #2aa198;">(</span><span style="color: #859900; font-weight: bold;">transient-define-prefix</span> <span style="color: #268bd2;">org-jekyll-layout-descriptions</span> <span style="color: #b58900;">()</span>
+  <span style="color: #2aa198;">"Transient layout with blog commands."</span>
+  <span style="color: #b58900;">[</span><span style="color: #657b83; font-weight: bold;">:description</span> <span style="color: #268bd2;">(</span><span style="color: #859900; font-weight: bold;">lambda</span> <span style="color: #6c71c4;">()</span> <span style="color: #6c71c4;">(</span>concat org-jekyll-url <span style="color: #2aa198;">" control panel"</span> <span style="color: #2aa198;">"\n"</span><span style="color: #6c71c4;">)</span><span style="color: #268bd2;">)</span>
+                <span style="color: #268bd2;">[</span><span style="color: #2aa198;">"Development"</span>
+                 <span style="color: #6c71c4;">(</span><span style="color: #2aa198;">"b"</span> <span style="color: #2aa198;">"Build blog"</span> org-jekyll--suffix-build<span style="color: #6c71c4;">)</span>
+                 <span style="color: #6c71c4;">(</span><span style="color: #2aa198;">"s"</span> org-jekyll--suffix-serve-toggle
+                  <span style="color: #657b83; font-weight: bold;">:description</span> <span style="color: #859900;">(</span><span style="color: #859900; font-weight: bold;">lambda</span> <span style="color: #b58900;">()</span> <span style="color: #b58900;">(</span><span style="color: #859900; font-weight: bold;">if</span> <span style="color: #268bd2;">(</span>eq <span style="color: #6c71c4;">(</span>process-status <span style="color: #2aa198;">"jekyll-serve"</span><span style="color: #6c71c4;">)</span> 'run<span style="color: #268bd2;">)</span>
+                                              <span style="color: #2aa198;">"Stop serving local blog"</span>
+                                            <span style="color: #2aa198;">"Serve local blog"</span><span style="color: #b58900;">)</span><span style="color: #859900;">)</span><span style="color: #6c71c4;">)</span>
+                 <span style="color: #6c71c4;">(</span><span style="color: #2aa198;">"o"</span> <span style="color: #2aa198;">"Open served blog"</span> org-jekyll--suffix-open-blog<span style="color: #6c71c4;">)</span>
+                 <span style="color: #6c71c4;">(</span><span style="color: #2aa198;">"O"</span> <span style="color: #2aa198;">"Open blog in Web"</span> org-jekyll--suffix-open-remote-blog<span style="color: #6c71c4;">)</span>
+                 <span style="color: #6c71c4;">(</span><span style="color: #2aa198;">"B"</span> <span style="color: #2aa198;">"Open build log"</span> org-jekyll--suffix-open-build-log<span style="color: #6c71c4;">)</span>
+                 <span style="color: #6c71c4;">(</span><span style="color: #2aa198;">"l"</span> <span style="color: #2aa198;">"Open serve log"</span> org-jekyll--suffix-open-serve-log<span style="color: #6c71c4;">)</span>
+                 <span style="color: #6c71c4;">(</span><span style="color: #2aa198;">"C"</span> <span style="color: #2aa198;">"Clear blog directory"</span> org-jekyll--suffix-clear<span style="color: #6c71c4;">)</span><span style="color: #268bd2;">]</span>
+                <span style="color: #268bd2;">[</span><span style="color: #2aa198;">"Actions"</span>
+                 <span style="color: #6c71c4;">(</span><span style="color: #2aa198;">"n"</span> <span style="color: #2aa198;">"New blog post"</span> org-jekyll--suffix-create-post<span style="color: #6c71c4;">)</span><span style="color: #268bd2;">]</span><span style="color: #b58900;">]</span><span style="color: #2aa198;">)</span>
+
+<span style="color: #93a1a1;">;; </span><span style="color: #93a1a1;">Function to call main menu:</span>
+
+<span style="color: #2aa198;">(</span><span style="color: #859900; font-weight: bold;">defun</span> <span style="color: #268bd2;">org-jekyll-menu</span> <span style="color: #b58900;">()</span>
+  <span style="color: #2aa198;">"Open blog control center."</span>
+  <span style="color: #b58900;">(</span><span style="color: #859900; font-weight: bold;">interactive</span><span style="color: #b58900;">)</span>
+  <span style="color: #b58900;">(</span>org-jekyll-layout-descriptions<span style="color: #b58900;">)</span><span style="color: #2aa198;">)</span>
+</pre>
+</div>
+
+<p>
+Functions-suffixes is just a usual functions without parameters, for example:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #2aa198;">(</span><span style="color: #859900; font-weight: bold;">defun</span> <span style="color: #268bd2;">org-jekyll--suffix-open-blog</span> <span style="color: #b58900;">()</span>
+  <span style="color: #2aa198;">"Open locally served blog."</span>
+  <span style="color: #b58900;">(</span><span style="color: #859900; font-weight: bold;">interactive</span><span style="color: #b58900;">)</span>
+  <span style="color: #b58900;">(</span>browse-url <span style="color: #2aa198;">"http://127.0.0.1:8000/"</span><span style="color: #b58900;">)</span><span style="color: #2aa198;">)</span>
+
+<span style="color: #2aa198;">(</span><span style="color: #859900; font-weight: bold;">defun</span> <span style="color: #268bd2;">org-jekyll--suffix-open-remote-blog</span> <span style="color: #b58900;">()</span>
+  <span style="color: #2aa198;">"Open remote blog."</span>
+  <span style="color: #b58900;">(</span><span style="color: #859900; font-weight: bold;">interactive</span><span style="color: #b58900;">)</span>
+  <span style="color: #b58900;">(</span>browse-url org-jekyll-url<span style="color: #b58900;">)</span><span style="color: #2aa198;">)</span>
+
+<span style="color: #2aa198;">(</span><span style="color: #859900; font-weight: bold;">defun</span> <span style="color: #268bd2;">org-jekyll--suffix-create-post</span> <span style="color: #b58900;">()</span>
+  <span style="color: #2aa198;">"Create new blog post."</span>
+  <span style="color: #b58900;">(</span><span style="color: #859900; font-weight: bold;">interactive</span><span style="color: #b58900;">)</span>
+  <span style="color: #b58900;">(</span>cd <span style="color: #268bd2;">(</span>expand-file-name org-jekyll-paths-base-path<span style="color: #268bd2;">)</span><span style="color: #b58900;">)</span>
+  <span style="color: #b58900;">(</span>org-jekyll--create-new-post<span style="color: #b58900;">)</span><span style="color: #2aa198;">)</span>
+</pre>
+</div>
+
+<p>
+The start/stop local server menu item includes the code to check the status of
+the local server via the check for process <code>"jekyll-serve"</code> status.
+</p>
+
+<p>
+This panel can be displayed via the <code>org-jekyll-menu</code> function. Going a bit
+further — this function is called by a hotkey in my plugin.
+</p>
+</div>
+</div>
+
+<div id="outline-container-emacs-plugin" class="outline-3">
+<h3 id="emacs-plugin">Emacs plugin specific code</h3>
+<div class="outline-text-3" id="text-emacs-plugin">
+<p>
+The only thing left to do is to make an Emacs plugin out of my code. I'm not
+going to call <code>eval-buffer</code> every time, am I? Let Emacs itself load all the
+necessary code at startup.
+</p>
+
+<p>
+First, I checked the source code with <code>M-x checkdoc</code> and added missing
+comments. Then, I added the necessary dependencies to the header:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #2aa198;">(</span><span style="color: #859900; font-weight: bold;">require</span> '<span style="color: #268bd2; font-weight: bold;">htmlize</span><span style="color: #2aa198;">)</span>
+<span style="color: #2aa198;">(</span><span style="color: #859900; font-weight: bold;">require</span> '<span style="color: #268bd2; font-weight: bold;">ox-publish</span><span style="color: #2aa198;">)</span>
+<span style="color: #2aa198;">(</span><span style="color: #859900; font-weight: bold;">require</span> '<span style="color: #268bd2; font-weight: bold;">transient</span><span style="color: #2aa198;">)</span>
+</pre>
+</div>
+
+<p>
+<code>htmlize</code> is needed to color source code blocks in the resulting HTML,
+<code>ox-publish</code> is an extension to OrgMode for publishing files. Why the <code>transient</code>
+library is necessary, I've already described above.
+</p>
+
+<p>
+I've also added necessary <code>provide</code> to the end of the file:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #2aa198;">(</span><span style="color: #859900; font-weight: bold;">provide</span> '<span style="color: #268bd2; font-weight: bold;">org-jekyll</span><span style="color: #2aa198;">)</span>
+</pre>
+</div>
+
+<p>
+And I described the minor mode, which calls up the transient menu via the <code>C-c
+b</code> hotkey:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #93a1a1;">;; </span><span style="color: #93a1a1;">Minor mode:</span>
+
+<span style="color: #93a1a1;">;;;</span><span style="color: #93a1a1;">###</span><span style="color: #cb4b16; font-weight: bold;">autoload</span>
+<span style="color: #2aa198;">(</span><span style="color: #859900; font-weight: bold;">define-minor-mode</span> <span style="color: #268bd2;">org-jekyll-mode</span>
+  <span style="color: #2aa198;">"Enable transient menu to operate with blog-related OrgMode files."</span>
+  <span style="color: #657b83; font-weight: bold;">:lighter</span> <span style="color: #2aa198;">" oj"</span>
+  <span style="color: #657b83; font-weight: bold;">:global</span> nil
+  <span style="color: #657b83; font-weight: bold;">:init-value</span> nil
+  <span style="color: #657b83; font-weight: bold;">:keymap</span> <span style="color: #b58900;">(</span>list <span style="color: #268bd2;">(</span>cons <span style="color: #6c71c4;">(</span>kbd <span style="color: #2aa198;">"C-c b"</span><span style="color: #6c71c4;">)</span> #'org-jekyll-menu<span style="color: #268bd2;">)</span><span style="color: #b58900;">)</span><span style="color: #2aa198;">)</span>
+</pre>
+</div>
+
+<p>
+Now, if minor mode is enabled with <code>M-x org-jekyll-mode</code>, then the build can be
+started with <code>C-c b b</code> hotkey, new post can be created with <code>C-c b n</code> and so
+on. The transient menu described above can be accessed with <code>C-c b</code>.
+</p>
+</div>
+</div>
+
+<div id="outline-container-loading-plugin-in-emacs" class="outline-3">
+<h3 id="loading-plugin-in-emacs">Loading plugin in Emacs</h3>
+<div class="outline-text-3" id="text-loading-plugin-in-emacs">
+<p>
+The last thing left — is to properly load this plugin into Emacs. The new
+minor mode should only be enabled when I open a blogpost file, and shouldn't
+interfere with other org files.
+</p>
+
+<p>
+This can be achieved with the next function:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #93a1a1;">;;;</span><span style="color: #93a1a1;">###</span><span style="color: #cb4b16; font-weight: bold;">autoload</span>
+<span style="color: #2aa198;">(</span><span style="color: #859900; font-weight: bold;">defun</span> <span style="color: #268bd2;">org-jekyll-init</span> <span style="color: #b58900;">()</span>
+  <span style="color: #b58900;">(</span><span style="color: #859900; font-weight: bold;">if</span> <span style="color: #268bd2;">(</span><span style="color: #859900; font-weight: bold;">and</span> buffer-file-name
+           <span style="color: #6c71c4;">(</span>string-match <span style="color: #2aa198;">"^/.+/article-[[:lower:]]\\{</span><span style="color: #268bd2;">2\\</span><span style="color: #2aa198;">}\\.org"</span> <span style="color: #859900;">(</span>buffer-file-name<span style="color: #859900;">)</span><span style="color: #6c71c4;">)</span><span style="color: #268bd2;">)</span>
+      <span style="color: #268bd2;">(</span>org-jekyll-mode 1<span style="color: #268bd2;">)</span><span style="color: #b58900;">)</span><span style="color: #2aa198;">)</span>
+</pre>
+</div>
+
+<p>
+And with the next <code>use-package</code> configuration:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #2aa198;">(</span><span style="color: #859900; font-weight: bold;">use-package</span> <span style="color: #268bd2; font-weight: bold;">org-jekyll</span>
+  <span style="color: #657b83; font-weight: bold;">:load-path</span> <span style="color: #2aa198;">"~/rsync/blog/"</span>
+  <span style="color: #657b83; font-weight: bold;">:ensure</span> nil
+  <span style="color: #657b83; font-weight: bold;">:commands</span> org-jekyll-init
+  <span style="color: #657b83; font-weight: bold;">:hook</span> <span style="color: #b58900;">(</span>org-mode . org-jekyll-init<span style="color: #b58900;">)</span><span style="color: #2aa198;">)</span>
+</pre>
+</div>
+
+<p>
+Now every time I open an org file, my <code>org-jekyll-init</code> is called. When I opened
+the blog post, <code>org-jekyll-mode</code> was enabled and custom hotkeys plus transient
+menu became accessible.
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-source-code" class="outline-2">
+<h2 id="source-code">Source code</h2>
+<div class="outline-text-2" id="text-source-code">
+<p>
+I didn't intend this plugin to be usable by others — after all, it has my
+article directory structure and my file naming conventions hardcoded into
+it. That's why I didn't publish it in MELPA or set up a separate repository
+for it.
+</p>
+
+<p>
+The source code is in the same repository as the files for my blog. You can
+look at it <a href="https://github.com/eugeneandrienko/eugeneandrienko.github.io/blob/master/org-jekyll.el">at this link</a>.
+</p>
+
+<p>
+As a result, if I need to switch to another static site generator, it will be
+enough to tweak the functions involved in the export from OrgMode to make the
+generated HTML fit the new engine. My article sources and the entire directory
+structure for them will remain untouched.
+</p>
+</div>
+</div>
+
+<div id="outline-container-plugin-improvement" class="outline-2">
+<h2 id="plugin-improvement">What else could be improved?</h2>
+<div class="outline-text-2" id="text-plugin-improvement">
+<p>
+There are a few things in the current version of the plugin that are
+definitely worth improving:
+</p>
+<ol class="org-ol">
+<li><code>org-publish-project</code> call should be asynchronous — so it will not block
+Emacs interface during evaluation, like now. <code>Org-publish-project</code> and
+<code>make-process</code> calls should be sequental, instead Jekyll will try to build
+the blog while files for it not ready yet.</li>
+<li><p>
+<code>org-publish-project</code> could operate with Org Babel block. I want to use these
+blocks to describe different complicated schemes as code for <a href="https://github.com/plantuml/plantuml">PlantUML</a> right
+in blogpost text. After <code>org-publish-project</code> call there are ready images
+inside the <code>_articles/</code> catalog (see to <a href="https://hostsharing.coop/@dzu">@dsu</a> blogpost with details:
+<a href="https://blog.lazy-evaluation.net/posts/orgmode-diagrams.html">https://blog.lazy-evaluation.net/posts/orgmode-diagrams.html</a>).
+</p>
+
+<p>
+Needs to modify <code>org-jekyll--prepare-static</code> to copy necessary files from the
+new place. And <code>org-jekyll--suffix-clear</code> function should delete these files.
+</p>
+
+<p>
+<i>Already realised — look to the commit
+<a href="https://github.com/eugeneandrienko/eugeneandrienko.github.io/commit/e919bd6d2b7f3a0b853fdf71f288f5c9f1749575">e919bd6d2b7f3a0b853fdf71f288f5c9f1749575</a>.</i>
+</p></li>
+</ol>
+</div>
+</div>
+
+<div id="outline-container-notes" class="outline-2">
+<h2 id="notes">Notes</h2>
+<div class="outline-text-2" id="text-notes">
+</div>
+</div>
+<div id="footnotes">
+
+<div id="text-footnotes">
+
+<div class="footdef"><sup><a id="fn.1" class="footnum" href="#fnr.1" role="doc-backlink">1</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+First, in mid-March 2022, Visa and Master Card cut me
+off from just about everything what I could buy outside the country with fiat
+money. Because of which I could neither transfer my domain to another
+registrar nor pay for my VPS in Finland.
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.2" class="footnum" href="#fnr.2" role="doc-backlink">2</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+That's a separate and utterly "beautiful" story. On 28th
+February 2022 NameCheap sent me a notification letter that they will
+undelegate my domain in 7 days because I am from the "wrong" country (this was
+long before the ban on providing IT services to companies on the sanctions
+list, to which I am in no way related — most likely the "happy letters" were
+sent because of the registration/billing address for the sake of the
+above-mentioned virtue signaling. They didn't even check the real citizenship
+of they customers!):
+</p>
+
+
+<div class="figure">
+<p><img src="/assets/static/namecheap1.png" alt="Namecheap services discontinuation" align="center" />
+</p>
+</div>
+
+<p class="footpara">
+In the next two letters they extended the deadline by two weeks. And offered
+me to either leave the country before the deadline, or <del>get involved in protest
+activities</del> go to jail for a dozen years if I wanted to continue using their
+services🤡. I'm assuming these letters were composed by some not-so-smart
+person from a first-world country whose only encounter with the repressive
+apparatus of state was not being sold alcohol without an ID at a Wallmart
+checkout; and who knows about life outside his well-established democracy
+institutions from the Hunger Games movies. And who is sure that emigrating is
+easy — you fill out some paperwork at customs upon entry, and wham — you're
+already a citizen of of another country.
+</p>
+
+
+<div class="figure">
+<p><img src="/assets/static/namecheap2.png" alt="Namecheap next emails about service shutdown" align="center" />
+</p>
+</div>
+
+<p class="footpara">
+I didn't have time to transfer my domain to another registrar at that time,
+because my cards were quickly and suddenly disconnected from Visa/MasterCard —
+and I couldn't pay another domain name registrar for the transfer. After a
+<b>year (!)</b> it turned out that my domain was still being serviced by NameCheap —
+after I received an email from them reminding me to drop off some of my
+"dirty" money to renew the domain🤡🤡:
+</p>
+
+
+<div class="figure">
+<p><img src="/assets/static/namecheap3.png" alt="Namecheap domain renewal" align="center" />
+</p>
+</div>
+
+<p class="footpara">
+Of course, the services of NameCheap since then I no longer use and bypass it
+tenth road, having made a choice in favor of a more sane domain registrar,
+located as far away as possible (on the other side of the planet) from
+me. Moral of the story — don't trust corporations and all sorts of centralized
+and closed services that you don't control. They will throw you out without a
+second thought if it is to their advantage. You should always have a backup
+plan in case something goes wrong.
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.3" class="footnum" href="#fnr.3" role="doc-backlink">3</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+It looks like simple enough and at the same time it proved to be
+quite popular and was (and still is) often used by different hosting providers
+as a pre-installed application.
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.4" class="footnum" href="#fnr.4" role="doc-backlink">4</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+I don't like JS, plus without it the blog is unimaginably fast
+to open on my Thinkpad X220.
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.5" class="footnum" href="#fnr.5" role="doc-backlink">5</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+<a href="https://orgmode.org/worg/org-tutorials/org-publish-html-tutorial.html">https://orgmode.org/worg/org-tutorials/org-publish-html-tutorial.html</a>
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.6" class="footnum" href="#fnr.6" role="doc-backlink">6</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+During my university days I was a bit interested in Lisp, read
+"Structure and Interpretation of Computer Programs" and wrote various simple
+programs in Clojure. The source code of some of them is still exists in
+GitHub:
+</p>
+<ul class="org-ul">
+<li><a href="https://github.com/eugeneandrienko/jamendo-client">https://github.com/eugeneandrienko/jamendo-client</a></li>
+<li><a href="https://github.com/eugeneandrienko/cs-alias-clj">https://github.com/eugeneandrienko/cs-alias-clj</a></li>
+</ul></div></div>
+
+<div class="footdef"><sup><a id="fn.7" class="footnum" href="#fnr.7" role="doc-backlink">7</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+<a href="https://www.gnu.org/software/emacs/manual/html_node/eintr/defcustom.html">https://www.gnu.org/software/emacs/manual/html_node/eintr/defcustom.html</a>
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.8" class="footnum" href="#fnr.8" role="doc-backlink">8</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+See
+<a href="https://www.gnu.org/software/emacs/manual/html_node/elisp/Quoting.html">https://www.gnu.org/software/emacs/manual/html_node/elisp/Quoting.html</a> and
+<a href="https://www.gnu.org/software/emacs/manual/html_node/elisp/Backquote.html">https://www.gnu.org/software/emacs/manual/html_node/elisp/Backquote.html</a>
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.9" class="footnum" href="#fnr.9" role="doc-backlink">9</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+<a href="https://www.gnu.org/software/emacs/manual/html_node/elisp/Contents-of-Directories.html#index-directory_002dfiles_002drecursively">https://www.gnu.org/software/emacs/manual/html_node/elisp/Contents-of-Directories.html#index-directory_002dfiles_002drecursively</a>
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.10" class="footnum" href="#fnr.10" role="doc-backlink">10</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+<a href="https://www.gnu.org/software/emacs/manual/html_node/elisp/Sequence-Functions.html#index-seq_002dfilter">https://www.gnu.org/software/emacs/manual/html_node/elisp/Sequence-Functions.html#index-seq_002dfilter</a>
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.11" class="footnum" href="#fnr.11" role="doc-backlink">11</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+<a href="https://www.gnu.org/software/emacs/manual/html_node/elisp/Mapping-Functions.html#index-mapc">https://www.gnu.org/software/emacs/manual/html_node/elisp/Mapping-Functions.html#index-mapc</a>
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.12" class="footnum" href="#fnr.12" role="doc-backlink">12</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+A separate directory for each language is necessary for the
+plugin <a href="https://github.com/untra/polyglot">jekyll-polyglot</a>, which provides a JavaScript-free way to publish the
+same article in different languages.
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.13" class="footnum" href="#fnr.13" role="doc-backlink">13</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+<a href="https://www.gnu.org/software/emacs/manual/html_node/elisp/Regexp-Search.html">https://www.gnu.org/software/emacs/manual/html_node/elisp/Regexp-Search.html</a>
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.14" class="footnum" href="#fnr.14" role="doc-backlink">14</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+<a href="https://www.gnu.org/software/emacs/manual/html_node/elisp/Local-Variables.html#index-let_002a">https://www.gnu.org/software/emacs/manual/html_node/elisp/Local-Variables.html#index-let_002a</a>
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.15" class="footnum" href="#fnr.15" role="doc-backlink">15</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+<a href="https://www.gnu.org/software/emacs/manual/html_node/elisp/Plist-Access.html#index-plist_002dget">https://www.gnu.org/software/emacs/manual/html_node/elisp/Plist-Access.html#index-plist_002dget</a>
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.16" class="footnum" href="#fnr.16" role="doc-backlink">16</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+My settings for the toc-org plugin, with which it starts to
+understand the <code>:TOC_2_blog:</code> tag and generates section links, properly handled
+when exported to HTML:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #2aa198;">(</span><span style="color: #859900; font-weight: bold;">use-package</span> <span style="color: #268bd2; font-weight: bold;">toc-org</span>
+  <span style="color: #657b83; font-weight: bold;">:pin</span> melpa
+  <span style="color: #657b83; font-weight: bold;">:hook</span> <span style="color: #b58900;">(</span>org-mode . toc-org-mode<span style="color: #b58900;">)</span>
+  <span style="color: #657b83; font-weight: bold;">:config</span>
+  <span style="color: #b58900;">(</span><span style="color: #859900; font-weight: bold;">defun</span> <span style="color: #268bd2;">toc-org-hrefify-blog</span> <span style="color: #268bd2;">(</span>str <span style="color: #b58900;">&amp;optional</span> hash<span style="color: #268bd2;">)</span>
+    <span style="color: #268bd2;">(</span>concat <span style="color: #2aa198;">"* "</span> <span style="color: #6c71c4;">(</span>toc-org-format-visible-link str<span style="color: #6c71c4;">)</span><span style="color: #268bd2;">)</span><span style="color: #b58900;">)</span><span style="color: #2aa198;">)</span>
+</pre>
+</div></div></div>
+
+<div class="footdef"><sup><a id="fn.17" class="footnum" href="#fnr.17" role="doc-backlink">17</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+<a href="https://www.gnu.org/software/emacs/manual/html_node/elisp/Asynchronous-Processes.html#index-make_002dprocess">https://www.gnu.org/software/emacs/manual/html_node/elisp/Asynchronous-Processes.html#index-make_002dprocess</a>
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.18" class="footnum" href="#fnr.18" role="doc-backlink">18</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+<a href="https://www.gnu.org/software/emacs/manual/html_node/elisp/Displaying-Messages.html#index-message">https://www.gnu.org/software/emacs/manual/html_node/elisp/Displaying-Messages.html#index-message</a>
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.19" class="footnum" href="#fnr.19" role="doc-backlink">19</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+<a href="https://www.gnu.org/software/emacs/manual/html_node/elisp/Changing-Properties.html#index-propertize">https://www.gnu.org/software/emacs/manual/html_node/elisp/Changing-Properties.html#index-propertize</a>
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.20" class="footnum" href="#fnr.20" role="doc-backlink">20</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+<a href="https://www.gnu.org/software/emacs/manual/html_node/elisp/Mapping-Functions.html#index-mapcan">https://www.gnu.org/software/emacs/manual/html_node/elisp/Mapping-Functions.html#index-mapcan</a>
+</p></div></div>
+
+
+</div>
+</div>

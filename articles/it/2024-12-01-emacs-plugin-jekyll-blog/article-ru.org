@@ -3,7 +3,7 @@
 layout: post
 title: Как я сделал Emacs-плагин для сборки своего блога
 category: it
-date: 2024-11-09
+date: 2024-12-01
 lang: ru
 comments: false
 hidden:

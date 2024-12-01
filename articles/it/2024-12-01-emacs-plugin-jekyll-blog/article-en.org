@@ -3,7 +3,7 @@
 layout: post
 title: How I wrote an Emacs plugin to build my blog
 category: it
-date: 2024-11-09
+date: 2024-12-01
 lang: en
 comments: false
 hidden:

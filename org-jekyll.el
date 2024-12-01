@@ -119,7 +119,9 @@
 Modify OrgMode file before publish it. ARTICLE is a path to
 OrgMode file with article. Files, stored in `_articles/' will be
 modified, not original articles from `org-jekyll-paths-articles-path'
-path."
+path.
+
+ARTICLE is a path to intermediate org-file with article text"
   (with-temp-buffer
     (insert-file-contents article)
     (goto-char (point-min))

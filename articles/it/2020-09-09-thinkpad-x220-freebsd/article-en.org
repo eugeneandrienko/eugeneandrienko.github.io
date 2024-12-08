@@ -50,11 +50,10 @@ This post based on information from the next pages:
   - [[* GUI glitches][GUI glitches]]
   - [[* Miscellaneous (2)][Miscellaneous (2)]]
 - [[* 2024-11-30 update][2024-11-30 update]]
-  - [[* PCI powersaving][PCI powersaving]]
   - [[* Intel graphics optimizations][Intel graphics optimizations]]
   - [[* Fast soreceive()][Fast soreceive()]]
   - [[* Increase queue size for network interfaces][Increase queue size for network interfaces]]
-  - [[* More options for powersaving][More options for powersaving]]
+  - [[* Options for powersaving][Options for powersaving]]
   - [[* Settings to increase perfomance of network stack][Settings to increase perfomance of network stack]]
   - [[* Intel microcode][Intel microcode]]
   - [[* Alsamixer, but for OSS][Alsamixer, but for OSS]]
@@ -361,6 +360,11 @@ To enable sleeping after closing the lid, I've added one more line to
 hw.acpi.lid_switch_state=S3
 #+end_example
 
+To enable sleeping after press to "Sleep" butoon:
+#+begin_example
+hw.acpi.sleep_button_state=S3
+#+end_example
+
 ** Output boot-log to «secondary» 2K-display
 :PROPERTIES:
 :CUSTOM_ID: bootlog-2k-display
@@ -507,17 +511,6 @@ acpi_dock_load="YES"
 
 There are a lot of people in Mastodon, who writing about FreeBSD — and I took some settings from them posts.
 
-** PCI powersaving
-:PROPERTIES:
-:CUSTOM_ID: pci-powersaving
-:END:
-
-=/boot/loader.conf=:
-
-#+begin_example
-hw.pci.do_power_nodriver="3"
-#+end_example
-
 ** Intel graphics optimizations
 :PROPERTIES:
 :CUSTOM_ID: intel-graphics-optimizations
@@ -550,7 +543,7 @@ net.isr.defaultqlimit="2048"
 net.link.ifqmaxlen="2048"
 #+end_example
 
-** More options for powersaving
+** Options for powersaving
 :PROPERTIES:
 :CUSTOM_ID: much-more-powersaving
 :END:
@@ -655,8 +648,6 @@ vfs.usermount=1
 # https://github.com/freebsd/drm-kmod/issues/175
 kern.vt.suspendswitch=0
 
-########################
-# Power saving (laptops)
-########################
-hw.snd.latency=7
+# Save datetime to RTC
+machdep.disable_rtc_set=0
 #+end_example

@@ -61,12 +61,11 @@ Lenovo ThinkPad X220 &#x2014; чтобы не забыть неочевидны�
 </ul></li>
 <li><a href="#update-2024-11-30">Обновление 2024-11-30</a>
 <ul class="org-ul">
-<li><a href="#pci-powersaving">Энергосбережение PCI</a></li>
 <li><a href="#intel-graphics-optimizations">Оптимизации для графики Intel</a></li>
 <li><a href="#faster-soreceive">Быстрая реализация soreceive()</a></li>
 <li><a href="#nqueue-len">Увеличенный размер очереди для сетевых интерфейсов</a></li>
-<li><a href="#much-more-powersaving">Ещё опции для энергосбережения</a></li>
-<li><a href="#orgaea24f4">Настройки для повышения производительности сетевого стека</a></li>
+<li><a href="#much-more-powersaving">Опции для энергосбережения</a></li>
+<li><a href="#orgdcac948">Настройки для повышения производительности сетевого стека</a></li>
 <li><a href="#intel-microcode">Установка microcode от Intel</a></li>
 <li><a href="#oss-tui">Alsamixer, но для OSS</a></li>
 <li><a href="#misc-3">Разное (3)</a></li>
@@ -468,6 +467,13 @@ hint.acpi_throttle.0.disabled="1"
 <pre class="example">
 hw.acpi.lid_switch_state=S3
 </pre>
+
+<p>
+Для нужного режима сна по кнопке:
+</p>
+<pre class="example">
+hw.acpi.sleep_button_state=S3
+</pre>
 </div>
 </div>
 
@@ -661,19 +667,6 @@ acpi_dock_load="YES"
 </p>
 </div>
 
-<div id="outline-container-pci-powersaving" class="outline-3">
-<h3 id="pci-powersaving">Энергосбережение PCI</h3>
-<div class="outline-text-3" id="text-pci-powersaving">
-<p>
-<code>/boot/loader.conf</code>:
-</p>
-
-<pre class="example">
-hw.pci.do_power_nodriver="3"
-</pre>
-</div>
-</div>
-
 <div id="outline-container-intel-graphics-optimizations" class="outline-3">
 <h3 id="intel-graphics-optimizations">Оптимизации для графики Intel</h3>
 <div class="outline-text-3" id="text-intel-graphics-optimizations">
@@ -713,7 +706,7 @@ net.link.ifqmaxlen="2048"
 </div>
 
 <div id="outline-container-much-more-powersaving" class="outline-3">
-<h3 id="much-more-powersaving">Ещё опции для энергосбережения</h3>
+<h3 id="much-more-powersaving">Опции для энергосбережения</h3>
 <div class="outline-text-3" id="text-much-more-powersaving">
 <p>
 <code>/boot/loader.conf</code>:
@@ -828,10 +821,8 @@ vfs.usermount=1
 # https://github.com/freebsd/drm-kmod/issues/175
 kern.vt.suspendswitch=0
 
-########################
-# Power saving (laptops)
-########################
-hw.snd.latency=7
+# Save datetime to RTC
+machdep.disable_rtc_set=0
 </pre>
 </div>
 </div>

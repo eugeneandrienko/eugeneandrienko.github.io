@@ -60,12 +60,11 @@ This post based on information from the next pages:
 </ul></li>
 <li><a href="#update-2024-11-30">2024-11-30 update</a>
 <ul class="org-ul">
-<li><a href="#pci-powersaving">PCI powersaving</a></li>
 <li><a href="#intel-graphics-optimizations">Intel graphics optimizations</a></li>
 <li><a href="#faster-soreceive">Fast soreceive()</a></li>
 <li><a href="#nqueue-len">Increase queue size for network interfaces</a></li>
-<li><a href="#much-more-powersaving">More options for powersaving</a></li>
-<li><a href="#orgc3ce130">Settings to increase perfomance of network stack</a></li>
+<li><a href="#much-more-powersaving">Options for powersaving</a></li>
+<li><a href="#org68617a2">Settings to increase perfomance of network stack</a></li>
 <li><a href="#intel-microcode">Intel microcode</a></li>
 <li><a href="#oss-tui">Alsamixer, but for OSS</a></li>
 <li><a href="#misc-3">Miscellaneous (3)</a></li>
@@ -443,6 +442,13 @@ To enable sleeping after closing the lid, I've added one more line to
 <pre class="example">
 hw.acpi.lid_switch_state=S3
 </pre>
+
+<p>
+To enable sleeping after press to "Sleep" butoon:
+</p>
+<pre class="example">
+hw.acpi.sleep_button_state=S3
+</pre>
 </div>
 </div>
 
@@ -634,19 +640,6 @@ There are a lot of people in Mastodon, who writing about FreeBSD — and I took
 </p>
 </div>
 
-<div id="outline-container-pci-powersaving" class="outline-3">
-<h3 id="pci-powersaving">PCI powersaving</h3>
-<div class="outline-text-3" id="text-pci-powersaving">
-<p>
-<code>/boot/loader.conf</code>:
-</p>
-
-<pre class="example">
-hw.pci.do_power_nodriver="3"
-</pre>
-</div>
-</div>
-
 <div id="outline-container-intel-graphics-optimizations" class="outline-3">
 <h3 id="intel-graphics-optimizations">Intel graphics optimizations</h3>
 <div class="outline-text-3" id="text-intel-graphics-optimizations">
@@ -686,7 +679,7 @@ net.link.ifqmaxlen="2048"
 </div>
 
 <div id="outline-container-much-more-powersaving" class="outline-3">
-<h3 id="much-more-powersaving">More options for powersaving</h3>
+<h3 id="much-more-powersaving">Options for powersaving</h3>
 <div class="outline-text-3" id="text-much-more-powersaving">
 <p>
 <code>/boot/loader.conf</code>:
@@ -801,10 +794,8 @@ vfs.usermount=1
 # https://github.com/freebsd/drm-kmod/issues/175
 kern.vt.suspendswitch=0
 
-########################
-# Power saving (laptops)
-########################
-hw.snd.latency=7
+# Save datetime to RTC
+machdep.disable_rtc_set=0
 </pre>
 </div>
 </div>

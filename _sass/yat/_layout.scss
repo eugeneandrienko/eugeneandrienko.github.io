@@ -85,6 +85,7 @@
     position: absolute;
     top: 0;
     text-align: left;
+    z-index: 2;
 
     label[for="nav-trigger"] {
       display: block;
@@ -112,13 +113,13 @@
 
     input:checked ~ .trigger {
       display: block;
-      background: $header-background-color;
+      background: #073642;
     }
 
     .page-link {
       display: block;
       padding: 5px 10px;
-      color: rgba($header-text-color, 80%);
+      color: #93a1a1;
       margin: 0 25px;
     }
   }

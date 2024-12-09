@@ -8,7 +8,7 @@ lang: ru
 comments: true
 hidden:
   - related_posts
-tags: freebsd
+tags: freebsd thinkpad
 ---
 #+END_EXPORT
 

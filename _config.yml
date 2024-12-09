@@ -34,6 +34,7 @@ future: true
 sass:
   sourcemap: never
 header_pages:
+  - now.html
   - about.html
   - cv.html
   - tags.html

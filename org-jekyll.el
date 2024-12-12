@@ -158,7 +158,8 @@ PROPERTY-LIST is a list of properties from
         (seq-filter (lambda (path)
                       (and
                        (not (string-match org-jekyll-exclude-regex path))
-                       (not (string-match "\\(draft-\\)\\|\\(hidden-\\)" path))))
+                       (not (string-match "\\(draft-\\)\\|\\(hidden-\\)" path))
+                       (string-match "article-[a-z]\\{2\\}\\.org" path)))
                     (directory-files-recursively org-jekyll-paths-articles-path "\\.org$" nil nil nil))))
 
 (defun org-jekyll--complete-articles (property-list)

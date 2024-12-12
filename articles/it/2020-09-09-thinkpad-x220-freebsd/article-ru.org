@@ -565,6 +565,9 @@ compat.linuxkpi.i915_enable_dc="2"
 #+end_example
 
 ** Настройки для повышения производительности сетевого стека
+:PROPERTIES:
+:CUSTOM_ID: network-stack-performance
+:END:
 
 Взяты отсюда: https://www.sacredheartsc.com/blog/freebsd-14-on-the-desktop/
 

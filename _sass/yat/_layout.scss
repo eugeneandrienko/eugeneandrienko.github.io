@@ -758,3 +758,14 @@
         }
     }
 }
+
+.hide-visually {
+    height: 1px;
+    width: 1 px;
+    overflow: hidden;
+    position: absolute;
+    clip: rect(1px 1px 1px 1px); /* IE6/7 */
+    clip: rect(1px, 1px, 1px, 1px);
+    clip-path: inset(50%);
+    white-space: nowrap;
+}

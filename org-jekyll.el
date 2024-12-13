@@ -186,7 +186,8 @@ PROPERTY-LIST is a list of properties from
                       (" id=\"org[[:xdigit:]]\\{7\\}\"" . "")
                       (" id=\"outline-container-org[[:xdigit:]]\\{7\\}\"" . "")
                       (" id=\"text-org[[:xdigit:]]\\{7\\}\"" . "")
-                      ("<span class=\"TOC_2_blog\">TOC_2_blog</span>" . "")))
+                      ("<span class=\"TOC_2_blog\">TOC_2_blog</span>" . "")
+                      ("<span class=\"listing-number\">Listing[[:alnum:] :]+</span>" . "")))
               (write-file html)))
           (directory-files-recursively publishing-directory "\\.html$" nil nil nil))))
 

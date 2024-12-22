@@ -1,0 +1,765 @@
+#+BEGIN_EXPORT html
+---
+layout: post
+title: How I installed opensource firmware instead of BIOS to Thinkpad X220
+category: it
+date: 2024-12-21
+lang: en
+comments: false
+hidden:
+  - related_posts
+tags: thinkpad
+image: /assets/static/header-libreboot.jpg
+banner:
+  image: /assets/static/header-libreboot.jpg
+  opacity: 0.6
+summary: Swapping BIOS with Libreboot for Thinkpad X220
+---
+#+END_EXPORT
+
+I think almost everyone who reads my blog knows that the BIOS is the first
+program that runs when the computer is turned on. Usually, the only actions
+user can do with this program — open the BIOS menu and change the boot order,
+change date/time, change peripheral settings and so on. Or, if the user is
+lucky, he can find and install the BIOS modified by hackers (but he can't look
+inside this BIOS without reverse engineering skills). Unfortunately, the BIOS
+source code is closed and initialization of /your/ computer should rely on the
+forbearance of some companies that develop BIOS binaries (for example, [[https://en.wikipedia.org/wiki/American_Megatrends][AMI]] or
+[[https://en.wikipedia.org/wiki/Award_Software][Award Software International]]) and forbearance of computer hardware vendors.
+
+As long as the computer is used "as is", there are no problems. But, as is
+usually the case with proprietary software, any unusual change leads to such
+extreme tricks that building the Linux kernel looks like a child's prank.
+
+In my case, I upgraded my Thinkpad X220 with an extension board for a new
+2K screen and added some new peripherals — then the BIOS became the
+problem. First, Lenovo's whitelist disallowed the use of new peripherals,
+because they weren't "approved by the
+manufacturer"[fn:manufacturer_approve]. Second, the original proprietary BIOS was
+made with the intention that the original display would *always* be connected
+via the LVDS bus. Even if it is changed to a new display connected via the
+Display Port (or via an extension board soldered to the DP-3 line). An
+unfortunate omission, made in the hope that the user doesn't want to modify
+his own computer and will be happy just to change the hard drive or RAM!
+
+Fortunately, the open source community comes to the rescue! There is the
+[[https://www.coreboot.org/][coreboot]] project — an open source realization of the BIOS for some
+motherboards.
+
+* Table of Contents                                              :TOC_2_blog:
+- [[* Coreboot][Coreboot]]
+- [[* Libreboot][Libreboot]]
+  - [[* Preparations][Preparations]]
+  - [[* Downloading Libreboot binary][Downloading Libreboot binary]]
+  - [[* Preparing Libreboot binary for flashing][Preparing Libreboot binary for flashing]]
+  - [[* Flashing prepared Libreboot binary][Flashing prepared Libreboot binary]]
+  - [[* MAC address][MAC address]]
+- [[* Libreboot customization][Libreboot customization]]
+- [[* Notes][Notes]]
+
+* Coreboot
+:PROPERTIES:
+:CUSTOM_ID: coreboot
+:END:
+
+Coreboot was created as a project for computer clusters. At that time it was
+called LinuxBIOS. One of it's authors (Ron Minnich) found that he needed to
+connect each handmande cluster node to a KVM switch — to manually press F1 and
+continue the boot process if something went wrong. Ron Minnich also wanted to
+speed up BIOS loading and remove user interaction as much as
+possible[fn:linuxbios]. Later, support for many [[https://doc.coreboot.org/mainboard/index.html][motherboards]] and [[https://doc.coreboot.org/soc/index.html][SoCs]] was added
+to the project. Including the Thinkpad X220 motherboard.
+
+I started using coreboot after I found out that the original BIOS only works
+with the original laptop display. If I connect an additinal 2K screen via the
+soldered expansion board, then the BIOS won't display on that screen.
+
+I remembered, that people, who modified Thinkpads, also changed the original
+BIOS to coreboot. And on the photos of their laptops after the modificatio,
+there was a framebuffer visible, not the usual text console. I also found that
+there are notes about the open source library libgfxinit in the coreboot
+documentation. This library is used inside coreboot to initialize video when
+the computer is turned on. And I hope that this library will work with my new
+display on the DP-3 bus. Especially after reading it's source code...
+
+Of course, nothing works the first time. First, the coreboot doesn't show up
+on the 2K screen, no configuration options matter. Second, I accidentally
+burned the motherboard, when I incorrectly disconnected it from the
+motherboard.
+
+With the new motherboard, I did the broken BIOS dump first. Both binaries have
+the same MD5-hash, but the same wrong data inside. How did I notice this?
+First, I flashed the old coreboot binary from the old motherboard to see if it
+would work? When that program didn't work (as expected), I flashed the
+"original" BIOS back. And the laptop *suddenly* won't turn on. Alas, when I
+found this out, the original BIOS was lost.
+
+However, I was able to use a corrupted BIOS dump to retrieve binary blobs
+needed for coreboot on a Thinkpad X220:
+- Intel Flash Descriptor — 4 Kb with data about regions on the chip, including
+  it's read/write flags (for CPU).
+- Intel ME blob — there is some unknown data for Intel ME. [[https://en.wikipedia.org/wiki/Intel_Management_Engine][It is claimed]] that
+  the technology is useful for remote management in data centers. But on a
+  personal laptop such a [[https://www.fsf.org/blogs/sysadmin/the-management-engine-an-attack-on-computer-users-freedom][security hole]] shouldn't exist. I don't need the CPU
+  inside the CPU, where unknown program with closed sources is running even
+  when the laptop is turned off (but while the power is supplied to the
+  motherboard); with access to DMA controller, with access to network card
+  (and with its own MAC address), with reserved memory in RAM and embedded JVM
+  with cryptography classes[fn:intel_me].
+
+  Unfortunately, without this blob in the BIOS chip — the laptop won't start
+  or will power itself off after some time, for the user's "safety".
+- GbE blob — Ethernet controller configuration, including it's MAC address.
+
+The coreboot I built booted successfully on my laptop and even displays itself
+on the new 2K screen. As I now understand, everything works because at that
+moment the original display module was disconnected from the LVDS bus and the
+new display was the one connected to the video core via the DP-3 bus.
+
+As I can see without the knowledge of Ada language, the coreboot (if the
+motherboard is in good working order) checks each port connected to the video
+core and outputs framebuffer to the first display found (if there is no
+=Primary= display, connected to the motherboard):
+
+#+CAPTION: List of video outputs for X220 from src/mainboard/lenovo/x220/gma-mainboard.ads
+#+begin_src ada
+private package GMA.Mainboard is
+
+   ports : constant Port_List :=
+     (DP1,
+      DP2,
+      DP3,
+      HDMI1,
+      HDMI2,
+      HDMI3,
+      Analog,
+      LVDS,
+      others => Disabled);
+
+end GMA.Mainboard;
+#+end_src
+
+#+CAPTION: Video core initialization from src/drivers/intel/gma/hires_fb/gma-gfx_init.adb
+#+begin_src ada
+HW.GFX.GMA.Display_Probing.Scan_Ports (configs, ports);
+
+if configs (Primary).Port /= Disabled then
+   for i in Pipe_Index loop
+      exit when configs (i).Port = Disabled;
+
+      min_h := pos32'min (min_h, configs (i).Mode.H_Visible);
+      min_v := pos32'min (min_v, configs (i).Mode.V_Visible);
+   end loop;
+
+   fb := configs (Primary).Framebuffer;
+   fb.Width    := Width_Type (min_h);
+   fb.Height   := Height_Type (min_v);
+   fb.Stride   := Div_Round_Up (fb.Width, 16) * 16;
+   fb.V_Stride := fb.Height;
+
+   for i in Pipe_Index loop
+      exit when configs (i).Port = Disabled;
+
+      configs (i).Framebuffer := fb;
+   end loop;
+#+end_src
+
+Therefore, while the original display (=Primary= display in coreboot
+configuration) was connected to LVDS — the coreboot worked with it and ignored
+the new display connected via DP-3. When I disconnected the original display,
+the boot log appeared on the new display.
+
+* Libreboot
+:PROPERTIES:
+:CUSTOM_ID: libreboot
+:END:
+
+I used the laptop with coreboot for a while. But it didn't work stable
+enough — looks like because Intel ME blob was corrupted. Sometimes the laptop
+would randomly freeze and reboot was only possible by long pressing the Power
+button. Sometimes the laptop doesn't turn on at all — the LED and the display
+backlight are blinking and that's all. These are the symptoms described in the
+[[https://doc.coreboot.org/northbridge/intel/sandybridge/me_cleaner.html][coreboot documentation]] and in various guides about "why is it impossible to
+completely remove Intel ME from Thinkpad X220?"
+
+Also, when configuring coreboot, I set framebuffer resolution to 1366x768 for
+my 2K screen. As a result, framebuffer did not use the whole screen (but
+X-server did):
+
+#+CAPTION: Framebuffer used the part of the screen inside the green frame
+#+ATTR_HTML: :align center :alt Broken framebuffer due to wrong configuration
+[[file:broken_framebuffer.jpg]]
+
+As a result, I pissed them all off and it was time for coreboot tinkering. My
+main problem was a completely lost BIOS dump — and I didn't know from where to
+get the "right" binary blobs with the necessasry binary code inside.
+
+So I start reading about [[https://libreboot.org/][libreboot]]. This is something like a coreboot
+distribution with the urge to minimise proprietary blobs usage. If there is an
+opensource implementation, for example for memory initialization, it will be
+used. Of course, [[https://libreboot.org/news/policy.html][for now it is impossible]] to use opensource realizations for
+everything for ThinkPad X220. But, as I understand:
+- IFD is generated by script during build. Fortunately, the Intel Firmware
+  Descriptor format is well known.
+- Intel ME downloaded from vendor and immediately disabled with [[https://github.com/corna/me_cleaner][me_cleaner]].
+- GbE — also generated by special script.
+
+In other words, the original BIOS dump is not required to set up Libreboot on
+the Thinkpad X220! All I need is the right serial memory programmer that
+doesn't burn the BIOS memory chip and the southern bridge. Fortunately, I have
+the Chinese CH341 programmer with a jumper to select the necessary logic level
+(5V TTL or 3.3V CMOS):
+
+#+CAPTION: CH341 serial programmer with jumper to select logic level (yellow, at the bottom)
+#+ATTR_HTML: :align center :alt CH341 programmer with jumper to select logical level (at the bottom)
+[[file:ch341-1.jpg]]
+
+#+CAPTION: Silkscreen printing with Chinese hierogrlyphs on the CH341 PCB (position 1-2 enables CMOS logical level, 2-3: TTL level)
+#+ATTR_HTML: :align center :alt 1-2 jumper position enables CMOS logical level, 2-3 enables TTL level
+[[file:ch341-2.jpg]]
+
+*Disclaimer!* All actions, described below, have been tested on my Thinkpad
+only. Some actions were performed due to "historical background" of the laptop
+modification process. Anyway, you should read the official documentation
+first!
+
+So, I started to bring my laptop to unattainable perfection, armed with
+screwdriver, serial memory programmer and some free time.
+
+** Preparations
+:PROPERTIES:
+:CUSTOM_ID: libreboot-preparations
+:END:
+
+*** Careful (haha, no) reading of the documentation
+:PROPERTIES:
+:CUSTOM_ID: reading-docs
+:END:
+
+First of all, it is necessary to read a lot of documentation at
+https://libreboot.org. There is a list of useful link that will give you some
+knowledge:
+- https://libreboot.org/docs/install/ — here it is written, that Libreboot
+  supports my Thinkpad.
+- https://libreboot.org/news/safety.html — documentation about the necessary
+  binary blobs.
+- https://libreboot.org/docs/install/ivy_has_common.html — commands to prepare
+  the libreboot binary before flashing it.
+- https://libreboot.org/docs/maintain/#environmental-variables,
+  https://libreboot.org/docs/build/ and https://libreboot.org/git.html — lbmk
+  build system manual.
+
+*** Storing MAC address of internal Ethernet card
+:PROPERTIES:
+:CUSTOM_ID: mac-addr-saving
+:END:
+
+The original MAC address is erased during Libreboot installation, because it
+is stored inside GbE blob. So I just recorded the =ifconfig em0= output to
+restore my original MAC address and write it back to the GbE blob before
+flashing Libreboot.
+
+*** Firmware backup
+:PROPERTIES:
+:CUSTOM_ID: coreboot-backup
+:END:
+
+Backup of currently running firmware — may be the one that helps to keep the
+laptop from bricking if something goes wrong. In my case, the backup of the
+coreboot firmware is necessary.
+
+This is why the serial memory programmer is necessary. As I found out, reading
+the coreboot dump with the laptop turned on returns different dumps on each
+read[fn:coreboot_readings].
+
+Required steps:
+1. Disconnect the laptop from 220V.
+2. Remove the battery.
+3. Remove the 7 screws on the bottom of the laptop to remove the keyboard and
+   palm rest.
+4. Remove the keyboard and palm rest.
+5. Remove the RTC CMOS battery (and don't forget to check its voltage).
+6. Peel off the corner of the protective waterproof film from the left bottom
+   corner of the motherboard. The desired chip will be underneath it.
+
+After these steps, the clip from the programmer is connected to the laptop:
+
+#+CAPTION: CH341 programmer, connected to the Winbond W25Q64CV chip
+#+ATTR_HTML: :align center :alt CH341 programmer connected to Winbond W23Q64CV
+[[file:ch341_on_winbond.jpg]]
+
+Command to read chip contents:
+#+begin_example
+sudo flashrom -p ch341a_spi -c "W25Q64BV/W25Q64CV/W25Q64FV" -r coreboot_original1.rom -V
+#+end_example
+
+It should print something like the following lines, not the error messages:
+#+begin_example
+thinkpad/libreboot % sudo flashrom -p ch341a_spi -c "W25Q64BV/W25Q64CV/W25Q64FV" -r coreboot_original1.rom -V
+                                                                                                             
+flashrom v1.3.0 on Linux 6.1.57-gentoo-x86_64 (x86_64)
+flashrom is free software, get the source code at https://flashrom.org
+
+Using clock_gettime for delay loops (clk_id: 1, resolution: 1ns).
+flashrom was built with GCC 13.3.1 20241024, little endian
+Command line (7 args): flashrom -p ch341a_spi -c W25Q64BV/W25Q64CV/W25Q64FV -r coreboot_original1.rom -V
+Initializing ch341a_spi programmer
+Device revision is 3.0.4
+The following protocols are supported: SPI.
+Probing for Winbond W25Q64BV/W25Q64CV/W25Q64FV, 8192 kB: compare_id: id1 0xef, id2 0x4017
+Added layout entry 00000000 - 007fffff named complete flash
+Found Winbond flash chip "W25Q64BV/W25Q64CV/W25Q64FV" (8192 kB, SPI) on ch341a_spi.
+Chip status register is 0x00.
+This chip may contain one-time programmable memory. flashrom cannot read
+and may never be able to write it, hence it may not be able to completely
+clone the contents of this chip (see man page for details).
+Reading flash... done.
+#+end_example
+
+I read the chip three times and then compare the resulting files, because I've
+already lost a BIOS during a simultaneous process. But the MD5 sums of the
+files don't match, because the programmer was plugged into the USB-hub on the
+front panel of the PC:
+#+begin_example
+thinkpad/libreboot % md5sum *
+115b37ab22dbe43bc7ff746bf174ac1f  coreboot_original1.rom
+840cc3456aa5b0b3ba96353165f2ee3e  coreboot_original2.rom
+ee978f3ed5fb4aab34b1d0a79cef455c  coreboot_original3.rom
+#+end_example
+
+All errors are gone after I plug the programmer directly into the USB port on
+the motherboard:
+#+begin_example
+thinkpad/libreboot % md5sum *
+ee978f3ed5fb4aab34b1d0a79cef455c  coreboot_original1.rom
+ee978f3ed5fb4aab34b1d0a79cef455c  coreboot_original2.rom
+ee978f3ed5fb4aab34b1d0a79cef455c  coreboot_original3.rom
+#+end_example
+
+This is enough to make a backup. But I go a lot further because of sentimental
+considerations. I want the serial memory chip from the old (broken)
+motherboard — Macronix MX25L6406E:
+
+#+CAPTION: Macronix MX25L6406E
+#+ATTR_HTML: :align center :alt Macronix MX25L6406E
+[[file:macronix.jpg]]
+
+First, I desoldered the chip from the old motherboard in two steps:
+1. I mixed the lead-free solder on the chip contacts with normal lead
+   solder. The melting temperature of this mixture is lower than the melting
+   temperature of the lead-free solder.
+2. I removed the serial memory chip with a solder dryer set to 380°C ("chinese
+   °C", so the temperature was determined by eye, by the speed of melting the
+   solder rod from the spool).
+
+Place on the motherboard for the chip looks like this:
+
+#+ATTR_HTML: :align center :alt BIOS chip footprint
+[[file:chip_footprint.jpg]]
+
+Four contacts in the middle are obviously not used — because the BIOS memory
+chip is on a SOIC 8 package.
+
+With the same two steps, I desoldered the Winbond memory chip from the working
+motherboard and put it in an antistatic bag. After that I had the reliable
+hardware backup for the bad times 🙃.
+
+After that, I checked my backup, just in case. I soldered the Macronix chip to
+the working motherboard:
+
+#+CAPTION: Macronix chip on the working motherboard
+#+ATTR_HTML: :align center :alt Macronix chip on the working motherboard
+[[file:soldered_macronix.jpg]]
+
+And flashed my backup of the coreboot to it using the command:
+#+begin_example
+sudo flashrom -p ch341a_spi -c "MX25L6406E/MX25L6408E" -w coreboot_original1.rom -V
+#+end_example
+
+Which successfully writes all necessary bits to the chip:
+#+begin_example
+Erase/write done.
+Verifying flash... VERIFIED.
+#+end_example
+
+As a result, the laptop booted — so the new chip has been successfully
+soldered and the backup copy of the coreboot has been properly read.
+
+** Downloading Libreboot binary
+:PROPERTIES:
+:CUSTOM_ID: get-libreboot-binary
+:END:
+
+Easy way:
+1. Select the project mirror: https://libreboot.org/download.html
+2. Download archive with binary from the path
+   =/pub/libreboot/stable/20240612/roms= (for now it is the latest release).
+
+The +not so easy+ way for crypto-paranoics:
+1. Download GPG-key from developers to verify the signed archive with the
+   binary: https://mirror.math.princeton.edu/pub/libreboot/lbkey.asc
+2. Download the next 3 files from selected project mirror:
+   #+begin_example
+   libreboot-20240612_x220_8mb.tar.xz 
+   libreboot-20240612_x220_8mb.tar.xz.sha512
+   libreboot-20240612_x220_8mb.tar.xz.sig
+   #+end_example
+3. After that check SHA512 sum of archive:
+   #+begin_example
+   thinkpad/libreboot % sha512sum -c libreboot-20240612_x220_8mb.tar.xz.sha512
+   ./libreboot-20240612_x220_8mb.tar.xz: OK
+   #+end_example
+4. And the last step — import GPG-key from developers:
+   #+begin_example
+   thinkpad/libreboot % gpg --show-keys --with-fingerprint lbkey.asc
+   pub   rsa4096 2023-12-28 [SC] [expires: 2028-12-26]
+   8BB1 F7D2 8CF7 696D BF4F  7192 5C65 4067 D383 B1FF
+   uid                      Leah Rowe <info@minifree.org>
+   sub   rsa4096 2023-12-28 [E] [expires: 2028-12-26]
+   
+   thinkpad/libreboot % gpg --import lbkey.asc
+   gpg: key 5C654067D383B1FF: public key "Leah Rowe <info@minifree.org>" imported
+   gpg: Total number processed: 1
+   gpg:               imported: 1
+   #+end_example
+
+   After running the first command, I compared the printed key fingerprint
+   with the fingerprint provided on the [[https://libreboot.org/download.html][download page]]. Both fingerprints
+   should match. Otherwise, /someone/ gave you a wrong key.
+
+   If all is OK, it is time to check the sign:
+   #+begin_example
+   thinkpad/libreboot % gpg --verify libreboot-20240612_x220_8mb.tar.xz.sig libreboot-20240612_x220_8mb.tar.xz
+   gpg: Signature made Wed 12 Jun 2024 12:55:03 PM MSK
+   gpg:                using RSA key 8BB1F7D28CF7696DBF4F71925C654067D383B1FF
+   gpg: Good signature from "Leah Rowe <info@minifree.org>" [unknown]
+   gpg: WARNING: This key is not certified with a trusted signature!
+   gpg:          There is no indication that the signature belongs to the owner.
+   Primary key fingerprint: 8BB1 F7D2 8CF7 696D BF4F  7192 5C65 4067 D383 B1FF
+   #+end_example
+
+** Preparing Libreboot binary for flashing
+:PROPERTIES:
+:CUSTOM_ID: prepare-libreboot-binary
+:END:
+
+Obviously, it is impossible to remove all blobs from the Libreboot for X220
+motherboard. For example, Intel ME has a cryptographic sign that checked every
+CPU startup. And if this sign is wrong, the CPU won't start.
+
+At the same time, distributing this proprietary blob within the Libreboot
+distribution is impossible because of licensing issues. Developers got around
+this situation with a special script that downloads Intel ME binary from a
+vendor and insert it into the Libreboot binary with the correct offset. The
+process is described on the Libreboot page:
+https://libreboot.org/docs/install/ivy_has_common.html. All the necessary
+scripts are included in lbmk — the build system for coreboot. The lbmk can be
+cloned from this repository: https://codeberg.org/libreboot/lbmk.
+
+After installing the necessary dependencies, the downloaded tarball can be fed
+to the script — it will unpack it and insert the necessary blobs to each
+binary:
+#+begin_example
+./vendor inject libreboot-20240612_x220_8mb.tar.xz
+#+end_example
+
+The process will not be so fast — lbmk will clone necessary repositories,
+build necessary utilitie, and so on. Successful completion will look like
+this:
+#+begin_example
+File tmp/romdir/bin/x220_8mb/seabios_withgrub_x220_8mb_libgfxinit_txtmode_usqwerty_grubfirst.rom is 8388608 bytes
+File vendorfiles/xx20/me.bin is 86016 bytes
+Adding vendorfiles/xx20/me.bin as the Intel ME section of tmp/romdir/bin/x220_8mb/seabios_withgrub_x220_8mb_libgfxinit_txtmode_usqwerty_grubfirst.rom
+Writing new image to tmp/romdir/bin/x220_8mb/seabios_withgrub_x220_8mb_libgfxinit_txtmode_usqwerty_grubfirst.rom
+ROM image successfully patched: tmp/romdir/bin/x220_8mb/seabios_withgrub_x220_8mb_libgfxinit_txtmode_usqwerty_grubfirst.rom
+#+end_example
+
+Prepared binaries will be inside the lbmk catalog, in this path:
+=./bin/release/x220_8mb/=.
+
+** Flashing prepared Libreboot binary
+:PROPERTIES:
+:CUSTOM_ID: libreboot-flashing
+:END:
+
+Of all the prepared binaries in the archive, the necessary binaries should
+match the keyboard type on the laptop:
+
+#+CAPTION: List of binaries with added blobs
+#+ATTR_HTML: :align center :alt List of binaries with added blobs
+[[file:list-of-binaries.png]]
+
+In my case there is a keyboard with US keymap was installed in the laptop. So,
+I need these two files:
+- seabios_withgrub_x220_8mb_libgfxinit_txtmode_usqwerty.rom
+- seabios_withgrub_x220_8mb_libgfxinit_corebootfb_usqwerty.rom
+
+Libreboot in the first file will use text mode to display information on the
+screen. Highly likely that libreboot will not display on the display from DP-3
+bus. And in the second file uses the necessary libgfxinit.
+
+It can be flashed to memory chip with command:
+#+begin_example
+sudo flashrom -p ch341a_spi -c "MX25L6406E/MX25L6408E" -w seabios_withgrub_x220_8mb_libgfxinit_corebootfb_usqwerty.rom -V
+#+end_example
+
+#+ATTR_HTML: :align center :alt Flashing Libreboot
+[[file:libreboot-flashing.jpg]]
+
+After this action my laptop finally works without freezing. And the system
+loads in fullscreen mode:
+
+#+ATTR_HTML: :align center :alt Laptop booting at fullscreen
+[[file::framebuffer.jpg]]
+
+All other notebook systems worked as before because I had previously
+configured everything for coreboot:
+https://eugene-andrienko.com/it/2020/09/26/thinkpad-x220-freebsd#update-2024-04-28
+
+** MAC address
+:PROPERTIES:
+:CUSTOM_ID: mac-address
+:END:
+
+Those, who read the Libreboot documentation, can see that I didn't add my MAC
+address to the binary before flashing. As a result, I has a funny default
+address:
+
+#+ATTR_HTML: :align center :alt Default Libreboot MAC address
+[[file:default-mac.png]]
+
+I changed it by patching the binary with script from lbmk:
+#+begin_example
+libreboot/lbmk % ./vendor inject -r bin/release/x220_8mb/seabios_withgrub_x220_8mb_libgfxinit_corebootfb_usqwerty.rom -b x220_8mb -m ██:██:██:██:██:██
+#+end_example
+
+After that, I just flashed the modified libreboot to the motherboard again.
+
+* Libreboot customization
+:PROPERTIES:
+:CUSTOM_ID: libreboot-customization
+:END:
+
+Now, everything was just right. Almost everything. There is no separate set of
+libreboot binaries for the Thinkpad X220 with the Ctrl and Fn keys swapped. I
+tried for a while to get used to the standard key layout, but didn't
+succeeded.
+
+First, I tried to rebuild Libreboot with the necessary option to swap the
+keys:
+#+begin_example
+Chipset:
+  Swap Fn and Ctrl keys=y
+#+end_example
+
+It would seem that since I have already built coreboot and have all the
+necessary documentation, there should be no problems. Just set the necessary
+settings via the =./mk -m coreboot x220_8mb= and build the binary:
+#+begin_example
+export XBMK_THREADS=3
+./mk -b coreboot x220_8mb
+#+end_example
+
+But *suddenly*, libreboot became the first opensource program in 16 years that I
+couldn't build properly. Although the configuration and build process worked,
+the binaries were always built with the default configuration (from the
+Libreboot developers).
+
+Fortunately, /some/ options can be changed with the =nvramtool= utility. It comes
+with coreboot. And in the list of those options there was an option to swap
+the Ctrl and Fn keys:
+
+#+begin_example
+% ../../coreboot/build/util/nvramtool/nvramtool -C seabios_withgrub_x220_8mb_libgfxinit_corebootfb_usqwerty.rom -a
+boot_option = Fallback
+reboot_counter = 0x0
+debug_level = Debug
+nmi = Enable
+power_on_after_fail = Disable
+first_battery = Primary
+bluetooth = Enable
+wwan = Enable
+touchpad = Enable
+wlan = Enable
+trackpoint = Enable
+fn_ctrl_swap = Disable
+sticky_fn = Disable
+power_management_beeps = Disable
+sata_mode = AHCI
+usb_always_on = Disable
+me_state = Disabled
+me_state_prev = 0x0
+gfx_uma_size = 224M
+volume = 0x3
+#+end_example
+
+The next steps were the same as for setting the MAC address:
+1. Binary file with Libreboot should be changed with command:
+   #+begin_example
+   % ../../coreboot/build/util/nvramtool/nvramtool -C seabios_withgrub_x220_8mb_libgfxinit_corebootfb_usqwerty.rom -w fn_ctrl_swap=Enable
+   #+end_example
+2. And the modified file should be flashed to the laptop.
+
+As a result, keys are swapped and the laptop works as intended without
+freezing.
+
+* Notes
+:PROPERTIES:
+:CUSTOM_ID: notes
+:END:
+
+[fn:manufacturer_approve] Since IBM sold its own laptop business to the Lenovo,
+the soul of the old Thinkpads is slowly but inexorably dissapearing from the
+new Lenovo laptops.
+
+There is nothing surprising in this process — just a usual corporate
+[[https://web.archive.org/web/20240208152542/https://www.ft.com/content/6fb1602d-a08b-4a8c-bac0-047b7d64aba5][enshittification]]. One of it's manifestations — whitelist in Lenovo X220
+BIOS. There are two PCI Express slots on the motherboard, with WiFi and WWAN
+cards (or WiFi card and SSD) connected. These peripherals can be removed and
+on their place can be installed some other peripherals supporting PCI
+Express. The rest of the hardware will work with these new peripherals. But
+not a software — during system startup, BIOS checks what ID of devices on the
+bus are not listed in whitelist and refuse to start with system and refuse to
+work with "not allowed" devices.
+
+This is usually justified by the fact that the user is supposedly "protected"
+from "low-quality" components. It turns out that even I bought a laptop, I
+don't own it completely. Even if I have the necessary technical skills, I
+can't replace the WiFi card with a more modern one, because the manufacturer
+treats me like an idiot! What's happening is exactly what RMS has written
+about many times in his essays — if your device has proprietary software, then
+you don't fully own the computing power of the device you bought and the
+manufacturer can dictate its terms to you. For example, forcing you to use
+hardware only from an approved list.
+
+Obviously, from the +financial point of view+ point of view of increasing the
+profits of some corporations for the sake of a nice report to the board of
+shareholders — such restrictions are very profitable — the buyer of a laptop
+will be forced to use only those devices whose manufacturers have agreed to
+include their devices in the whitelist. And when the hardware becomes
+obsolete — he will have to buy a new laptop instead of a small and replaceable
+piece of hardware. If something breaks and the replacement part is off the
+market, then ... again, he'll have to buy a new laptop instead of using a
+suitable replacement. No one is thinking about usability, reducing e-waste,
+etc. at this point (except maybe [[https://frame.work][Framework]]).
+
+That's why the battery whitelist was added to the ThinkPad X230
+(http://zmatt.net/unlocking-my-lenovo-laptop-part-1/), the display whitelist
+to the ThinkPad X240
+(https://www.reddit.com/r/thinkpad/comments/dgydnf/x240_right_to_repair_no_brightness_control_after/),
+and so on. Of course, enshittification process wasn't stopped:
+- The seven-row keyboard with pyramidal buttons was removed from
+  ThinkPad X230. It was swapped to six-row keyboard without the next buttons:
+  - =Print Screen/System Request= — it is impossible for now to make a
+    screenshot with one key press and the [[https://en.wikipedia.org/wiki/Magic_SysRq_key][magic SysRq keys]] become
+    unaccessible.
+  - =Scroll Lock= — it was used to scroll the text in the text console. For
+    example, to scroll boot log (obviously, at this point the scrolling with
+    bash/zsh or tmux is unaccessible).
+  - =Pause/Break= — it can be used to pause applications via the =kill -17=:
+    https://vermaden.wordpress.com/2018/09/19/freebsd-desktop-part-16-configuration-pause-any-application/
+  - 2 buttons to go forward and backward in Internet browser. They had
+    =XF86Forward= and =XF86Back= keycodes — and they were very useful for
+    switching buffers in Emacs.
+- The *separate* buttons for TrackPoint is dissapeared in Thinkpad X240. They
+  were moved directly to the touchpad. The curved profile of the left and
+  right buttons, as well as the grooved surface of the middle button, allowed
+  you to press them without thinking, using muscle memory, knowing that your
+  finger wouldn't hit the touchpad. With the buttons underneath the flat
+  surface of the touchpad, there's /nothing to stop your finger/ from sliding
+  further onto the touchpad.
+
+  Plus, with gloved hands, it was more comfortable to press just the
+  individual, *physical* buttons.
+
+  Fortunately, users outrage brought these buttons back, but Lenovo tried to
+  remove them again in the [[https://en.wikipedia.org/wiki/ThinkPad_X1_series#/media/File:Gladstone_ready_for_2017_Budget.jpg][Thinkpad X1 Carbon gen 2]]. However, there were so
+  many inadequate “iNnOvAtIoNs” in this laptop model that it would take a
+  separate list to note them all.
+- Gradually, starting with the X200, the LEDs on the lid of the notebook
+  started to disappear. First, in X220 the NumLock indicator disappeared from
+  the display side (y64 need 5t t6 av65d ty*5ng l52e th5s and then fixing
+  everything), the sleep indicator (you need it to understand the state of the
+  notebook if it was left with the lid open) and the battery charging
+  indicator (you don't need a separate program indicator, the state of which
+  is visible only after OS booting). Then, in X230 the Bluetooth status
+  indicator disappeared (by it you can understand that rf killswitch is
+  switched to the off position), and in X240 they removed all status LEDs from
+  the display side (but brought back the glowing red dot in the logo).
+
+  In the end, the latest notebook in the X-series — ThinkPad X13 Gen 4 —
+  doesn't have a single status LED on either the front or back side🤷‍♂️ (except
+  for the CapsLock indicator).
+- The removable battery was disappeared in X280 — you can not change the
+  degraded battery to a new one by yourself. You have to take the laptop to a
+  service center to do it. Also, you will not be able to buy a more capacious
+  battery and connect it by yourself.
+
+  The unobvious advantage of using a high-capacity battery is also gone — the
+  X220 can be carried with the open lid around the office, simply by placing
+  it on your forearm and using four fingers to hold it on to the battery, so
+  the laptop doesn't fall over.
+- Replaced Display Port with HDMI.
+  #+ATTR_HTML: :align center :alt Fun fact. Display port is objectively better than HDMI. Royalty-free, baby
+  [[file:display-port.png]]
+- They replaced the round charging connector with a rectangular one to reduce
+  the thickness of the laptop, but now the plug has only two positions in
+  which to plug it in. The backlight for the keyboard was also mocked for a
+  long time. They're replacing the usual LED, built into the lid, to
+  retractable construction. Or remove it altogether and put the keyboard
+  backlight "like in everyone else's laptop". While the LED in the lid had an
+  undeniable advantage: it could be used to light up the desk if necessary.
+
+  A similar disaster happened with the ability to strap a docking station or
+  an extra battery to the bottom of the laptop, with separate buttons for
+  adjusting the volume, with LEDs to indicate that the speakers or microphone
+  are on mute and so on...
+
+As long as it is possible to increase profits by worsening usability of
+laptops originally designed by the "engineers for engineers", by simply
+increasing GHz and Gb and by copying the exterior of MacBooks, selling all
+this to ordinary users as an "innovation" — such things will happen. There are
+already voices in favor of removing TrackPoint from ThinkPads: "[[https://www.windowscentral.com/hardware/laptops/sorry-lenovo-but-its-time-to-kill-off-the-thinkpad-trackpoint-forever][Sorry Lenovo,
+but it's time to kill off the ThinkPad TrackPoint FOREVER]]" — although from
+this article it's clear that the author just doesn't know how to use "blind
+typing" and hasn't worked with gloves, so it seems to him that TrackPoint is
+"an inconvenient thing that gets in the way".
+
+[fn:linuxbios] https://web.archive.org/web/20120916212555/http://www.h-online.com/open/features/The-Open-Source-BIOS-is-Ten-An-interview-with-the-coreboot-developers-746525.html?view=print
+
+[fn:intel_me] Quote from https://libreboot.org/faq.html:
+
+#+begin_quote
+The ME consists of an ARC processor core (replaced with other processor cores
+in later generations of the ME), code and data caches, a timer, and a secure
+internal bus to which additional devices are connected, including a
+cryptography engine, internal ROM and RAM, memory controllers, and a direct
+memory access (DMA) engine to access the host operating system’s memory as
+well as to reserve a region of protected external memory to supplement the
+ME’s limited internal RAM. The ME also has network access with its own MAC
+address through an Intel Gigabit Ethernet Controller. Its boot program, stored
+on the internal ROM, loads a firmware “manifest” from the PC’s SPI flash
+chip. This manifest is signed with a strong cryptographic key, which differs
+between versions of the ME firmware. If the manifest isn’t signed by a
+specific Intel key, the boot ROM won’t load and execute the firmware and the
+ME processor core will be halted.
+
+The ME firmware is compressed and consists of modules that are listed in the
+manifest along with secure cryptographic hashes of their contents. One module
+is the operating system kernel, which is based on a proprietary real-time
+operating system (RTOS) kernel called “ThreadX”. The developer, Express Logic,
+sells licenses and source code for ThreadX. Customers such as Intel are
+forbidden from disclosing or sublicensing the ThreadX source code. Another
+module is the Dynamic Application Loader (DAL), which consists of a Java
+virtual machine and set of preinstalled Java classes for cryptography, secure
+storage, etc. The DAL module can load and execute additional ME modules from
+the PC’s HDD or SSD. The ME firmware also includes a number of native
+application modules within its flash memory space, including Intel Active
+Management Technology (AMT), an implementation of a Trusted Platform Module
+(TPM), Intel Boot Guard, and audio and video DRM systems.
+#+end_quote
+
+[fn:coreboot_readings] Once, I found an explanation of this on Reddit, but now I
+can't find the link. The fact that flashrom returns different coreboot dumps
+every time when using =-p internal= on Thinkpad X220 is completely normal and to
+get a /correct/ backup you *need* to use a programmer.

@@ -530,7 +530,7 @@ sudo flashrom -p ch341a_spi -c "MX25L6406E/MX25L6408E" -w seabios_withgrub_x220_
 наконец начала происходить в полноэкранном режиме:
 
 #+ATTR_HTML: :align center :alt Laptop booting at fullscreen
-[[file::framebuffer.jpg]]
+[[file:framebuffer.jpg]]
 
 Всё остальные системы ноутбука работали как и прежде, ведь всё было настроено
 как нужно ещё во времена использования coreboot:

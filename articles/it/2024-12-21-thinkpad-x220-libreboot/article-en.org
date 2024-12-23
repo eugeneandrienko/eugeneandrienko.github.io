@@ -75,7 +75,7 @@ with the original laptop display. If I connect an additinal 2K screen via the
 soldered expansion board, then the BIOS won't display on that screen.
 
 I remembered, that people, who modified Thinkpads, also changed the original
-BIOS to coreboot. And on the photos of their laptops after the modificatio,
+BIOS to coreboot. And on the photos of their laptops after the modification,
 there was a framebuffer visible, not the usual text console. I also found that
 there are notes about the open source library libgfxinit in the coreboot
 documentation. This library is used inside coreboot to initialize video when
@@ -84,8 +84,7 @@ display on the DP-3 bus. Especially after reading it's source code...
 
 Of course, nothing works the first time. First, the coreboot doesn't show up
 on the 2K screen, no configuration options matter. Second, I accidentally
-burned the motherboard, when I incorrectly disconnected it from the
-motherboard.
+burned the motherboard, when I incorrectly disconnected it from the battery.
 
 With the new motherboard, I did the broken BIOS dump first. Both binaries have
 the same MD5-hash, but the same wrong data inside. How did I notice this?
@@ -510,7 +509,7 @@ After this action my laptop finally works without freezing. And the system
 loads in fullscreen mode:
 
 #+ATTR_HTML: :align center :alt Laptop booting at fullscreen
-[[file::framebuffer.jpg]]
+[[file:framebuffer.jpg]]
 
 All other notebook systems worked as before because I had previously
 configured everything for coreboot:

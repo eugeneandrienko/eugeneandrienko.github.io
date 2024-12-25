@@ -114,6 +114,8 @@
     input:checked ~ .trigger {
       display: block;
       background: #073642;
+      overflow-y: auto;
+      height: 300px;
     }
 
     .page-link {

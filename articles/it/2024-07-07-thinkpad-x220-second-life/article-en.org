@@ -86,8 +86,9 @@ someone has to keep doing fun things, right?
   - [[* Second battery for the laptop (unfinished)][Second battery for the laptop (unfinished)]]
 - [[* Additional connectors and buttons][Additional connectors and buttons]]
 - [[* Stitching a new case][Stitching a new case]]
-- [[* Final result][Final result]]
 - [[* 17.07.2024 update][17.07.2024 update]]
+- [[* 22.12.2024 update][22.12.2024 update]]
+- [[* Final result][Final result]]
 - [[* Notes][Notes]]
 
 * Installing a new 2K screen
@@ -1465,36 +1466,6 @@ installing the holster buttons, I got this case:
 The notebook fits in it like a glove — obviously it couldn't be otherwise, if
 everything was carefully measured and calculated beforehand :-).
 
-* Final result
-:PROPERTIES:
-:CUSTOM_ID: results
-:END:
-
-#+CAPTION: Laptop before all modifications
-#+ATTR_HTML: :align center :alt notebook before modifications
-[[file:notebook_before.jpg]]
-
-#+CAPTION: Laptop after all modifications
-#+ATTR_HTML: :align center :alt notebook after modifications
-[[file:notebook_after.jpg]]
-
-|--------------+-----------------------------------------------+-----------------------------------------------------------------------------|
-|              | Before                                        | After                                                                       |
-|--------------+-----------------------------------------------+-----------------------------------------------------------------------------|
-| Display      | 1366x768                                      | 2560x1440                                                                   |
-| WiFi         | 2.4 GHz, 300 Mbps, 802.11b/g/n                | 2.4 and 5 GHz, 800-900 Mbps, 802.11b/g/n/ac, and internal Bluetooth support |
-| Hard drives  | 180 GB SSD                                    | 0.5 TB SSD and 180 GB SSD, the third disk can be connected via Optibay      |
-| USB ports    | 1xUSB3.0, 2xUSB2.0                            | 3xUSB3.0, 2xUSB2.0                                                          |
-| Keyboard     | Original with UK layout and Cyrillic stickers | Original with US layout                                                     |
-| Battery life | Near 1.5 hours                                | 5-6 hours. With external powerbank — up to 9 hours                          |
-|--------------+-----------------------------------------------+-----------------------------------------------------------------------------|
-
-As a result, this machine will serve me for at least the next ten years. The
-only bottleneck here is all sorts of JavaScript from websites — if it starts
-eating up 8 GB per tab, it's going to be tough.
-
------------------------------------------------------------------------------
-
 * 17.07.2024 update
 :PROPERTIES:
 :CUSTOM_ID: update-17-07-2024
@@ -1521,6 +1492,102 @@ minimize the likelihood of repeated breakage:
   display itself).
 
 At the moment the screen is stable again and is not going to break.
+
+* 22.12.2024 update
+:PROPERTIES:
+:CUSTOM_ID: update-22-12-2024
+:END:
+
+Below, I wrote about four non-working USB ports on the back of the
+laptop. This was because the =USBP8= bus was being used by the 2K display
+expansion board. By the way, I /need these ports/ — to get much more free space
+on the side of the laptop, for the cup(s) of tea or the notebook. And a few
+days ago I've got some free time to finally fix it.
+
+Besides the =USBP8= bus, there are another USB interface lines in the docking
+station connector — =DOCK_USB=. It looks like they are used in a different
+version of the docking station, which has USB3.0 support (but my docking
+station doesn't have such support). There they are in the block diagram, on
+the left:
+
+#+CAPTION: Thinkpad X220 block diagram
+#+ATTR_HTML: :align center :alt Block diagram of laptop
+[[file:docking_block.png]]
+
+The same bus on the schematic with the docking connector (on the left):
+
+#+ATTR_HTML: :align center :alt Docking connector with USB3.0 lines
+[[file:dock_usb_schematic.png]]
+
+Depending on how the jumpers are set, this bus goes inside the laptop to:
+- USB2.0 controller — when =R437= and =R438= are set. In this case the rear USB
+  ports will work seamlessly.
+- USB3.0 controller — if =R436= and =R439= are set. In this case, I hope for the
+  backward compatibility.
+
+Looking at the board view (special thanks to [[https://mastodon.ml/@Evv1L][@Evv1L]] for the link to the BDV
+file), the necessary jumpers are located on the same side of the board as the
+docking station connector, near the CPU fan:
+
+#+ATTR_HTML: :align center :alt Boardview of X220 motherboard with marked jumpers for USB interface
+[[file:boardview_usb_jumpers.png]]
+
+#+ATTR_HTML: :align center :alt Close up view of jumpers to USB interface selection
+[[file:boardview_usb_jumpers2.png]]
+
+In case of motherboard with USB3.0 support (with Intel Core i7) obviously
+these jumpers will connect the docking station to the USB3.0 lines:
+
+#+CAPTION: R436 and R439 are set
+#+ATTR_HTML: :align center :alt USB selection jumpers on the motherboard, selected R436 and R439
+[[file:usb_jumpers.jpg]]
+
+It's time to connect the aforementioned lines to the USB hub on the docking
+station board. There is a quick DIY, I just need to solder 1.5 cm of twisted
+pair to the two contacts of the =DOCK_USB= line. And to the two contacts of
+=USBP8= line going to the Microchip's USB hub. The last two contacts were
+previously isolated from the rest of laptop electronics, so I did it to not
+ring the whole docking station board to find where these lines connect to
+USB2514 chip.
+
+#+ATTR_HTML: :align center :alt Soldered twisted pair to enable 4 USB ports on the docking station
+[[file:twisted_pair.jpg]]
+
+The one, that should be double checked — the pin contacts of the male
+connector on the docking station, and the contancts of the female connector on
+the laptop are not same pin to pin. So it is necessary to ring the docking
+station connector before soldering the twisted pair, to solder it to the right
+pins.
+
+As a result — the ports on the back of the docking station now work!
+
+* Final result
+:PROPERTIES:
+:CUSTOM_ID: results
+:END:
+
+#+CAPTION: Laptop before all modifications
+#+ATTR_HTML: :align center :alt notebook before modifications
+[[file:notebook_before.jpg]]
+
+#+CAPTION: Laptop after all modifications
+#+ATTR_HTML: :align center :alt notebook after modifications
+[[file:notebook_after.jpg]]
+
+|--------------+-----------------------------------------------+-----------------------------------------------------------------------------|
+|              | Before                                        | After                                                                       |
+|--------------+-----------------------------------------------+-----------------------------------------------------------------------------|
+| Display      | 1366x768                                      | 2560x1440                                                                   |
+| WiFi         | 2.4 GHz, 300 Mbps, 802.11b/g/n                | 2.4 and 5 GHz, 800-900 Mbps, 802.11b/g/n/ac, and internal Bluetooth support |
+| Hard drives  | 180 GB SSD                                    | 0.5 TB SSD and 180 GB SSD, the third disk can be connected via Optibay      |
+| USB ports    | 1xUSB3.0, 2xUSB2.0                            | 3xUSB3.0, 6xUSB2.0                                                          |
+| Keyboard     | Original with UK layout and Cyrillic stickers | Original with US layout                                                     |
+| Battery life | Near 1.5 hours                                | 5-6 hours. With external powerbank — up to 9 hours                          |
+|--------------+-----------------------------------------------+-----------------------------------------------------------------------------|
+
+As a result, this machine will serve me for at least the next ten years. The
+only bottleneck here is all sorts of JavaScript from websites — if it starts
+eating up 8 GB per tab, it's going to be tough.
 
 -----------------------------------------------------------------------------
 

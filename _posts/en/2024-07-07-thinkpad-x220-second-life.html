@@ -113,8 +113,9 @@ someone has to keep doing fun things, right?
 </ul></li>
 <li><a href="#additional-ports">Additional connectors and buttons</a></li>
 <li><a href="#new-case">Stitching a new case</a></li>
-<li><a href="#results">Final result</a></li>
 <li><a href="#update-17-07-2024">17.07.2024 update</a></li>
+<li><a href="#update-22-12-2024">22.12.2024 update</a></li>
+<li><a href="#results">Final result</a></li>
 <li><a href="#notes">Notes</a></li>
 </ul>
 </div>
@@ -2178,6 +2179,149 @@ everything was carefully measured and calculated beforehand :-).
 </div>
 </div>
 
+<div id="outline-container-update-17-07-2024" class="outline-2">
+<h2 id="update-17-07-2024">17.07.2024 update</h2>
+<div class="outline-text-2" id="text-update-17-07-2024">
+<p>
+Unfortunately, the display died after a couple months of use. After the laptop
+was turned on in the sunlight so that the sun was shining on the bottom
+quarter of the lid — the image on the bottom 1/4 of the display started to
+look as if it was hit with a sharp object.
+</p>
+
+<p>
+I assume that uneven thermal expansion of the display basket and the display
+itself played a role here. It is also possible that the display was not
+delivered from China very carefully — the parcel with it was lying unmoved for
+about 20 days in the Cainiao warehouse in St. Petersburg and it is not known
+what happened to it there.
+</p>
+
+<p>
+Before installing the new display, I modified a homemade display basket to
+minimize the likelihood of repeated breakage:
+</p>
+<ul class="org-ul">
+<li>I drilled <b>a lot</b> of holes in the plexiglass behind the display so that there
+would be a normal heat exchange with the rest of the laptop cover.</li>
+<li>I glued the display to the basket only on two strips of tape on the sides of
+it, not as <i>securely</i> as it was before — so that the basket would bend during
+thermal expansion, not the matrix (and it bends, of course, better than the
+display itself).</li>
+</ul>
+
+<p>
+At the moment the screen is stable again and is not going to break.
+</p>
+</div>
+</div>
+
+<div id="outline-container-update-22-12-2024" class="outline-2">
+<h2 id="update-22-12-2024">22.12.2024 update</h2>
+<div class="outline-text-2" id="text-update-22-12-2024">
+<p>
+Below, I wrote about four non-working USB ports on the back of the
+laptop. This was because the <code>USBP8</code> bus was being used by the 2K display
+expansion board. By the way, I <i>need these ports</i> — to get much more free space
+on the side of the laptop, for the cup(s) of tea or the notebook. And a few
+days ago I've got some free time to finally fix it.
+</p>
+
+<p>
+Besides the <code>USBP8</code> bus, there are another USB interface lines in the docking
+station connector — <code>DOCK_USB</code>. It looks like they are used in a different
+version of the docking station, which has USB3.0 support (but my docking
+station doesn't have such support). There they are in the block diagram, on
+the left:
+</p>
+
+
+<div class="figure">
+<p><img src="/assets/static/docking_block.png" alt="Block diagram of laptop" align="center" />
+</p>
+<p style="text-align: center"><i>Thinkpad X220 block diagram</i></p>
+</div>
+
+<p>
+The same bus on the schematic with the docking connector (on the left):
+</p>
+
+
+<div class="figure">
+<p><img src="/assets/static/dock_usb_schematic.png" alt="Docking connector with USB3.0 lines" align="center" />
+</p>
+</div>
+
+<p>
+Depending on how the jumpers are set, this bus goes inside the laptop to:
+</p>
+<ul class="org-ul">
+<li>USB2.0 controller — when <code>R437</code> and <code>R438</code> are set. In this case the rear USB
+ports will work seamlessly.</li>
+<li>USB3.0 controller — if <code>R436</code> and <code>R439</code> are set. In this case, I hope for the
+backward compatibility.</li>
+</ul>
+
+<p>
+Looking at the board view (special thanks to <a href="https://mastodon.ml/@Evv1L">@Evv1L</a> for the link to the BDV
+file), the necessary jumpers are located on the same side of the board as the
+docking station connector, near the CPU fan:
+</p>
+
+
+<div class="figure">
+<p><img src="/assets/static/boardview_usb_jumpers.png" alt="Boardview of X220 motherboard with marked jumpers for USB interface" align="center" />
+</p>
+</div>
+
+
+<div class="figure">
+<p><img src="/assets/static/boardview_usb_jumpers2.png" alt="Close up view of jumpers to USB interface selection" align="center" />
+</p>
+</div>
+
+<p>
+In case of motherboard with USB3.0 support (with Intel Core i7) obviously
+these jumpers will connect the docking station to the USB3.0 lines:
+</p>
+
+
+<div class="figure">
+<p><img src="/assets/static/usb_jumpers.jpg" alt="USB selection jumpers on the motherboard, selected R436 and R439" align="center" />
+</p>
+<p style="text-align: center"><i>R436 and R439 are set</i></p>
+</div>
+
+<p>
+It's time to connect the aforementioned lines to the USB hub on the docking
+station board. There is a quick DIY, I just need to solder 1.5 cm of twisted
+pair to the two contacts of the <code>DOCK_USB</code> line. And to the two contacts of
+<code>USBP8</code> line going to the Microchip's USB hub. The last two contacts were
+previously isolated from the rest of laptop electronics, so I did it to not
+ring the whole docking station board to find where these lines connect to
+USB2514 chip.
+</p>
+
+
+<div class="figure">
+<p><img src="/assets/static/twisted_pair.jpg" alt="Soldered twisted pair to enable 4 USB ports on the docking station" align="center" />
+</p>
+</div>
+
+<p>
+The one, that should be double checked — the pin contacts of the male
+connector on the docking station, and the contancts of the female connector on
+the laptop are not same pin to pin. So it is necessary to ring the docking
+station connector before soldering the twisted pair, to solder it to the right
+pins.
+</p>
+
+<p>
+As a result — the ports on the back of the docking station now work!
+</p>
+</div>
+</div>
+
 <div id="outline-container-results" class="outline-2">
 <h2 id="results">Final result</h2>
 <div class="outline-text-2" id="text-results">
@@ -2234,7 +2378,7 @@ everything was carefully measured and calculated beforehand :-).
 <tr>
 <td class="org-left">USB ports</td>
 <td class="org-left">1xUSB3.0, 2xUSB2.0</td>
-<td class="org-left">3xUSB3.0, 2xUSB2.0</td>
+<td class="org-left">3xUSB3.0, 6xUSB2.0</td>
 </tr>
 
 <tr>
@@ -2255,45 +2399,6 @@ everything was carefully measured and calculated beforehand :-).
 As a result, this machine will serve me for at least the next ten years. The
 only bottleneck here is all sorts of JavaScript from websites — if it starts
 eating up 8 GB per tab, it's going to be tough.
-</p>
-
-<hr />
-</div>
-</div>
-
-<div id="outline-container-update-17-07-2024" class="outline-2">
-<h2 id="update-17-07-2024">17.07.2024 update</h2>
-<div class="outline-text-2" id="text-update-17-07-2024">
-<p>
-Unfortunately, the display died after a couple months of use. After the laptop
-was turned on in the sunlight so that the sun was shining on the bottom
-quarter of the lid — the image on the bottom 1/4 of the display started to
-look as if it was hit with a sharp object.
-</p>
-
-<p>
-I assume that uneven thermal expansion of the display basket and the display
-itself played a role here. It is also possible that the display was not
-delivered from China very carefully — the parcel with it was lying unmoved for
-about 20 days in the Cainiao warehouse in St. Petersburg and it is not known
-what happened to it there.
-</p>
-
-<p>
-Before installing the new display, I modified a homemade display basket to
-minimize the likelihood of repeated breakage:
-</p>
-<ul class="org-ul">
-<li>I drilled <b>a lot</b> of holes in the plexiglass behind the display so that there
-would be a normal heat exchange with the rest of the laptop cover.</li>
-<li>I glued the display to the basket only on two strips of tape on the sides of
-it, not as <i>securely</i> as it was before — so that the basket would bend during
-thermal expansion, not the matrix (and it bends, of course, better than the
-display itself).</li>
-</ul>
-
-<p>
-At the moment the screen is stable again and is not going to break.
 </p>
 
 <hr />

@@ -59,71 +59,54 @@
   top: 0;
   font-weight: bold;
 
-  .nav-trigger {
-    display: none;
+  .dropdown {
+      position: relative;
+      display: inline-block;
+
+      .check-menu {
+          display: none;
+      }
+
+      .menu-icon {
+          text-align: center;
+          border: none;
+          background-color: rgba($header-background-color, 0%);
+          color: rgba($header-text-color, 80%);
+          cursor: pointer;
+
+          > svg {
+              fill: rgba($header-text-color, 80%);
+              transition: 0.1s fill;
+          }
+      }
+
+      .dropdown-content {
+          display: none;
+          position: absolute;
+          z-index: 2;
+          float: right;
+
+          a {
+              text-decoration: none;
+              display: block;
+              background-color: #073642;
+              padding-left: 10px;
+              padding-right: 10px;
+          }
+          a:hover {
+              background-color: #657b83;
+          }
+      }
   }
 
-  .menu-icon {
-    display: none;
+  .check-menu:checked~div.dropdown-content {
+      display: block;
   }
 
   .page-link {
     line-height: $base-line-height;
     color: $header-text-color;
     transition: 0.1s ease-in-out;
-    &:hover {
-        text-decoration: underline;
-    }
-
-    // Gaps between nav items, but not on the last one
-    &:not(:last-child) {
-        margin-right: 24px;
-    }
-  }
-
-  @include media-query($on-laptop) {
-    position: absolute;
-    top: 0;
-    text-align: left;
-    z-index: 2;
-
-    label[for="nav-trigger"] {
-      display: block;
-      z-index: 2;
-      cursor: pointer;
-    }
-
-    .menu-icon {
-      display: block;
-      float: right;
-      text-align: center;
-
-      > svg {
-        fill: rgba($header-text-color, 80%);
-        transition: 0.1s fill;
-      }
-    }
-
-    input ~ .trigger {
-      clear: both;
-      display: none;
-      border-radius: 3px;
-      box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, .06);
-    }
-
-    input:checked ~ .trigger {
-      display: block;
-      background: #073642;
-      overflow-y: auto;
-      height: 300px;
-    }
-
-    .page-link {
-      display: block;
-      padding: 5px 10px;
-      color: #93a1a1;
-      margin: 0 25px;
-    }
   }
 }
 

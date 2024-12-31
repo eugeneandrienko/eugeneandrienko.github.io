@@ -36,6 +36,7 @@ sass:
 header_pages:
   - now.html
   - about.html
+  - uses.html
   - cv.html
   - tags.html
   - categories.html

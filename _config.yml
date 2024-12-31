@@ -41,6 +41,7 @@ header_pages:
   - tags.html
   - categories.html
   - archives.html
+  - changelog.html
 
 plugins:
   - jekyll-feed

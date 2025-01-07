@@ -584,7 +584,7 @@ really like them.
 
 Naturally, the new expansion board and the new display required certain
 changes in the software as well. First, I adjusted the DPI according [[https://wiki.archlinux.org/title/HiDPI#X_Resources][to the
-instructions]] ([[https://github.com/eugeneandrienko/dotfiles/commit/67ae822f43067ce12f8a928c7b89935f973b7fb5][like this]]) so that I could work on the laptop without a
+instructions]] ([[https://codeberg.org/evgandr/dotfiles/commit/67ae822f43067ce12f8a928c7b89935f973b7fb5][like this]]) so that I could work on the laptop without a
 magnifying glass.
 
 To avoid typing =vbe on= in the bootloader every time and to see the FreeBSD's
@@ -710,8 +710,7 @@ your own.
 
 I tested it only under FreeBSD 14 — everything works on my machine 😊. The
 source code can be downloaded here:
-https://github.com/eugeneandrienko/brightness_x220_agan2k, the manual is also
-there.
+https://codeberg.org/evgandr/brightness_x220_agan2k, the manual is also there.
 
 * Replacing the WiFi module
 :PROPERTIES:

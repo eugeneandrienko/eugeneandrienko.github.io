@@ -171,7 +171,7 @@ had a user from India for whom jabsh for some reasons did not work, and we
 send e-mails to each other for some time about this.
 
 Another one of the programs from those times is a summer project from my
-future scientific supervisor — [[https://github.com/eugeneandrienko/termprogs][termprogs]], for managing a set of "terminals"
+future scientific supervisor — [[https://codeberg.org/evgandr/termprogs][termprogs]], for managing a set of "terminals"
 through "workstations", with a central server where the whole things are
 connected.
 
@@ -274,7 +274,7 @@ console software:
 - Well, and all sorts of other console utilities with which I could work with
   or without consciousness: =grep=, =sed=, =git=, =make=, =cron= and so on.
 
-Since then, I had a [[https://github.com/eugeneandrienko/dotfiles][repository with dotfiles]], in which I dragged my
+Since then, I had a [[https://codeberg.org/evgandr/dotfiles][repository with dotfiles]], in which I dragged my
 configuration files for the above-described programs from system to system.
 
 Here are some desktop screenshots from those days. Here is xmonad on two

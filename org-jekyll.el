@@ -295,7 +295,7 @@ PROPERTY-LIST is a list of properties from
                                       :recursive t)
                                      ("org-jekyll-static"
                                       :base-directory ,(concat org-jekyll-paths-base-path "/_static")
-                                      :base-extension "jpg\\|JPG\\|jpeg\\|png\\|gif\\|webm\\|webp\\|gpx\\|tar.bz2\\|svg"
+                                      :base-extension "jpg\\|JPG\\|jpeg\\|png\\|gif\\|webm\\|webp\\|gpx\\|tar.bz2\\|svg\\|txt"
                                       :publishing-directory ,(concat org-jekyll-paths-base-path "/assets/static")
                                       :publishing-function org-publish-attachment
                                       :preparation-function org-jekyll--prepare-static
@@ -376,7 +376,7 @@ PROPERTY-LIST is a list of properties from
                                                       "\\|"
                                                       "\\.org$\\|\\.gif$\\|\\.gpx$"
                                                       "\\|"
-                                                      "\\.svg$"))
+                                                      "\\.svg$\\|\\.txt$"))
             (("/_articles") . "\\.org$\\|\\.png$")))
     (make-process
      :name "jekyll-clean"

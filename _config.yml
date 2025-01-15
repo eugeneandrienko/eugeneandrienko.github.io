@@ -33,6 +33,7 @@ lang_from_path: true
 future: true
 sass:
   sourcemap: never
+  style: compressed
 header_pages:
   - now.html
   - about.html

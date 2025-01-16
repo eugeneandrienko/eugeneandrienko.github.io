@@ -3,11 +3,15 @@
 gem "rake", ">= 12.3.3"
 
 source "https://rubygems.org"
-gemspec
 
 group :jekyll_plugins do
-  gem "jekyll-pdf-embed"
+  gem "jekyll-feed"
+  gem "jekyll-seo-tag"
+  gem "jekyll-sitemap"
+  gem "jekyll-paginate"
+  gem "jekyll-spaceship"
   gem "jekyll-polyglot"
+  gem "jekyll-minifier"
 end
 
 require 'rbconfig'

@@ -150,3 +150,7 @@ tag. After file save, a valid TOC will be automatically generated.
 
 Just eval =org-jekyll.org= file in Emacs, enable =org-jekyll-mode= minor mode and
 press =C-c b=.
+
+* How to minify blog on production
+
+Environment varible =JEKYLL_ENV= should be set to =true=.

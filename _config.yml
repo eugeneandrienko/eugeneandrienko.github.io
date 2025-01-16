@@ -47,3 +47,25 @@ plugins:
   - jekyll-paginate
   - jekyll-spaceship
   - jekyll-polyglot
+  - jekyll-minifier
+
+jekyll-minifier:
+  exclude: ["feed.xml", "sitemap.xml"]
+  preserve_php: false
+  remove_spaces_inside_tags: true
+  remove_multi_spaces: true
+  remove_comments: true
+  remove_intertag_spaces: true
+  remove_quotes: false
+  compress_css: true
+  compress_json: false
+  simple_doctype: false
+  remove_script_attributes: false
+  remove_style_attributes: false
+  remove_link_attributes: false
+  remove_form_attributes: false
+  remove_input_attributes: false
+  remove_http_protocol: false
+  remove_https_protocol: false
+  preserve_line_breaks: true
+  simple_boolean_attributes: false

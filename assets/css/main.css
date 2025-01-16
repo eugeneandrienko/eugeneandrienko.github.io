@@ -325,6 +325,9 @@ table td {
   color: white;
   transition: 0.1s ease-in-out;
 }
+.feather-rss {
+    color: orange;
+}
 
 /**
  * Site footer

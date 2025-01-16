@@ -9,8 +9,6 @@ social:
     - https://mas.to/@evgandr
 logo: "/assets/images/home.webp"
 url: "https://eugene-andrienko.com"
-yat:
-  date_format: "%d %b %Y"
 theme_color: "#696969"
 brand_color: "#696969"
 defaults:
@@ -31,9 +29,6 @@ exclude_from_localization: ["assets"]
 parallel_localization: true
 lang_from_path: true
 future: true
-sass:
-  sourcemap: never
-  style: compressed
 header_pages:
   - now.html
   - about.html

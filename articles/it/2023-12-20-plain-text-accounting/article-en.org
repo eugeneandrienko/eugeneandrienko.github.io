@@ -584,25 +584,25 @@ should query data from hledger by the =savings= accounts.
 
 New budget plans via bash-script with =dialog=:
 
+#+CAPTION: Start date of new budget selection
 #+ATTR_RST: :alt select start date :width 50% :align center
 [[file:plan1.png]]
-/Start date of new budget selection/
 
+#+CAPTION: Fields for savings amounts
 #+ATTR_RST: :alt enter savings :width 50% :align center
 [[file:plan2.png]]
-/Fields for savings amounts/
 
+#+CAPTION: Sum of incoming salary plus remainders from previous budget iteration
 #+ATTR_RST: :alt enter salary :width 50% :align center
 [[file:plan3.png]]
-/Sum of incoming salary plus remainders from previous budget iteration/
 
+#+CAPTION: Budgeting
 #+ATTR_RST: :alt budget drafting :width 50% :align center
 [[file:plan4.png]]
-/Budgeting/
 
+#+CAPTION: Checking that we haven't gone into the red
 #+ATTR_RST: :alt check budget draft :width 50% :align center
 [[file:plan5.png]]
-/Checking that we haven't gone into the red/
 
 I realized it simple enough:
 - Receive necessary data from user via =dialog= forms — dates, savings amounts,

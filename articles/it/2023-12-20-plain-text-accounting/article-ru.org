@@ -588,25 +588,25 @@ date,account,amount
 
 Планирование бюджета происходит через bash-скрипт с dialog:
 
+#+CAPTION: Выбор стартовой даты для нового бюджета
 #+ATTR_RST: :alt select start date :width 50% :align center
 [[file:plan1.png]]
-/Выбор стартовой даты для нового бюджета/
 
+#+CAPTION: Ввод данных по накоплениям
 #+ATTR_RST: :alt enter savings :width 50% :align center
 [[file:plan2.png]]
-/Ввод данных по накоплениям/
 
+#+CAPTION: Сумма пришедшей зарплаты, плюс остатки с предыдущей итерации
 #+ATTR_RST: :alt enter salary :width 50% :align center
 [[file:plan3.png]]
-/Сумма пришедшей зарплаты, плюс остатки с предыдущей итерации/
 
+#+CAPTION: Составление бюджета
 #+ATTR_RST: :alt budget drafting :width 50% :align center
 [[file:plan4.png]]
-/Составление бюджета/
 
+#+CAPTION: Проверка того, что мы не ушли в минус
 #+ATTR_RST: :alt check budget draft :width 50% :align center
 [[file:plan5.png]]
-/Проверка того, что мы не ушли в минус/
 
 Тут всё реализовано относительно просто:
 - Получаю нужные данные от пользователя через формы dialog — даты, суммы

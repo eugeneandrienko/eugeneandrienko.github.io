@@ -22,12 +22,6 @@ kramdown:
   auto_ids: true
   syntax_highlighter: rouge
 port: 8000
-languages: ["en", "ru"]
-lang: "ru"
-default_lang: "ru"
-exclude_from_localization: ["assets"]
-parallel_localization: true
-lang_from_path: true
 future: true
 header_pages:
   - now.html
@@ -47,6 +41,13 @@ plugins:
   - jekyll-spaceship
   - jekyll-polyglot
   - jekyll-minifier
+
+languages: ["en", "ru"]
+lang: "ru"
+default_lang: "ru"
+exclude_from_localization: ["assets"]
+parallel_localization: true
+lang_from_path: true
 
 jekyll-minifier:
   exclude: ["feed.xml", "sitemap.xml"]

@@ -23,6 +23,9 @@ kramdown:
   syntax_highlighter: rouge
 port: 8000
 future: true
+exclude:
+  - README.org
+  - articles/
 header_pages:
   - now.html
   - about.html

@@ -1,0 +1,1005 @@
+#+BEGIN_EXPORT html
+---
+layout: post
+title: LineageOS 21 on the Motorola Defy (2021)
+category: it
+date: 2025-02-08
+lang: en
+comments: false
+hidden:
+  - related_posts
+summary: Flashing LineageOS 21 to the Motorola Defy (2021). With root and without GApps.
+tags:
+image: /assets/static/header-lineageos.jpg
+banner:
+  image: /assets/static/header-lineageos.jpg
+  opacity: 0.4
+---
+#+END_EXPORT
+
+I have been using the [[https://www.gsmarena.com/motorola_defy_(2021)-10969.php][Motorola Defy (2021)]] smartphone for almost 3
+years. There is one of the rugged phones that has an [[https://en.wikipedia.org/wiki/IP_code#Code_breakdown][IP68]] and a decent
+thickness — it fits perfectly in my pocket. It looks like a normal phone in
+the case, but there is no case — there is a phone body.
+
+I've "tested" this rugged phone a lot:
+- I dropped it on its side on the tiled floor and on the asphalt pavement.
+- I used the phone in the rain and in high humidity environment.
+- Dropped it display side down on the tiled floor.
+- Dropped it display side down onto a pond on the asphalt road.
+
+Nevertheless, the only injury of the phone — a small dent on the corner where
+I dropped it when I got out of the car.
+
+Unfortunately, I can't say the same for the phone's software. There are the
+unnecessary for me (and undeletable) weather forecast application from
+Motorola and a full set of undeletable applications from Google. These
+applications are unsuitable for me, or I can't even use them — because the
+corresponding services aren't available in Russia (for example, Google Pay
+app).
+
+Also, after I signed in to my Google account, Google Play went crazy and
+started installing a lot of Russian applications that are unnecessary for me:
+Gosuslugi, VK, Odnoklassniki, almost all Yandex apps, MirPay and something
+from the Sberbank. Fortunately, these applications were installed as usual
+applications and I was able to delete them.
+
+Most of the time I used FOSS applications from F-Droid and never felt a
+grief. But, as it usually happens, after another update from Google, I got
+problems. Sometimes, when I'm was installing or updating the application from
+F-Droid, the OS shows me the next "warning" window for me (it comes from
+Google "Safety" Net):
+
+#+CAPTION: 
+#+ATTR_HTML: :align center :width 25% :alt Google safety warning than installing applications from F-Droid
+[[file:google_play_protect.png]]
+
+As a result, I get rid of such "caring" behavior from Google. In addition, I
+want to remove some pre-installed applications and take the ability to install
+applications from F-Droid with one button and no dialog: "Do you really want
+to install this application from unknown source?"
+
+I knew, what I can get all I want from the some opensource Android
+distribution. The most important thing for me — this distribution should
+support the phones hardware and allow root access. Since my phone is not so
+popular among the hackers — there is no support from [[https://grapheneos.org/][GrapheneOS]], [[https://postmarketos.org/][postmarketOS]]
+or the same operating systems.
+
+Fortunately, I found some posts on the XDA Developers forum, [[https://xdaforums.com/f/motorola-defy-2021.12369/][in the topic]]
+about Motorola Defy (2021).
+
+* TOC                                                            :TOC_2_blog:
+- [[* Preparations before flashing the phone's memory][Preparations before flashing the phone's memory]]
+- [[* Bootloader unlock][Bootloader unlock]]
+- [[* Rewriting the system software][Rewriting the system software]]
+- [[* Lineage OS install][Lineage OS install]]
+- [[* Root user access][Root user access]]
+- [[* 4G calls and SMS][4G calls and SMS]]
+- [[* Disabling nonsensical popup when copying text][Disabling nonsensical popup when copying text]]
+- [[* Turn off USB debugging][Turn off USB debugging]]
+- [[* Applications with root access][Applications with root access]]
+  - [[* Application stores][Application stores]]
+  - [[* Firewall (AFWall+)][Firewall (AFWall+)]]
+  - [[* System-wide ad blocker (AdAway)][System-wide ad blocker (AdAway)]]
+  - [[* AccA — to control accumulator (dis)charging][AccA — to control accumulator (dis)charging]]
+  - [[* System theme color change (ColorBlendr)][System theme color change (ColorBlendr)]]
+  - [[* System cleaner (SD Maid 2/SE)][System cleaner (SD Maid 2/SE)]]
+- [[* Backups][Backups]]
+  - [[* Neo Backup][Neo Backup]]
+  - [[* Flash memory backup][Flash memory backup]]
+- [[* BUGS][BUGS]]
+- [[* Notes][Notes]]
+
+* Preparations before flashing the phone's memory
+:PROPERTIES:
+:CUSTOM_ID: preparations
+:END:
+
+First, I made a list of all the necessary applications, installed on my
+phone. Then I made a backup of all the valuable data — fortunately, almost all
+FOSS applications allow me to backup user data and settings.
+
+Also, just in case, I wrote down my IMEI — I didn't need it afterwards, but
+this note saved me a lot of nerve cells.
+
+To flash the phone's flash memory I only needed two utilities:
+1. [[https://developer.android.com/tools/adb][adb]] (=dev-util/android-tools= for Gentoo) — it is needed to access the
+   settings, hidden from users. And to reboot the phone not in Android, but in
+   various service programs that are also stored in the phone's flash memory.
+2. [[https://en.wikipedia.org/wiki/Fastboot][fastboot]] (in the Gentoo it is installed with the same package) — it is
+   necessary to write binary files to the phone's flash memory.
+
+To successfully complete the next steps, I've double-checked the phone model
+code and the localization code in the phone settings. *NB!* All actions were
+performed for the phone with model code XT2083-9 and with localization code
+RETEU!
+
+* Bootloader unlock
+:PROPERTIES:
+:CUSTOM_ID: bootloader-unlock
+:END:
+
+Factory new Android smartphones shipped with a locked bootloader — it
+prohibits to write to some areas of the flash memory (usually there are areas
+with OS and the bootloader itself). From the one side, this is a useful thing,
+because anyone with a physical access to your phone simply can't write
+anything into the corresponding flash regions. From another side, this thing
+forbids me to do whatever I want with the phone, as its full owner.
+
+To install Lineage OS I had to unlock the bootloader to be able to write the
+necessary files to the flash memory. The main steps are described here:
+https://source.android.com/docs/core/architecture/bootloader/locking_unlocking.
+
+First, I need to get access to "Developer Options" in the Settings. Here the
+everything as usual — I just opened "System⇒About Phone" and after a few taps
+on the Android version menu item — I've got the necessary access. After, I
+enabled "USB debugging" via "System⇒Advanced⇒Developer options" submenu. Then
+I rebooted the phone to the bootloader UI with the next steps:
+
+1. I connected the phone to the PC using USB cable with data lanes in it.
+2. I pressed "USB Preferences" in the notification bar and selected "Use USB
+   for: PTP".
+3. Then, in the window that popped up, I allowed "debug connection to the PC".
+4. Then, I checked that =adb= can see the connected phone:
+   #+begin_example
+   % adb devices
+   List of devices attached
+   ZY32DG32K2      device
+   #+end_example
+5. Finally, I reboot the phone with the command: =adb reboot bootloader=.
+
+As a result, the phone screen shows the next interface:
+
+#+CAPTION: Motorola Defy (2021), booted in the bootloader
+#+ATTR_HTML: :align center :alt Motorola Defy (2021) in the bootloader mode
+[[file:bootloader.jpg]]
+
+Then, it's time for the =fastboot=. In my case this utility didn't see the
+connected phone, but after I changed the permissions for =/dev/bus/usb/001/018=,
+the =fastboot= started to see the phone:
+
+#+begin_example
+% fastboot devices -l
+% lsusb
+Bus 001 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
+Bus 001 Device 002: ID 8087:0024 Intel Corp. Integrated Rate Matching Hub
+Bus 001 Device 003: ID 046d:c24e Logitech, Inc. G500s Laser Gaming Mouse
+Bus 001 Device 018: ID 22b8:2e80 Motorola PCS Fastboot bathena S
+% ls -l /dev/bus/usb/001/
+total 0
+crw-rw-r-- 1 root usb     189,  0 Dec 31 00:09 001
+crw-rw-r-- 1 root usb     189,  1 Dec 31 00:09 002
+crw-rw-r-- 1 root usb     189,  2 Dec 31 00:09 003
+crw-rw---- 1 root android 189, 17 Dec 31 17:28 018
+% sudo chown -R drag0n:drag0n /dev/bus/usb/001/018
+% fastboot devices
+ZY32DG32K2       fastboot
+#+end_example
+
+To prevent inexperienced users from unlocking the bootloader out of ignorance
+and get a less secure phone. And to prevent experienced users from doing
+anything what they want with their phones — different phone manufacturers
+require extra steps to unlock the bootloader. In my case, the =fastboot= asked
+me for an "unlock code":
+
+#+begin_example
+% fastboot flashing unlock
+(bootloader) usage: fastboot oem unlock < unlock code >
+FAILED (remote: '')
+fastboot: error: Command failed
+% fastboot flashing get_unlock_ability
+(bootloader) use "oem get_unlock_data" and web portal
+(bootloader)     http://motorola.com/unlockbootloader
+OKAY [  0.001s]
+Finished. Total time: 0.001s
+% fastboot oem get_unlock_data
+(bootloader) Unlock data:
+(bootloader) ███████████████████████████████
+(bootloader) ███████████████████████████████
+(bootloader) ███████████████████████████████
+(bootloader) ███████████████████████████████
+(bootloader) ██████████████████
+OKAY [  0.017s]
+Finished. Total time: 0.017s
+#+end_example
+
+Fortunately, the Motorola has not invented some kind of Torment Nexus in this
+case and just use a special form on their site. This form accepts some kind of
+"unlock data" and sends an "unlock code" to the email. This unlock code is
+unique for each phone.
+
+Unfortunately, the link from =get_unlock_ability= returns 404 (as
+usual). However after some searching on the Internet, I managed to find the
+necessary form on the American version of the Motorola site:
+https://en-us.support.motorola.com/app/standalone/bootloader/unlock-your-device-a. And
+through this form I was able to receive an email with the unlock code.
+
+After that I simply unlocked the bootloader with command:
+
+#+begin_example
+% fastboot oem unlock ███████████████████████████████
+(bootloader) Bootloader is unlocked!
+OKAY [ 22.503s]
+Finished. Total time: 22.503s
+#+end_example
+
+* Rewriting the system software
+:PROPERTIES:
+:CUSTOM_ID: system-software-reflash
+:END:
+
+First, I need to download an archive containing "factory" dumps of some flash
+memory regions for the phone — according to instruction on installing Lineage
+OS from the XDA forum. And then install them.
+
+As I think, this is necessary to have the same =boot.img= both on the hard disk
+and in the phone. This file is needed to get the root access on the phone.
+
+Based [[https://xdaforums.com/t/flash-stock-rom-via-fastboot.4524845/][on this post]], I found [[https://www.getdroidtips.com/motorola-defy-2021-stock-firmware/][a link]] to the mirror, suitable for my phone model
+(XT2083-9, build number RZD31.31). Inside this server is the archive
+=XT2083-9_BATHENA_RETEU_11_RZD31.31_subsidy-DEFAULT_regulatory-XT2083-9-EUROPE-SAR_CFC.xml.zip=
+from the path =/firmware/lenomola/2021/bathena/official/RETEU/=:
+
+#+begin_example
+% unzip XT2083-9_BATHENA_RETEU_11_RZD31.31_subsidy-DEFAULT_regulatory-XT2083-9-EUROPE-SAR_CFC.xml.zip
+Archive:  XT2083-9_BATHENA_RETEU_11_RZD31.31_subsidy-DEFAULT_regulatory-XT2083-9-EUROPE-SAR_CFC.xml.zip
+inflating: recovery.img            
+inflating: gpt.bin                 
+inflating: boot.img                
+inflating: dspso.bin               
+inflating: BTFM.bin                
+inflating: vbmeta.img              
+inflating: radio.img               
+inflating: dtbo.img                
+inflating: logo.bin                
+inflating: bootloader.img          
+inflating: super.img_sparsechunk.0  
+inflating: super.img_sparsechunk.1  
+inflating: super.img_sparsechunk.2  
+inflating: super.img_sparsechunk.3  
+inflating: super.img_sparsechunk.4  
+inflating: super.img_sparsechunk.5                  
+inflating: super.img_sparsechunk.6  
+inflating: super.img_sparsechunk.7  
+inflating: super.img_sparsechunk.8  
+inflating: flashfile.xml           
+inflating: servicefile.xml         
+extracting: slcf_rev_d_default_v1.0.nvm  
+inflating: regulatory_info_xt2083_9_europe_sar.png  
+inflating: signing-info.txt        
+inflating: BATHENA_RETAIL_RZD31.31_subsidy-DEFAULT_regulatory-XT2083-9-EUROPE-SAR_CFC.info.txt
+#+end_example
+
+Phone's flash memory is divided into mutliple regions and some of them are
+unique for different phone models. At least on my Motorola Defy (2021) I can
+see the complete list of regions by rebooting the phone to the bootloader and
+running the command =fastboot oem partition=:
+
+#+begin_example
+~ % fastboot oem partition
+(bootloader) xbl_a: offset=65536KB, size=5120KB
+(bootloader) xbl_b: offset=70656KB, size=5120KB
+(bootloader) xbl_config_a: offset=75776KB, size=128KB
+(bootloader) xbl_config_b: offset=75904KB, size=128KB
+(bootloader) tz_a: offset=76032KB, size=4096KB
+(bootloader) tz_b: offset=80128KB, size=4096KB
+(bootloader) rpm_a: offset=84224KB, size=512KB
+(bootloader) rpm_b: offset=131072KB, size=512KB
+(bootloader) hyp_a: offset=196608KB, size=512KB
+(bootloader) hyp_b: offset=197120KB, size=512KB
+(bootloader) cmnlib_a: offset=197632KB, size=512KB
+(bootloader) cmnlib_b: offset=198144KB, size=512KB
+(bootloader) cmnlib64_a: offset=198656KB, size=512KB
+(bootloader) cmnlib64_b: offset=199168KB, size=512KB
+(bootloader) keymaster_a: offset=199680KB, size=512KB
+(bootloader) keymaster_b: offset=200192KB, size=512KB
+(bootloader) prov_a: offset=200704KB, size=256KB
+(bootloader) prov_b: offset=200960KB, size=256KB
+(bootloader) abl_a: offset=201216KB, size=1024KB
+(bootloader) abl_b: offset=202240KB, size=1024KB
+(bootloader) uefisecapp_a: offset=203264KB, size=2048KB
+(bootloader) uefisecapp_b: offset=205312KB, size=2048KB
+(bootloader) devcfg_a: offset=207360KB, size=128KB
+(bootloader) devcfg_b: offset=207488KB, size=128KB
+(bootloader) qupfw_a: offset=207616KB, size=80KB
+(bootloader) qupfw_b: offset=207696KB, size=80KB
+(bootloader) storsec_a: offset=207776KB, size=128KB
+(bootloader) storsec_b: offset=207904KB, size=128KB
+(bootloader) ddr: offset=208032KB, size=1024KB
+(bootloader) modem_a: offset=209056KB, size=184320KB
+(bootloader) modem_b: offset=393376KB, size=184320KB
+(bootloader) bluetooth_a: offset=577696KB, size=1024KB
+(bootloader) bluetooth_b: offset=578720KB, size=1024KB
+(bootloader) dsp_a: offset=579744KB, size=65536KB
+(bootloader) dsp_b: offset=645280KB, size=65536KB
+(bootloader) boot_a: offset=710816KB, size=98304KB
+(bootloader) boot_b: offset=809120KB, size=98304KB
+(bootloader) dtbo_a: offset=907424KB, size=24576KB
+(bootloader) dtbo_b: offset=932000KB, size=24576KB
+(bootloader) recovery_a: offset=983040KB, size=102400KB
+(bootloader) recovery_b: offset=1085440KB, size=102400KB
+(bootloader) ssd: offset=1245184KB, size=8KB
+(bootloader) utags: offset=1310720KB, size=512KB
+(bootloader) utagsBackup: offset=1311232KB, size=512KB
+(bootloader) kpan: offset=1311744KB, size=8192KB
+(bootloader) dhob: offset=1319936KB, size=32KB
+(bootloader) msadp: offset=1376256KB, size=256KB
+(bootloader) persist: offset=1441792KB, size=32768KB
+(bootloader) prodpersist: offset=1474560KB, size=8192KB
+(bootloader) metadata: offset=1482752KB, size=16384KB
+(bootloader) misc: offset=1499136KB, size=1024KB
+(bootloader) frp: offset=1500160KB, size=512KB
+(bootloader) cid: offset=1507328KB, size=128KB
+(bootloader) logo_a: offset=1507456KB, size=16384KB
+(bootloader) logo_b: offset=1523840KB, size=16384KB
+(bootloader) carrier: offset=1572864KB, size=16384KB
+(bootloader) devinfo: offset=1638400KB, size=4KB
+(bootloader) apdp: offset=1638404KB, size=256KB
+(bootloader) spunvm: offset=1703936KB, size=8192KB
+(bootloader) logfs: offset=1769472KB, size=8192KB
+(bootloader) vbmeta_a: offset=1777664KB, size=64KB
+(bootloader) vbmeta_b: offset=1777728KB, size=64KB
+(bootloader) vbmeta_system_a: offset=1777792KB, size=64KB
+(bootloader) vbmeta_system_b: offset=1777856KB, size=64KB
+(bootloader) limits: offset=1777920KB, size=4KB
+(bootloader) uefivarstore: offset=1777924KB, size=512KB
+(bootloader) modemst1: offset=1835008KB, size=2560KB
+(bootloader) modemst2: offset=1837568KB, size=2560KB
+(bootloader) fsg_a: offset=1840128KB, size=65536KB
+(bootloader) fsg_b: offset=1905664KB, size=65536KB
+(bootloader) fsc: offset=1971200KB, size=128KB
+(bootloader) hw: offset=2031616KB, size=8192KB
+(bootloader) sp: offset=2097152KB, size=8192KB
+(bootloader) padA: offset=2105344KB, size=640KB
+(bootloader) super: offset=2105984KB, size=11631616KB
+(bootloader) padB: offset=13737600KB, size=384KB
+(bootloader) userdata: offset=13737984KB, size=47333359KB
+(bootloader) system_a: offset=2105984KB, size=2376024KB
+(bootloader) system_b: offset=2105984KB, size=165052KB
+(bootloader) vendor_a: offset=2105984KB, size=585820KB
+(bootloader) vendor_b: offset=2105984KB, size=0KB
+(bootloader) product_b: offset=2105984KB, size=0KB
+(bootloader) product_a: offset=2105984KB, size=4KB
+OKAY [  0.015s]
+Finished. Total time: 0.015s
+#+end_example
+
+Fortunately, I don't need to rewrite all of these partitions. First, because
+[[https://source.android.com/docs/core/ota/virtual_ab][A/B-partitions]] is used on the device, there are a lot of partitions in the
+output of the above command repeated two times: with =_a= suffix and with =_b=
+suffix. To install Lineage OS, I only need to use partitions with the =_a=
+suffix, according to the instructions.
+
+Second, I only need to use the following partitions, according to the list of
+files from the archive:
+
+#+CAPTION: Description of partitions, there to write dumps to
+|-------------+--------------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Partition   | Binary file from archive | Description                                                                                                                                                                      |
+|-------------+--------------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+|             | gpt.bin                  | General Partition Table (GPT).                                                                                                                                                   |
+|-------------+--------------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+|             | bootloader.img           | Splitted to the few files, which is described below.                                                                                                                             |
+|-------------+--------------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+|             | radio.img                | The same.                                                                                                                                                                        |
+|-------------+--------------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| bluetooth_a | BTFM.bin                 | Binary blob with Bluetooth firmware.                                                                                                                                             |
+|-------------+--------------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| dsp_a       | dspso.bin                | Binary blob with graphical accelerator firmware.                                                                                                                                 |
+|-------------+--------------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| logo_a      | logo.bin                 | Boot logo.                                                                                                                                                                       |
+|-------------+--------------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| boot_a      | boot.img                 | The main Linux kernel, ramdisk and other files necessary to boot the system.                                                                                                     |
+|-------------+--------------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| recovery_a  | recovery.img             | The additional Linux kernel plus other necessary files. It is used in system updates, on factory resets, etc.                                                                    |
+|-------------+--------------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| dbto_a      | dtbo.img                 | Device Tree Blobs Overlay — device descriptions for Linux kernel[fn:device_tree].                                                                                                       |
+|-------------+--------------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| vbmeta_a    | vbmeta.img               | Information to check the authenticity of the some partitions, before they will be loaded to the memory.                                                                          |
+|-------------+--------------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| super       | super.img_sparsechunk.0  | This and the next 8 files will be written to the area with dynamic partitions. I don't found any information about contents of these partitions. Additional information is [[https://source.android.com/docs/core/ota/dynamic_partitions/implement][here]]. |
+| super       | super.img_sparsechunk.1  |                                                                                                                                                                                  |
+| super       | super.img_sparsechunk.2  |                                                                                                                                                                                  |
+| super       | super.img_sparsechunk.3  |                                                                                                                                                                                  |
+| super       | super.img_sparsechunk.4  |                                                                                                                                                                                  |
+| super       | super.img_sparsechunk.5  |                                                                                                                                                                                  |
+| super       | super.img_sparsechunk.6  |                                                                                                                                                                                  |
+| super       | super.img_sparsechunk.7  |                                                                                                                                                                                  |
+| super       | super.img_sparsechunk.8  |                                                                                                                                                                                  |
+|-------------+--------------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| userdata    | /dev/null                | Partition with user data and applications. Should be cleared according to the instruction.                                                                                       |
+|-------------+--------------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| ddr         | /dev/null                | Looks like the device RAM will be mapped here. Should be cleared according to the instruction.                                                                                 |
+|-------------+--------------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+
+#+CAPTION: bootloader.img files and corresponding partitions description
+|------------+----------------+-----------------------------------------------------------------------------------------------|
+| Partition  | Binary file    | Description                                                                                   |
+|------------+----------------+-----------------------------------------------------------------------------------------------|
+| keymaster  | keymaster.mbn  | Some data for Qualcomm Secure (Verified) Boot.                                                |
+|------------+----------------+-----------------------------------------------------------------------------------------------|
+| hyp        | hyp.mbn        | [[https://en.wikipedia.org/wiki/Hypervisor][Hypervisor]] from Qualcomm. The Linux is running under this hypervisor.                         |
+|------------+----------------+-----------------------------------------------------------------------------------------------|
+| tz         | tz.mbn         | [[https://research.checkpoint.com/2019/the-road-to-qualcomm-trustzone-apps-fuzzing/][TrustZone]] firmware.                                                                           |
+|------------+----------------+-----------------------------------------------------------------------------------------------|
+| devcfg     | devcfg.mbn     | Not found any information about this partition.                                               |
+|------------+----------------+-----------------------------------------------------------------------------------------------|
+| storsec    | storsec.mbn    | Not found any information about this partition.                                               |
+|------------+----------------+-----------------------------------------------------------------------------------------------|
+| prov       | prov64.mbn     | Not found any information about this partition.                                               |
+|------------+----------------+-----------------------------------------------------------------------------------------------|
+| rpm        | rpm.mbn        | Resource Power Management — blob with firmware to control modem's power.                      |
+|------------+----------------+-----------------------------------------------------------------------------------------------|
+| abl        | abl.elf        | Android BootLoader — second stage loader to verify and load Android or recovery.img contents. |
+|------------+----------------+-----------------------------------------------------------------------------------------------|
+| uefisecapp | uefi_sec.mbn   | Not found any information about this partition.                                               |
+|------------+----------------+-----------------------------------------------------------------------------------------------|
+| qupfw      | qupfw.elf      | Not found any information about this binary file.                                             |
+|------------+----------------+-----------------------------------------------------------------------------------------------|
+| xbl_config | xbl_config.elf | Looks like there is something like HAL for the bootloader[fn:xbl].                                 |
+|------------+----------------+-----------------------------------------------------------------------------------------------|
+| xbl        | xbl.elf        | Described above.                                                                              |
+|------------+----------------+-----------------------------------------------------------------------------------------------|
+
+#+CAPTION: radio.img files and corresponding partitions description
+|-----------+--------------+----------------------------------------------------------------------------------------------------------------------------------|
+| Partition | Biinary file | Description                                                                                                                      |
+|-----------+--------------+----------------------------------------------------------------------------------------------------------------------------------|
+| modem     | NON-HLOS.bin | Blog with regional settings/frequences for the radio module.                                                                     |
+|-----------+--------------+----------------------------------------------------------------------------------------------------------------------------------|
+| fsg       | fsg.mbn      | Modem File System Golden copy. Contains firmware blob for the modem, calibration data and IMEI. Rewrite necessity is unknown[fn:fsg]. |
+|-----------+--------------+----------------------------------------------------------------------------------------------------------------------------------|
+| modemst1  | /dev/null    | Will be cleared while writing radio.img. Here will be saved fsg contents after first launch of the system.                       |
+|-----------+--------------+----------------------------------------------------------------------------------------------------------------------------------|
+| modemst2  | /dev/null    | modemst1 backup. Also will be cleared during radio.img flashing.                                                                 |
+|-----------+--------------+----------------------------------------------------------------------------------------------------------------------------------|
+
+The next steps were simple:
+1. I rebooted the phone into bootloader again using =adb= as I described above.
+2. Then I wrote the unpacked binaries to the phone with the next commands:
+   #+begin_example
+   fastboot flash partition gpt.bin
+   fastboot flash bootloader bootloader.img
+   fastboot reboot-bootloader
+   fastboot flash radio radio.img
+   fastboot reboot-bootloader
+   fastboot flash bluetooth BTFM.bin
+   fastboot flash dsp dspso.bin
+   fastboot flash logo logo.bin
+   fastboot flash boot boot.img
+   fastboot flash recovery recovery.img
+   fastboot flash dtbo dtbo.img
+   fastboot flash vbmeta vbmeta.img
+   fastboot flash super super.img_sparsechunk.0
+   fastboot flash super super.img_sparsechunk.1
+   fastboot flash super super.img_sparsechunk.2
+   fastboot flash super super.img_sparsechunk.3
+   fastboot flash super super.img_sparsechunk.4
+   fastboot flash super super.img_sparsechunk.5
+   fastboot flash super super.img_sparsechunk.6
+   fastboot flash super super.img_sparsechunk.7
+   fastboot flash super super.img_sparsechunk.8
+   fastboot erase userdata
+   fastboot erase ddr
+   fastboot oem fb_mode_clear
+   fastboot reboot
+   #+end_example
+
+My log of this process [[file:bathena-flash.txt][is here]].
+
+After this operation, I got a stock Android from Motorola, without any user
+programs or settings.
+
+* Lineage OS install
+:PROPERTIES:
+:CUSTOM_ID: lineage-os-install
+:END:
+
+To install Lineage OS I used [[https://xdaforums.com/t/flash-gsi-rom-arm64-ab.4524895/#post-88309263][this comment]] from the XDA forum — here the user
+HUN_Gyuszi wrote about the successful installation of LineageOS 20.0 with
+Google apps and without root on the Motorola Defy phone.
+
+I found the newer builds of LineageOS [[https://sourceforge.net/projects/andyyan-gsi/files/][in the repository]] from that
+comment. There were LineageOS 21.0 builds that I obviously wanted to
+install. But it wasn't that simple and I did some checking:
+- I don't want to use a build with Google apps installed
+  (=bgN=[fn:gsi_naming_conventions] code). But I installed it for testing and it
+  started and worked fine.
+- Then I tried to use build without Google apps and with root access (=bvS=). I
+  have root access, but I've "lost" the IMEI — the OS used the zero IMEI
+  instead of the valid one. As a result, the phone couldn't connect to the
+  cellular network.
+
+  Luckily, I saved my original IMEI. Unfortunately, it wasn't so easy to
+  forcibly set my IMEI in Android working on the Qualcomm Snapdragon
+  chipset. And I wasn't able to set my IMEI back. After that, I've checked the
+  "Barcodes" menu on the bootloader and found what my original IMEI still
+  stored somewhere in the phone.
+
+  Just to be sure, I reflashed the binaries from the [[* Rewriting the system
+  software]["Rewriting the system software"]] section and found that in stock
+  Android my original IMEI is still visible.
+
+  Looks like there is a bug in the =bvS= build that prevents the IMEI from being
+  read from the right place.
+- Finally, I've tested the build without Google apps and without root access
+  (=bvN= code). There were no problems and I'm using this build.
+
+The installation process itself is simple:
+1. As I wrote before, after reflashing all the system software my phone has
+   old stock Android. And I should get access the "Developer options", enable
+   USB debugging and reboot the phone with the command =adb reboot fastboot=
+   again.
+2. After rebooting the phone screen looks like this:
+   #+ATTR_HTML: :align center :alt Phone rebooted to fastbootd
+   [[file:fastbootd.jpg]]
+3. And now I could to flash the downloaded LineageOS image:
+   #+begin_example
+   motorola_defy/LineageOS % fastboot flash system lineage-21.0-20241118-UNOFFICIAL-arm64_bvN.img
+   #+end_example
+
+   The successfull log of operation [[file:lineage-os-flash.txt][is here]].
+4. /In my case/ the flashing process failed with the next error:
+   #+begin_example
+   motorola_defy/LineageOS % fastboot flash system lineage-21.0-20241118-UNOFFICIAL-arm64_bvN.img
+   Resizing 'system_a'                                FAILED (remote: 'Not enough space to resize partition')
+   fastboot: error: Command failed
+   #+end_example
+
+   The =system_a= partition with 2.3 Gb size is not enough for LineageOS. I
+   found the solution on the XDA Forum — I should delete the =product_a=
+   partition, resize the =system_a= partition up to 4.2 Gb and create a new
+   =product_a= partition with 1 byte size:
+   #+begin_example
+   motorola_defy/LineageOS % fastboot set_active a
+   Setting current slot to 'a'                        OKAY [  0.139s]
+   Finished. Total time: 0.140s
+   motorola_defy/LineageOS % fastboot delete-logical-partition product_a
+   Deleting 'product_a'                               OKAY [  0.045s]
+   Finished. Total time: 0.045s
+   motorola_defy/LineageOS % fastboot resize-logical-partition system_a 4200000000
+   Resizing 'system_a'                                OKAY [  0.006s]
+   Finished. Total time: 0.049s
+   motorola_defy/LineageOS % fastboot create-logical-partition product_a 1
+   Creating 'product_a'                               OKAY [  0.045s]
+   Finished. Total time: 0.045s
+   #+end_example
+
+   The =product_a= partition [[https://source.android.com/docs/core/architecture/partitions/product-partitions][is used by the stock Android OS]] to store various
+   vendor specific things. The LineageOS doesn't use this partition, so I
+   resized it to one byte.
+5. According to the forum instructions, I should to clear partitions
+   containing user data after the system installation:
+   #+begin_example
+   motorola_defy/LineageOS % fastboot -w
+   Erasing 'userdata'                                 OKAY [  0.511s]
+   Erase successful, but not automatically formatting.
+   File system type raw not supported.
+   wipe task partition not found: cache
+   Erasing 'metadata'                                 OKAY [  0.007s]
+   Erase successful, but not automatically formatting.
+   File system type raw not supported.
+   Finished. Total time: 0.527s
+   #+end_example
+6. Finally, I selected the menu item "Reboot system now", pressed the power
+   button and rebooted to my LineageOS.
+
+* Root user access
+:PROPERTIES:
+:CUSTOM_ID: android-root
+:END:
+
+This was easy — I just use the well-known [[https://topjohnwu.github.io/Magisk/][Magisk project]], which replaces the
+standard Linux =init= with it's own =magiskinit=. Users can get root-access on the
+phone by communicating with this =magiskinit=.
+
+Installing Magisk and getting the =root= access is extremely easy. I just follow
+[[https://topjohnwu.github.io/Magisk/install.html][the instructions]] and use the previously saved =boot_a= partition dump (the
+=boot.img= file).
+
+After installation, I hide Magisk from the other applications on the
+system. Also, I forbid access to =root= privileges for *all applications* on the
+phone. Except for some favorite apps, which I write about below.
+
+#+CAPTION: Magisk settings to hide itself from the other applications
+#+ATTR_HTML: :align center :width 50% :alt Magisk settings for hiding itself: Zygisk and DenyList
+[[file:magisk.png]]
+
+* 4G calls and SMS
+:PROPERTIES:
+:CUSTOM_ID: 4g-calls-sms
+:END:
+
+After some time I noticed the strange behaviour of the phone. When I connect
+to the mobile network via 4G instead of 3G, the phone stops receiving any SMS
+and calls.
+
+As I found out, the next things are happened. Before 4G, the calls were made
+the "old-fashioned way" — the phone connects to the base station through the
+radio and through the some telephone exchanges connects to the other caller's
+phone. That is, with the same principle that were usual landline phones used —
+when two callers were connected via [[https://en.wikipedia.org/wiki/Circuit_switching][circuit switch network]] — when the
+dedicated channel for phone call between two people was created[fn:pstn].
+
+But after 4G, things changed. The telephony became the [[https://en.wikipedia.org/wiki/Voice_over_IP][IP-telephony]] — there
+are no dedicated channels between different callers. The caller's voice is
+encoded and broken into packets, and these packets are sent to the other phone
+via the Internet. Like any other packets on the Internet.
+
+The standardized access to the such [[https://en.wikipedia.org/wiki/Packet_switching][packet-switching network]] for mobile phones
+is through [[https://en.wikipedia.org/wiki/IP_Multimedia_Subsystem][IP Multimedia Subsystem]] (IMS). There should be a special
+application on the phone to use IMS. This application is installed by default
+on the stock Android from Motorola (as in other manufacturers phones, I
+think). But there is no such application in my version of LineageOS, possibly
+because of licensing issues.
+
+Fortunately, there is an option to download an IMS application from the vendor
+(Qualcomm in my case): "Settings⇒Phh Treble Settings⇒IMS features".
+
+#+ATTR_HTML: :align center :width 50% :alt IMS features in the LineageOS, "Force IMS" is enabled
+[[file:ims.png]]
+
+After installing the necessary app via the "Install IMS APK for Qualcomm
+vendor" menu item and enabling the "Request IMS network" option — 4G calls and
+SMS started working as usual.
+
+* Disabling nonsensical popup when copying text
+:PROPERTIES:
+:CUSTOM_ID: disable-floating-shit-on-copy
+:END:
+
+I found the /another "innovation"/ from Google in Android 14. When I copy text
+to the clipboard, a nonsensical popup appears in the bottom left corner of the
+screen. It shows everything I copied as *plain-text*! Of course, when I copy
+password from [[https://www.passwordstore.org/][pass]] — this password is shown as plain-text in this popup.
+
+#+ATTR_HTML: :align center :width 25% :alt Clipboard bubble with "Hello" string inside
+[[file:clipboard_bubble.png]]
+
+This "feature" is sold under "user experience and convenience" — the user
+should be sure that something has been copied. But in my opinion, this feature
+was not created for "user comfort", but for the comfort of any perpetrator. It
+becomes easy to see the user's password just by looking at the bottom left
+corner of someone else's phone screen. Especially since this popup can't be
+disabled in the settings — there's no such item in the "Settings" menu.
+
+Luckily, I found that I can easily disable this popup on the phone with root
+access:
+1. Open the terminal.
+2. Switch to the root with =su=.
+3. Execute the command =appops set com.android.systemui READ_CLIPBOARD ignore=.
+
+All done! This popup is now and *forever* disabled and won't re-enable itself
+even after reboot.
+
+* Turn off USB debugging
+:PROPERTIES:
+:CUSTOM_ID: turn-off-usb-debugging
+:END:
+
+Pretty quickly, I found that USB debugging somehow ended up turned on after
+every reboot. Obviously, I don't want to leave a hole like that in the system
+for any trickster with an USB cable. In the case of an unlocked bootloader,
+enabling USB debugging will allow anyone to write anything to the phone's
+flash memory after rebooting into the bootloader.
+
+I've found the fixes for this bug in the LineageOS bugtracker. But they were
+for LineageOS [[https://review.lineageos.org/c/LineageOS/android_device_xiaomi_sdm845-common/+/253967][version 16.0]] and [[https://review.lineageos.org/c/LineageOS/android_device_oneplus_sdm845-common/+/330486][version 19.1]] and only for Xiaomi phones. The
+"default solution" via =setprop persist.vendor.usb.config ""= command doesn't
+work for me — this option resets to ="adb"= after reboot. And USB debugging was
+still on.
+
+I looked for files, mentioned in the bugtracker records and found them in the
+=/vendor/= catalog:
+#+begin_example
+:/ # find / -type f -name init.qcom.usb.sh
+/vendor/bin/init.qcom.usb.sh
+:/ # find / -type f -name default.prop
+/vendor/default.prop
+#+end_example
+
+The =/vendor= catalog is the mountpoint for the =/dev/block/dm-5= device. Of
+course, I first tried to remount it in RW mode (unsuccessfully):
+#+begin_example
+:/ # mount | grep 'on /vendor'
+/dev/block/dm-5 on /vendor type ext4 (ro,seclabel,relatime)
+:/ # mount -o remount,rw /vendor
+'/dev/block/dm-5' is read-only
+#+end_example
+
+After that, I go to the =/etc/init= catalog to look at the system initialization
+scripts. There I found something like =systemd= unit files🤮 and tried to add a
+new file to disable USB debugging every time, when =persist.vendor.usb.config=
+equals to ="adb"=:
+#+begin_example
+on property:persist.vendor.usb.config="adb"
+    settings put global adb_enabled 0
+    setprop persist.vendor.usb.config ""
+#+end_example
+
+Unfortunately, the root filesystem was mounted in read-only mode, and I
+couldn't remount it with =mount -o remount,rw /=.
+
+Fortunately, when I tried to run the above two commands[fn:disable_usb] in the
+terminal, just in case — the problem was solved! USB debugging was disabled
+and didn't turn on even after rebooting.
+
+* Applications with root access
+:PROPERTIES:
+:CUSTOM_ID: root-apps
+:END:
+
+In this section I write about special applications that definitely need the
+root access on my phone.
+
+** Application stores
+:PROPERTIES:
+:CUSTOM_ID: appstores
+:END:
+
+First, it's naturally [[https://f-droid.org/][F-Droid]].
+
+#+ATTR_HTML: :align center :alt F-Droid main window
+[[file:f-droid.png]]
+
+The application doesn't need the =root= itself. But it is needed for the
+[[https://github.com/entr0pia/Fdroid-Priv][Fdroid-Priv]] Magisk extension. This extension allows me to install and update
+applications with a single tap, without the "Install this application?" popup.
+
+Second, there is [[https://f-droid.org/en/packages/com.aurora.store/][Aurora Store]] — the FOSS app to replace Google Play. Unlike
+Google Play this application doesn't show ads on every screen and is not
+overloaded with different screens and settings. There are only three tabs on
+the main screen:
+1. List of applications from Google Play.
+2. List of games from Google Play.
+3. List of installed apps to update.
+
+#+ATTR_HTML: :align center :width 50% :alt Aurora Store main window
+[[file:aurora-store.png]]
+
+Installing and updating applications from the Aurora Store with a single tap
+is easy:
+- Just add "[[https://apt.izzysoft.de/fdroid/][IzzyOnDroid F-Droid Repository]]" to the F-Droid.
+- Install the [[https://shizuku.rikka.app/][Shizuku]] application, which creates the standardized interface
+  for the =root= access.
+- Open the "Installation⇒Installation method" screen in the Aurora Store
+  settings and allow =root= access *once*.
+- On the next screen select "Shizuku" as the application installation method.
+
+  #+ATTR_HTML: :align center :width 50% :alt Installation methods from Aurora Store. Shizuku method is selected
+  [[file:aurora-store-shizuku.png]]
+
+Third there is [[https://f-droid.org/en/packages/dev.imranr.obtainium.fdroid/][Obtainium]] — it can download and install APKs from GitHub,
+GitLab, etc.
+
+#+ATTR_HTML: :align center :alt Obtainium main window with ForkGram, LawnIcons and Shattered Pixel Dungeon
+[[file:obtainium.png]]
+
+Some FOSS applications can only be installed through Google Play and don't
+exist in the F-Droid[fn:no-in-fdroid]. I prefer to install such applications via
+Obtainium, because I prefer to use Aurora Store only for proprietary
+applications.
+
+** Firewall (AFWall+)
+:PROPERTIES:
+:CUSTOM_ID: firewall
+:END:
+
+I am using [[https://f-droid.org/en/packages/dev.ukanth.ufirewall/][AFWall+]] as my firewall. It uses =iptables= as a backend and doesn't
+occupy the single VPN slot in the system, like the other Android firewalls
+(which operate without =root= access).
+
+#+ATTR_HTML: :align center :alt AFWall+ firewall main windows with two profiles: Default and special profile for some apps
+[[file:afwall.png]]
+
+AFWall+ provides a flexible set of Internet access rules for both system and
+userland applications. I'm able to prohibit Internet access for some apps
+completely, or prohibit only /some types/ of connections — WiFi, cellular,
+cellular while roaming, VPN and so on. As you can see from the screenshot
+above, there is profile support exists, so I created a separate profile with
+Internet access allowed for /some apps/ and enable it only when I need it.
+
+Sadly, there are also one drawback — AFWall+ (version 3.6.0) allows to export
+firewall rules to the file without any warning. But, when I want to import
+rules from file (to check my backup), then I found out that I need to pay
+money to the developer to unlock this feature. For now, I can't pay to the
+people in the outside world because MasterCard/Visa/PayPal/etc [[https://en.wikipedia.org/wiki/Discrimination_based_on_nationality][discriminate me
+based on my nationality and location]]😒.
+
+IMHO, the export screen lacks the notification text to warn the user of the
+need to pay to re-import exported rules.
+
+One nuance (I can't call it a drawback) you should know about: if you
+configure the firewall properly — by denying Internet access to everything not
+explicitly allowed by the rules — then checking for Internet access using the
+"knocking on Google servers after connecting to the network" method will not
+work. I didn't bother to find out which system process is responsible for this
+and how to change the address http://clients3.google.com/ to something more
+decent — and just disabled the captive portal check [[https://github.com/ukanth/afwall/wiki/FAQ#61-what-is-androids-captive-portal-check][according to the
+instructions in the AFWall+ FAQ]]. I can't say that this is an AFWall+
+drawback for me, but for other people — who knows?
+
+** System-wide ad blocker (AdAway)
+:PROPERTIES:
+:CUSTOM_ID: adblocker
+:END:
+
+Here I used the same principle as above — the ad blocker shouldn't use my
+single VPN slot. So I found an [[https://f-droid.org/en/packages/org.adaway/][AdAway]] that uses =root= access to modify the
+system =hosts= file with blacklists' data.
+
+#+ATTR_HTML: :align center :alt AdAway main window
+[[file:adaway.png]]
+
+I import some of my favorite blacklists into the app, such as well known [[https://someonewhocares.org/hosts/hosts][Dan
+Pollocks hosts file]] or [[https://raw.githubusercontent.com/mtxadmin/ublock/master/hosts.txt][the hosts file]] to block Russian-language ads.
+
+** AccA — to control accumulator (dis)charging
+:PROPERTIES:
+:CUSTOM_ID: acca
+:END:
+
+I have always been bothered by the "turbo charging" supported by my
+phone. This charging mode is activated every time I connect the phone to
+something relatively new. This "feature" can't be disabled in stock
+Android. And if it is enabled all the time — the battery is charged with
+higher current and overheats. Of course it charges faster but at the same time
+[[https://batteryuniversity.com/article/bu-808-how-to-prolong-lithium-based-batteries][the battery lifetime decreases]].
+
+And then I found an [[https://github.com/MatteCarra/AccA][AccA application]] with an [[https://github.com/VR-25/acc][acc daemon]]. The daemon can do all
+the necessary things:
+- it doesn't allow to charge the battery to 100%, it stops charging at 70%
+  (the default value)
+- it doesn't allow to use the battery in the last percent of the charge, the
+  phone will be switched off at 10% of the charge (the default value)
+- it can pause the charging process if the battery is heated up to 60°C, to
+  cool this thing down
+- it completely disables the "turbo charge" feature.
+
+The AccA is just the daemon frontend, which simplifies the installation and
+initial setup of the daemon.
+
+#+ATTR_HTML: :align center :alt AccA main window with battery realtime parameters
+[[file:acca.png]]
+
+I'm comfortable using the phone all day and charging it at night as usual,
+with the settings from the screenshot. If I need to quickly charge it to 100%
+and fully use the battery — there is a button "Charge once to #% without
+restrictions".
+
+** System theme color change (ColorBlendr)
+:PROPERTIES:
+:CUSTOM_ID: colorblendr
+:END:
+
+This simple application can change colors for the currently used theme. After
+some setup I created something like my favorite Solarized Light theme:
+
+#+ATTR_HTML: :align center :alt ColorBlendr main window
+[[file:colorblendr.png]]
+
+[[https://f-droid.org/en/packages/com.drdisagree.colorblendr/][Link to the ColorBlendr application]].
+
+** System cleaner (SD Maid 2/SE)
+:PROPERTIES:
+:CUSTOM_ID: sdmaid2se
+:END:
+
+I have used this app many times before. It helped me to clear the flash memory
+and the SD card of some garbage that fills up over time: application logs,
+empty catalogs, file duplicates, various caches, "remnants" of already deleted
+applications, etc.
+
+#+ATTR_HTML: :align center :alt SD Maid 2/SE main window
+[[file:sdmaid2se.png]]
+
+With the =root= access the SD Maid 2/SE capable to do the bigger things. It is
+able to delete the cached APKs of already installed apps, clear the system
+caches and logs, remove the old bug report files, etc.
+
+The SD Maid 2/SE has deleted nearly 10 Gb of garbage since the last few
+months. Otherwise, these garbage files just took up space on the flash
+memory.
+
+[[https://f-droid.org/en/packages/eu.darken.sdmse/][Link to the SD Maid 2/SE]].
+
+
+* Backups
+:PROPERTIES:
+:CUSTOM_ID: backups
+:END:
+
+#+begin_quote
+There are two types of people: those who do backups and those who will do
+backups.
+#+end_quote
+
+** Neo Backup
+:PROPERTIES:
+:CUSTOM_ID: neobackup
+:END:
+
+I use the FOSS [[https://f-droid.org/packages/com.machiav3lli.backup/][Neo Backup]] application to backup the phone.
+
+#+ATTR_HTML: :align center :alt Neo Backup application's backup tab with list of applications on it
+[[file:neobackup.png]]
+
+This application, of course, needs =root= access. And it can:
+1. Make backups of applications (APK files).
+2. Create backups of user data and settings for these applications.
+3. Compress the resulting files with zstd or gzip.
+4. Encrypt the resulting backup.
+
+In return, it puts a heavy IO load on the media used for the backup. This is
+why it is recommended to backup to the SD card — it can be easily swapped to
+the new one after end of life (instead of the internal flash memory).
+
+Backup of the [[https://eugene-andrienko.com/uses][the mine]] application takes nearly an hour with compression and
+encrypion enabled. The size of the resulting backup was nearly 3.6 Gb.
+
+** Flash memory backup
+:PROPERTIES:
+:CUSTOM_ID: flash-memory-backup
+:END:
+
+By the time, I thought about backup of the main partitions from
+flash. Ideally, this could be done with the =fastboot fetch= command. But
+suddenly I found out that this command is not supported on the phone side:
+
+#+begin_example
+phone_backup/fastboot % fastboot fetch partition gpt.bin
+(bootloader) max-fetch-size: not found
+fastboot: error: Unable to get max-fetch-size. Device does not support fetch command.
+#+end_example
+
+On the one hand, this prevents me from making a backup of the flash memory. On
+the other hand, this disallows /anyone/ to read the flash memory contents of my
+phone without disassembling it.
+
+* BUGS
+:PROPERTIES:
+:CUSTOM_ID: bugs
+:END:
+
+Of course there are bugs!
+
+- The "Phh Treble Settings⇒Misc features⇒Set rounded corner diameter" and "Phh
+  Treble Settings⇒Misc features⇒Set forced/faked rounded corners diameter"
+  settings don't work. After searching in the Internet, I found out that these
+  settings don't work for everyone.
+
+  Fortunately, this problem doesn't affect the usability of my phone. Only
+  were the next things that bothered me:
+  - The left part of the mobile network name in the notification panel on the
+    lock screen is slightly cropped.
+  - The small left part of the far left icon on the notification panel is also
+    cropped.
+  - The buttons at the bottom of the game panel in Shattered Pixel Dungeon are
+    also cropped in the album orientation.
+- The NFC doesn't work completely. There is no mention of NFC in the system
+  settings at all. I haven't researched this issue because I don't use the
+  NFC. I found the only one proper use of this technology — to pay with the
+  phone via Google/Apple Pay. But both companies participate in the
+  "discrimination based on nationality" party, so I can't use this technology
+  (the local substitute application: MirPay, works with different payment
+  terminals in 50% of cases — i.e. unusable).
+
+* Notes
+:PROPERTIES:
+:CUSTOM_ID: notes
+:END:
+
+[fn:device_tree] https://elinux.org/Device_Tree_Reference
+[fn:fsg] But netherless the =fastboot= clears this partition when flashing
+=radio.img=.
+[fn:xbl] https://xdaforums.com/t/location-and-function-of-xbl-elf-qupv3fw-elf-cmnlib-mbn-in-the-aosp-output-build.4351213/#post-88989497
+[fn:gsi_naming_conventions] [[https://github.com/phhusson/treble_experimentations/wiki/Frequently-Asked-Questions-(FAQ)#naming-conventions-that-some-gsi-buildermaintainer-uses][Naming conventions that some GSI builder/maintainer
+uses]]
+[fn:pstn] See the [[https://en.wikipedia.org/wiki/Public_switched_telephone_network][PSTN]] (Public switched telephone network) article.
+[fn:disable_usb]
+#+begin_example
+:/ # settings put global adb_enabled 0
+:/ # setprop persist.vendor.usb.config ""
+#+end_example
+[fn:no-in-fdroid] Probably because F-Droid requires reproducible builds or has
+[[https://f-droid.org/en/docs/Inclusion_Policy/][clear requirements]] for apps that can be published in it.

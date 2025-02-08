@@ -1,0 +1,1013 @@
+#+BEGIN_EXPORT html
+---
+layout: post
+title: LineageOS 21 на Motorola Defy (2021)
+category: it
+date: 2025-02-08
+lang: ru
+comments: false
+hidden:
+  - related_posts
+summary: Перепрошивка на OpenSource OS без GApps и получение рута на Motorola Defy (2021)
+tags: 
+image: /assets/static/header-lineageos.jpg
+banner:
+  image: /assets/static/header-lineageos.jpg
+  opacity: 0.4
+---
+#+END_EXPORT
+
+Вот уже около 3 лет я пользуюсь смартфоном [[https://www.gsmarena.com/motorola_defy_(2021)-10969.php][Motorola Defy (2021)]]. Это один из
+немногих защищённых телефонов с поддержкой стандарта [[https://en.wikipedia.org/wiki/IP_code#Code_breakdown][IP68]], который не
+выделяется своей толщиной и влезает в обычный карман. Со стороны кажется будто
+это просто обычный телефон в чехле, но на самом деле это не чехол, а корпус
+самого телефона.
+
+За 3 года использования я много раз проверял его защищённость:
+- Ронял боком на кафельный пол и на асфальт.
+- Использовал под дождём и в условиях крайне высокой влажности.
+- Ронял дисплеем вниз на кафельный пол.
+- Ронял дисплеем вниз на асфальт, прямо в лужу.
+
+Тем не менее единственное повреждение телефона — небольшая вмятина на углу,
+когда я уронил телефон выходя из машины.
+
+К сожалению, не могу похвалить теми же словами software внутри
+телефона. Внутри есть ненужное мне (но не удаляемое) приложение для просмотра
+прогнозов погоды от Motorola. И полный набор неудаляемых приложений от Google,
+который я либо не использую, либо в принципе не могу использовать, в силу
+недоступности соответствующих сервисов в РФ (например Google Pay).
+
+Также, после того как я вошёл в свой Google-аккаунт с телефона — магазин
+приложений Google Play сошёл с ума и начал устанавливать кучу ненужных мне
+российских приложений: Госуслуги, ВК, Одноклассники, чуть ли не все приложения
+Яндекса, MirPay и вроде бы даже какое-то приложение от СберБанка. К счастью,
+они устанавливались как обычные приложения и их было легко удалить.
+
+Большую часть времени я использовал FOSS-приложения из F-Droid и горя не
+знал. Но, как это обычно бывает, после того как прилетело очередное обновление
+от Google, начались проблемы. Иногда, при установке или обновления приложения
+показывалось примерно вот такое «предупреждающее» окно от Google Safety Net:
+
+#+CAPTION: 
+#+ATTR_HTML: :align center :width 25% :alt Google safety warning than installing applications from F-Droid
+[[file:google_play_protect.png]]
+
+В конечном итоге, подобное «заботливое» поведение Google мне надоело. Заодно,
+хотелось избавиться от ряда предустановленных приложений и получить
+возможность устанавливать и обновлять приложения из F-Droid нажатием одной
+кнопки, без постоянно всплывающего диалогового окна от Android: «а вы точно
+хотите установить это приложение?»
+
+Я знал, что можно получить всё желаемое, установив какую-нибудь опенсорсную
+сборку Android на телефон — главное чтобы она поддерживала железо телефона и
+предоставляла доступ к пользователю root. Поскольку телефон не очень
+популярный — [[https://grapheneos.org/][GrapheneOS]], [[https://postmarketos.org/][postmarketOS]] и прочие операционные системы, известные
+в узких кругах, не поддерживали его железо.
+
+К счастью, на форуме XDA Developers, [[https://xdaforums.com/f/motorola-defy-2021.12369/][в разделе]] посвящённом Motorola Defy
+(2021) нашлись кое-какие темы, которые могли мне помочь.
+
+* TOC                                                            :TOC_2_blog:
+- [[* Подготовка к перепрошивке телефона][Подготовка к перепрошивке телефона]]
+- [[* Разблокировка загрузчика][Разблокировка загрузчика]]
+- [[* Перезапись всего системного ПО][Перезапись всего системного ПО]]
+- [[* Установка Lineage OS][Установка Lineage OS]]
+- [[* Получение доступа к пользователю root][Получение доступа к пользователю root]]
+- [[* Звонки и СМС с 4G][Звонки и СМС с 4G]]
+- [[* Отключение всплывающей ерунды при копировании текста][Отключение всплывающей ерунды при копировании текста]]
+- [[* Отключение отладки по USB][Отключение отладки по USB]]
+- [[* Приложения, ради которых нужен root][Приложения, ради которых нужен root]]
+  - [[* Магазины приложений][Магазины приложений]]
+  - [[* Firewall (AFWall+)][Firewall (AFWall+)]]
+  - [[* System-wide блокировщик рекламы (AdAway)][System-wide блокировщик рекламы (AdAway)]]
+  - [[* AccA — управление зарядкой/разрядкой аккумулятора][AccA — управление зарядкой/разрядкой аккумулятора]]
+  - [[* Изменение цветов системной темы (ColorBlendr)][Изменение цветов системной темы (ColorBlendr)]]
+  - [[* SD Maid 2/SE — очистка системы от мусора][SD Maid 2/SE — очистка системы от мусора]]
+- [[* Резервное копирование][Резервное копирование]]
+  - [[* Neo Backup][Neo Backup]]
+  - [[* Резервное копирование flash-памяти телефона][Резервное копирование flash-памяти телефона]]
+- [[* BUGS][BUGS]]
+- [[* Примечания][Примечания]]
+
+* Подготовка к перепрошивке телефона
+:PROPERTIES:
+:CUSTOM_ID: preparations
+:END:
+
+В первую очередь, я сделал список нужных мне приложений на телефоне, чтобы
+установить их в новую ОС. Потом, забекапил важные для меня данные, благо
+практически все FOSS-приложения на телефоне позволяют сделать резервные копии
+пользовательских данных и настроек.
+
+Также, на всякий случай, я переписал на бумажку свой IMEI — впоследствии он не
+пригодился, но само наличие такой бумажки сохранило множество нервных клеток.
+
+Для перепрошивки со стокового Android'а на LineageOS потребовалась всего пара
+утилит, установленных на PC:
+1. [[https://developer.android.com/tools/adb][adb]] (=dev-util/android-tools= в Gentoo) — понадобится для доступа к
+   различным, скрытым от пользователя, настройкам, и для перезагрузки не в
+   основную ОС, а в различные сервисные программы, которые есть во флеш-памяти
+   телефона.
+2. [[https://en.wikipedia.org/wiki/Fastboot][fastboot]] (устанавливается в том же пакете, что и adb) — позволяет
+   перепрошивать флеш-память телефона.
+
+Для успешного выполнения одного из следующих шагов я также проверил модель
+телефона и код локализации в настройках. *NB!* Все действия ниже выполнялись для
+телефона модели XT2083-9 с локализацией RETEU!
+
+* Разблокировка загрузчика
+:PROPERTIES:
+:CUSTOM_ID: bootloader-unlock
+:END:
+
+По умолчанию, «с завода», Android-смартфоны поставляются с заблокированным
+загрузчиком — телефон не позволит перезаписать области флеш-памяти, содержащие
+операционную систему или сам загрузчик. С одной стороны это полезная штука,
+которая не позволит кому угодно записать что угодно в соответствующие области
+памяти, если он получил физический доступ к вашему телефону. С другой стороны,
+она же не позволит мне, как владельцу телефона, делать с ним всё, что я захочу.
+
+Мне пришлось разблокировать загрузчик, чтобы прошить LineageOS во
+флеш-память. Основные шаги перечислены вот по этой ссылке:
+https://source.android.com/docs/core/architecture/bootloader/locking_unlocking.
+
+Для начала, нужно было получить доступ к «Developer Options» в настройках. Тут
+всё, как обычно — я открыл «System⇒About Phone» и после какого-то количества
+тапов по версии Android'а в настройках я получил доступ к нужному пункту
+меню. Потом включил «USB debugging» через подменю: «System⇒Advanced⇒Developer
+options». Дальше мне надо было перезагрузить телефон в UI загрузчика вместо
+основной ОС:
+1. Телефон подключается к PC при помощи USB-кабеля.
+2. В шторке с уведомлениями надо ткнуть на «USB Preferences» и выбрать «Use
+   USB for: PTP».
+3. Всплывёт окно с предупреждением об отладочном подключении к PC — его надо
+   разрешить.
+4. Потом стоит проверить, что =adb= видит подключенный телефон:
+   #+begin_example
+   % adb devices
+   List of devices attached
+   ZY32DG32K2      device
+   #+end_example
+5. И наконец, телефон перезагружается командой: =adb reboot bootloader=.
+
+В результате, экран телефона отобразил вот такой интерфейс:
+
+#+CAPTION: Motorola Defy (2021), загруженный в bootloader
+#+ATTR_HTML: :align center :alt Motorola Defy (2021) in the bootloader mode
+[[file:bootloader.jpg]]
+
+Дальше в дело вступил =fastboot=. В моём случае эта утилита сначала не видела
+телефон. Но после изменения прав доступа на =/dev/bus/usb/001/018= всё
+заработало:
+
+#+begin_example
+% fastboot devices -l
+% lsusb
+Bus 001 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
+Bus 001 Device 002: ID 8087:0024 Intel Corp. Integrated Rate Matching Hub
+Bus 001 Device 003: ID 046d:c24e Logitech, Inc. G500s Laser Gaming Mouse
+Bus 001 Device 018: ID 22b8:2e80 Motorola PCS Fastboot bathena S
+% ls -l /dev/bus/usb/001/
+total 0
+crw-rw-r-- 1 root usb     189,  0 Dec 31 00:09 001
+crw-rw-r-- 1 root usb     189,  1 Dec 31 00:09 002
+crw-rw-r-- 1 root usb     189,  2 Dec 31 00:09 003
+crw-rw---- 1 root android 189, 17 Dec 31 17:28 018
+% sudo chown -R drag0n:drag0n /dev/bus/usb/001/018
+% fastboot devices
+ZY32DG32K2       fastboot
+#+end_example
+
+Чтобы неискушенные пользователи не разблокировали загрузчик по незнанию,
+получив таким образом менее защищённый телефон, а искушённые пользователи не
+могли делать с телефоном то что им хочется — различные производители требуют
+выполнять дополнительные шаги и связываться с ними для выполнения этого
+действия. В моём случае для разблокировки загрузчика требовался некий unlock
+code:
+
+#+begin_example
+% fastboot flashing unlock
+(bootloader) usage: fastboot oem unlock < unlock code >
+FAILED (remote: '')
+fastboot: error: Command failed
+% fastboot flashing get_unlock_ability
+(bootloader) use "oem get_unlock_data" and web portal
+(bootloader)     http://motorola.com/unlockbootloader
+OKAY [  0.001s]
+Finished. Total time: 0.001s
+% fastboot oem get_unlock_data
+(bootloader) Unlock data:
+(bootloader) ███████████████████████████████
+(bootloader) ███████████████████████████████
+(bootloader) ███████████████████████████████
+(bootloader) ███████████████████████████████
+(bootloader) ██████████████████
+OKAY [  0.017s]
+Finished. Total time: 0.017s
+#+end_example
+
+К счастью, Motorola не стала изобретать велосипед и просто сделала форму на
+сайте, которая принимает «unlock data» и высылает ключ разблокировки,
+уникальный для каждого конкретного телефона, на почту. К несчастью, ссылка,
+предоставленная командой =get_unlock_ability= не работала (как обычно), но после
+непродолжительного поиска в Интернете мне удалось найти нужную форму на
+американской версии сайта Motorola:
+https://en-us.support.motorola.com/app/standalone/bootloader/unlock-your-device-a. И
+через эту форму я смог получить письмо с кодом разблокировки.
+
+Ну а дальше просто разблокировал загрузчик командой:
+
+#+begin_example
+% fastboot oem unlock ███████████████████████████████
+(bootloader) Bootloader is unlocked!
+OKAY [ 22.503s]
+Finished. Total time: 22.503s
+#+end_example
+
+* Перезапись всего системного ПО
+:PROPERTIES:
+:CUSTOM_ID: system-software-reflash
+:END:
+
+Согласно инструкции по установке Lineage OS с форума XDA — первым делом мне
+нужно было скачать архив с «заводскими» дампами ряда разделов флеш-памяти для
+телефона — и прошить их. Как я подозреваю, это нужно как минимум для того,
+чтобы иметь у себя на жёстком диске тот же =boot.img=, что и во флеш-памяти
+телефона — этот файл понадобится для получения root'а на телефоне.
+
+Основываясь [[https://xdaforums.com/t/flash-stock-rom-via-fastboot.4524845/][на этом посте]] я нашёл [[https://www.getdroidtips.com/motorola-defy-2021-stock-firmware/][ссылку]] на подходящее для моей модели
+телефона (XT2083-9, build number RZD31.31) зеркало и внутри, по пути
+=/firmware/lenomola/2021/bathena/official/RETEU/=, был архив
+=XT2083-9_BATHENA_RETEU_11_RZD31.31_subsidy-DEFAULT_regulatory-XT2083-9-EUROPE-SAR_CFC.xml.zip=
+с дампами разделов флеш-памяти для телефона:
+
+#+begin_example
+% unzip XT2083-9_BATHENA_RETEU_11_RZD31.31_subsidy-DEFAULT_regulatory-XT2083-9-EUROPE-SAR_CFC.xml.zip
+Archive:  XT2083-9_BATHENA_RETEU_11_RZD31.31_subsidy-DEFAULT_regulatory-XT2083-9-EUROPE-SAR_CFC.xml.zip
+inflating: recovery.img            
+inflating: gpt.bin                 
+inflating: boot.img                
+inflating: dspso.bin               
+inflating: BTFM.bin                
+inflating: vbmeta.img              
+inflating: radio.img               
+inflating: dtbo.img                
+inflating: logo.bin                
+inflating: bootloader.img          
+inflating: super.img_sparsechunk.0  
+inflating: super.img_sparsechunk.1  
+inflating: super.img_sparsechunk.2  
+inflating: super.img_sparsechunk.3  
+inflating: super.img_sparsechunk.4  
+inflating: super.img_sparsechunk.5                  
+inflating: super.img_sparsechunk.6  
+inflating: super.img_sparsechunk.7  
+inflating: super.img_sparsechunk.8  
+inflating: flashfile.xml           
+inflating: servicefile.xml         
+extracting: slcf_rev_d_default_v1.0.nvm  
+inflating: regulatory_info_xt2083_9_europe_sar.png  
+inflating: signing-info.txt        
+inflating: BATHENA_RETAIL_RZD31.31_subsidy-DEFAULT_regulatory-XT2083-9-EUROPE-SAR_CFC.info.txt
+#+end_example
+
+Флеш-память телефона разбита на много разных разделов, часть из которых
+уникальна для разных моделей телефонов. По крайней мере в Motorola Defy (2021)
+можно посмотреть список разделов, перезагрузив телефон в bootloader и выполнив
+команду =fastboot oem partition=:
+
+#+begin_example
+~ % fastboot oem partition
+(bootloader) xbl_a: offset=65536KB, size=5120KB
+(bootloader) xbl_b: offset=70656KB, size=5120KB
+(bootloader) xbl_config_a: offset=75776KB, size=128KB
+(bootloader) xbl_config_b: offset=75904KB, size=128KB
+(bootloader) tz_a: offset=76032KB, size=4096KB
+(bootloader) tz_b: offset=80128KB, size=4096KB
+(bootloader) rpm_a: offset=84224KB, size=512KB
+(bootloader) rpm_b: offset=131072KB, size=512KB
+(bootloader) hyp_a: offset=196608KB, size=512KB
+(bootloader) hyp_b: offset=197120KB, size=512KB
+(bootloader) cmnlib_a: offset=197632KB, size=512KB
+(bootloader) cmnlib_b: offset=198144KB, size=512KB
+(bootloader) cmnlib64_a: offset=198656KB, size=512KB
+(bootloader) cmnlib64_b: offset=199168KB, size=512KB
+(bootloader) keymaster_a: offset=199680KB, size=512KB
+(bootloader) keymaster_b: offset=200192KB, size=512KB
+(bootloader) prov_a: offset=200704KB, size=256KB
+(bootloader) prov_b: offset=200960KB, size=256KB
+(bootloader) abl_a: offset=201216KB, size=1024KB
+(bootloader) abl_b: offset=202240KB, size=1024KB
+(bootloader) uefisecapp_a: offset=203264KB, size=2048KB
+(bootloader) uefisecapp_b: offset=205312KB, size=2048KB
+(bootloader) devcfg_a: offset=207360KB, size=128KB
+(bootloader) devcfg_b: offset=207488KB, size=128KB
+(bootloader) qupfw_a: offset=207616KB, size=80KB
+(bootloader) qupfw_b: offset=207696KB, size=80KB
+(bootloader) storsec_a: offset=207776KB, size=128KB
+(bootloader) storsec_b: offset=207904KB, size=128KB
+(bootloader) ddr: offset=208032KB, size=1024KB
+(bootloader) modem_a: offset=209056KB, size=184320KB
+(bootloader) modem_b: offset=393376KB, size=184320KB
+(bootloader) bluetooth_a: offset=577696KB, size=1024KB
+(bootloader) bluetooth_b: offset=578720KB, size=1024KB
+(bootloader) dsp_a: offset=579744KB, size=65536KB
+(bootloader) dsp_b: offset=645280KB, size=65536KB
+(bootloader) boot_a: offset=710816KB, size=98304KB
+(bootloader) boot_b: offset=809120KB, size=98304KB
+(bootloader) dtbo_a: offset=907424KB, size=24576KB
+(bootloader) dtbo_b: offset=932000KB, size=24576KB
+(bootloader) recovery_a: offset=983040KB, size=102400KB
+(bootloader) recovery_b: offset=1085440KB, size=102400KB
+(bootloader) ssd: offset=1245184KB, size=8KB
+(bootloader) utags: offset=1310720KB, size=512KB
+(bootloader) utagsBackup: offset=1311232KB, size=512KB
+(bootloader) kpan: offset=1311744KB, size=8192KB
+(bootloader) dhob: offset=1319936KB, size=32KB
+(bootloader) msadp: offset=1376256KB, size=256KB
+(bootloader) persist: offset=1441792KB, size=32768KB
+(bootloader) prodpersist: offset=1474560KB, size=8192KB
+(bootloader) metadata: offset=1482752KB, size=16384KB
+(bootloader) misc: offset=1499136KB, size=1024KB
+(bootloader) frp: offset=1500160KB, size=512KB
+(bootloader) cid: offset=1507328KB, size=128KB
+(bootloader) logo_a: offset=1507456KB, size=16384KB
+(bootloader) logo_b: offset=1523840KB, size=16384KB
+(bootloader) carrier: offset=1572864KB, size=16384KB
+(bootloader) devinfo: offset=1638400KB, size=4KB
+(bootloader) apdp: offset=1638404KB, size=256KB
+(bootloader) spunvm: offset=1703936KB, size=8192KB
+(bootloader) logfs: offset=1769472KB, size=8192KB
+(bootloader) vbmeta_a: offset=1777664KB, size=64KB
+(bootloader) vbmeta_b: offset=1777728KB, size=64KB
+(bootloader) vbmeta_system_a: offset=1777792KB, size=64KB
+(bootloader) vbmeta_system_b: offset=1777856KB, size=64KB
+(bootloader) limits: offset=1777920KB, size=4KB
+(bootloader) uefivarstore: offset=1777924KB, size=512KB
+(bootloader) modemst1: offset=1835008KB, size=2560KB
+(bootloader) modemst2: offset=1837568KB, size=2560KB
+(bootloader) fsg_a: offset=1840128KB, size=65536KB
+(bootloader) fsg_b: offset=1905664KB, size=65536KB
+(bootloader) fsc: offset=1971200KB, size=128KB
+(bootloader) hw: offset=2031616KB, size=8192KB
+(bootloader) sp: offset=2097152KB, size=8192KB
+(bootloader) padA: offset=2105344KB, size=640KB
+(bootloader) super: offset=2105984KB, size=11631616KB
+(bootloader) padB: offset=13737600KB, size=384KB
+(bootloader) userdata: offset=13737984KB, size=47333359KB
+(bootloader) system_a: offset=2105984KB, size=2376024KB
+(bootloader) system_b: offset=2105984KB, size=165052KB
+(bootloader) vendor_a: offset=2105984KB, size=585820KB
+(bootloader) vendor_b: offset=2105984KB, size=0KB
+(bootloader) product_b: offset=2105984KB, size=0KB
+(bootloader) product_a: offset=2105984KB, size=4KB
+OKAY [  0.015s]
+Finished. Total time: 0.015s
+#+end_example
+
+К счастью, не все эти разделы мне нужно было перезаписывать. Во-первых,
+поскольку на устройстве используются [[https://source.android.com/docs/core/ota/virtual_ab][A/B-partitions]], в выводе =partition= многие
+разделы повторяются два раза: с суффиксами =_a= и =_b=. Для установки Lineage OS,
+согласно инструкциям, нужно будет использовать разделы с суффиксом =_a=.
+
+Во-вторых, согласно списку файлов из архива и списку команд, которые надо
+будет запускать для прошивки — придётся иметь дело лишь с:
+
+#+CAPTION: Описание разделов, в которые записываются бинарные дампы
+|-------------+-------------------------+----------------------------------------------------------------------------------------------------------------------------------------------|
+| Раздел(ы)   | Файл с дампом           | Описание                                                                                                                                     |
+|-------------+-------------------------+----------------------------------------------------------------------------------------------------------------------------------------------|
+|             | gpt.bin                 | General Partition Table (GPT) — грубо говоря это как MBR, только новее.                                                                      |
+|-------------+-------------------------+----------------------------------------------------------------------------------------------------------------------------------------------|
+|             | bootloader.img          | Разбивается на несколько файлов при прошивке, которые описаны ниже.                                                                          |
+|-------------+-------------------------+----------------------------------------------------------------------------------------------------------------------------------------------|
+|             | radio.img               | Аналогично.                                                                                                                                  |
+|-------------+-------------------------+----------------------------------------------------------------------------------------------------------------------------------------------|
+| bluetooth_a | BTFM.bin                | Бинарный блоб c firmware для Bluetooth.                                                                                                      |
+|-------------+-------------------------+----------------------------------------------------------------------------------------------------------------------------------------------|
+| dsp_a       | dspso.bin               | Бинарный блоб с firmware для графического ускорителя.                                                                                        |
+|-------------+-------------------------+----------------------------------------------------------------------------------------------------------------------------------------------|
+| logo_a      | logo.bin                | Картинки, которые отображаются на экране во время загрузки или зарядки выключенного телефона.                                                |
+|-------------+-------------------------+----------------------------------------------------------------------------------------------------------------------------------------------|
+| boot_a      | boot.img                | Здесь лежит основное ядро Linux, ramdisk и прочие файлы, нужные для загрузки основной системы.                                               |
+|-------------+-------------------------+----------------------------------------------------------------------------------------------------------------------------------------------|
+| recovery_a  | recovery.img            | Здесь лежит ещё одно ядро Linux, плюс ряд сопутствующих файлов, используемых при обновлении основной системы, factory reset и т.д.           |
+|-------------+-------------------------+----------------------------------------------------------------------------------------------------------------------------------------------|
+| dbto_a      | dtbo.img                | Device Tree Blobs Overlay — описание тех устройств для ядра Linux, которые оно неспособно обнаружить при загрузке[fn:device_tree].                  |
+|-------------+-------------------------+----------------------------------------------------------------------------------------------------------------------------------------------|
+| vbmeta_a    | vbmeta.img              | Информация для проверки системы и ряда других разделов на подлинность, перед загрузкой их в память.                                          |
+|-------------+-------------------------+----------------------------------------------------------------------------------------------------------------------------------------------|
+| super       | super.img_sparsechunk.0 | Этот и остальные 8 файлов записываются в раздел с dynamic partitions. Я не нашёл информации по тому, что внутри. Подробности реализации [[https://source.android.com/docs/core/ota/dynamic_partitions/implement][тут]]. |
+| super       | super.img_sparsechunk.1 |                                                                                                                                              |
+| super       | super.img_sparsechunk.2 |                                                                                                                                              |
+| super       | super.img_sparsechunk.3 |                                                                                                                                              |
+| super       | super.img_sparsechunk.4 |                                                                                                                                              |
+| super       | super.img_sparsechunk.5 |                                                                                                                                              |
+| super       | super.img_sparsechunk.6 |                                                                                                                                              |
+| super       | super.img_sparsechunk.7 |                                                                                                                                              |
+| super       | super.img_sparsechunk.8 |                                                                                                                                              |
+|-------------+-------------------------+----------------------------------------------------------------------------------------------------------------------------------------------|
+| userdata    | /dev/null               | Раздел с пользовательскими приложениями и данными. По инструкции очищается.                                                                  |
+|-------------+-------------------------+----------------------------------------------------------------------------------------------------------------------------------------------|
+| ddr         | /dev/null               | Судя по тому, что я нашёл в интернете, сюда мапится оперативная память устройства. Очищается согласно инструкции.                            |
+|-------------+-------------------------+----------------------------------------------------------------------------------------------------------------------------------------------|
+
+#+CAPTION: Описание файлов из bootloader.img и соответствующих им разделов
+|------------+----------------+--------------------------------------------------------------------------------------------------------------|
+| Раздел(ы)  | Файл с дампом  | Описание                                                                                                     |
+|------------+----------------+--------------------------------------------------------------------------------------------------------------|
+| keymaster  | keymaster.mbn  | Данные для работы Qualcomm Secure (Verified) Boot.                                                           |
+|------------+----------------+--------------------------------------------------------------------------------------------------------------|
+| hyp        | hyp.mbn        | [[https://en.wikipedia.org/wiki/Hypervisor][Гипервизор]] от Qualcomm, под которым запускается Linux.                                                       |
+|------------+----------------+--------------------------------------------------------------------------------------------------------------|
+| tz         | tz.mbn         | [[https://research.checkpoint.com/2019/the-road-to-qualcomm-trustzone-apps-fuzzing/][TrustZone]] firmware.                                                                                          |
+|------------+----------------+--------------------------------------------------------------------------------------------------------------|
+| devcfg     | devcfg.mbn     | Не нашёл информации по этому разделу.                                                                        |
+|------------+----------------+--------------------------------------------------------------------------------------------------------------|
+| storsec    | storsec.mbn    | Не нашёл информации по этому разделу.                                                                        |
+|------------+----------------+--------------------------------------------------------------------------------------------------------------|
+| prov       | prov64.mbn     | Не нашёл информации по этому разделу.                                                                        |
+|------------+----------------+--------------------------------------------------------------------------------------------------------------|
+| rpm        | rpm.mbn        | Resource Power Management — блоб для контроля питания модема.                                                |
+|------------+----------------+--------------------------------------------------------------------------------------------------------------|
+| abl        | abl.elf        | Android BootLoader — second stage загрузчик для верификации и загрузки Android или содержимого recovery.img. |
+|------------+----------------+--------------------------------------------------------------------------------------------------------------|
+| uefisecapp | uefi_sec.mbn   | Не нашёл информации по этому разделу.                                                                        |
+|------------+----------------+--------------------------------------------------------------------------------------------------------------|
+| qupfw      | qupfw.elf      | Не нашёл информации по этому бинарнику.                                                                      |
+|------------+----------------+--------------------------------------------------------------------------------------------------------------|
+| xbl_config | xbl_config.elf | Вероятно, это что-то вроде HAL для загрузчика[fn:xbl].                                                            |
+|------------+----------------+--------------------------------------------------------------------------------------------------------------|
+| xbl        | xbl.elf        | См. выше.                                                                                                    |
+|------------+----------------+--------------------------------------------------------------------------------------------------------------|
+
+#+CAPTION: Описание файлов из radio.img и соответствующих им разделов
+|-----------+---------------+---------------------------------------------------------------------------------------------------------------------------|
+| Раздел(ы) | Файл с дампом | Описание                                                                                                                  |
+|-----------+---------------+---------------------------------------------------------------------------------------------------------------------------|
+| modem     | NON-HLOS.bin  | Блоб с региональными настройками и частотами для радиомодуля.                                                             |
+|-----------+---------------+---------------------------------------------------------------------------------------------------------------------------|
+| fsg       | fsg.mbn       | Modem File System Golden copy. Firmware blob для модема, калибровочные данные и IMEI. Необходимость перезаписи неясна[fn:fsg]. |
+|-----------+---------------+---------------------------------------------------------------------------------------------------------------------------|
+| modemst1  | /dev/null     | Очищается при прошивке radio.img. Сюда будет сохранено содержимое раздела fsg при первом запуске системы.                 |
+|-----------+---------------+---------------------------------------------------------------------------------------------------------------------------|
+| modemst2  | /dev/null     | Резервная копия modemst1. Тоже очищается при прошивке radio.img.                                                         |
+|-----------+---------------+---------------------------------------------------------------------------------------------------------------------------|
+
+Ну а дальше всё было просто: 
+1. Я снова перезагрузил телефон в bootloader при помощи =adb=, как уже описывал
+   выше.
+2. Прошил распакованные бинарники в телефон командами:
+   #+begin_example
+   fastboot flash partition gpt.bin
+   fastboot flash bootloader bootloader.img
+   fastboot reboot-bootloader
+   fastboot flash radio radio.img
+   fastboot reboot-bootloader
+   fastboot flash bluetooth BTFM.bin
+   fastboot flash dsp dspso.bin
+   fastboot flash logo logo.bin
+   fastboot flash boot boot.img
+   fastboot flash recovery recovery.img
+   fastboot flash dtbo dtbo.img
+   fastboot flash vbmeta vbmeta.img
+   fastboot flash super super.img_sparsechunk.0
+   fastboot flash super super.img_sparsechunk.1
+   fastboot flash super super.img_sparsechunk.2
+   fastboot flash super super.img_sparsechunk.3
+   fastboot flash super super.img_sparsechunk.4
+   fastboot flash super super.img_sparsechunk.5
+   fastboot flash super super.img_sparsechunk.6
+   fastboot flash super super.img_sparsechunk.7
+   fastboot flash super super.img_sparsechunk.8
+   fastboot erase userdata
+   fastboot erase ddr
+   fastboot oem fb_mode_clear
+   fastboot reboot
+   #+end_example
+
+Мой лог прошивки лежит [[file:bathena-flash.txt][тут]].
+
+После этой операции на телефоне появился стоковый Android от Motorola, без
+каких-либо пользовательских программ и настроек.
+
+* Установка Lineage OS
+:PROPERTIES:
+:CUSTOM_ID: lineage-os-install
+:END:
+
+Здесь я опирался на [[https://xdaforums.com/t/flash-gsi-rom-arm64-ab.4524895/#post-88309263][вот этот комментарий]] с форума XDA — по ссылке пользователь
+HUN_Gyuszi писал про успешную установку Lineage OS версии 20.0 со приложениями
+Google и без root.
+
+[[https://sourceforge.net/projects/andyyan-gsi/files/][В репозитории]], на который он ссылался, я обнаружил более новые сборки — с
+Lineage OS 21.0 — и естественно захотел поставить именно её. Но здесь пришлось
+поэкспериментировать:
+- Версию с установленными приложениями Google (код
+  =bgN=[fn:gsi_naming_conventions]) я не хотел использовать по понятным
+  причинам. Но установил её для теста — она запустилась и прекрасно работала.
+- Потом я попробовал версию без приложений Google, но с разблокированным
+  пользователем root (=bvS=). Доступ к суперпользователю я получил, но зато
+  «потерял» IMEI телефона — операционная система использовала нулевой IMEI
+  вместо оригинального и в итоге телефон просто не подключался к мобильной
+  сети.
+
+  К счастью, я заранее сохранил оригинальный IMEI. К несчастью, подсунуть свой
+  IMEI в Android, работающий на чипсете Qualcomm Snapdragon, по-видимому не
+  так-то просто и у меня так и не получилось восстановить свой IMEI. Начав
+  подозревать, что пользоваться телефоном как телефоном больше не получится, я
+  решил на всякий случай перезагрузиться в bootloader и посмотреть в меню
+  «Barcodes» о каких серийных номерах он знает.
+
+  Как оказалось, bootloader по-прежнему «видит» мой оригинальный IMEI, а
+  значит оный не пропал бесследно из телефона. После этого, я снова прошил
+  бинарники из раздела [[* Перезапись всего системного ПО][«Перезапись всего системного ПО»]] в телефон и, после
+  загрузки оригинального Android'а, увидел что он спокойно отображает
+  правильные IMEI в настройках телефона.
+ 
+  По-видимому, в использованном мною образе LineageOS был какой-то баг, из-за
+  которого он и считал, что IMEI равен нулю и не считывал его из того места,
+  откуда его читал bootloader.
+- Ну и наконец я проэкспериментировал с последним оставшимся образом, в
+  котором нет приложений Google, но также нет и доступа к пользователю root
+  (код =bvN=). С ним уже не возникло никаких проблем и на нём я и остановился.
+
+Сам процесс установки был достаточно простым:
+1. Как я уже писал, после перезаписи всего системного ПО у меня был тот самый
+   старый Android, с которым телефон и был куплен. Здесь мне пришлось снова
+   получать доступ к «Developer options», включать отладку по USB и
+   перезапускать телефон командой =adb reboot fastboot=.
+2. После перезапуска экран телефона выглядел следующим образом:
+   #+ATTR_HTML: :align center :alt Phone rebooted to fastbootd
+   [[file:fastbootd.jpg]]
+3. Теперь можно было прошивать скачанный образ LineageOS следующей командой:
+   #+begin_example
+   motorola_defy/LineageOS % fastboot flash system lineage-21.0-20241118-UNOFFICIAL-arm64_bvN.img
+   #+end_example
+
+   Лог успешной прошивки можно посмотреть [[file:lineage-os-flash.txt][тут]].
+4. Но, /в моём случае/ запись образа в соответствующий раздел на Flash-памяти
+   прервалась с ошибкой:
+   #+begin_example
+   motorola_defy/LineageOS % fastboot flash system lineage-21.0-20241118-UNOFFICIAL-arm64_bvN.img
+   Resizing 'system_a'                                FAILED (remote: 'Not enough space to resize partition')
+   fastboot: error: Command failed
+   #+end_example
+
+   Раздел =system_а= на 2.3 Гб с небольшим не хватало для установки
+   LineageOS. Выход я нашёл на всё том же XDA Forum — нужно было удалить
+   раздел =product_a=, увеличить раздел =system_a= до 4.2 Гб и пересоздать раздел
+   =product_a= с размером в 1 байт:
+   #+begin_example
+   motorola_defy/LineageOS % fastboot set_active a
+   Setting current slot to 'a'                        OKAY [  0.139s]
+   Finished. Total time: 0.140s
+   motorola_defy/LineageOS % fastboot delete-logical-partition product_a
+   Deleting 'product_a'                               OKAY [  0.045s]
+   Finished. Total time: 0.045s
+   motorola_defy/LineageOS % fastboot resize-logical-partition system_a 4200000000
+   Resizing 'system_a'                                OKAY [  0.006s]
+   Finished. Total time: 0.049s
+   motorola_defy/LineageOS % fastboot create-logical-partition product_a 1
+   Creating 'product_a'                               OKAY [  0.045s]
+   Finished. Total time: 0.045s
+   #+end_example
+
+   Раздел =product_a= [[https://source.android.com/docs/core/architecture/partitions/product-partitions][используется стоковым Android'ом]] в качестве хранилища
+   всяких вендорско-специфичных вещей для ОС. LineageOS не использует его,
+   поэтому можно было спокойно уменьшать его до одного байта.
+5. После установки системы, по инструкции с форума, нужно было почистить
+   разделы с пользовательскими данными:
+   #+begin_example
+   motorola_defy/LineageOS % fastboot -w
+   Erasing 'userdata'                                 OKAY [  0.511s]
+   Erase successful, but not automatically formatting.
+   File system type raw not supported.
+   wipe task partition not found: cache
+   Erasing 'metadata'                                 OKAY [  0.007s]
+   Erase successful, but not automatically formatting.
+   File system type raw not supported.
+   Finished. Total time: 0.527s
+   #+end_example
+6. И наконец, я выбрал пункт «Reboot system now» в меню на экране, нажал на
+   кнопку блокировки экрана и перезагрузился в свежую LineageOS.
+
+* Получение доступа к пользователю root
+:PROPERTIES:
+:CUSTOM_ID: android-root
+:END:
+
+Здесь всё было крайне просто — я взял уже известный мне [[https://topjohnwu.github.io/Magisk/][проект Magisk]], который
+подменяет стандартный Linux'овый =init= своим =magiskinit=. Через «общение» с этим
+=init= и происходит получение root-прав на телефоне.
+
+Установка и получение доступа к =root= крайне просты — достаточно лишь следовать
+[[https://topjohnwu.github.io/Magisk/install.html][инструкции]] и иметь под рукой дамп раздела =boot_a= (=boot.img=) с телефона.
+
+После, через настройки приложения Magisk я скрыл его от остальных приложений
+системы и через настройку «Configure DenyList» запретил *всем приложениям* на
+телефонe получать доступ к пользователю =root=. Кроме нескольких избранных
+программ, о которых написано ниже...
+
+#+CAPTION: Настройки Magisk для скрытия своего присутствия от остальных приложений
+#+ATTR_HTML: :align center :width 50% :alt Magisk settings for hiding itself: Zygisk and DenyList
+[[file:magisk.png]]
+
+* Звонки и СМС с 4G
+:PROPERTIES:
+:CUSTOM_ID: 4g-calls-sms
+:END:
+
+Через какое-то время я заметил странное поведение телефона — стоит
+подключиться к сети оператора через 4G вместо 3G, как ко мне перестают
+приходить любые СМСки и до меня становится невозможно дозвониться.
+
+Как оказалось, дело здесь было в следующем. Раньше, вплоть до введения в строй
+4G, звонки происходили «по старинке» — телефон соединялся с базовой станцией
+по радиоканалу и дальше, через несколько АТС, с телефоном другого абонента, с
+которым я разговариваю в данный момент. То есть, примерно по тому же принципу,
+по которому раньше работали обычные стационарные телефоны — через [[https://en.wikipedia.org/wiki/Circuit_switching][сеть с
+коммутацией каналов]], когда для телефонного разговора сначала выделялся
+канал, а потом по нему передавался голос абонента[fn:pstn].
+
+Но, через некоторое время после введения в строй сетей 4G, всё
+поменялось. Телефония стала [[https://en.wikipedia.org/wiki/Voice_over_IP][IP-телефонией]] — теперь нет никакого выделенного
+канала между абонентами. Голос разбивается на пакеты, которые отправляются по
+различным маршрутам к другому абоненту, через Интернет. Собственно, как и
+любые другие пакеты в Интернете.
+
+Стандартизированный для мобильных телефонов доступ к такой [[https://en.wikipedia.org/wiki/Packet_switching][сети с пакетной
+коммутацией]], по которой происходит передача голоса, происходит через [[https://en.wikipedia.org/wiki/IP_Multimedia_Subsystem][IP
+Multimedia subsystem]] (IMS). На телефоне для этого должно быть установлено
+специальное приложение. В обычный стоковый Android от Motorola (как и в
+телефонах других производителей) оно, по-видимому, устанавливается по
+умолчанию. Но в моей версии LineageOS его не было, вероятно из-за проблем с
+лицензиями.
+
+К счастью, в настройках была опция для скачивания IMS-приложения от вендора:
+«Phh Treble Settings⇒IMS features».
+
+#+ATTR_HTML: :align center :width 50% :alt IMS features in the LineageOS, "Force IMS" is enabled
+[[file:ims.png]]
+
+После установки приложения через пункт меню «Install IMS APK for Qualcomm
+vendor» и включения опции «Request IMS network» — звонки и СМС через 4G начали
+работать как обычно.
+
+* Отключение всплывающей ерунды при копировании текста
+:PROPERTIES:
+:CUSTOM_ID: disable-floating-shit-on-copy
+:END:
+
+В Android 14 я обнаружил /очередную/ «инновацию» от Google. При копировании
+любого текста в буфер обмена, в левом нижнем углу всплывает прямоугольник со
+скопированным текстом. Естественно, при копировании пароля из [[https://www.passwordstore.org/][pass]] в буфер
+обмена — этот пароль показывается plain-text'ом в этом прямоугольнике.
+
+#+ATTR_HTML: :align center :width 25% :alt Clipboard bubble with "Hello" string inside
+[[file:clipboard_bubble.png]]
+
+Присутствие такой «фичи» как всегда обосновывается «удобством пользователя» —
+чтобы он был уверен в том, что что-то скопировалось. Но, как мне кажется, тут
+больше задумывались об удобстве любого злоумышленника, подглядывающего через
+плечо за происходящим на экране чужого телефона. Тем более что это всплывающее
+окно неотключаемо через настройки — соответствующего пункта меню просто нет.
+
+К счастью, после непродолжительного поиска я обнаружил, что на телефонах с
+root эта штука отключается очень просто:
+1. Надо открыть терминал.
+2. Получить root-доступ через =su=.
+3. Выполнить от рута команду =appops set com.android.systemui READ_CLIPBOARD
+   ignore=.
+
+Готово! Теперь эта штука будет отключена *навсегда* и не вернётся даже после
+перезагрузки.
+
+* Отключение отладки по USB
+:PROPERTIES:
+:CUSTOM_ID: turn-off-usb-debugging
+:END:
+
+Довольно быстро я обнаружил, что отладка по USB почему-то оказывается
+включённой после каждой перезагрузки. Естественно, негоже оставлять такую дыру
+в системе для любого ловкача с USB-кабелем. В случае с разблокированным
+загрузчиком включенная отладка по USB позволит записать что угодно во
+флеш-память телефона, после перезагрузки в bootloader.
+
+В баг-трекере LineageOS я нашёл исправления для этого бага в LineageOS [[https://review.lineageos.org/c/LineageOS/android_device_xiaomi_sdm845-common/+/253967][в
+версии 16.0]] и [[https://review.lineageos.org/c/LineageOS/android_device_oneplus_sdm845-common/+/330486][в 19.1]], но только для Xiaomi. «Стандартное решение» проблемы
+через =setprop persist.vendor.usb.config ""= — не помогло, эта опция всё равно
+сбрасывалась в ="adb"= и отладка по USB оказывалась снова включена после
+перезапуска телефона.
+
+Беглый поиск по файловой системе показал, что файлы, которые изменялись в
+задачах из багтрекера, есть и в моей файловой системе, в каталоге =/vendor/=:
+#+begin_example
+:/ # find / -type f -name init.qcom.usb.sh
+/vendor/bin/init.qcom.usb.sh
+:/ # find / -type f -name default.prop
+/vendor/default.prop
+#+end_example
+
+Каталог =/vendor= оказался точкой монтирования для устройства =/dev/block/dm-5= и
+я немедленно попробовал перемонтировать его в RW режиме, увы безуспешно:
+#+begin_example
+:/ # mount | grep 'on /vendor'
+/dev/block/dm-5 on /vendor type ext4 (ro,seclabel,relatime)
+:/ # mount -o remount,rw /vendor
+'/dev/block/dm-5' is read-only
+#+end_example
+
+После этого я полез в каталог =/etc/init=, где по идее должны лежать
+инициализационные скрипты. Там обнаружились файлы, отдалённо похожие на
+unit-файлы systemd. Сначала я попробовал просто добавить свой файл, который
+будет отключать отладку по USB каждый раз, когда её кто-то включает:
+#+begin_example
+on property:persist.vendor.usb.config="adb"
+    settings put global adb_enabled 0
+    setprop persist.vendor.usb.config ""
+#+end_example
+
+К сожалению, корневая ФС тоже оказалась смонтированной в read-only и
+отказалась перемонтироваться через =mount -o remount,rw /=.
+
+Но, когда я решил для теста выполнить в root-терминале пару
+команд[fn:disable_usb] для отключения режима отладки по USB и перезапустил
+телефон — у меня всё получилось. Отладка через USB отключилась и больше не
+включалась после перезагрузки.
+
+* Приложения, ради которых нужен root
+:PROPERTIES:
+:CUSTOM_ID: root-apps
+:END:
+
+Теперь, пара слов о приложениях, ради которых мне потребовалось получать
+доступ к пользователю =root= на телефоне.
+
+** Магазины приложений
+:PROPERTIES:
+:CUSTOM_ID: appstores
+:END:
+
+Во-первых, это естественно [[https://f-droid.org/][F-Droid]].
+
+#+ATTR_HTML: :align center :alt F-Droid main window
+[[file:f-droid.png]]
+
+Самому приложению =root= не нужен, но для Magisk-расширения [[https://github.com/entr0pia/Fdroid-Priv][Fdroid-Priv]] он
+просто необходим. Это расширение позволяет устанавливать и обновлять
+приложения одним нажатием кнопки, без постоянно всплывающего окна «Install
+this application?»
+
+Во-вторых, это [[https://f-droid.org/en/packages/com.aurora.store/][Aurora Store]] — FOSS замена Google Play. В отличие от Google
+Play это приложение не показывает рекламу на каждый чих и не перегружено
+вкладками и настройками. На главном экране есть всего три вкладки:
+1. список приложений из Google Play
+2. список игр оттуда же
+3. список локальных приложений, требующих обновления.
+
+#+ATTR_HTML: :align center :width 50% :alt Aurora Store main window
+[[file:aurora-store.png]]
+
+Научить Aurora Store устанавливать и обновлять приложения нажатием одной
+кнопки оказалось достаточно просто:
+- Сначала в F-Droid подключается репозиторий «[[https://apt.izzysoft.de/fdroid/][IzzyOnDroid F-Droid Repository]]».
+- Потом оттуда устанавливается приложение [[https://shizuku.rikka.app/][Shizuku]], которое обеспечивает
+  единообразный интерфейс для доступа к =root=.
+- В настройках Aurora Store надо было открыть экран «Installation⇒Installation
+  method» и разрешить приложению *однократный* доступ к =root=.
+- На этом экране надо выбрать «Shizuku» в качестве метода установки
+  приложений.
+
+  #+ATTR_HTML: :align center :width 50% :alt Installation methods from Aurora Store. Shizuku method is selected
+  [[file:aurora-store-shizuku.png]]
+
+В итоге, в Aurora Store приложения из Google Play будут устанавливаться по
+нажатию одной кнопки.
+
+В третьих, это [[https://f-droid.org/en/packages/dev.imranr.obtainium.fdroid/][Obtainium]] — он умеет загружать APK с GitHub, GitLab и прочих
+аналогичных сайтов.
+
+#+ATTR_HTML: :align center :alt Obtainium main window with ForkGram, LawnIcons and Shattered Pixel Dungeon
+[[file:obtainium.png]]
+
+Некоторые FOSS-приложения распространяются только через Google Play и их нет в
+F-Droid[fn:no-in-fdroid]. Так как я предпочитаю использовать Aurora Store только
+для загрузки всяких проприетарных приложений — я устанавливаю такие
+FOSS-приложения через Obtainium.
+
+** Firewall (AFWall+)
+:PROPERTIES:
+:CUSTOM_ID: firewall
+:END:
+
+В качестве firewall'а я использую [[https://f-droid.org/en/packages/dev.ukanth.ufirewall/][AFWall+]] — он умеет работать с iptables и не
+занимает единственный VPN-слот в системе, как это делают разные другие
+firewall'ы, не требующие root для своей работы.
+
+#+ATTR_HTML: :align center :alt AFWall+ firewall main windows with two profiles: Default and special profile for some apps
+[[file:afwall.png]]
+
+С этой штукой я могу достаточно гибко настраивать какие приложения, когда и
+каким образом могут выходить в интернет — можно запретить отдельным
+приложениям как полностью выходить в Интернет, так и пользоваться какими-то
+отдельными видами соединений: WiFi, мобильным интернетом, мобильным интернетом
+в роуминге, VPN и так далее. Плюс, как видно на скриншоте, есть поддержка
+профилей — можно завести отдельный профиль с разрешённым доступом в Интернет
+для определённых приложений и включать его только при необходимости.
+
+К сожалению, без минусов не обошлось — в текущей версии (3.6.0) AFWall+ даёт
+экспортировать созданные правила в файл без каких-либо предупреждений о том,
+что за импорт этого файла надо будет заплатить денег разработчику. ИМХО,
+честнее было бы предупредить пользователя об этом сразу же во время экспорта.
+
+Один нюанс (я не могу назвать это минусом), о котором нужно знать: если
+настраивать firewall как надо — запретив доступ в интернет всем, кому явно не
+разрешили это правилами — то проверка на наличие доступа в Интернет методом
+«стучимся на сервера Гугла после подключения к сети» работать не будет. Я не
+стал искать какой системный процесс отвечает за это и как поменять адрес
+http://clients3.google.com/ на какой-нибудь более приличный — и просто
+отключил captive portal check [[https://github.com/ukanth/afwall/wiki/FAQ#61-what-is-androids-captive-portal-check][по инструкции из FAQ AFWall+]].
+
+** System-wide блокировщик рекламы (AdAway)
+:PROPERTIES:
+:CUSTOM_ID: adblocker
+:END:
+
+[[https://f-droid.org/en/packages/org.adaway/][Эту штуку]] я выбирал по тому же принципу, что и AFWall+ — чтобы она могла
+работать, не занимая VPN-слот.
+
+#+ATTR_HTML: :align center :alt AdAway main window
+[[file:adaway.png]]
+
+В AdAway можно импортировать свои любимые списки для блокировки всяких
+ненужных и вредных хостов, например известный [[https://someonewhocares.org/hosts/hosts][Dan Pollocks hosts file]] или
+[[https://raw.githubusercontent.com/mtxadmin/ublock/master/hosts.txt][hosts-файл]] для блокировки русскоязычной рекламы.
+
+** AccA — управление зарядкой/разрядкой аккумулятора
+:PROPERTIES:
+:CUSTOM_ID: acca
+:END:
+
+Меня всегда беспокоило то, что мой телефон включает режим "turbo-зарядки"
+сразу же как только его подключают к чему-то современнее, чем старый зарядник
+с USB2.0. Отключить эту «фичу» нет возможности, а с ней аккумулятор заряжается
+с бОльшим, относительно нормального, током зарядки и сильно при этом
+греется. Конечно при этом он заряжается быстрее, но одновременно и [[https://batteryuniversity.com/article/bu-808-how-to-prolong-lithium-based-batteries][уменьшается
+срок службы аккумулятора]].
+
+И тут я нашёл [[https://github.com/MatteCarra/AccA][приложение AccA]] и связанный с ним [[https://github.com/VR-25/acc][демон acc]]. Демон умеет делать
+всё, что мне было надо:
+- он не даёт аккумулятору заряжаться до 100%, останавливая зарядку на 70% (по
+  умолчанию)
+- не даёт телефону работать на последних процентах заряда аккумулятора,
+  выключая систему по достижении 10% заряда (поведение по умолчанию)
+- умеет ставить зарядку на паузу, если аккумулятор нагрелся до 60°C, чтобы он
+  остыл и не перегревался
+- отключает turbo-зарядку на повышенных токах.
+
+Ну а AccA это просто фронтенд для демона, который упрощает его установку и
+настройку:
+
+#+ATTR_HTML: :align center :alt AccA main window with battery realtime parameters
+[[file:acca.png]]
+
+С настройками со скриншота я по-прежнему спокойно использую телефон весь день,
+а ночью он стоит на зарядке. Если мне понадобится быстро зарядить его до 100%
+и использовать аккумулятор на всю катушку — в Acca для этого есть кнопка
+«Charge once to #% without restrictions».
+
+** Изменение цветов системной темы (ColorBlendr)
+:PROPERTIES:
+:CUSTOM_ID: colorblendr
+:END:
+
+Это простенькое приложение умеет менять цвета используемой в системе
+темы. Немного поигравшись с ним, я смог сделать что-то вроде мой любимой
+Solarized Light темы на своём телефоне:
+
+#+ATTR_HTML: :align center :alt ColorBlendr main window
+[[file:colorblendr.png]]
+
+[[https://f-droid.org/en/packages/com.drdisagree.colorblendr/][Ссылка на приложение]].
+
+** SD Maid 2/SE — очистка системы от мусора
+:PROPERTIES:
+:CUSTOM_ID: sdmaid2se
+:END:
+
+Эту программу я начал использовать ещё давно — она позволяет очищать
+флеш-память и SD-карту телефона от всякого мусора, которым они со временем
+забиваются: логи приложений, пустые каталоги, дубликаты файлов, всякие кэши,
+«остатки» от уже удалённых приложений и т.д.
+
+#+ATTR_HTML: :align center :alt SD Maid 2/SE main window
+[[file:sdmaid2se.png]]
+
+С root-доступом SD Maid 2/SE способна на большее — на удаление закешированных
+APK, оставшихся после установки приложения, на очистку системных кэшей и
+логов, удаление bug report'ов и так далее.
+
+За несколько месяцев использования эта программа удалила мне около 10 Гб
+различных мусорных файлов, которые в противном случае просто занимали бы место
+на флэш-памяти.
+
+[[https://f-droid.org/en/packages/eu.darken.sdmse/][Ссылка на SD Maid 2/SE]].
+
+
+* Резервное копирование
+:PROPERTIES:
+:CUSTOM_ID: backups
+:END:
+
+#+begin_quote
+Люди делятся на два типа — на тех кто ещё не делает бекапы и на тех, кто уже
+делает бекапы.
+#+end_quote
+
+** Neo Backup
+:PROPERTIES:
+:CUSTOM_ID: neobackup
+:END:
+
+Для рядового резервного копирования я пользуюсь FOSS-приложением [[https://f-droid.org/packages/com.machiav3lli.backup/][Neo Backup]].
+
+#+ATTR_HTML: :align center :alt Neo Backup application's backup tab with list of applications on it
+[[file:neobackup.png]]
+
+Оно конечно же требует =root= для работы и умеет:
+1. Делать резервные копии приложений.
+2. Делать резервные копии данных и настроек у этих приложений.
+3. Сжимать бекапы через zstd или gzip.
+4. Шифровать их.
+
+Взамен, оно *очень сильно* нагружает своим IO тот носитель, который используется
+для резервного копирования. Поэтому, лучше делать бэкап на SD-карту, которую
+поменять легче, чем флеш-память с выработанным ресурсом записи в телефоне.
+
+Резервная копия [[https://eugene-andrienko.com/uses][всех моих]] установленных приложений заняла чуть меньше часа,
+при включённом сжатии и шифровании. И она вышла не сильно большой по
+современным меркам — всего около 3.6 Гб.
+
+** Резервное копирование flash-памяти телефона
+:PROPERTIES:
+:CUSTOM_ID: flash-memory-backup
+:END:
+
+В принципе, идеально было бы сделать ещё и резервную копию основных разделов с
+флэш-памяти телефона, при помощи =fastboot fetch=. Но внезапно оказалось, что на
+стороне телефона эта команда не поддерживается:
+
+#+begin_example
+phone_backup/fastboot % fastboot fetch partition gpt.bin
+(bootloader) max-fetch-size: not found
+fastboot: error: Unable to get max-fetch-size. Device does not support fetch command.
+#+end_example
+
+С одной стороны это не позволит мне сделать резервную копию. С другой стороны,
+это /никому/ не позволит прочитать содержимое флэш-памяти телефона без его
+разборки.
+
+* BUGS
+:PROPERTIES:
+:CUSTOM_ID: bugs
+:END:
+
+Естественно, не обошлось без багов!
+
+- Настройки «Phh Treble Settings⇒Misc features⇒Set rounded corner diameter» и
+  «Phh Treble Settings⇒Misc features⇒Set forced/faked rounded corners
+  diameter» не работают. После непродолжительного поиска в Интернете я выяснил
+  лишь то, что эти настройки ни у кого не работают.
+
+  К счастью, мне повезло и эта проблема не повлияла на удобство использования
+  телефона. Все, что она затронула:
+  - Кусок имени ОПСОСа в панели с уведомлениями на экране блокировки
+    обрезается слева.
+  - Небольшая часть самой левой иконки с нотификацией в этой же панели — тоже
+    обрезается слева.
+  - Кнопки на нижней панели в игре Shattered Pixel Dungeon немного вылезают за
+    пределы экрана, если пользоваться портретной ориентацией.
+- Не работает NFC, в системе нет ни одного упоминания о нём и даже нет плашки
+  «включить/выключить NFC» в панели уведомлений. Эту проблему я не исследовал,
+  потому что так и не нашёл, как использовать эту технологию.
+
+* Примечания
+:PROPERTIES:
+:CUSTOM_ID: notes
+:END:
+
+[fn:device_tree] https://elinux.org/Device_Tree_Reference
+[fn:fsg] Тем не менее =fastboot= очищает этот раздел при прошивке =radio.img=.
+[fn:xbl] https://xdaforums.com/t/location-and-function-of-xbl-elf-qupv3fw-elf-cmnlib-mbn-in-the-aosp-output-build.4351213/#post-88989497
+[fn:gsi_naming_conventions] [[https://github.com/phhusson/treble_experimentations/wiki/Frequently-Asked-Questions-(FAQ)#naming-conventions-that-some-gsi-buildermaintainer-uses][Naming conventions that some GSI builder/maintainer
+uses]]
+[fn:pstn] См. статью про [[https://en.wikipedia.org/wiki/Public_switched_telephone_network][PSTN]] (Public switched telephone network).
+[fn:disable_usb]
+#+begin_example
+:/ # settings put global adb_enabled 0
+:/ # setprop persist.vendor.usb.config ""
+#+end_example
+[fn:no-in-fdroid] Возможно, из-за того, что F-Droid требует reproducible builds
+или имеет [[https://f-droid.org/en/docs/Inclusion_Policy/][чёткие требования]] к приложениям, которые в нём можно публиковать.

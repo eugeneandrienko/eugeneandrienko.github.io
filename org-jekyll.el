@@ -213,7 +213,9 @@ PROPERTY-LIST is a list of properties from
     ;; Copy org-babel results to /_static catalog too:
     (mapc (lambda (filename)
             (copy-file filename (concat static-directory "/") t t t t))
-          (directory-files-recursively (concat org-jekyll-paths-base-path "/_articles") "\\.png$\\|\\.svg$" nil nil nil))))
+          (directory-files-recursively (concat org-jekyll-paths-base-path "/_articles")
+                                       "\\.png$\\|\\.svg$\\|\\.txt$"
+                                       nil nil nil))))
 
 ;; Function which creates new blog post:
 
@@ -377,7 +379,7 @@ PROPERTY-LIST is a list of properties from
                                                       "\\.org$\\|\\.gif$\\|\\.gpx$"
                                                       "\\|"
                                                       "\\.svg$\\|\\.txt$"))
-            (("/_articles") . "\\.org$\\|\\.png$")))
+            (("/_articles") . "\\.org$\\|\\.png$\\|\\.svg$\\|\\.txt$")))
     (make-process
      :name "jekyll-clean"
      :buffer "jekyll-clean"

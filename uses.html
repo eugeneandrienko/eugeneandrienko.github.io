@@ -7,7 +7,7 @@ hidden:
   - related_posts
 ---
 
-<p>Updated: 2024-12-30</p>
+<p>Updated: 2025-02-24</p>
 
 <p>Below are the lists of <i>things</i> I use every day.</p>
 
@@ -261,17 +261,60 @@ stores in 2013-2014:</p>
     <li><a href="https://librewolf.net/">LibreWolf</a> for web surfing. Inside
       the browser I use the next plugins:</li>
     <ul style="margin-bottom: 0px">
-      <li>Decentraleyes</li>
-      <li>Firefox Multi-Account Containers</li>
-      <li>Return YouTube Dislike</li>
-      <li>SponsorBlock for YouTube</li>
-      <li>StreetPass for Mastodon</li>
-      <li>Substitoot</li>
-      <li>Tab Stash</li>
-      <li>Tree Style Tab and TST Colored Tabs</li>
-      <li>uBlock Origin</li>
-      <li>Unhook</li>
-      <li>Video Resumer</li>
+      <li><a href="https://decentraleyes.org/">Decentraleyes</a> — to prevent
+      the browser from making requests to the CDN. Instead, the local cached
+      scripts/CSSes/whatever are used. It prevents various <i>bad actors</i>
+      from gathering information about my behavior through my requests to the
+      CDN.</li>
+      <li><a href="https://github.com/mozilla/multi-account-containers#readme">Firefox
+      Multi-Account Containers</a>. Allows me to open different sites in
+      different container tabs, so some <i>bad sites</i> don't get too much
+      information from the browser, because cookies and other things are
+      separated between containers.</li>
+      <li><a href="https://github.com/OhMyGuus/I-Still-Dont-Care-About-Cookies">I
+      still don't care about cookies</a> — really, those cookie banners
+      drive me crazy!</li>
+      <li><a href="https://addons.mozilla.org/en-US/firefox/addon/return-youtube-dislikes/">Return
+      YouTube Dislike</a> — I think that constant aversion to receiving any
+      valuable <b>and</b> negative information is the scourge of modern
+      society. How can I understand that content is worth consuming if I only
+      see likes but no dislikes?</li>
+      <li><a href="https://github.com/gildas-lormeau/SingleFile">SingleFile</a> —
+      to archive the last days of the Internet (the free and international
+      network that connected different people around the globe). This
+      extension saves the page and all of it's contents (CSS and JS scripts,
+      images) into a single HTML file that can be opened in any browser and
+      doesn't require some tricky daemons or programs to replay the saved
+      file.</li>
+      <li><a href="https://sponsor.ajay.app/">SponsorBlock for YouTube</a> —
+      because modern YouTube has a worse UX for viewing videos. This extension
+      removes (for now) all unnecessary interruptions from videos — intros,
+      sponsor blocks, various ads and other nonsense. It uses a
+      community-driven DB which is populated by the real people with
+      timestamps of such things to skip them.</li>
+      <li><a href="https://streetpass.social/">StreetPass for Mastodon</a> —
+      retrieves links to Mastodon profiles from websites.</li>
+      <li><a href="https://github.com/virtulis/substitoot">Substitoot</a> —
+      loads replies to someone's Mastodon post if the server hasn't loaded
+      them itself.</li>
+      <li><a href="https://josh-berry.github.io/tab-stash/">Tab Stash</a> —
+      lets me to store my 9999+ open tabs, which I will be read later 😁, on
+      the stash.</li>
+      <li><a href="http://piro.sakura.ne.jp/xul/_treestyletab.html.en">Tree
+      Style Tab</a>
+      and <a href="https://github.com/MurzNN/tst-colored-tabs">TST Colored
+      Tabs</a> — nice, feature-rich and colored vertical tabs for Firefox and
+      it's forks.</li>
+      <li><a href="https://github.com/gorhill/uBlock#ublock-origin">uBlock
+      Origin</a> — Ad blocker.</li>
+      <li><a href="https://unhook.app/">Unhook</a> — removes various unwanted
+      things in the YouTube interface, such as Shorts, related videos section,
+      trending tab and so on. As a result, any YouTube page becomes visually
+      cleaner and more usable.</li>
+      <li><a href="https://addons.mozilla.org/en-US/firefox/addon/video-resumer/">Video
+      Resumer</a> — this extension saves the current position on the opened
+      YouTube video and lets me to start from the same place after browser
+      restart.</li>
     </ul>
     <li>GIMP and <a href="https://rawtherapee.com/">RawTherapee</a> for photo
       editing</li>
@@ -341,7 +384,8 @@ stores in 2013-2014:</p>
 </p>
 
 <p>
-  So, I chose the software carefully. Most of them are open source.
+  So, I use the custom LineageOS build and chose the user applications
+  carefully. Most of them are open source.
 </p>
 
 <p>
@@ -357,14 +401,15 @@ stores in 2013-2014:</p>
       and don't send my data to Google.
     </li>
     <li>
-      For SMS: QKSMS. It allows me to make simple backups of my SMS and
+      For
+      SMS: <a href="https://f-droid.org/en/packages/org.fossify.messages/">Fossify
+      SMS Messenger</a>. It allows me to make simple backups of my SMS and
       doesn't distract me with notifications about new and unnecessary
-      features, about "secure" backup of my data to Google and so on.<br>
+      features, about "secure" backup of my data to Google and so on.
 
-      For now, this application is discontinued, but the community has forked
-      it
-      as <a href="https://f-droid.org/en/packages/dev.octoshrimpy.quik/">QUIK
-      SMS</a>.
+      Blacklisting the SMS based on the keywords is the killer feature that
+      allows me to block <b>a lot</b> of marketing messages if it's sender
+      uses the same number for valuable messages.<br>
     </li>
     <li>
       <a href="https://f-droid.org/en/packages/com.vincent_falzon.discreetlauncher/">Discreet
@@ -375,7 +420,7 @@ stores in 2013-2014:</p>
           100%; object-fit: cover" src="/assets/images/uses/discreet.jpg"/>
     </li>
     <li>
-      As an application store I
+      As a main application store I
       use <a href="https://f-droid.org">F-Droid</a>. And <a href="https://f-droid.org/en/packages/com.aurora.store/">Aurora
       Store</a> — an unofficial client for Google Play, without silly
       notifications about "let me scan all your applications for safe
@@ -391,9 +436,9 @@ stores in 2013-2014:</p>
       src="/assets/images/uses/unexpected_kbd.jpg"/>
     </li>
     <li>
-      Requirements for Mastodon client
-      Moshidon — <a href="https://microg.org/">microG</a> framework
-      and <a href="https://ntfy.sh/">nfty</a> for un-Googled notifications.
+      Requirement for Mastodon client
+      Moshidon — <a href="https://ntfy.sh/">nfty</a> needed for un-Googled
+      notifications.
     </li>
     <li>
       To use necessary but untrusted applications, that obviously send my data
@@ -420,12 +465,12 @@ stores in 2013-2014:</p>
     </li>
     <li>
       For file management I
-      use <a href="https://github.com/SimpleMobileTools/Simple-File-Manager">Simple
+      use <a href="https://f-droid.org/en/packages/org.fossify.filemanager/">Fossify
       File Manager<a/>.
 
-        <img alt="Simple File Manager main window"
-             style="height: 25%; width: 25%; object-fit: cover"
-             src="/assets/images/uses/simple_file_manager.jpg"/>
+        <img alt="Fossify File Manager main window" style="height: 25%; width:
+             25%; object-fit: cover"
+             src="/assets/images/uses/file_manager.png"/>
     </li>
     <li>
       To check the weather online I
@@ -436,27 +481,25 @@ stores in 2013-2014:</p>
            src="/assets/images/uses/quick_weather.jpg"/>
     </li>
     <li>
-      When I need to keep the screen on for a long time, I use the simple and
-      nice <a href="https://f-droid.org/en/packages/com.github.muellerma.coffee/">Coffee</a>
-      application, which adds a button to the system tray to keep the screen
-      on.
-
-      <img alt="Coffee tile button to keep the screen awake"
-           style="height: 25%; width: 25%; object-fit: cover"
-           src="/assets/images/uses/coffee.jpg"/>
-    </li>
-    <li>
       Finding the right music player was difficult. I'm used to organizing my
       music by folders with MP3 files in them, not by tags. But a lot of open
       source music players use tags as first class citizens.
 
-      In the end I found
-      the <a href="https://f-droid.org/en/packages/org.gateshipone.odyssey/">Odyssey</a>
-      player, which does what I want.
+      In the end I found the
+      a <a href="https://f-droid.org/en/packages/code.name.monkey.retromusic/">Retro
+      Music</a> player, which does what I want.
 
-      <img alt="Catalog with The HU band songs, opened inside Odyssey music player"
-           style="height: 25%; width: 25%; object-fit: cover"
-           src="/assets/images/uses/odyssey.jpg"/>
+      <img alt="List of music catalogs, opened in Retro Player" style="height:
+           50%; width: 50%; object-fit: cover"
+           src="/assets/images/uses/retro_player.png"/>
+
+      After a bit of simple configuration, the player's UI "forgets" about
+      tags and albums and just shows me a list of catalogs on the SD card with
+      a music files inside:
+
+      <img alt="Settings with disabled banners, suggestions and unwanted
+                library categories" style="height: 50%; width: 50%; object-fit: cover"
+           src="/assets/images/uses/retro_player_settings.png"/>
     </li>
     <li>
       I use
@@ -495,10 +538,11 @@ stores in 2013-2014:</p>
   Surfing the Web:
   <ul>
     <li>
-      Currently I use Mull as web browser. But it was discontinued a few days
-      ago, so I'm looking for a Firefox fork that is privacy-aware and doesn't
-      use shitty "AI features" or proprietary third-party services (Pocket)
-      like the mainline Firefox.
+      Currently I
+      use <a href="https://f-droid.org/en/packages/org.mozilla.fennec_fdroid/">Fennec</a>
+      as web browser. But I'm looking to
+      the <a href="https://github.com/ironfox-oss/IronFox">IronFox</a> which
+      is a fork of discontinued Mull browser…
     </li>
     <li>
       But as my "default Web browser" I use
@@ -518,9 +562,13 @@ stores in 2013-2014:</p>
       as my social networking client. They recently fixed the login to
       Pixelfed instances, so I can use one app for multiple Fediverse
       accounts, as it should be.<br>
-
-      And a YouTube client, patched by ReVanced, to avoid <b>a lot</b> of ads
-      in videos.
+    </li>
+    <li>
+      For online videos I
+      use <a href="https://f-droid.org/en/packages/org.polymorphicshade.tubular/">Tubular</a> —
+      it just works, gives me access to the YouTube and PeerTube videos, and
+      allows me to have the same experience as I have with the desktop browser
+      (built-in SponsorBlock, YouTube dislikes, etc).
     </li>
   </ul>
 </p>

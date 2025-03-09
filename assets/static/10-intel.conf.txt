@@ -1,0 +1,13 @@
+Section "Device"
+    Identifier  "Card0"
+    Driver      "intel"
+    BusID       "PCI:0:2:0"
+    Option      "Accel"        "true"
+    Option      "AccelMethod"  "SNA"
+    Option      "DRI"          "3"
+    Option      "TearFree"     "true"
+EndSection
+
+Section "Module"
+    Load        "dri3"
+EndSection

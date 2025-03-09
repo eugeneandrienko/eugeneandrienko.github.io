@@ -1,0 +1,81 @@
+##################
+# Kernel settings:
+##################
+kern.geom.label.disk_ident.enable="0"
+kern.geom.label.gptid.enable="0"
+kern.randompid=1
+kern.coredump=0
+kern.corefile=/dev/null
+kern.vt.enable_bell=0
+# Make desktop more responsive under high CPU load:
+kern.sched.preempt_thresh=224
+# Prevent shared memory from being swapped to disk:
+kern.ipc.shm_use_phys=1
+
+###################
+# Hardware setings:
+###################
+hw.psm.trackpoint.sensitivity=150
+hw.psm.trackpoint.upper_plateau=125
+hw.syscons.bell=0
+# Enable sleep:
+hw.pci.do_power_suspend=0
+hw.pci.do_power_nodriver=1
+hw.acpi.lid_switch_state=S3
+hw.acpi.sleep_button_state=S3
+# Override ACPI coretemp values:
+hw.acpi.thermal.user_override=1
+hw.acpi.thermal.tz0._PSV=80C
+hw.acpi.thermal.tz1._PSV=80C
+
+###############
+# VFS settings:
+###############
+vfs.usermount=1
+vfs.read_max=128
+vfs.zfs.min_auto_ashift=12 # 4 KB blocks
+# Increase ZFS transaction timeout to save battery
+vfs.zfs.txg.timeout="10"
+
+#############################
+# Network performance tuning:
+#############################
+kern.ipc.maxsockbuf=2097152
+kern.ipc.soacceptqueue=1024
+kern.ipc.somaxconn=1024
+net.inet.tcp.abc_l_var=44
+net.inet.tcp.cc.abe=1
+net.inet.tcp.cc.algorithm=htcp
+net.inet.tcp.cc.htcp.adaptive_backoff=1
+net.inet.tcp.cc.htcp.rtt_scaling=1
+net.inet.tcp.ecn.enable=1
+net.inet.tcp.fast_finwait2_recycle=1
+net.inet.tcp.fastopen.server_enable=1
+net.inet.tcp.finwait2_timeout=5000
+net.inet.tcp.initcwnd_segments=44
+net.inet.tcp.keepcnt=2
+net.inet.tcp.keepidle=62000
+net.inet.tcp.keepinit=5000
+net.inet.tcp.minmss=536
+net.inet.tcp.msl=2500
+net.inet.tcp.mssdflt=1448
+net.inet.tcp.nolocaltimewait=1
+net.inet.tcp.recvbuf_max=2097152
+net.inet.tcp.recvspace=65536
+net.inet.tcp.sendbuf_inc=65536
+net.inet.tcp.sendbuf_max=2097152
+net.inet.tcp.sendspace=65536
+net.local.stream.recvspace=65536
+net.local.stream.sendspace=65536
+
+####################################################
+# Switch virtual consoles back and forth on suspend:
+####################################################
+kern.vt.suspendswitch=0
+hw.acpi.sleep_delay=0
+hw.acpi.verbose=1
+
+#######################
+# Save datetime to RTC:
+#######################
+machdep.disable_rtc_set=0

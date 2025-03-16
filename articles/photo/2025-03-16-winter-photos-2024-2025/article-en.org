@@ -1,0 +1,54 @@
+#+BEGIN_EXPORT html
+---
+layout: post
+title: Winter photos (2024-2025)
+category: photo
+date: 2025-03-16
+lang: en
+comments: false
+hidden:
+  - related_posts
+image: /assets/static/header-winter-2024-2025.jpg
+banner:
+  image: /assets/static/header-winter-2024-2025.jpg
+  opacity: 0.6
+summary:
+tags:
+---
+#+END_EXPORT
+
+This winter I have photographed much less than usual — because of the mud on
+the roads, the temperature around -15°C…-20°C, the almost permanent absence of
+sunshine and the gray clouds that completely cover the sky —as much as
+possible motivates me to keep my nose out of the street.
+
+Fortunately, there were a couple of days with the sun:
+
+#+ATTR_HTML: :align center :alt Spruce branches with the sun shining through
+[[file:20241204_132006.jpg]]
+
+#+ATTR_HTML: :align center :alt Snow-covered green grass illuminated by the setting sun
+[[file:20241204_132404.jpg]]
+
+But for the most of the time (if we ignore the New Year decorations) it looked
+like this:
+
+#+ATTR_HTML: :align center :alt The line to enter the subway, the building lit up with orange lights, night all around. In the background there is a fir tree decorated with garlands
+[[file:20241218_172101.jpg]]
+
+The most pictures I've got were from the New Year's day:
+
+#+ATTR_HTML: :align center :alt An orange lamp illuminating a brick wall
+[[file:20241218_174246.jpg]]
+
+#+ATTR_HTML: :align center :alt Set of clear glasses
+[[file:20241218_192314.jpg]]
+
+#+ATTR_HTML: :align center :alt Set of guitar effects
+[[file:20241218_192334.jpg]]
+
+#+ATTR_HTML: :align center :alt Some sound equipment
+[[file:20241218_192339.jpg]]
+
+#+ATTR_HTML: :align center :alt Bike engine
+[[file:20241218_192437.jpg]]

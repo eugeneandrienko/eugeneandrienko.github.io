@@ -1,0 +1,1021 @@
+---
+layout: post
+title: My way to remove "Linuxisms" from FreeBSD
+category: it
+date: 2025-03-30
+lang: ru
+comments: false
+hidden:
+  - related_posts
+image: /assets/static/poudriere-header.png
+banner:
+  image: /assets/static/poudriere-header.png
+  opacity: 0.6
+summary: How I remove unwanted dependencies from FreeBSD packages
+tags: freebsd
+---
+<div class="outline-2">
+<h2>TOC&#xa0;&#xa0;&#xa0;<span class="tag"></span></h2>
+<div class="outline-text-2">
+<ul class="org-ul">
+<li><a href="#preamble">Preamble</a></li>
+<li><a href="#poudriere-installation">Poudriere installation</a></li>
+<li><a href="#removing-deps">Removing unwanted dependencies</a></li>
+<li><a href="#dewaylandization">More complex examples of deWaylandization</a>
+<ul class="org-ul">
+<li><a href="#flavors">Ports flavors</a></li>
+<li><a href="#patching-Makefile">Patching Makefile</a></li>
+</ul></li>
+<li><a href="#results-and-thoughts">Results and thoughts</a></li>
+<li><a href="#notes">Notes</a></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-preamble" class="outline-2">
+<h2 id="preamble">Preamble</h2>
+<div class="outline-text-2" id="text-preamble">
+<p>
+My everyday FreeBSD system has two good old components for graphics and
+sound — the X Server and the OSS. There are simple reasons to use these
+components — they are mature, they have tons of user documentation, use case
+examples, etc. I also like the way these things have been used in the FreeBSD
+world. Let me quote <a href="https://vermaden.wordpress.com/">vermaden</a>, who wrote well (about the OSS) in the <a href="https://vermaden.wordpress.com/2020/09/07/quare-freebsd/">Quare
+FreeBSD?</a> blogpost:
+</p>
+
+<blockquote>
+<p>
+Not many people expect from FreeBSD to shine in that department but it shines
+a lot here and not from yesterday but from decades. Remember when Linux got
+rid of the old OSS subsystem with one channel and came up with ‘great’ idea to
+write ALSA? I remember because I used Linux back then. Disaster is very polite
+word to describe Linux audio stack back then … and then PulseAudio came and
+whole Linux audio system got much worse.
+</p>
+
+<p>
+&#x2026;
+</p>
+
+<p>
+Lets get back to FreeBSD audio then. What FreeBSD offered? A whooping 256 OSS
+channels mixed live in kernel for low latency. Everything audio related just
+worked out of the box – and still works today.
+</p>
+</blockquote>
+
+<p>
+This is where I see the pattern. If in the Linux world there are many examples
+of throwing away software that has served people for years or decades and can
+(and should, I think) be updated to adapt to the changed reality (e.g.
+<code>ifconfig</code>). Then in the FreeBSD world such software just … gets the necessary
+updates and continues to be used.
+</p>
+
+<p>
+In my journey to install and use the simple system with the good old software
+I encountered some problems. Sometimes, when I install a simple program, like
+conky or dunst — the pkg tries to install Wayland as a dependency! Or
+PulseAudio (thankfully, there is no SystemD in the FreeBSD world). Of course,
+I <b>do not want</b> these things in my simple system based on the X server, OSS and
+good old initialization scripts.
+</p>
+
+<p>
+As stated <a href="https://mastodon.bsd.cafe/@TomAoki">@TomAoki@bsd.cafe</a> — some binary packages for FreeBSD have been built
+with the same dependencies that came from upstream — to minimize maintainer's
+work, which is obviously hard<sup><a id="fnr.tomaoki" class="footref" href="#fn.tomaoki" role="doc-backlink">1</a></sup>.
+</p>
+
+
+<div class="figure">
+<p><img src="/assets/static/tomaoki.png" alt="Screenshot of TomAoki reply in Mastodon" align="center" />
+</p>
+</div>
+
+<p>
+As a result, some packages came to my machine with unwanted dependencies or
+compile-time options that were not ideal for me. For example, the native for
+BSD <code>sndio</code> sound server is disabled by default in the
+<code>mutlimedia/audacious-plugins</code> port. But those "linuxisms" — like PulseAudio and
+PipeWire — are enabled🤷‍♂️.
+</p>
+
+
+<div class="figure">
+<p><img src="/assets/static/audacious-plugins.png" alt="Compile time configuration for audacious-plugins with pulseaudio and pipewire options enabled" align="center" />
+</p>
+</div>
+
+<p>
+I was very surprised to see the <code>pulseaudio</code> process in the top 5 CPU consuming
+processes while listening to my music. My sound system using OSS and sndio,
+why is PulseAudio here?!🤔 After that I started to think about removing
+unwanted dependencies from my packages completely…
+</p>
+
+<p>
+Or another example — when I install some graphical application based on the
+QT6 or GTK3/GTK4 — not only the necessary graphical libraries are installed as
+dependencies but also a lot of Wayland stuff. Even if my system doesn't use
+Wayland, I have packages of <i>these things</i> installed:
+</p>
+
+<pre class="example">
+% pkg info -a | /usr/bin/grep wayland
+qt6-wayland-6.8.2              Qt6 wrapper for Wayland
+wayland-1.23.1                 Core Wayland window system code and protocol
+wayland-protocols-1.39         Wayland protocols
+</pre>
+
+<p>
+At some point, I decided to override this and get my versions of packages
+without unwanted dependencies. A naive approach — just build some packages
+without unwanted compile-time options via the Ports infrastructure — almost
+works for me.
+</p>
+
+<p>
+Almost. When the corresponding package from the FreeBSD repository was
+updated — it overwrites my custom package, built with ports. A solution I
+found — were far from ideal solution. I can lock my package so that it will
+not be updated with the same binary package from the repository. And
+temporarily unlock it when I want to update the <i>my</i> package via the ports
+infrastructure.
+</p>
+
+<p>
+In the FreeBSD Handbook, section 4.6 <a href="https://docs.freebsd.org/en/books/handbook/ports/#ports-poudriere">"Building Packages with poudriere"</a>, there
+was another way to accomplish my task without such update problems. I can
+build my own local repository with some packages that have PulseAudio/Wayland
+dependencies removed. And this is not a some hacky thing — as far as I can
+see, the poudriere used by the FreeBSD maintainers to build the binary
+packages:
+</p>
+
+<pre class="example">
+% pkg info emacs
+...
+Annotations    :
+        FreeBSD_version: 1401000
+        build_timestamp: 2025-02-27T01:04:32+0000
+        built_by       : poudriere-git-3.4.2
+</pre>
+
+<p>
+And it works pretty simple — poudriere just reuses existing FreeBSD
+infrastructure to build packages. Package sources taken from <a href="https://docs.freebsd.org/en/books/handbook/ports/#ports-using">ports</a> (via
+git/https), binary packages downloaded from existing FreeBSD repositories via
+the <a href="https://docs.freebsd.org/en/books/handbook/ports/#pkgng-intro">pkg</a>, build process itself runs inside the <a href="https://docs.freebsd.org/en/books/handbook/jails/">jail</a> and all corresponding files
+can be stored in the separate <a href="https://docs.freebsd.org/en/books/handbook/zfs/">ZFS</a> dataset — so the dataset with the root
+filesystem will not be polluted by the build-time dependencies or building
+artifacts, like object files or logs.
+</p>
+
+<p>
+At the end, poudriere will create the local repository with packages. The same
+repository as the main FreeBSD repository, but <i>local</i> and with only necesary
+packages. Poudriere doesn't force me to build the whole system on my machine.
+</p>
+
+<p>
+The main selling point is that all packages installed from this repository
+will be updated through <b>this</b> repository. They will not be overwritten by
+updates from the main FreeBSD repository. This is because the <code>pkg</code> adds the
+annotation with repository name to the installed package and uses it when
+updating:
+</p>
+
+<pre class="example">
+% pkg info -A conky
+conky-1.22.1:
+        FreeBSD_version: 1402000
+        build_timestamp: 2025-03-23T14:58:18+0000
+        built_by       : poudriere-git-3.4.2
+        cpe            : cpe:2.3:a:conky:conky:1.22.1:::::freebsd14:x64
+        port_checkout_unclean: no
+        port_git_hash  : 6bcf1e971
+        ports_top_checkout_unclean: no
+        ports_top_git_hash: 3fe34c578
+        repo_type      : binary
+        repository     : LocalRepo
+</pre>
+
+<p>
+The second selling point: I can setup all these machinery on a separate disk,
+which I mainly use for QEMU/bhyve VMs and other <i>big things</i>. This way, my build
+infrastructure doesn't take up space on the root filesystem.
+</p>
+</div>
+</div>
+<div id="outline-container-poudriere-installation" class="outline-2">
+<h2 id="poudriere-installation">Poudriere installation</h2>
+<div class="outline-text-2" id="text-poudriere-installation">
+<p>
+Before I welcomed poudriere to my laptop, I created a separate dataset for
+poudriere-related files:
+</p>
+
+<pre class="example">
+# zfs create hdd/poudriere
+# zfs set compression=gzip hdd/poudriere
+</pre>
+
+<p>
+The only files, which are stored in the root filesystem are configuration
+files:
+</p>
+<ul class="org-ul">
+<li>Build options for the ports — stored in the
+<code>/usr/local/etc/poudriere.d/jail-port-set-options/</code>.</li>
+<li>Blacklist for unwanted ports: <code>/usr/local/etc/poudriere.d/blacklist</code>.</li>
+<li><code>make.conf</code> for poudriere jails: <code>/usr/local/etc/poudriere.d/make.conf</code>.</li>
+<li>And the poudriere configuration itself, of course.</li>
+</ul>
+
+<p>
+Then, after installing the poudriere package, I slightly changed the default
+configuration file and added the following options to use <code>/hdd/poudriere/</code>
+dataset as the main path for both the jail and the local repository, not my
+main dataset with the root filesystem:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-shell"><span style="color: #268bd2;">ZPOOL</span>=hdd
+<span style="color: #93a1a1;">#</span><span style="color: #93a1a1;">NO_ZFS=yes</span>
+<span style="color: #268bd2;">ZROOTFS</span>=/poudriere
+<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">The directory where poudriere will store jails and ports</span>
+<span style="color: #268bd2;">BASEFS</span>=/hdd/poudriere
+<span style="color: #268bd2;">TIMESTAMP_LOGS</span>=yes
+<span style="color: #268bd2;">MAX_EXECUTION_TIME</span>=259200
+</pre>
+</div>
+
+<p>
+Also, I increased max time of build process to 3 days — because 1 day may not
+be enough to build <i>big things</i>. And because it is very sad to spend 24 hours
+for building and receive nothing as a result😟.
+</p>
+
+<p>
+By the way, I don't want to build LLVM, or Rust, or other build-time
+dependencies from sources — I'm fine with the packaged versions. So to don't
+spend a time for it, I instruct poudriere to download and use binary packages
+for these dependencies:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-shell"><span style="color: #268bd2;">PACKAGE_FETCH_BRANCH</span>=quarterly
+<span style="color: #268bd2;">PACKAGE_FETCH_BLACKLIST</span>=<span style="color: #2aa198;">"pipewire* pulseaudio* wayland*"</span>
+<span style="color: #268bd2;">PACKAGE_FETCH_WHITELIST</span>=<span style="color: #2aa198;">"gcc* binutils coreutils mpfr nasm mpdecimal bison</span>
+<span style="color: #2aa198;">                         llvm* libclc-llvm* spirv-llvm-translator-llvm*</span>
+<span style="color: #2aa198;">                         rust node* lua* perl* python* ruby* ghc* tcl86</span>
+<span style="color: #2aa198;">                         bison gmake gsed gawk pcre2 pkgconf autoconf* automake* m4</span>
+<span style="color: #2aa198;">                         flex mercurial subversion git cppunit</span>
+<span style="color: #2aa198;">                         readline bash* curl readline gmp gettext* indexinfo</span>
+<span style="color: #2aa198;">                         boost* hs-* cmake* help2man html2text pkgconf</span>
+<span style="color: #2aa198;">                         jsoncpp asciidoc rhash zstd itstool brotli meson</span>
+<span style="color: #2aa198;">                         tex* doxygen sdocbook-xml docbook* texi2html</span>
+<span style="color: #2aa198;">                         gnupg gnutls sqlite3 suiteparse* fribidi gdbm</span>
+<span style="color: #2aa198;">                         utf8cpp xmlstarlet c-ares minizip</span>
+<span style="color: #2aa198;">                         gtk-doc iso8879 gperf highway p11-kit gcab nettle</span>
+<span style="color: #2aa198;">                         py3* p5* ninja pygobject* double-conversion</span>
+<span style="color: #2aa198;">                         dbus dbus-glib evdev-proto gnome-common icu orc</span>
+<span style="color: #2aa198;">                         ca_root_nss expat xmlcatmgr xmlcharent yelp* json-glib</span>
+<span style="color: #2aa198;">                         dav1d lame polkit intltool minixmlto sassc redis aom</span>
+<span style="color: #2aa198;">                         svt-av1 x265 flac neon opusfile wavpack vmaf shaderc</span>
+<span style="color: #2aa198;">                         opus sndio libbinio xxhash frei0r taglib upnp</span>
+<span style="color: #2aa198;">                         ffnvcodec-headers v4l_compat yasm speex speexdsp twolame</span>
+<span style="color: #2aa198;">                         bdftopcf dejavu encodings font-bh-ttf font-misc-ethiopic</span>
+<span style="color: #2aa198;">                         font-misc-meltho font-util mkfontscale xorg-fonts-truetype</span>
+<span style="color: #2aa198;">                         xcb-util xcb-util-image xcb-util-keysyms xcb-util-renderutil</span>
+<span style="color: #2aa198;">                         xcb-util-wm spirv-tools glslang alsa-lib gsettings-desktop-schemas</span>
+<span style="color: #2aa198;">                         woff2 openjpeg geoclue glib-networking harfbuzz-icu enchant2</span>
+<span style="color: #2aa198;">                         hunspell hyphen</span>
+<span style="color: #2aa198;">                         openal-soft rnnoise webrtc-audio-processing abseil crc32c</span>
+<span style="color: #2aa198;">                         glibmm2* kf6* microsoft-gsl protobuf range-v3 tl-expected</span>
+<span style="color: #2aa198;">                         libiconv libffi libtextstyle libxml2 libyaml liblz4</span>
+<span style="color: #2aa198;">                         libidn2 libxslt libgcrypt libunistring libuv libgpg-error</span>
+<span style="color: #2aa198;">                         libtool libdeflate libinotify libnghttp2 libtasn* libpsl</span>
+<span style="color: #2aa198;">                         libssh* libarchive libdaemon libdatrie libevent libgudev</span>
+<span style="color: #2aa198;">                         libgusb libthai libudev-devd libunwind duktape-lib</span>
+<span style="color: #2aa198;">                         libsecret libsass libass libedit libvorbis</span>
+<span style="color: #2aa198;">                         libogg libx264 libsidplayfp libunibreak libv4l libvdpau libvpx</span>
+<span style="color: #2aa198;">                         libcdio libcdio-paranoia libcue libdvbpsi libepoll-shim</span>
+<span style="color: #2aa198;">                         libsamplerate libinput libevdev libmtdev libidn libmatroska</span>
+<span style="color: #2aa198;">                         libtheora libebml libfontenc libXpm libwacom libXv libxshmfence</span>
+<span style="color: #2aa198;">                         libmysofa libada libb2 libdispatch libfmt libsigc++* libsoup*</span>
+<span style="color: #2aa198;">                         libproxy"</span>
+</pre>
+</div>
+
+<p>
+Also, I put the next lines to the <code>/usr/local/etc/poudriere.d/make.conf</code>, to
+prevent enabling the unwanted options when configuring the port(s):
+</p>
+
+<div class="org-src-container">
+<pre class="src src-shell"><span style="color: #268bd2;">DISABLE_LICENSES</span>=yes
+<span style="color: #268bd2;">OPTIONS_UNSET</span>+=JACK PIPEWIRE PULSEAUDIO WAYLAND
+<span style="color: #268bd2;">OPTIONS_SET</span>+=OSS SNDIO X11
+</pre>
+</div>
+
+<p>
+To the <code>/usr/local/etc/poudriere.d/blacklist</code> I've added the next lines:
+</p>
+
+<pre class="example">
+audio/pulseaudio
+graphics/wayland
+multimedia/pipewire
+</pre>
+
+<p>
+With this configuration poudriere will neither install unwanted packages from
+repository, nor build it from ports.
+</p>
+
+<p>
+The next steps, including initializing the jail and ports, are well described
+in the corresponding chapter of the FreeBSD Handbook. With one <b>valuable</b>
+exception! When I create the poudriere ports, the proper quarterly branch
+should be specified! Like this:
+</p>
+
+<pre class="example">
+# poudriere ports -c -p local -m git+https -B 2025Q1
+</pre>
+
+<p>
+Without the proper branch I'll faced the obscure dependency problems when
+downloading the build-time depenedencies as packages:
+</p>
+
+<pre class="example">
+[00:00:48] [Dry Run] Package fetch: Skipping cmake-core-3.31.6: remote version mismatch: cmake-core-3.31.3
+[00:00:48] [Dry Run] Package fetch: Skipping gettext-runtime-0.23.1: remote version mismatch: gettext-runtime-0.23
+[00:00:48] [Dry Run] Package fetch: Skipping hs-pandoc-3.6.4: remote version mismatch: hs-pandoc-3.6.1
+[00:00:48] [Dry Run] Package fetch: Skipping gettext-tools-0.23.1: remote version mismatch: gettext-tools-0.23
+[00:00:48] [Dry Run] Package fetch: Skipping libedit-3.1.20250104,1: remote version mismatch: libedit-3.1.20240808,1
+[00:00:48] [Dry Run] Package fetch: Skipping lua53-5.3.6_1: deps wanted: libedit-3.1.20250104,1
+[00:00:48] [Dry Run] Package fetch: Skipping lua53-5.3.6_1: deps remote: libedit-3.1.20240808,1
+[00:00:48] [Dry Run] Package fetch: Will fetch hs-cabal-install-3.12.1.0_1
+</pre>
+
+<p>
+At the end I have an initialized<sup><a id="fnr.pkg" class="footref" href="#fn.pkg" role="doc-backlink">2</a></sup> and working jail with ports and the
+necessary build environment inside. Now it's time to remove unwanted
+dependencies from the system!
+</p>
+</div>
+</div>
+<div id="outline-container-removing-deps" class="outline-2">
+<h2 id="removing-deps">Removing unwanted dependencies</h2>
+<div class="outline-text-2" id="text-removing-deps">
+<p>
+For example, let's work with Wayland. First, I got a list of <code>wayland</code>-dependent
+packages via <code>pkg required-depends</code>:
+</p>
+
+<pre class="example">
+% pkg required-depends wayland
+mesa-dri-24.1.7_1
+gtk4-4.16.12
+conky-1.22.0
+sdl2-2.30.10_1
+mesa-libs-24.1.7_1
+gstreamer1-plugins-gl-1.24.10
+vulkan-loader-1.4.304
+dunst-1.10.0
+libva-2.22.0
+gtk3-3.24.43
+libxkbcommon-1.7.0_1
+redshift-1.12_2
+webkit2-gtk3-2.34.6_10
+</pre>
+
+<p>
+Let's take <code>conky</code> and rebuild it without Wayland dependencies! First, I need an
+<i>origin</i> of this package (it's name in the ports) to build it with
+poudriere. The <code>pkg</code> gave me the answer and I wrote it to the text file — the
+list of packages to rebuild:
+</p>
+
+<pre class="example">
+% pkg info -o conky
+conky-1.22.0                   sysutils/conky
+# echo 'sysutils/conky' &gt;&gt; /hdd/poudriere/14amd64-local-workstation-pkglist
+</pre>
+
+<p>
+Then I configured all the necessary ports with help of the next <a href="https://zsh.sourceforge.io/Doc/Release/Functions.html">zsh function</a>:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-shell"><span style="color: #268bd2;">SHELL</span>=<span style="color: #2aa198;">"/usr/bin/env zsh"</span> xterm -fa Hack-14 -e <span style="color: #b58900; font-weight: bold;">\</span>
+    <span style="color: #2aa198;">"sudo poudriere options -j 14amd64 -p local -z workstation -c $1"</span>
+</pre>
+</div>
+
+<p>
+This function takes string with origin as a single argument. It may look a bit
+tricky — but I'm using it because ncurses interface to configure build options
+is not displaying correctly inside my <a href="https://codeberg.org/akib/emacs-eat">EAT</a>. So I start a separate shell in
+XTerm and configure conky and all it's dependencies inside this shell:
+</p>
+
+
+<div class="figure">
+<p><img src="/assets/static/conky-port-options.png" alt="conky package configuration options" align="center" />
+</p>
+</div>
+
+<p>
+After that I start the necessary machinery with the next zsh function:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-shell"><span style="color: #268bd2;">DUNST_OPTS</span>=(-I ~/.config/dunst/icons/update.svg)
+<span style="color: #268bd2;">PKGLIST</span>=<span style="color: #2aa198;">"/hdd/poudriere/14amd64-local-workstation-pkglist"</span>
+<span style="color: #268bd2;">POUDRIERE_OPTS</span>=(-j 14amd64 -p local -z workstation -f $<span style="color: #268bd2;">PKGLIST</span>)
+
+sudo poudriere jail -u -j 14amd64
+dunstify <span style="color: #2aa198;">"Poudriere"</span> <span style="color: #2aa198;">"Jail 14amd64 updated"</span> $<span style="color: #268bd2;">DUNST_OPTS</span>
+
+sudo poudriere ports -p local -u
+dunstify <span style="color: #2aa198;">"Poudriere"</span> <span style="color: #2aa198;">"Ports updated"</span> $<span style="color: #268bd2;">DUNST_OPTS</span>
+
+<span style="color: #859900; font-weight: bold;">while </span><span style="color: #657b83; font-weight: bold;">true</span>; <span style="color: #859900; font-weight: bold;">do</span>
+    dunstify <span style="color: #2aa198;">"Poudriere"</span> <span style="color: #b58900; font-weight: bold;">\</span>
+        <span style="color: #2aa198;">"Dry run start.\nCheck that all will build correctly before the real&#128526; build"</span> <span style="color: #b58900; font-weight: bold;">\</span>
+        $<span style="color: #268bd2;">DUNST_OPTS</span>
+    sudo poudriere bulk $<span style="color: #268bd2;">POUDRIERE_OPTS</span> -b quarterly -vn
+    <span style="color: #657b83; font-weight: bold;">read</span> ANSWER?<span style="color: #2aa198;">"Is all correct? [y/n/q] "</span>
+    <span style="color: #859900; font-weight: bold;">if</span> [ <span style="color: #2aa198;">"$ANSWER"</span> = <span style="color: #2aa198;">"y"</span> ]; <span style="color: #859900; font-weight: bold;">then</span>
+        <span style="color: #859900; font-weight: bold;">break</span>
+    <span style="color: #859900; font-weight: bold;">elif</span> [ <span style="color: #2aa198;">"$ANSWER"</span> = <span style="color: #2aa198;">"q"</span> ]; <span style="color: #859900; font-weight: bold;">then</span>
+        <span style="color: #859900; font-weight: bold;">return</span>
+    <span style="color: #859900; font-weight: bold;">fi</span>;
+<span style="color: #859900; font-weight: bold;">done</span>
+
+dunstify <span style="color: #2aa198;">"Poudriere"</span> <span style="color: #2aa198;">"Ports build start..."</span> $<span style="color: #268bd2;">DUNST_OPTS</span>
+sudo poudriere bulk $<span style="color: #268bd2;">POUDRIERE_OPTS</span> -b quarterly
+dunstify <span style="color: #2aa198;">"Poudriere"</span> <span style="color: #2aa198;">"Ports build end"</span> $<span style="color: #268bd2;">DUNST_OPTS</span>
+</pre>
+</div>
+
+<p>
+There are the next things happen:
+</p>
+<ol class="org-ol">
+<li><code>local</code> poudriere ports update and FreeBSD system inside the jail <code>14amd64</code>
+update. If there are already built ports and they got updates — the
+necessary ports and its' dependencies will be rebuilt during the next
+stages.</li>
+<li>Dry-run the build process (<code>-n</code>) with the verbose output (<code>-v</code>). This is
+necessary to check that all build-time dependencies, specified in the
+<code>PACKAGE_FETCH_WHITELIST</code> configuration option, will not be built from
+sources and so on.</li>
+<li>Ask user about correctness of logs in the console. If not — return to the
+previous stage. Assuming that user will fix something in the
+<code>/usr/local/etc/poudriere.conf</code> before answering <code>n</code> to recheck logs of dry run
+stage.</li>
+<li><p>
+Start build packages in multiple processes, each on it's own CPU core:
+</p>
+
+<div class="figure">
+<p><img src="/assets/static/poudriere-building.png" alt="poudriere build process screenshot" align="center" />
+</p>
+</div></li>
+</ol>
+
+<p>
+The "dry-run" stage is necessary to avoid special sort of problems — when the
+build-time dependency will not be installed with <code>pkg</code> because it depends from
+another build-time dependency, not listed in <code>PACKAGE_FETCH_WHITELIST</code>.
+</p>
+
+<pre class="example">
+[00:01:23] [Dry Run] Checking packages for missing dependencies
+[00:01:23] [Dry Run] Deleting cmake-core-3.31.3.pkg: missing dependency: expat-2.6.4
+[00:01:23] [Dry Run] Deleting gettext-tools-0.23.pkg: missing dependency: libtextstyle-0.23
+[00:01:23] [Dry Run] Deleting py311-libxml2-2.11.9_1.pkg: missing dependency: libxml2-2.11.9
+</pre>
+
+<p>
+The solution is simple — just add necessary package(s) to the
+<code>PACKAGE_FETCH_WHITELIST</code> or decide to build it from ports.
+</p>
+
+<p>
+Ideally, here should be an <a href="https://github.com/freebsd/poudriere/issues/1129">option to stop the build process</a> if packages listed
+in the <code>PACKAGE_FETCH_WHITELIST</code> will not be fetched. But it is not added yet to
+the recent version of poudriere, so I'm using an infinite cycle as a
+workaround.
+</p>
+
+<p>
+The build process is fast enough, even on my Intel(R) Core(TM) i7-2620M CPU @
+2.70GHz. Obviously, the big software, like Qt or GTK, will build for
+hours. Fortunately, the packages that depend on it were waiting while they
+were building, so other CPU cores were free<sup><a id="fnr.cpu-cores" class="footref" href="#fn.cpu-cores" role="doc-backlink">3</a></sup> and I could use my
+system as usual, without any drawbacks😎.
+</p>
+
+<p>
+After successfull completion, poudriere will create a local FreeBSD repository
+that I can use to install <b>my</b> versions of packages without unwanted
+dependencies. To use this repo, I simply created the
+<code>/usr/local/etc/pkg/repos/LocalRepo.conf</code> file with the next contents:
+</p>
+
+<pre class="example">
+LocalRepo: {
+    url: "//hdd/poudriere/data/packages/14amd64-local-workstation"
+}
+</pre>
+
+<p>
+Then I launched <code>pkg update</code> as usual:
+</p>
+
+<pre class="example">
+# pkg update
+Updating FreeBSD repository catalogue...
+FreeBSD repository is up to date.
+Updating FreeBSD-kmods repository catalogue...
+Fetching data.pkg: 100%   14 KiB  14.6kB/s    00:01
+Processing entries: 100%
+FreeBSD-kmods repository update completed. 44 packages processed.
+Updating LocalRepo repository catalogue...
+LocalRepo repository is up to date.
+All repositories are up to date.
+</pre>
+
+<p>
+And now I'm able to reinstall the conky and get rid of a wayland
+dependency. To simplify things, I've just added the next alias to
+<code>/etc/pkg.conf</code>:
+</p>
+
+<pre class="example">
+ALIAS {
+    ...
+    poudriere-install = "install -r LocalRepo -f"
+}
+</pre>
+
+<p>
+And called the next command:
+</p>
+
+<pre class="example">
+# pkg poudriere-install conky
+Updating LocalRepo repository catalogue...
+Fetching meta.conf: 100%    179 B   0.2kB/s    00:01
+Fetching data.pkg: 100%  132 KiB 135.4kB/s    00:01
+Processing entries: 100%
+LocalRepo repository update completed. 383 packages processed.
+LocalRepo is up to date.
+Checking integrity... done (0 conflicting)
+The following 1 package(s) will be affected (of 0 checked):
+
+Installed packages to be UPGRADED:
+        conky: 1.22.0 -&gt; 1.22.1 [LocalRepo]
+
+Number of packages to be upgraded: 1
+
+Proceed with this action? [y/N]: y
+[1/1] Upgrading conky from 1.22.0 to 1.22.1...
+[1/1] Extracting conky-1.22.1: 100%
+</pre>
+
+<p>
+Note, that only the necessary package(s) have been reinstalled. The pkg will
+not install all the packages from the <code>LocalRepo</code>, only the bare minimum to
+provide the working program in the existing system.
+</p>
+
+<p>
+As a result, conky has disappeared from the list of wayland-dependent packages
+and receive the proper <code>repository</code> annotation:
+</p>
+
+<pre class="example">
+% pkg required-depends wayland
+mesa-dri-24.1.7_1
+gtk4-4.16.12
+sdl2-2.30.10_1
+mesa-libs-24.1.7_1
+gstreamer1-plugins-gl-1.24.10
+vulkan-loader-1.4.304
+dunst-1.10.0
+libva-2.22.0
+gtk3-3.24.43
+libxkbcommon-1.7.0_1
+redshift-1.12_2
+webkit2-gtk3-2.34.6_10
+% pkg query "%n: %R" conky
+conky: LocalRepo
+</pre>
+</div>
+</div>
+<div id="outline-container-dewaylandization" class="outline-2">
+<h2 id="dewaylandization">More complex examples of deWaylandization</h2>
+<div class="outline-text-2" id="text-dewaylandization">
+<p>
+Sometimes it may be necessary to revisit build options and/or reconfigure the
+already built package. In my case there was a <code>libva</code>. I already built it as a
+dependency when rebuilding VLC, but I want to recheck the selected options
+before reinstalling the package.
+</p>
+
+<p>
+This is where the <code>poudriere options</code> comes to the rescue. I can use the <code>-s</code>
+option to view the package options and the <code>-c</code> option to reconfigure
+them. Instead of specifying the list of origins to build with the <code>-f</code> option, I
+just specify the one necessary origin. Note the <code>-n</code> option — without it the
+poudriere will print configuration for the all packages required by the
+specified origin.
+</p>
+
+<pre class="example">
+# poudriere options -j 14amd64 -p local -z workstation -ns multimedia/libva
+[00:00:01] Ports supports: FLAVORS SUBPACKAGES SELECTED_OPTIONS
+[00:00:01] Working on options directory: /usr/local/etc/poudriere.d/14amd64-local-workstation-options
+[00:00:01] Using ports from: /hdd/poudriere/jails-ports/ports/local
+===&gt; The following configuration options are available for libva-2.22.0:
+     WAYLAND=off: Wayland (graphics) support
+     X11=on: X11 (graphics) support
+===&gt; Use 'make config' to modify these settings
+[00:00:01] Re-run 'poudriere options' with the -c flag to modify the options.
+</pre>
+
+<p>
+Looks like the <code>libva</code> was configured correctly and I can just install it from
+my local repo without any problems.
+</p>
+
+<p>
+Much more complex example comes with a <code>graphics/mesa-dri</code>. Unfortunately, I
+built it with Wayland support, so I will have to reconfigure and rebuild it.
+</p>
+
+<p>
+This is where the custom zsh function <code>bsd-poudriere-reconfigure</code> comes in to
+save me a tons of typing:
+</p>
+
+
+<div class="figure">
+<p><img src="/assets/static/mesa-dri-reconfiguration.png" alt="mesa-dri options configuration window, opened with bsd-poudriere-reconfigure function" align="center" />
+</p>
+</div>
+
+<p>
+Finally, to rebuild the <code>mesa-dri</code> and it's dependencies I used the next
+command:
+</p>
+
+<pre class="example">
+# poudriere bulk -j 14amd64 -p local -z workstation -b quarterly -C graphics/mesa-dri
+</pre>
+
+<p>
+And install it from <code>LocalRepo</code> the same way as I used for <code>conky</code> package.
+</p>
+</div>
+<div id="outline-container-flavors" class="outline-3">
+<h3 id="flavors">Ports flavors</h3>
+<div class="outline-text-3" id="text-flavors">
+<p>
+There are some packages exists, without the corresponding ports. For example,
+the package <code>audacious-gtk3</code> can be installed, but there is only
+<code>multimedia/audactious</code> port and there are no "Qt/GTK/whatever" options to
+configure:
+</p>
+
+<pre class="example">
+/usr/ports % pkg info -o audacious-gtk3
+audacious-gtk3-4.4.2_1         multimedia/audacious
+/usr/ports % ls -d multimedia/audacious*
+multimedia/audacious/         multimedia/audacious-plugins/
+/usr/ports % pkg query '%n: %Ok' audacious-gtk3
+audacious-gtk3: EXECINFO
+audacious-gtk3: LIBARCHIVE
+audacious-gtk3: NLS
+</pre>
+
+<p>
+When I built this port as usual, I got the Qt-based package. But I want a GTK
+based package because it can display my favourite skin as I want to:
+</p>
+
+
+<div class="figure">
+<p><img src="/assets/static/audacious.png" alt="Audacious plugin with old school Winamp skin" align="center" width="80%" />
+</p>
+</div>
+
+<p>
+It's time to meet the <a href="https://docs.freebsd.org/en/books/porters-handbook/flavors/">flavors</a>! Some ports can be built in multiple
+variants. And the variants itself can be observed with the simple <code>fgrep</code>:
+</p>
+
+<pre class="example">
+/usr/ports % fgrep 'FLAVORS=' multimedia/audacious/Makefile
+FLAVORS=        qt6 qt5 gtk3 gtk2
+</pre>
+
+<p>
+So, according to the link above, I can build my <code>audacious-gtk3</code> package just by
+adding line <code>multimedia/audacious@gtk3</code> instead of simple <code>multimedia/audacious</code>
+to the my <code>/hdd/poudriere/14amd64-local-workstation-pkglist</code>. <b>Note:</b> the flavor
+is specified after the <i>[at]</i> symbol.
+</p>
+</div>
+</div>
+<div id="outline-container-patching-Makefile" class="outline-3">
+<h3 id="patching-Makefile">Patching Makefile</h3>
+<div class="outline-text-3" id="text-patching-Makefile">
+<p>
+One of the biggest problems I met, during the recompiling some packages — is
+the Qt 6 dependent packages. There were two of them: Telegram Desktop and the
+<a href="https://wiki.openstreetmap.org/wiki/QMapShack">Qmapshack</a>.
+</p>
+
+<p>
+Telegram Desktop is directly depends from Qt 6 and the Qmapshack depends on
+the <code>bsdisks</code> package, which depends from the Qt 6 itself (despite the Qmapshack
+depends on the Qt 5):
+</p>
+
+<pre class="example">
+~ % pkg rquery '%n: %dn %dv : %do' telegram-desktop | /usr/bin/grep qt
+telegram-desktop: qt6-shadertools 6.8.2 : x11-toolkits/qt6-shadertools
+telegram-desktop: qt6-declarative 6.8.2 : x11-toolkits/qt6-declarative
+telegram-desktop: qt6-wayland 6.8.2 : graphics/qt6-wayland
+telegram-desktop: qt6-svg 6.8.2 : graphics/qt6-svg
+telegram-desktop: qt6-lottie 6.8.2 : graphics/qt6-lottie
+telegram-desktop: qt6-imageformats 6.8.2 : graphics/qt6-imageformats
+telegram-desktop: qt6-base 6.8.2_1 : devel/qt6-base
+telegram-desktop: qt6-5compat 6.8.2 : devel/qt6-5compat
+~ % pkg rquery '%n: %dn %dv : %do' qmapshack | /usr/bin/grep bsdisks
+qmapshack: bsdisks 0.36 : sysutils/bsdisks
+~ % pkg rquery '%n: %dn %dv : %do' bsdisks | /usr/bin/grep qt
+bsdisks: polkit-qt-1-qt6 0.200.0 : sysutils/polkit-qt-1
+bsdisks: qt6-base 6.8.2_1 : devel/qt6-base
+</pre>
+
+<p>
+And the problem is in <code>devel/qt6-base</code> — it depends from the Wayland directly
+and there is no knob to build it without Wayland support:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-makefile"><span style="color: #268bd2;">LIB_DEPENDS</span>=    libatk-1.0.so:accessibility/at-spi2-core \
+        libatk-bridge-2.0.so:accessibility/at-spi2-core \
+...
+        <span style="color: #268bd2;">libvulkan.so</span>:graphics/vulkan-loader \
+        libwayland-client.so:graphics/wayland \
+        libxkbcommon.so:x11/libxkbcommon \
+...
+<span style="color: #268bd2;">OPTIONS_DEFINE</span>= CUPS X11
+<span style="color: #268bd2;">OPTIONS_DEFAULT</span>=    CUPS X11
+<span style="color: #268bd2;">OPTIONS_SUB</span>=    yes
+</pre>
+</div>
+
+<p>
+I tried to remove this line with <code>graphics/wayland</code> dependency from the Makefile
+but <code>qt6-base</code> failed to compile in this case.
+</p>
+
+<p>
+I hope the option to compile <code>devel/qt6-base</code> without Wayland dependency will be
+added in the future. But for now I can just stick with Qt 5.
+</p>
+
+<p>
+First package, dependent from Qt 6 — the Telegram Desktop — was simply removed
+from my machine. I always encountered problems with this app — it likes to
+overload my CPU in random times. So I switched to web version and have no
+problems since.
+</p>
+
+<p>
+Second package — Qmapshack, dependent from <code>sysutils/bsdisks</code>, require more work
+on it. Bsdisks itself was pulled to my system directly by Qmapshack and wasn't
+necessary for other programs. So, the necessity of bsdisks was questionable —
+why is it needed for the mapping program, when I don't use Garmin or other GPS
+devices for mapping?
+</p>
+
+<pre class="example">
+% pkg rquery '%e' bsdisks
+UDisks2 service provides interfaces to enumerate
+and perform operations on disks and storage devices
+via D-Bus API. Bsdisks is an implementation of UDisks2
+service for FreeBSD.
+</pre>
+
+<p>
+Of course, there is no configuration option to build the <code>astro/qmapshack</code>
+without <code>sysutils/bsdisks</code>. But … it was marked as a runtime dependency in the
+Makefile, not a compile time dependency:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-makefile"><span style="color: #268bd2;">RUN_DEPENDS</span>=    ${<span style="color: #268bd2;">LOCALBASE</span>}/bin/bsdisks:sysutils/bsdisks
+</pre>
+</div>
+
+<p>
+So, it's time to slightly patch the necessary port and try to build Qmapshack
+without bsdisks. First, I opened the
+<code>/hdd/poudriere/ports/local/astro/qmapshack/Makefile</code> and commented this line.
+</p>
+
+<p>
+Then, I add <code>astro/qmapshack</code> to the
+<code>/hdd/poudriere/14amd64-local-workstation-pkglist</code> and initiated the build
+without updating the ports, so my change will not clash with the updates from
+the main repository (if any):
+</p>
+
+<pre class="example">
+# poudriere bulk -j 14amd64 -p local -z workstation -b quarterly -nv -C astro/qmapshack
+...
+[00:00:42] [Dry Run] Dry run mode, cleaning up and exiting
+[00:00:42] [Dry Run] Would build 3 packages using 3 builders
+[00:00:42] [Dry Run] Ports to build: astro/qmapshack graphics/gdal www/qt5-webengine
+...
+# poudriere bulk -j 14amd64 -p local -z workstation -b quarterly -C astro/qmapshack
+</pre>
+
+<p>
+And it successfully builds and running correctly without <code>bsdisks</code>!
+</p>
+
+<pre class="example">
+[14:00:58] [01] [14:00:02] Finished www/qt5-webengine | qt5-webengine-5.15.18p5_1: Success
+[14:01:01] [01] [00:00:00] Building astro/qmapshack | qmapshack-1.17.1_5
+[15:08:33] [01] [01:07:32] Finished astro/qmapshack | qmapshack-1.17.1_5: Success
+[15:08:33] Stopping 3 builders
+[15:08:37] Creating pkg repository
+Creating repository in /tmp/packages: 100%
+Packing files for repository: 100%
+[15:09:05] Committing packages to repository: /hdd/poudriere/data/packages/14amd64-local-workstation/.real_1743306462 via .latest symlink
+[15:09:05] Removing old packages
+[15:09:05] Built ports: graphics/gdal www/qt5-webengine astro/qmapshack
+</pre>
+
+
+<div class="figure">
+<p><img src="/assets/static/qmapshack-wout-bsdisks.png" alt="Qmapshack main interface" align="center" />
+</p>
+<p style="text-align: center"><i>Main window of Qmapshack GIS software</i></p>
+</div>
+
+<p>
+Last step: after successfull compilation I reverted my changes in
+<code>astro/qmapshack/Makefile</code> to avoid unnecessary problems with ports updates.
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-results-and-thoughts" class="outline-2">
+<h2 id="results-and-thoughts">Results and thoughts</h2>
+<div class="outline-text-2" id="text-results-and-thoughts">
+<p>
+Before, I was using a Gentoo (and compiling the whole system, of course) which
+<code>emerge</code> system was inspired by FreeBSD ports. Comparing these two system, I can
+say that ports infrastructure looks like simplier for me.
+</p>
+
+<p>
+When I recompiled the program in the Gentoo with the new options I usually did
+the next:
+</p>
+<ol class="org-ol">
+<li>Run <code>emerge --ask program-name</code> to see the USE flags of program <b>and</b> it's
+dependencies.</li>
+<li>If I want to change something and need to see the exact meaning of some USE
+flag, I call <code>equery uses program-name</code>. Then I open a text file somewhere in
+<code>/etc/portage/package.use/</code> and add package atom and the necessary USE flags'
+settings.</li>
+<li>After that I could start compilation with necessary options.</li>
+</ol>
+
+<p>
+Looks like for me, the same process in the FreeBSD is simpler. I can configure
+build-time options for program and it's dependencies with a single call of
+<code>poudriere options ...</code> which provides me a useful TUI menu with descriptions of
+all of the options. And I don't need to copy it to the some configuration
+file — all of them will be inserted in the right place themselves.
+</p>
+
+<p>
+Also, all ports infrastructure looks like simplier — it is just a Makefile and
+a bunch of human-readable text files with package descriptions and so on!
+</p>
+
+<p>
+Of course there are drawbacks:
+</p>
+<ul class="org-ul">
+<li>Some packages I think (like Qt 6) lack the configuration options.</li>
+<li>If I want to update packages, it is better to update my local repository
+first. Instead, some of the packages will be dependent from the old
+libraries which are already updated in the <code>FreeBSD</code> repository. Sometimes it
+will work as usual without any problems, but sometimes, I think, it will be
+break due to API changes.</li>
+<li>If I will update my OS to something like FreeBSD 14.3 — then I should to
+checkout corresponding branch for local ports and update my 14amd64 jail to
+the right version of OS.</li>
+<li>The same is true for major updates.</li>
+<li>And every quarter I should checkout the right branch for the ports, to have
+a synchronization between the binary packages from the FreeBSD repository
+and the ports.</li>
+</ul>
+
+<p>
+BTW, I got one sudden and major result of un-waylanding of my system. Before,
+I was constantly struggling from strange glitches on my display, that looks
+like this:
+</p>
+
+
+<div class="figure">
+<p><img src="/assets/static/freebsd_intel_glitches.jpg" alt="strange black glitches on the screen" align="center" />
+</p>
+</div>
+
+<p>
+I thought what this is because:
+</p>
+<ol class="org-ol">
+<li>I used the outdated method of acceleration for X server <code>intel</code> driver. So, I
+switched from UXA to Glamor. And this is not helped to me.</li>
+<li>I used the wrong options for video card powersaving. Revised it and …
+nothing changed.</li>
+<li>My soldering of AGAN X230 expansion card were bad. So, I recheck it and
+found nothing suspicios.</li>
+<li>I compiled coreboot not the right way because I specified the wrong initial
+framebuffer resolution when the machine is booting. I switched to
+precompiled libreboot and properly configure it. Aaand … nothing changed.</li>
+<li>I started to suspect my video card. Maybe my hardware is dying?…🤔</li>
+</ol>
+
+<p>
+But after I removed Qt6 and Wayland related stuff from my machine, I'm not
+seeing these glitches anymore. Before, I was seeing it almost every day. But
+for now, two days already passed and all is OK.
+</p>
+
+<hr />
+</div>
+</div>
+<div id="outline-container-notes" class="outline-2">
+<h2 id="notes">Notes</h2>
+<div class="outline-text-2" id="text-notes">
+</div>
+</div>
+<div id="footnotes">
+
+<div id="text-footnotes">
+
+<div class="footdef"><sup><a id="fn.tomaoki" class="footnum" href="#fnr.tomaoki" role="doc-backlink">1</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+<a href="https://mastodon.bsd.cafe/@TomAoki/114209804382234562">https://mastodon.bsd.cafe/@TomAoki/114209804382234562</a>
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.pkg" class="footnum" href="#fnr.pkg" role="doc-backlink">2</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+It may be necessary to build a <code>ports-mgmt/pkg</code> before building anything
+in the jail. In my case poudriere won't install <code>cmake-core</code> because it has
+unsatisfied dependency — the <code>pkg</code>. Despite the <code>pkg</code> of necessary version was
+previously bootstrapped to install binary packages in the jail.
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.cpu-cores" class="footnum" href="#fnr.cpu-cores" role="doc-backlink">3</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+Except the Qt building process. There is a line in
+<code>/usr/local/etc/poudriere.conf</code>, which instructs to build some packages on the
+all accessible CPU cores:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-shell"><span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">List of packages that will always be allowed to use MAKE_JOBS</span>
+<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">regardless of ALLOW_MAKE_JOBS. This is useful for allowing ports</span>
+<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">which holdup the rest of the queue to build more quickly.</span>
+<span style="color: #268bd2;">ALLOW_MAKE_JOBS_PACKAGES</span>=<span style="color: #2aa198;">"pkg ccache py* vlc qt*"</span>
+</pre>
+</div>
+
+<p class="footpara">
+I added the Qt to it, because it builds so slooow on the one CPU core…
+</p></div></div>
+
+
+</div>
+</div>

@@ -87,7 +87,6 @@ or the same operating systems.
 Fortunately, I found some posts on the XDA Developers forum, <a href="https://xdaforums.com/f/motorola-defy-2021.12369/">in the topic</a>
 about Motorola Defy (2021).
 </p>
-
 <div class="outline-2">
 <h2>TOC&#xa0;&#xa0;&#xa0;<span class="tag"></span></h2>
 <div class="outline-text-2">
@@ -119,7 +118,6 @@ about Motorola Defy (2021).
 </ul>
 </div>
 </div>
-
 <div id="outline-container-preparations" class="outline-2">
 <h2 id="preparations">Preparations before flashing the phone's memory</h2>
 <div class="outline-text-2" id="text-preparations">
@@ -153,7 +151,6 @@ RETEU!
 </p>
 </div>
 </div>
-
 <div id="outline-container-bootloader-unlock" class="outline-2">
 <h2 id="bootloader-unlock">Bootloader unlock</h2>
 <div class="outline-text-2" id="text-bootloader-unlock">
@@ -287,7 +284,6 @@ Finished. Total time: 22.503s
 </pre>
 </div>
 </div>
-
 <div id="outline-container-system-software-reflash" class="outline-2">
 <h2 id="system-software-reflash">Rewriting the system software</h2>
 <div class="outline-text-2" id="text-system-software-reflash">
@@ -312,30 +308,30 @@ from the path <code>/firmware/lenomola/2021/bathena/official/RETEU/</code>:
 <pre class="example">
 % unzip XT2083-9_BATHENA_RETEU_11_RZD31.31_subsidy-DEFAULT_regulatory-XT2083-9-EUROPE-SAR_CFC.xml.zip
 Archive:  XT2083-9_BATHENA_RETEU_11_RZD31.31_subsidy-DEFAULT_regulatory-XT2083-9-EUROPE-SAR_CFC.xml.zip
-inflating: recovery.img            
-inflating: gpt.bin                 
-inflating: boot.img                
-inflating: dspso.bin               
-inflating: BTFM.bin                
-inflating: vbmeta.img              
-inflating: radio.img               
-inflating: dtbo.img                
-inflating: logo.bin                
-inflating: bootloader.img          
-inflating: super.img_sparsechunk.0  
-inflating: super.img_sparsechunk.1  
-inflating: super.img_sparsechunk.2  
-inflating: super.img_sparsechunk.3  
-inflating: super.img_sparsechunk.4  
-inflating: super.img_sparsechunk.5                  
-inflating: super.img_sparsechunk.6  
-inflating: super.img_sparsechunk.7  
-inflating: super.img_sparsechunk.8  
-inflating: flashfile.xml           
-inflating: servicefile.xml         
-extracting: slcf_rev_d_default_v1.0.nvm  
-inflating: regulatory_info_xt2083_9_europe_sar.png  
-inflating: signing-info.txt        
+inflating: recovery.img
+inflating: gpt.bin
+inflating: boot.img
+inflating: dspso.bin
+inflating: BTFM.bin
+inflating: vbmeta.img
+inflating: radio.img
+inflating: dtbo.img
+inflating: logo.bin
+inflating: bootloader.img
+inflating: super.img_sparsechunk.0
+inflating: super.img_sparsechunk.1
+inflating: super.img_sparsechunk.2
+inflating: super.img_sparsechunk.3
+inflating: super.img_sparsechunk.4
+inflating: super.img_sparsechunk.5
+inflating: super.img_sparsechunk.6
+inflating: super.img_sparsechunk.7
+inflating: super.img_sparsechunk.8
+inflating: flashfile.xml
+inflating: servicefile.xml
+extracting: slcf_rev_d_default_v1.0.nvm
+inflating: regulatory_info_xt2083_9_europe_sar.png
+inflating: signing-info.txt
 inflating: BATHENA_RETAIL_RZD31.31_subsidy-DEFAULT_regulatory-XT2083-9-EUROPE-SAR_CFC.info.txt
 </pre>
 
@@ -525,7 +521,7 @@ files from the archive:
 <tr>
 <td class="org-left">dbto_a</td>
 <td class="org-left">dtbo.img</td>
-<td class="org-left">Device Tree Blobs Overlay — device descriptions for Linux kernel<sup><a id="fnr.1" class="footref" href="#fn.1" role="doc-backlink">1</a></sup>.</td>
+<td class="org-left">Device Tree Blobs Overlay — device descriptions for Linux kernel<sup><a id="fnr.device_tree" class="footref" href="#fn.device_tree" role="doc-backlink">1</a></sup>.</td>
 </tr>
 </tbody>
 <tbody>
@@ -697,7 +693,7 @@ files from the archive:
 <tr>
 <td class="org-left">xbl_config</td>
 <td class="org-left">xbl_config.elf</td>
-<td class="org-left">Looks like there is something like HAL for the bootloader<sup><a id="fnr.2" class="footref" href="#fn.2" role="doc-backlink">2</a></sup>.</td>
+<td class="org-left">Looks like there is something like HAL for the bootloader<sup><a id="fnr.xbl" class="footref" href="#fn.xbl" role="doc-backlink">2</a></sup>.</td>
 </tr>
 </tbody>
 <tbody>
@@ -737,7 +733,7 @@ files from the archive:
 <tr>
 <td class="org-left">fsg</td>
 <td class="org-left">fsg.mbn</td>
-<td class="org-left">Modem File System Golden copy. Contains firmware blob for the modem, calibration data and IMEI. Rewrite necessity is unknown<sup><a id="fnr.3" class="footref" href="#fn.3" role="doc-backlink">3</a></sup>.</td>
+<td class="org-left">Modem File System Golden copy. Contains firmware blob for the modem, calibration data and IMEI. Rewrite necessity is unknown<sup><a id="fnr.fsg" class="footref" href="#fn.fsg" role="doc-backlink">3</a></sup>.</td>
 </tr>
 </tbody>
 <tbody>
@@ -803,7 +799,6 @@ programs or settings.
 </p>
 </div>
 </div>
-
 <div id="outline-container-lineage-os-install" class="outline-2">
 <h2 id="lineage-os-install">Lineage OS install</h2>
 <div class="outline-text-2" id="text-lineage-os-install">
@@ -820,7 +815,7 @@ install. But it wasn't that simple and I did some checking:
 </p>
 <ul class="org-ul">
 <li>I don't want to use a build with Google apps installed
-(<code>bgN</code><sup><a id="fnr.4" class="footref" href="#fn.4" role="doc-backlink">4</a></sup> code). But I installed it for testing and it
+(<code>bgN</code><sup><a id="fnr.gsi_naming_conventions" class="footref" href="#fn.gsi_naming_conventions" role="doc-backlink">4</a></sup> code). But I installed it for testing and it
 started and worked fine.</li>
 <li><p>
 Then I tried to use build without Google apps and with root access (<code>bvS</code>). I
@@ -931,7 +926,6 @@ button and rebooted to my LineageOS.</li>
 </ol>
 </div>
 </div>
-
 <div id="outline-container-android-root" class="outline-2">
 <h2 id="android-root">Root user access</h2>
 <div class="outline-text-2" id="text-android-root">
@@ -961,7 +955,6 @@ phone. Except for some favorite apps, which I write about below.
 </div>
 </div>
 </div>
-
 <div id="outline-container-4g-calls-sms" class="outline-2">
 <h2 id="4g-calls-sms">4G calls and SMS</h2>
 <div class="outline-text-2" id="text-4g-calls-sms">
@@ -977,7 +970,7 @@ the "old-fashioned way" — the phone connects to the base station through the
 radio and through the some telephone exchanges connects to the other caller's
 phone. That is, with the same principle that were usual landline phones used —
 when two callers were connected via <a href="https://en.wikipedia.org/wiki/Circuit_switching">circuit switch network</a> — when the
-dedicated channel for phone call between two people was created<sup><a id="fnr.5" class="footref" href="#fn.5" role="doc-backlink">5</a></sup>.
+dedicated channel for phone call between two people was created<sup><a id="fnr.pstn" class="footref" href="#fn.pstn" role="doc-backlink">5</a></sup>.
 </p>
 
 <p>
@@ -1014,7 +1007,6 @@ SMS started working as usual.
 </p>
 </div>
 </div>
-
 <div id="outline-container-disable-floating-shit-on-copy" class="outline-2">
 <h2 id="disable-floating-shit-on-copy">Disabling nonsensical popup when copying text</h2>
 <div class="outline-text-2" id="text-disable-floating-shit-on-copy">
@@ -1056,7 +1048,6 @@ even after reboot.
 </p>
 </div>
 </div>
-
 <div id="outline-container-turn-off-usb-debugging" class="outline-2">
 <h2 id="turn-off-usb-debugging">Turn off USB debugging</h2>
 <div class="outline-text-2" id="text-turn-off-usb-debugging">
@@ -1116,13 +1107,12 @@ couldn't remount it with <code>mount -o remount,rw /</code>.
 </p>
 
 <p>
-Fortunately, when I tried to run the above two commands<sup><a id="fnr.6" class="footref" href="#fn.6" role="doc-backlink">6</a></sup> in the
+Fortunately, when I tried to run the above two commands<sup><a id="fnr.disable_usb" class="footref" href="#fn.disable_usb" role="doc-backlink">6</a></sup> in the
 terminal, just in case — the problem was solved! USB debugging was disabled
 and didn't turn on even after rebooting.
 </p>
 </div>
 </div>
-
 <div id="outline-container-root-apps" class="outline-2">
 <h2 id="root-apps">Applications with root access</h2>
 <div class="outline-text-2" id="text-root-apps">
@@ -1131,7 +1121,6 @@ In this section I write about special applications that definitely need the
 root access on my phone.
 </p>
 </div>
-
 <div id="outline-container-appstores" class="outline-3">
 <h3 id="appstores">Application stores</h3>
 <div class="outline-text-3" id="text-appstores">
@@ -1203,13 +1192,12 @@ GitLab, etc.
 
 <p>
 Some FOSS applications can only be installed through Google Play and don't
-exist in the F-Droid<sup><a id="fnr.7" class="footref" href="#fn.7" role="doc-backlink">7</a></sup>. I prefer to install such applications via
+exist in the F-Droid<sup><a id="fnr.no-in-fdroid" class="footref" href="#fn.no-in-fdroid" role="doc-backlink">7</a></sup>. I prefer to install such applications via
 Obtainium, because I prefer to use Aurora Store only for proprietary
 applications.
 </p>
 </div>
 </div>
-
 <div id="outline-container-firewall" class="outline-3">
 <h3 id="firewall">Firewall (AFWall+)</h3>
 <div class="outline-text-3" id="text-firewall">
@@ -1261,7 +1249,6 @@ drawback for me, but for other people — who knows?
 </p>
 </div>
 </div>
-
 <div id="outline-container-adblocker" class="outline-3">
 <h3 id="adblocker">System-wide ad blocker (AdAway)</h3>
 <div class="outline-text-3" id="text-adblocker">
@@ -1283,7 +1270,6 @@ Pollocks hosts file</a> or <a href="https://raw.githubusercontent.com/mtxadmin/u
 </p>
 </div>
 </div>
-
 <div id="outline-container-acca" class="outline-3">
 <h3 id="acca">AccA — to control accumulator (dis)charging</h3>
 <div class="outline-text-3" id="text-acca">
@@ -1329,7 +1315,6 @@ restrictions".
 </p>
 </div>
 </div>
-
 <div id="outline-container-colorblendr" class="outline-3">
 <h3 id="colorblendr">System theme color change (ColorBlendr)</h3>
 <div class="outline-text-3" id="text-colorblendr">
@@ -1349,7 +1334,6 @@ some setup I created something like my favorite Solarized Light theme:
 </p>
 </div>
 </div>
-
 <div id="outline-container-sdmaid2se" class="outline-3">
 <h3 id="sdmaid2se">System cleaner (SD Maid 2/SE)</h3>
 <div class="outline-text-3" id="text-sdmaid2se">
@@ -1384,8 +1368,6 @@ memory.
 </div>
 </div>
 </div>
-
-
 <div id="outline-container-backups" class="outline-2">
 <h2 id="backups">Backups</h2>
 <div class="outline-text-2" id="text-backups">
@@ -1396,7 +1378,6 @@ backups.
 </p>
 </blockquote>
 </div>
-
 <div id="outline-container-neobackup" class="outline-3">
 <h3 id="neobackup">Neo Backup</h3>
 <div class="outline-text-3" id="text-neobackup">
@@ -1432,7 +1413,6 @@ encrypion enabled. The size of the resulting backup was nearly 3.6 Gb.
 </p>
 </div>
 </div>
-
 <div id="outline-container-flash-memory-backup" class="outline-3">
 <h3 id="flash-memory-backup">Flash memory backup</h3>
 <div class="outline-text-3" id="text-flash-memory-backup">
@@ -1456,7 +1436,6 @@ phone without disassembling it.
 </div>
 </div>
 </div>
-
 <div id="outline-container-bugs" class="outline-2">
 <h2 id="bugs">BUGS</h2>
 <div class="outline-text-2" id="text-bugs">
@@ -1494,7 +1473,6 @@ terminals in 50% of cases — i.e. unusable).</li>
 </ul>
 </div>
 </div>
-
 <div id="outline-container-notes" class="outline-2">
 <h2 id="notes">Notes</h2>
 <div class="outline-text-2" id="text-notes">
@@ -1504,34 +1482,34 @@ terminals in 50% of cases — i.e. unusable).</li>
 
 <div id="text-footnotes">
 
-<div class="footdef"><sup><a id="fn.1" class="footnum" href="#fnr.1" role="doc-backlink">1</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+<div class="footdef"><sup><a id="fn.device_tree" class="footnum" href="#fnr.device_tree" role="doc-backlink">1</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
 <a href="https://elinux.org/Device_Tree_Reference">https://elinux.org/Device_Tree_Reference</a>
 </p></div></div>
 
-<div class="footdef"><sup><a id="fn.2" class="footnum" href="#fnr.2" role="doc-backlink">2</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+<div class="footdef"><sup><a id="fn.xbl" class="footnum" href="#fnr.xbl" role="doc-backlink">2</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
 <a href="https://xdaforums.com/t/location-and-function-of-xbl-elf-qupv3fw-elf-cmnlib-mbn-in-the-aosp-output-build.4351213/#post-88989497">https://xdaforums.com/t/location-and-function-of-xbl-elf-qupv3fw-elf-cmnlib-mbn-in-the-aosp-output-build.4351213/#post-88989497</a>
 </p></div></div>
 
-<div class="footdef"><sup><a id="fn.3" class="footnum" href="#fnr.3" role="doc-backlink">3</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+<div class="footdef"><sup><a id="fn.fsg" class="footnum" href="#fnr.fsg" role="doc-backlink">3</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
 But netherless the <code>fastboot</code> clears this partition when flashing
 <code>radio.img</code>.
 </p></div></div>
 
-<div class="footdef"><sup><a id="fn.4" class="footnum" href="#fnr.4" role="doc-backlink">4</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+<div class="footdef"><sup><a id="fn.gsi_naming_conventions" class="footnum" href="#fnr.gsi_naming_conventions" role="doc-backlink">4</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
 <a href="https://github.com/phhusson/treble_experimentations/wiki/Frequently-Asked-Questions-(FAQ)#naming-conventions-that-some-gsi-buildermaintainer-uses">Naming conventions that some GSI builder/maintainer
 uses</a>
 </p></div></div>
 
-<div class="footdef"><sup><a id="fn.5" class="footnum" href="#fnr.5" role="doc-backlink">5</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+<div class="footdef"><sup><a id="fn.pstn" class="footnum" href="#fnr.pstn" role="doc-backlink">5</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
 See the <a href="https://en.wikipedia.org/wiki/Public_switched_telephone_network">PSTN</a> (Public switched telephone network) article.
 </p></div></div>
 
-<div class="footdef"><sup><a id="fn.6" class="footnum" href="#fnr.6" role="doc-backlink">6</a></sup> <div class="footpara" role="doc-footnote"><pre class="example">
+<div class="footdef"><sup><a id="fn.disable_usb" class="footnum" href="#fnr.disable_usb" role="doc-backlink">6</a></sup> <div class="footpara" role="doc-footnote"><pre class="example">
 :/ # settings put global adb_enabled 0
 :/ # setprop persist.vendor.usb.config ""
 </pre></div></div>
 
-<div class="footdef"><sup><a id="fn.7" class="footnum" href="#fnr.7" role="doc-backlink">7</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+<div class="footdef"><sup><a id="fn.no-in-fdroid" class="footnum" href="#fnr.no-in-fdroid" role="doc-backlink">7</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
 Probably because F-Droid requires reproducible builds or has
 <a href="https://f-droid.org/en/docs/Inclusion_Policy/">clear requirements</a> for apps that can be published in it.
 </p></div></div>

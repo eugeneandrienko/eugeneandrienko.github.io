@@ -16,7 +16,7 @@ body {
   font-weight: 400;
   font-size: 16px;
   line-height: 1.6;
-  color: #454545;
+  color: #002b36;
   background-color: #fdf6e3;
   font-feature-settings: "kern" 1;
   font-kerning: normal;
@@ -90,19 +90,20 @@ h1, h2, h3, h4, h5, h6 {
  * Links
  */
 a {
-  color: #696969;
-  text-decoration: underline;
+  color: #268bd2;
 }
+a:visited {
+  color: #d33682;
 }
 
 /**
  * Blockquotes
  */
 blockquote {
-  color: #839496;
-  border-left: 4px solid rgb(241.4628820961, 243.3187772926, 243.5371179039);
+  color: #002b36;
+  border-left: 4px solid rgb(0, 43, 54);
   padding-left: 15px;
-  font-size: 18px;
+  font-size: 16px;
   letter-spacing: -1px;
   font-style: italic;
 }
@@ -115,23 +116,25 @@ blockquote > :last-child {
  */
 pre,
 code {
-  font-size: 15px;
-  color: #454545;
+  font-family: monospace;
+  font-size: 16px;
+  color: #002b36;
 }
 
 *:not(pre) > code {
-  padding: 3px 6px;
+  padding: 1px 1px;
   border-radius: 3px;
-  background-color: #eee;
+  background-color: #eee8d5;
 }
 
 pre {
   overflow-x: auto;
   position: relative;
-  background-color: #f0f0f0;
+  background-color: #eee8d5;
 }
 
 .org-src-name {
+  background-color: #eee8d5;
   font-family: monospace;
   font-size: 10pt;
 }
@@ -165,7 +168,7 @@ table {
   margin-right: auto;
   width: fit-content;
   text-align: left;
-  color: rgb(81.75, 81.75, 81.75);
+  color: rgb(0, 43, 54);
   background-color: #fdf6e3;
   border-collapse: collapse;
   overflow: auto;
@@ -174,11 +177,11 @@ table th, table td {
   padding: 10px 15px;
 }
 table th {
-  border: 1px solid rgb(119.9537117904, 138.4681222707, 140.6462882096);
+  border: 1px solid rgb(100.7816593886, 117.0986899563, 119.0183406114);
   border-bottom-color: rgb(100.7816593886, 117.0986899563, 119.0183406114);
 }
 table td {
-  border: 1px solid #839496;
+  border: 1px solid rgb(100.7816593886, 117.0986899563, 119.0183406114);
 }
 
 /**
@@ -240,6 +243,9 @@ table td {
   margin-right: 5px;
 }
 
+/**
+ * Navigation menu
+ */
 .site-nav {
   font-size: 18px;
   line-height: 72.96px;
@@ -297,20 +303,19 @@ table td {
  */
 .site-footer {
   font-size: 16px;
-  color: #454545;
-  background-color: rgb(227.5, 227.5, 227.5);
+  color: #002b36;
+  background-color: #eee8d5;
   text-align: left;
 }
 .site-footer .site-footer-inner {
   padding: 54px 0;
 }
 .site-footer a {
-  color: #696969;
+  color: #073642;
 }
 .site-footer a:hover {
-  color: rgb(130.5, 130.5, 130.5);
+  color: #586e75;
 }
-
 .copyleft {
   display: inline-block;
   transform: rotate(180deg);
@@ -440,7 +445,7 @@ table td {
 .post .post-header {
   margin: 50px auto 60px;
   padding: 0 0 20px;
-  border-bottom: 1px solid #ebebeb;
+  border-bottom: 1px solid #002b36;
 }
 .post .post-header .post-title {
   margin-bottom: 6px;
@@ -505,7 +510,7 @@ table td {
 }
 .post .post-content hr {
   height: 1px;
-  background-color: #ebebeb;
+  background-color: #002b36;
   border: none;
 }
 
@@ -670,17 +675,6 @@ table td {
 }
 
 /**
- * Code
- */
-.example {
-  font-family: monospace;
-}
-
-.src {
-  font-family: monospace;
-}
-
-/**
  * Footnotes
  */
 #text-footnotes .footdef {
@@ -693,6 +687,7 @@ table td {
 #text-footnotes .footdef sup a {
   border-radius: 50%;
   text-align: center;
+  background-color: #fdf6e3;
 }
 #text-footnotes .footdef .footnum {
   display: table-cell;
@@ -734,7 +729,7 @@ table td {
   padding: 8px 12px;
   text-decoration: none;
   font-weight: normal;
-  color: #454545;
+  color: #002b36;
 }
 .common-list li a:hover {
   background-color: rgb(208.2, 208.2, 208.2);

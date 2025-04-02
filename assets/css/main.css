@@ -519,10 +519,6 @@ table th, table td {
   background-position: center center;
   overflow: hidden;
 }
-.page-banner .page-banner-img > video {
-  width: 100vw;
-  object-fit: cover;
-}
 .page-banner .page-banner-img > img.img-placeholder {
   display: none;
 }

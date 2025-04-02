@@ -88,7 +88,7 @@ a:visited {
  */
 blockquote {
   color: #002b36;
-  border-left: 4px solid rgb(0, 43, 54);
+  border-left: 4px solid #002b36;
   padding-left: 15px;
   font-size: 16px;
   letter-spacing: -1px;
@@ -155,20 +155,19 @@ table {
   margin-right: auto;
   width: fit-content;
   text-align: left;
-  color: rgb(0, 43, 54);
+  color: #002b36;
   background-color: #fdf6e3;
   border-collapse: collapse;
   overflow: auto;
+  border: 1px solid #657577;
 }
 table th, table td {
   padding: 10px 15px;
 }
 table th {
-  border: 1px solid rgb(100.7816593886, 117.0986899563, 119.0183406114);
   border-bottom-color: rgb(100.7816593886, 117.0986899563, 119.0183406114);
 }
 table td {
-  border: 1px solid rgb(100.7816593886, 117.0986899563, 119.0183406114);
 }
 
 /**
@@ -742,7 +741,7 @@ ul.page-segments-list > li > span.post-meta {
   color: #002b36;
 }
 .common-list li a:hover {
-  background-color: rgb(208.2, 208.2, 208.2);
+  background-color: #d0d0d0;
 }
 .common-list li span {
   font-size: 12.8px;

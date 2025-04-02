@@ -362,6 +362,7 @@ table td {
 }
 .pagination .post-date {
   font-family: monospace;
+  font-size: 19.2px;
 }
 .pagination .post-title {
   margin-bottom: 6px;
@@ -374,33 +375,10 @@ table td {
   color: #839496;
   margin-bottom: 15px;
 }
-.pagination .post-meta .post-category a {
-  text-decoration: none;
-}
 .pagination .post-link {
   font-size: 19.2px;
   font-weight: 600;
   color: #333;
-}
-.pagination .post-excerpt {
-  color: #777;
-  word-break: keep-all;
-  overflow-wrap: break-word;
-  text-decoration: none;
-}
-.pagination .post-tags .post-tag {
-  display: inline-block;
-  text-decoration: none;
-  border: 1px solid;
-  padding: 2px 4px;
-  border-radius: 2px;
-  margin-bottom: 8px;
-}
-.pagination .post-tags .post-tag:not(:last-child) {
-  margin-right: 8px;
-}
-.pagination .post-tags .post-tag:hover {
-  color: #787878;
 }
 .pagination .paginator {
   text-align: center;

@@ -698,6 +698,10 @@ ol > ul {
 /**
  * Footnotes
  */
+.footref {
+  cursor: help;
+}
+
 #text-footnotes .footdef {
   display: table;
   border-spacing: 2px;
@@ -706,7 +710,6 @@ ol > ul {
   display: table-cell;
 }
 #text-footnotes .footdef sup a {
-  border-radius: 50%;
   text-align: center;
   background-color: #fdf6e3;
 }

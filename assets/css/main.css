@@ -29,8 +29,7 @@ body {
  * Set `margin-bottom` to maintain vertical rhythm
  */
 h1, h2, h3, h4, h5, h6,
-p, blockquote, pre,
-ul, ol, dl, figure {
+p, blockquote, pre, dl, figure {
   margin-bottom: 15px;
 }
 
@@ -65,18 +64,6 @@ figure > img {
 figcaption {
   font-size: 14px;
   text-align: center;
-}
-
-/**
- * Lists
- */
-ul, ol {
-  margin-left: 30px;
-}
-
-li > ul,
-li > ol {
-  margin-bottom: 0;
 }
 
 /**
@@ -651,6 +638,35 @@ table td {
   margin: 0 10px;
   background-color: rgba(227, 227, 227, 0.8901960784);
   vertical-align: baseline;
+}
+
+/**
+ * Lists
+ */
+ul, ol {
+  margin-left: 30px;
+  margin-bottom: 24px;
+}
+
+ul > li,
+ol > li,
+ul > li > p,
+ol > li > p,
+ul > li > pre,
+ol > li > pre,
+ul > li > .figure,
+ol > li > .figure {
+  margin-bottom: 0 !important;
+}
+
+/* For TOC */
+li > ul,
+li > ol,
+ul > ul,
+ol > ol,
+ul > ol,
+ol > ul {
+    margin-bottom: 0 !important;
 }
 
 /**

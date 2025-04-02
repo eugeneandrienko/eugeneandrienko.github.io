@@ -149,12 +149,10 @@ pre {
  * Tables
  */
 table {
-  display: block;
   margin-bottom: 30px;
   margin-left: auto;
   margin-right: auto;
-  width: fit-content;
-  text-align: left;
+  width: 100%;
   color: #002b36;
   background-color: #fdf6e3;
   border-collapse: collapse;
@@ -162,12 +160,10 @@ table {
   border: 1px solid #657577;
 }
 table th, table td {
+  text-align: left;
+  vertical-align: top;
   padding: 10px 15px;
-}
-table th {
-  border-bottom-color: rgb(100.7816593886, 117.0986899563, 119.0183406114);
-}
-table td {
+  border: 1px solid #657577;
 }
 
 /**

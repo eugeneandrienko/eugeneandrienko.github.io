@@ -727,6 +727,18 @@ ol > ul {
 }
 
 /**
+ * Style for tags/categories/archives lists
+ */
+ul.page-segments-list {
+    list-style: none;
+}
+
+ul.page-segments-list > li > span.post-meta {
+    font-family: monospace;
+    color: #839496;
+}
+
+/**
  * Common list
  */
 .common-list {

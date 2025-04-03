@@ -306,6 +306,9 @@ table th, table td {
 .old-gold-buttons > a {
   text-decoration: none;
 }
+.old-gold-buttons > a > img {
+  image-rendering: pixelated;
+}
 
 /**
  * Post header

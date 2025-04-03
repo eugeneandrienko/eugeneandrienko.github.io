@@ -29,13 +29,7 @@ exclude:
 header_pages:
   - now.html
   - about.html
-  - uses.html
   - links.html
-  - cv.html
-  - tags.html
-  - categories.html
-  - archives.html
-  - changelog.html
 
 plugins:
   - jekyll-feed

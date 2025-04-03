@@ -210,19 +210,12 @@ table th, table td {
 .site-brand {
   line-height: 72.96px;
   margin-right: 50px;
-}
-.site-brand .site-brand-inner {
   font-size: 18px;
   font-weight: 400;
   letter-spacing: -1px;
 }
-.site-brand .site-brand-inner, .site-brand .site-brand-inner:visited {
+.site-brand, .site-brand:visited {
   color: white;
-}
-.site-brand .site-brand-inner .site-favicon {
-  display: inline-block;
-  height: 48.64px;
-  margin-right: 5px;
 }
 
 /**
@@ -230,51 +223,27 @@ table th, table td {
  */
 .site-nav {
   font-size: 18px;
-  line-height: 72.96px;
   position: absolute;
+  left: 0;
   right: 0;
   top: 0;
   font-weight: bold;
+  list-style-type: none;
 }
-.site-nav .dropdown {
-  position: relative;
-  display: inline-block;
+.site-nav > li {
+    float: left;
 }
-.site-nav .dropdown .check-menu {
-  display: none;
+
+.site-nav > li.nav-right {
+    float: right;
 }
-.site-nav .dropdown .menu-icon {
-  text-align: center;
-  border: none;
-  background-color: rgba(0, 0, 0, 0);
-  color: rgba(255, 255, 255, 0.8);
-  cursor: pointer;
-}
-.site-nav .dropdown .menu-icon > svg {
-  fill: rgba(255, 255, 255, 0.8);
-}
-.site-nav .dropdown .dropdown-content {
-  display: none;
-  position: absolute;
-  z-index: 2;
-  float: right;
-}
-.site-nav .dropdown .dropdown-content a {
-  text-decoration: none;
-  display: block;
-  background-color: #073642;
-  padding-left: 10px;
-  padding-right: 10px;
-}
-.site-nav .dropdown .dropdown-content a:hover {
-  background-color: #657b83;
-}
-.site-nav .check-menu:checked ~ div.dropdown-content {
-  display: block;
-}
-.site-nav .page-link {
-  line-height: 1.6;
+
+.site-nav > li > .page-link, .site-nav > li > .page-link:visited {
   color: white;
+  display: block;
+  padding-right: 16px;
+  line-height: 72.96px;
+  letter-spacing: -1px;
 }
 .feather-rss {
     color: orange;

@@ -800,3 +800,43 @@ ul.page-segments-list > li > span.post-meta {
   margin-left: 20px;
   color: #fdfdfd;
 }
+
+/**
+ * Hide some elements when print
+ */
+@media print {
+    body {
+        background-color: white !important;
+    }
+    .site-header, .page-banner-img {
+        display: none;
+    }
+    .page-banner {
+        height: fit-content;
+        position: initial;
+        background-color: unset;
+    }
+    .wrapper {
+        padding-left: initial;
+        padding-right: initial;
+        max-width: fit-content;
+        margin: unset;
+    }
+    .page-banner-inner {
+        transform: none !important;
+        text-shadow: unset !important;
+    }
+    .page-banner-inner, .post-meta, .post-tags, .post-tag {
+        color: black !important;
+    }
+    .p-name {
+        font-size: 32px !important;
+    }
+    .page-content {
+        padding-top: 0px;
+        padding-bottom: 0px;
+    }
+    footer {
+        display: none;
+    }
+}

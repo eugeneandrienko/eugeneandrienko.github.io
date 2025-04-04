@@ -732,7 +732,6 @@ ol > ul {
 }
 #text-footnotes .footdef sup a {
   text-align: center;
-  background-color: #fdf6e3;
 }
 #text-footnotes .footdef .footnum {
   display: table-cell;

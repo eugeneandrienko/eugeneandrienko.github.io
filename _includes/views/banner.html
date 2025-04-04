@@ -59,11 +59,10 @@
     }
   </style>
   {%- endif -%}
+  {%- include views/header.html -%}
   <section class="page-banner">
     <div class="page-banner-img">
-      <div style="background-image: url({{ banner_image }})">
-        {%- include views/header.html -%}
-      </div>
+      <div style="background-image: url({{ banner_image }})"/>
     </div>
     <div class="wrapper">
       <div class="page-banner-inner">
@@ -89,10 +88,5 @@
     </div>
   </section>
 {%- else -%}
-  <style>
-    html .site-header {
-        background-color: #839496;
-    }
-  </style>
   {%- include views/header.html -%}
 {%- endif -%}

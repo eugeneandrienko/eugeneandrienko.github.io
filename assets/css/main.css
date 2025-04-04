@@ -184,7 +184,7 @@ table th, table td {
  * Center background image
  */
 .site-header {
-  background-color: transparent;
+  background-color: #073642;
   height: 72.96px;
   width: 100%;
   z-index: 1000;
@@ -241,7 +241,8 @@ table th, table td {
 .site-nav > li > .page-link, .site-nav > li > .page-link:visited {
   color: white;
   display: block;
-  padding-right: 16px;
+  padding-right: 8px;
+  padding-left: 8px;
   line-height: 72.96px;
   letter-spacing: -1px;
 }

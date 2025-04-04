@@ -1,15 +1,7 @@
 {%- include functions.html func='get_banner' -%}
-
-{%- include functions.html func='log' level='debug' msg='Get header_transparent value' -%}
-{%- assign name = 'header_transparent' -%}
 {%- include functions.html func='get_value' default=true -%}
-{%- assign header_transparent = return -%}
 
-{%- if has_banner and header_transparent -%}
-  {%- assign header_transparent_class = "site-header-transparent" -%}
-{%- endif -%}
-
-<header class="site-header {{ header_transparent_class }}">
+<header class="site-header">
   <div class="wrapper">
     <div class="site-header-inner">
       {%- assign default_paths = site.pages | where: "dir", "/" | map: "path" -%}
@@ -24,9 +16,15 @@
         {%- for path in page_paths -%}
         {%- assign my_page = site.pages | where: "path", path | first -%}
         {%- if my_page.title -%}
+        {%- if my_page.title == page.title -%}
+        <li>
+          <a class="page-link active" href="{{ my_page.url | relative_url }}">{{ my_page.title | upcase | escape }}</a>
+        </li>
+        {%- else -%}
         <li>
           <a class="page-link" href="{{ my_page.url | relative_url }}">{{ my_page.title | upcase | escape }}</a>
         </li>
+        {%- endif -%}
         {%- endif -%}
         {%- endfor -%}
         <!-- RSS -->
@@ -43,7 +41,7 @@
         </li>
         {% for lang in site.languages %}
         {% if lang == site.active_lang %}
-        <li class="nav-right"><a class="page-link">{{ lang | upcase }}</a></li>
+        <li class="nav-right"><a class="page-link active">{{ lang | upcase }}</a></li>
         {% else %}
         {% if lang == site.default_lang %}
         <li class="nav-right">

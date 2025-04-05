@@ -65,7 +65,7 @@ banner:
 Засветка от всяких фонарей тоже мешает — так же, как и астрономам:
 
 #+begin_export html
-<iframe width="560" height="315"
+<iframe class="video-container"
     src="https://www.youtube-nocookie.com/embed/iCHUHcU3Jmk?si=SPXa_B9aQpBcpDId"
     title="YouTube video player" frameborder="0"
     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
@@ -235,7 +235,7 @@ https://www.youtube.com/watch?v=ogtKe7N05F0
 видео:
 
 #+begin_export html
-<iframe width="560" height="315"
+<iframe class="video-container"
     src="https://www.youtube-nocookie.com/embed/45TTpScYtJg?si=nxNCIzXZhGxZxIzk"
     title="YouTube video player" frameborder="0"
     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
@@ -244,7 +244,7 @@ https://www.youtube.com/watch?v=ogtKe7N05F0
 #+end_export
 
 #+begin_export html
-<iframe width="560" height="315"
+<iframe class="video-container"
     src="https://www.youtube-nocookie.com/embed/L9Pp35BSYl0?si=dqiML40-XDHimQKx"
     title="YouTube video player" frameborder="0"
     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
@@ -253,7 +253,7 @@ https://www.youtube.com/watch?v=ogtKe7N05F0
 #+end_export
 
 #+begin_export html
-<iframe width="560" height="315"
+<iframe class="video-container"
     src="https://www.youtube-nocookie.com/embed/E_9f0Lj62RU?si=82wV11YYnd9s18aJ"
     title="YouTube video player" frameborder="0"
     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
@@ -262,7 +262,7 @@ https://www.youtube.com/watch?v=ogtKe7N05F0
 #+end_export
 
 #+begin_export html
-<iframe width="560" height="315"
+<iframe class="video-container"
     src="https://www.youtube-nocookie.com/embed/tELZvA5mvrY?si=3GBkQDe7ialDBnzy"
     title="YouTube video player" frameborder="0"
     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"

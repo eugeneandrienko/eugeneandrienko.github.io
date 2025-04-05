@@ -703,11 +703,17 @@ ol > ul {
   bottom: 0;
   overflow: hidden;
 }
+@media screen and (min-width: 688px) {
+    iframe.video-container {
+        width: 640px;
+        height: 360px;
+    }
+}
 .video-container .p .video {
   min-width: 100%;
   min-height: 100%;
-  width: auto;
-  height: auto;
+  width: unset;
+  height: unset;
   position: absolute;
   top: 50%;
   left: 50%;

@@ -226,11 +226,13 @@ Windows. После такого кощунства[fn:1st_mb_fail] он нам�
 включался, просто моргал один раз кнопкой включения питания и всё...
 
 #+begin_export html
-<iframe class="video-container"
+<div class="youtube-container">
+<iframe class="youtube-iframe"
     src="https://www.youtube-nocookie.com/embed/W87wOCSPA08?si=3oO6xT0UDTBApf6I"
     title="YouTube video player" frameborder="0"
     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
     referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
 <br/>
 #+end_export
 

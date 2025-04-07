@@ -746,6 +746,16 @@ ol > ul {
 }
 #text-footnotes .footdef sup a {
     text-align: center;
+    background-color: #eee8d5;
+    border: 1px solid #b58900;
+    color: #073642;
+    padding: 5px 5px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+}
+#text-footnotes .footdef sup a:hover {
+    background-color: #b58900;
 }
 #text-footnotes .footdef .footnum {
     display: table-cell;

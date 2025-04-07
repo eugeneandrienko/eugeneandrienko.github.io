@@ -8,7 +8,7 @@ comments: false
 hidden:
   - related_posts
 summary: Перепрошивка на OpenSource OS без GApps и получение рута на Motorola Defy (2021)
-tags:
+tags: 
 image: /assets/static/header-lineageos.jpg
 banner:
   image: /assets/static/header-lineageos.jpg
@@ -87,6 +87,7 @@ banner:
 К счастью, на форуме XDA Developers, <a href="https://xdaforums.com/f/motorola-defy-2021.12369/">в разделе</a> посвящённом Motorola Defy
 (2021) нашлись кое-какие темы, которые могли мне помочь.
 </p>
+
 <div class="outline-2">
 <h2>TOC&#xa0;&#xa0;&#xa0;<span class="tag"></span></h2>
 <div class="outline-text-2">
@@ -118,6 +119,7 @@ banner:
 </ul>
 </div>
 </div>
+
 <div id="outline-container-preparations" class="outline-2">
 <h2 id="preparations">Подготовка к перепрошивке телефона</h2>
 <div class="outline-text-2" id="text-preparations">
@@ -153,6 +155,7 @@ banner:
 </p>
 </div>
 </div>
+
 <div id="outline-container-bootloader-unlock" class="outline-2">
 <h2 id="bootloader-unlock">Разблокировка загрузчика</h2>
 <div class="outline-text-2" id="text-bootloader-unlock">
@@ -284,6 +287,7 @@ Finished. Total time: 22.503s
 </pre>
 </div>
 </div>
+
 <div id="outline-container-system-software-reflash" class="outline-2">
 <h2 id="system-software-reflash">Перезапись всего системного ПО</h2>
 <div class="outline-text-2" id="text-system-software-reflash">
@@ -306,30 +310,30 @@ Finished. Total time: 22.503s
 <pre class="example">
 % unzip XT2083-9_BATHENA_RETEU_11_RZD31.31_subsidy-DEFAULT_regulatory-XT2083-9-EUROPE-SAR_CFC.xml.zip
 Archive:  XT2083-9_BATHENA_RETEU_11_RZD31.31_subsidy-DEFAULT_regulatory-XT2083-9-EUROPE-SAR_CFC.xml.zip
-inflating: recovery.img
-inflating: gpt.bin
-inflating: boot.img
-inflating: dspso.bin
-inflating: BTFM.bin
-inflating: vbmeta.img
-inflating: radio.img
-inflating: dtbo.img
-inflating: logo.bin
-inflating: bootloader.img
-inflating: super.img_sparsechunk.0
-inflating: super.img_sparsechunk.1
-inflating: super.img_sparsechunk.2
-inflating: super.img_sparsechunk.3
-inflating: super.img_sparsechunk.4
-inflating: super.img_sparsechunk.5
-inflating: super.img_sparsechunk.6
-inflating: super.img_sparsechunk.7
-inflating: super.img_sparsechunk.8
-inflating: flashfile.xml
-inflating: servicefile.xml
-extracting: slcf_rev_d_default_v1.0.nvm
-inflating: regulatory_info_xt2083_9_europe_sar.png
-inflating: signing-info.txt
+inflating: recovery.img            
+inflating: gpt.bin                 
+inflating: boot.img                
+inflating: dspso.bin               
+inflating: BTFM.bin                
+inflating: vbmeta.img              
+inflating: radio.img               
+inflating: dtbo.img                
+inflating: logo.bin                
+inflating: bootloader.img          
+inflating: super.img_sparsechunk.0  
+inflating: super.img_sparsechunk.1  
+inflating: super.img_sparsechunk.2  
+inflating: super.img_sparsechunk.3  
+inflating: super.img_sparsechunk.4  
+inflating: super.img_sparsechunk.5                  
+inflating: super.img_sparsechunk.6  
+inflating: super.img_sparsechunk.7  
+inflating: super.img_sparsechunk.8  
+inflating: flashfile.xml           
+inflating: servicefile.xml         
+extracting: slcf_rev_d_default_v1.0.nvm  
+inflating: regulatory_info_xt2083_9_europe_sar.png  
+inflating: signing-info.txt        
 inflating: BATHENA_RETAIL_RZD31.31_subsidy-DEFAULT_regulatory-XT2083-9-EUROPE-SAR_CFC.info.txt
 </pre>
 
@@ -518,7 +522,7 @@ Finished. Total time: 0.015s
 <tr>
 <td class="org-left">dbto_a</td>
 <td class="org-left">dtbo.img</td>
-<td class="org-left">Device Tree Blobs Overlay — описание тех устройств для ядра Linux, которые оно неспособно обнаружить при загрузке<sup><a id="fnr.device_tree" class="footref" href="#fn.device_tree" role="doc-backlink">1</a></sup>.</td>
+<td class="org-left">Device Tree Blobs Overlay — описание тех устройств для ядра Linux, которые оно неспособно обнаружить при загрузке<sup><a id="fnr.1" class="footref" href="#fn.1" role="doc-backlink">1</a></sup>.</td>
 </tr>
 </tbody>
 <tbody>
@@ -690,7 +694,7 @@ Finished. Total time: 0.015s
 <tr>
 <td class="org-left">xbl_config</td>
 <td class="org-left">xbl_config.elf</td>
-<td class="org-left">Вероятно, это что-то вроде HAL для загрузчика<sup><a id="fnr.xbl" class="footref" href="#fn.xbl" role="doc-backlink">2</a></sup>.</td>
+<td class="org-left">Вероятно, это что-то вроде HAL для загрузчика<sup><a id="fnr.2" class="footref" href="#fn.2" role="doc-backlink">2</a></sup>.</td>
 </tr>
 </tbody>
 <tbody>
@@ -730,7 +734,7 @@ Finished. Total time: 0.015s
 <tr>
 <td class="org-left">fsg</td>
 <td class="org-left">fsg.mbn</td>
-<td class="org-left">Modem File System Golden copy. Firmware blob для модема, калибровочные данные и IMEI. Необходимость перезаписи неясна<sup><a id="fnr.fsg" class="footref" href="#fn.fsg" role="doc-backlink">3</a></sup>.</td>
+<td class="org-left">Modem File System Golden copy. Firmware blob для модема, калибровочные данные и IMEI. Необходимость перезаписи неясна<sup><a id="fnr.3" class="footref" href="#fn.3" role="doc-backlink">3</a></sup>.</td>
 </tr>
 </tbody>
 <tbody>
@@ -750,7 +754,7 @@ Finished. Total time: 0.015s
 </table>
 
 <p>
-Ну а дальше всё было просто:
+Ну а дальше всё было просто: 
 </p>
 <ol class="org-ol">
 <li>Я снова перезагрузил телефон в bootloader при помощи <code>adb</code>, как уже описывал
@@ -797,6 +801,7 @@ fastboot reboot
 </p>
 </div>
 </div>
+
 <div id="outline-container-lineage-os-install" class="outline-2">
 <h2 id="lineage-os-install">Установка Lineage OS</h2>
 <div class="outline-text-2" id="text-lineage-os-install">
@@ -813,7 +818,7 @@ Lineage OS 21.0 — и естественно захотел поставить
 </p>
 <ul class="org-ul">
 <li>Версию с установленными приложениями Google (код
-<code>bgN</code><sup><a id="fnr.gsi_naming_conventions" class="footref" href="#fn.gsi_naming_conventions" role="doc-backlink">4</a></sup>) я не хотел использовать по понятным
+<code>bgN</code><sup><a id="fnr.4" class="footref" href="#fn.4" role="doc-backlink">4</a></sup>) я не хотел использовать по понятным
 причинам. Но установил её для теста — она запустилась и прекрасно работала.</li>
 <li><p>
 Потом я попробовал версию без приложений Google, но с разблокированным
@@ -932,6 +937,7 @@ Finished. Total time: 0.527s
 </ol>
 </div>
 </div>
+
 <div id="outline-container-android-root" class="outline-2">
 <h2 id="android-root">Получение доступа к пользователю root</h2>
 <div class="outline-text-2" id="text-android-root">
@@ -961,6 +967,7 @@ Finished. Total time: 0.527s
 </div>
 </div>
 </div>
+
 <div id="outline-container-4g-calls-sms" class="outline-2">
 <h2 id="4g-calls-sms">Звонки и СМС с 4G</h2>
 <div class="outline-text-2" id="text-4g-calls-sms">
@@ -977,7 +984,7 @@ Finished. Total time: 0.527s
 которым я разговариваю в данный момент. То есть, примерно по тому же принципу,
 по которому раньше работали обычные стационарные телефоны — через <a href="https://en.wikipedia.org/wiki/Circuit_switching">сеть с
 коммутацией каналов</a>, когда для телефонного разговора сначала выделялся
-канал, а потом по нему передавался голос абонента<sup><a id="fnr.pstn" class="footref" href="#fn.pstn" role="doc-backlink">5</a></sup>.
+канал, а потом по нему передавался голос абонента<sup><a id="fnr.5" class="footref" href="#fn.5" role="doc-backlink">5</a></sup>.
 </p>
 
 <p>
@@ -1016,6 +1023,7 @@ vendor» и включения опции «Request IMS network» — звон�
 </p>
 </div>
 </div>
+
 <div id="outline-container-disable-floating-shit-on-copy" class="outline-2">
 <h2 id="disable-floating-shit-on-copy">Отключение всплывающей ерунды при копировании текста</h2>
 <div class="outline-text-2" id="text-disable-floating-shit-on-copy">
@@ -1057,6 +1065,7 @@ root эта штука отключается очень просто:
 </p>
 </div>
 </div>
+
 <div id="outline-container-turn-off-usb-debugging" class="outline-2">
 <h2 id="turn-off-usb-debugging">Отключение отладки по USB</h2>
 <div class="outline-text-2" id="text-turn-off-usb-debugging">
@@ -1117,12 +1126,13 @@ on property:persist.vendor.usb.config="adb"
 
 <p>
 Но, когда я решил для теста выполнить в root-терминале пару
-команд<sup><a id="fnr.disable_usb" class="footref" href="#fn.disable_usb" role="doc-backlink">6</a></sup> для отключения режима отладки по USB и перезапустил
+команд<sup><a id="fnr.6" class="footref" href="#fn.6" role="doc-backlink">6</a></sup> для отключения режима отладки по USB и перезапустил
 телефон — у меня всё получилось. Отладка через USB отключилась и больше не
 включалась после перезагрузки.
 </p>
 </div>
 </div>
+
 <div id="outline-container-root-apps" class="outline-2">
 <h2 id="root-apps">Приложения, ради которых нужен root</h2>
 <div class="outline-text-2" id="text-root-apps">
@@ -1131,6 +1141,7 @@ on property:persist.vendor.usb.config="adb"
 доступ к пользователю <code>root</code> на телефоне.
 </p>
 </div>
+
 <div id="outline-container-appstores" class="outline-3">
 <h3 id="appstores">Магазины приложений</h3>
 <div class="outline-text-3" id="text-appstores">
@@ -1208,12 +1219,13 @@ method» и разрешить приложению <b>однократный</b
 
 <p>
 Некоторые FOSS-приложения распространяются только через Google Play и их нет в
-F-Droid<sup><a id="fnr.no-in-fdroid" class="footref" href="#fn.no-in-fdroid" role="doc-backlink">7</a></sup>. Так как я предпочитаю использовать Aurora Store только
+F-Droid<sup><a id="fnr.7" class="footref" href="#fn.7" role="doc-backlink">7</a></sup>. Так как я предпочитаю использовать Aurora Store только
 для загрузки всяких проприетарных приложений — я устанавливаю такие
 FOSS-приложения через Obtainium.
 </p>
 </div>
 </div>
+
 <div id="outline-container-firewall" class="outline-3">
 <h3 id="firewall">Firewall (AFWall+)</h3>
 <div class="outline-text-3" id="text-firewall">
@@ -1257,6 +1269,7 @@ firewall'ы, не требующие root для своей работы.
 </p>
 </div>
 </div>
+
 <div id="outline-container-adblocker" class="outline-3">
 <h3 id="adblocker">System-wide блокировщик рекламы (AdAway)</h3>
 <div class="outline-text-3" id="text-adblocker">
@@ -1278,6 +1291,7 @@ firewall'ы, не требующие root для своей работы.
 </p>
 </div>
 </div>
+
 <div id="outline-container-acca" class="outline-3">
 <h3 id="acca">AccA — управление зарядкой/разрядкой аккумулятора</h3>
 <div class="outline-text-3" id="text-acca">
@@ -1323,6 +1337,7 @@ firewall'ы, не требующие root для своей работы.
 </p>
 </div>
 </div>
+
 <div id="outline-container-colorblendr" class="outline-3">
 <h3 id="colorblendr">Изменение цветов системной темы (ColorBlendr)</h3>
 <div class="outline-text-3" id="text-colorblendr">
@@ -1343,6 +1358,7 @@ Solarized Light темы на своём телефоне:
 </p>
 </div>
 </div>
+
 <div id="outline-container-sdmaid2se" class="outline-3">
 <h3 id="sdmaid2se">SD Maid 2/SE — очистка системы от мусора</h3>
 <div class="outline-text-3" id="text-sdmaid2se">
@@ -1377,6 +1393,8 @@ APK, оставшихся после установки приложения, н
 </div>
 </div>
 </div>
+
+
 <div id="outline-container-backups" class="outline-2">
 <h2 id="backups">Резервное копирование</h2>
 <div class="outline-text-2" id="text-backups">
@@ -1387,6 +1405,7 @@ APK, оставшихся после установки приложения, н
 </p>
 </blockquote>
 </div>
+
 <div id="outline-container-neobackup" class="outline-3">
 <h3 id="neobackup">Neo Backup</h3>
 <div class="outline-text-3" id="text-neobackup">
@@ -1423,6 +1442,7 @@ APK, оставшихся после установки приложения, н
 </p>
 </div>
 </div>
+
 <div id="outline-container-flash-memory-backup" class="outline-3">
 <h3 id="flash-memory-backup">Резервное копирование flash-памяти телефона</h3>
 <div class="outline-text-3" id="text-flash-memory-backup">
@@ -1446,6 +1466,7 @@ fastboot: error: Unable to get max-fetch-size. Device does not support fetch com
 </div>
 </div>
 </div>
+
 <div id="outline-container-bugs" class="outline-2">
 <h2 id="bugs">BUGS</h2>
 <div class="outline-text-2" id="text-bugs">
@@ -1479,6 +1500,7 @@ diameter» не работают. После непродолжительног�
 </ul>
 </div>
 </div>
+
 <div id="outline-container-notes" class="outline-2">
 <h2 id="notes">Примечания</h2>
 <div class="outline-text-2" id="text-notes">
@@ -1488,33 +1510,33 @@ diameter» не работают. После непродолжительног�
 
 <div id="text-footnotes">
 
-<div class="footdef"><sup><a id="fn.device_tree" class="footnum" href="#fnr.device_tree" role="doc-backlink">1</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+<div class="footdef"><sup><a id="fn.1" class="footnum" href="#fnr.1" role="doc-backlink">1</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
 <a href="https://elinux.org/Device_Tree_Reference">https://elinux.org/Device_Tree_Reference</a>
 </p></div></div>
 
-<div class="footdef"><sup><a id="fn.xbl" class="footnum" href="#fnr.xbl" role="doc-backlink">2</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+<div class="footdef"><sup><a id="fn.2" class="footnum" href="#fnr.2" role="doc-backlink">2</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
 <a href="https://xdaforums.com/t/location-and-function-of-xbl-elf-qupv3fw-elf-cmnlib-mbn-in-the-aosp-output-build.4351213/#post-88989497">https://xdaforums.com/t/location-and-function-of-xbl-elf-qupv3fw-elf-cmnlib-mbn-in-the-aosp-output-build.4351213/#post-88989497</a>
 </p></div></div>
 
-<div class="footdef"><sup><a id="fn.fsg" class="footnum" href="#fnr.fsg" role="doc-backlink">3</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+<div class="footdef"><sup><a id="fn.3" class="footnum" href="#fnr.3" role="doc-backlink">3</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
 Тем не менее <code>fastboot</code> очищает этот раздел при прошивке <code>radio.img</code>.
 </p></div></div>
 
-<div class="footdef"><sup><a id="fn.gsi_naming_conventions" class="footnum" href="#fnr.gsi_naming_conventions" role="doc-backlink">4</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+<div class="footdef"><sup><a id="fn.4" class="footnum" href="#fnr.4" role="doc-backlink">4</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
 <a href="https://github.com/phhusson/treble_experimentations/wiki/Frequently-Asked-Questions-(FAQ)#naming-conventions-that-some-gsi-buildermaintainer-uses">Naming conventions that some GSI builder/maintainer
 uses</a>
 </p></div></div>
 
-<div class="footdef"><sup><a id="fn.pstn" class="footnum" href="#fnr.pstn" role="doc-backlink">5</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+<div class="footdef"><sup><a id="fn.5" class="footnum" href="#fnr.5" role="doc-backlink">5</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
 См. статью про <a href="https://en.wikipedia.org/wiki/Public_switched_telephone_network">PSTN</a> (Public switched telephone network).
 </p></div></div>
 
-<div class="footdef"><sup><a id="fn.disable_usb" class="footnum" href="#fnr.disable_usb" role="doc-backlink">6</a></sup> <div class="footpara" role="doc-footnote"><pre class="example">
+<div class="footdef"><sup><a id="fn.6" class="footnum" href="#fnr.6" role="doc-backlink">6</a></sup> <div class="footpara" role="doc-footnote"><pre class="example">
 :/ # settings put global adb_enabled 0
 :/ # setprop persist.vendor.usb.config ""
 </pre></div></div>
 
-<div class="footdef"><sup><a id="fn.no-in-fdroid" class="footnum" href="#fnr.no-in-fdroid" role="doc-backlink">7</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+<div class="footdef"><sup><a id="fn.7" class="footnum" href="#fnr.7" role="doc-backlink">7</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
 Возможно, из-за того, что F-Droid требует reproducible builds
 или имеет <a href="https://f-droid.org/en/docs/Inclusion_Policy/">чёткие требования</a> к приложениям, которые в нём можно публиковать.
 </p></div></div>

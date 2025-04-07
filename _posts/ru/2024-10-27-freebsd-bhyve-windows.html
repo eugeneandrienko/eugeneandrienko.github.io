@@ -46,6 +46,7 @@ FreeBSD же работать с виртуальными машинами ещ�
 гипервизор <a href="https://bhyve.org/">bhyve</a> и менеджер виртуальных машин <a href="https://github.com/churchers/vm-bhyve">vm-bhyve</a>, с заявленной
 поддержкой Windows.
 </p>
+
 <div class="outline-2">
 <h2>TOC&#xa0;&#xa0;&#xa0;<span class="tag"></span></h2>
 <div class="outline-text-2">
@@ -60,6 +61,7 @@ FreeBSD же работать с виртуальными машинами ещ�
 </ul>
 </div>
 </div>
+
 <div id="outline-container-zfs-dataset" class="outline-2">
 <h2 id="zfs-dataset">ZFS dataset под виртуальные машины (необязательная часть)</h2>
 <div class="outline-text-2" id="text-zfs-dataset">
@@ -103,6 +105,7 @@ Dataset <code>hdd/vms</code> нужен будет для vm-bhyve, чтобы �
 </p>
 </div>
 </div>
+
 <div id="outline-container-bhyve-setup" class="outline-2">
 <h2 id="bhyve-setup">Установка bhyve и vm-bhyve</h2>
 <div class="outline-text-2" id="text-bhyve-setup">
@@ -153,6 +156,7 @@ drwxr-xr-x  2 root wheel    4B Oct 27 10:53 .templates/
 </ol>
 </div>
 </div>
+
 <div id="outline-container-vm-profile" class="outline-2">
 <h2 id="vm-profile">Профиль VM для Windows</h2>
 <div class="outline-text-2" id="text-vm-profile">
@@ -194,6 +198,7 @@ bhyve_options="-s 8,hda,play=/dev/dsp,rec=/dev/dsp"
 </ul>
 </div>
 </div>
+
 <div id="outline-container-network-setup" class="outline-2">
 <h2 id="network-setup">Настройка сети</h2>
 <div class="outline-text-2" id="text-network-setup">
@@ -236,6 +241,7 @@ public  standard  vm-public  169.254.0.1/16  no       -    -     -
 </pre>
 </div>
 </div>
+
 <div id="outline-container-windows-setup" class="outline-2">
 <h2 id="windows-setup">Установка Windows</h2>
 <div class="outline-text-2" id="text-windows-setup">
@@ -309,6 +315,7 @@ windows  default    uefi    2    6G      0.0.0.0:5900  No    Locked (freebsd)
 </ol>
 </div>
 </div>
+
 <div id="outline-container-rdp-client" class="outline-2">
 <h2 id="rdp-client">RDP клиент</h2>
 <div class="outline-text-2" id="text-rdp-client">
@@ -373,6 +380,7 @@ X-сервера в гостевую систему и обратно.
 </ul>
 </div>
 </div>
+
 <div id="outline-container-main-bhyve-vm-commands" class="outline-2">
 <h2 id="main-bhyve-vm-commands">Основные команды для работы с VM</h2>
 <div class="outline-text-2" id="text-main-bhyve-vm-commands">

@@ -30,6 +30,7 @@ This post based on information from the next pages:
 <li><a href="https://wiki.archlinux.org/title/Lenovo_ThinkPad_X230">https://wiki.archlinux.org/title/Lenovo_ThinkPad_X230</a></li>
 <li><a href="https://www.sacredheartsc.com/blog/freebsd-14-on-the-desktop/">https://www.sacredheartsc.com/blog/freebsd-14-on-the-desktop/</a></li>
 </ul>
+
 <div class="outline-2">
 <h2>TOC&#xa0;&#xa0;&#xa0;<span class="tag"></span></h2>
 <div class="outline-text-2">
@@ -71,6 +72,7 @@ This post based on information from the next pages:
 </ul>
 </div>
 </div>
+
 <div id="outline-container-home-directory" class="outline-2">
 <h2 id="home-directory">Show ~ for current directory path in bash prompt</h2>
 <div class="outline-text-2" id="text-home-directory">
@@ -87,6 +89,7 @@ this.
 </p>
 </div>
 </div>
+
 <div id="outline-container-minimal-set-of-groups" class="outline-2">
 <h2 id="minimal-set-of-groups">Minimal set of groups</h2>
 <div class="outline-text-2" id="text-minimal-set-of-groups">
@@ -97,6 +100,7 @@ this.
 </dl>
 </div>
 </div>
+
 <div id="outline-container-power-control" class="outline-2">
 <h2 id="power-control">Power control</h2>
 <div class="outline-text-2" id="text-power-control">
@@ -125,6 +129,7 @@ Thanks to these settings — notebook will become slowly but more energy-saving.
 </p>
 </div>
 </div>
+
 <div id="outline-container-sound" class="outline-2">
 <h2 id="sound">Sound</h2>
 <div class="outline-text-2" id="text-sound">
@@ -147,6 +152,7 @@ hint.hdaa.0.nid21.config="as=1 seq=15 device=Headphones"
 </pre>
 </div>
 </div>
+
 <div id="outline-container-brightness" class="outline-2">
 <h2 id="brightness">Brightness control</h2>
 <div class="outline-text-2" id="text-brightness">
@@ -167,6 +173,7 @@ setup).
 </p>
 </div>
 </div>
+
 <div id="outline-container-multimedia-keys" class="outline-2">
 <h2 id="multimedia-keys">Multimedia keys</h2>
 <div class="outline-text-2" id="text-multimedia-keys">
@@ -210,6 +217,7 @@ argument.
 </p>
 </div>
 </div>
+
 <div id="outline-container-touchpad-and-trackpoint" class="outline-2">
 <h2 id="touchpad-and-trackpoint">Touchpad and trackpoint</h2>
 <div class="outline-text-2" id="text-touchpad-and-trackpoint">
@@ -238,6 +246,7 @@ hw.psm.trackpoint.upper_plateau=125
 </pre>
 </div>
 </div>
+
 <div id="outline-container-web-camera" class="outline-2">
 <h2 id="web-camera">Web-camera</h2>
 <div class="outline-text-2" id="text-web-camera">
@@ -265,6 +274,7 @@ sudo pw groupmod webcamd -m &lt;username&gt;
 </pre>
 </div>
 </div>
+
 <div id="outline-container-sleep" class="outline-2">
 <h2 id="sleep">Sleep</h2>
 <div class="outline-text-2" id="text-sleep">
@@ -277,6 +287,7 @@ Then, we can go to sleep mode via <code>acpiconf -s 3</code> command. Or via <co
 </p>
 </div>
 </div>
+
 <div id="outline-container-drm-kmod" class="outline-2">
 <h2 id="drm-kmod">Enable drm-kmod</h2>
 <div class="outline-text-2" id="text-drm-kmod">
@@ -290,6 +301,7 @@ kld_list="${kld_list} /boot/modules/i915kms.ko"
 </pre>
 </div>
 </div>
+
 <div id="outline-container-wifi" class="outline-2">
 <h2 id="wifi">Wi-Fi</h2>
 <div class="outline-text-2" id="text-wifi">
@@ -326,6 +338,7 @@ fast_reauth=1
 </pre>
 </div>
 </div>
+
 <div id="outline-container-misc" class="outline-2">
 <h2 id="misc">Miscellaneous</h2>
 <div class="outline-text-2" id="text-misc">
@@ -373,6 +386,7 @@ kern.vt.enable_bell=0
 </pre>
 </div>
 </div>
+
 <div id="outline-container-update-2024-04-28" class="outline-2">
 <h2 id="update-2024-04-28">2024-04-28 update</h2>
 <div class="outline-text-2" id="text-update-2024-04-28">
@@ -383,6 +397,7 @@ expansion board AGAN X230 to my motherboard to use nice and shiny
 update:
 </p>
 </div>
+
 <div id="outline-container-s3-mode" class="outline-3">
 <h3 id="s3-mode">Working sleep mode (S3)</h3>
 <div class="outline-text-3" id="text-s3-mode">
@@ -436,6 +451,7 @@ hw.acpi.sleep_button_state=S3
 </pre>
 </div>
 </div>
+
 <div id="outline-container-bootlog-2k-display" class="outline-3">
 <h3 id="bootlog-2k-display">Output boot-log to «secondary» 2K-display</h3>
 <div class="outline-text-3" id="text-bootlog-2k-display">
@@ -463,6 +479,7 @@ vbe_max_resolution=2560x1440
 </pre>
 </div>
 </div>
+
 <div id="outline-container-boot-mess-reduce" class="outline-3">
 <h3 id="boot-mess-reduce">Reduce count of messages from system when booting</h3>
 <div class="outline-text-3" id="text-boot-mess-reduce">
@@ -481,6 +498,7 @@ rc_startmsgs="NO"
 </pre>
 </div>
 </div>
+
 <div id="outline-container-videocard-powersave" class="outline-3">
 <h3 id="videocard-powersave">Powersaving for videocard</h3>
 <div class="outline-text-3" id="text-videocard-powersave">
@@ -494,6 +512,7 @@ drm.i915.intel_iommu_enabled="1"
 </pre>
 </div>
 </div>
+
 <div id="outline-container-intel-8260" class="outline-3">
 <h3 id="intel-8260">Intel 8260</h3>
 <div class="outline-text-3" id="text-intel-8260">
@@ -508,6 +527,7 @@ Because now I'm using WiFi-card Intel 8260 — it should be configured via
 </ul>
 </div>
 </div>
+
 <div id="outline-container-coreboot-sound" class="outline-3">
 <h3 id="coreboot-sound">Sound and coreboot</h3>
 <div class="outline-text-3" id="text-coreboot-sound">
@@ -535,6 +555,7 @@ hint.hdaa.0.nid35.config="as=1 seq=15 device=Headphones"
 </pre>
 </div>
 </div>
+
 <div id="outline-container-gui-glitches" class="outline-3">
 <h3 id="gui-glitches">GUI glitches</h3>
 <div class="outline-text-3" id="text-gui-glitches">
@@ -581,6 +602,7 @@ drm.i915.enable_fbc="1"
 </pre>
 </div>
 </div>
+
 <div id="outline-container-misc-2" class="outline-3">
 <h3 id="misc-2">Miscellaneous (2)</h3>
 <div class="outline-text-3" id="text-misc-2">
@@ -609,6 +631,7 @@ acpi_dock_load="YES"
 </div>
 </div>
 </div>
+
 <div id="outline-container-update-2024-11-30" class="outline-2">
 <h2 id="update-2024-11-30">2024-11-30 update</h2>
 <div class="outline-text-2" id="text-update-2024-11-30">
@@ -616,6 +639,7 @@ acpi_dock_load="YES"
 There are a lot of people in Mastodon, who writing about FreeBSD — and I took some settings from them posts.
 </p>
 </div>
+
 <div id="outline-container-intel-graphics-optimizations" class="outline-3">
 <h3 id="intel-graphics-optimizations">Intel graphics optimizations</h3>
 <div class="outline-text-3" id="text-intel-graphics-optimizations">
@@ -628,6 +652,7 @@ drm.i915.fastboot="1"
 </pre>
 </div>
 </div>
+
 <div id="outline-container-faster-soreceive" class="outline-3">
 <h3 id="faster-soreceive">Fast soreceive()</h3>
 <div class="outline-text-3" id="text-faster-soreceive">
@@ -639,6 +664,7 @@ net.inet.tcp.soreceive_stream="1"
 </pre>
 </div>
 </div>
+
 <div id="outline-container-nqueue-len" class="outline-3">
 <h3 id="nqueue-len">Increase queue size for network interfaces</h3>
 <div class="outline-text-3" id="text-nqueue-len">
@@ -651,6 +677,7 @@ net.link.ifqmaxlen="2048"
 </pre>
 </div>
 </div>
+
 <div id="outline-container-much-more-powersaving" class="outline-3">
 <h3 id="much-more-powersaving">Options for powersaving</h3>
 <div class="outline-text-3" id="text-much-more-powersaving">
@@ -667,6 +694,7 @@ compat.linuxkpi.i915_enable_dc="2"
 </pre>
 </div>
 </div>
+
 <div id="outline-container-network-stack-performance" class="outline-3">
 <h3 id="network-stack-performance">Settings to increase perfomance of network stack</h3>
 <div class="outline-text-3" id="text-network-stack-performance">
@@ -718,6 +746,7 @@ net.local.stream.sendspace=65536
 </pre>
 </div>
 </div>
+
 <div id="outline-container-intel-microcode" class="outline-3">
 <h3 id="intel-microcode">Intel microcode</h3>
 <div class="outline-text-3" id="text-intel-microcode">
@@ -731,6 +760,7 @@ cpu_microcode_name="/boot/firmware/intel-ucode.bin"
 </pre>
 </div>
 </div>
+
 <div id="outline-container-oss-tui" class="outline-3">
 <h3 id="oss-tui">Alsamixer, but for OSS</h3>
 <div class="outline-text-3" id="text-oss-tui">
@@ -739,6 +769,7 @@ pkg install mixertui
 </pre>
 </div>
 </div>
+
 <div id="outline-container-misc-3" class="outline-3">
 <h3 id="misc-3">Miscellaneous (3)</h3>
 <div class="outline-text-3" id="text-misc-3">

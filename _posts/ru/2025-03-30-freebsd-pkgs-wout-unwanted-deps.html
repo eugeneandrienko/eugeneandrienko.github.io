@@ -14,6 +14,7 @@ banner:
 summary: How I remove unwanted dependencies from FreeBSD packages
 tags: freebsd
 ---
+
 <div class="outline-2">
 <h2>TOC&#xa0;&#xa0;&#xa0;<span class="tag"></span></h2>
 <div class="outline-text-2">
@@ -31,6 +32,7 @@ tags: freebsd
 </ul>
 </div>
 </div>
+
 <div id="outline-container-preamble" class="outline-2">
 <h2 id="preamble">Preamble</h2>
 <div class="outline-text-2" id="text-preamble">
@@ -84,7 +86,7 @@ good old initialization scripts.
 <p>
 As stated <a href="https://mastodon.bsd.cafe/@TomAoki">@TomAoki@bsd.cafe</a> — some binary packages for FreeBSD have been built
 with the same dependencies that came from upstream — to minimize maintainer's
-work, which is obviously hard<sup><a id="fnr.tomaoki" class="footref" href="#fn.tomaoki" role="doc-backlink">1</a></sup>.
+work, which is obviously hard<sup><a id="fnr.1" class="footref" href="#fn.1" role="doc-backlink">1</a></sup>.
 </p>
 
 
@@ -208,6 +210,7 @@ infrastructure doesn't take up space on the root filesystem.
 </p>
 </div>
 </div>
+
 <div id="outline-container-poudriere-installation" class="outline-2">
 <h2 id="poudriere-installation">Poudriere installation</h2>
 <div class="outline-text-2" id="text-poudriere-installation">
@@ -364,12 +367,13 @@ downloading the build-time depenedencies as packages:
 </pre>
 
 <p>
-At the end I have an initialized<sup><a id="fnr.pkg" class="footref" href="#fn.pkg" role="doc-backlink">2</a></sup> and working jail with ports and the
+At the end I have an initialized<sup><a id="fnr.2" class="footref" href="#fn.2" role="doc-backlink">2</a></sup> and working jail with ports and the
 necessary build environment inside. Now it's time to remove unwanted
 dependencies from the system!
 </p>
 </div>
 </div>
+
 <div id="outline-container-removing-deps" class="outline-2">
 <h2 id="removing-deps">Removing unwanted dependencies</h2>
 <div class="outline-text-2" id="text-removing-deps">
@@ -520,7 +524,7 @@ workaround.
 The build process is fast enough, even on my Intel(R) Core(TM) i7-2620M CPU @
 2.70GHz. Obviously, the big software, like Qt or GTK, will build for
 hours. Fortunately, the packages that depend on it were waiting while they
-were building, so other CPU cores were free<sup><a id="fnr.cpu-cores" class="footref" href="#fn.cpu-cores" role="doc-backlink">3</a></sup> and I could use my
+were building, so other CPU cores were free<sup><a id="fnr.3" class="footref" href="#fn.3" role="doc-backlink">3</a></sup> and I could use my
 system as usual, without any drawbacks😎.
 </p>
 
@@ -622,6 +626,7 @@ conky: LocalRepo
 </pre>
 </div>
 </div>
+
 <div id="outline-container-dewaylandization" class="outline-2">
 <h2 id="dewaylandization">More complex examples of deWaylandization</h2>
 <div class="outline-text-2" id="text-dewaylandization">
@@ -687,6 +692,7 @@ command:
 And install it from <code>LocalRepo</code> the same way as I used for <code>conky</code> package.
 </p>
 </div>
+
 <div id="outline-container-flavors" class="outline-3">
 <h3 id="flavors">Ports flavors</h3>
 <div class="outline-text-3" id="text-flavors">
@@ -737,6 +743,7 @@ is specified after the <i>[at]</i> symbol.
 </p>
 </div>
 </div>
+
 <div id="outline-container-patching-Makefile" class="outline-3">
 <h3 id="patching-Makefile">Patching Makefile</h3>
 <div class="outline-text-3" id="text-patching-Makefile">
@@ -886,6 +893,7 @@ Last step: after successfull compilation I reverted my changes in
 </div>
 </div>
 </div>
+
 <div id="outline-container-results-and-thoughts" class="outline-2">
 <h2 id="results-and-thoughts">Results and thoughts</h2>
 <div class="outline-text-2" id="text-results-and-thoughts">
@@ -978,6 +986,7 @@ for now, two days already passed and all is OK.
 <hr />
 </div>
 </div>
+
 <div id="outline-container-notes" class="outline-2">
 <h2 id="notes">Notes</h2>
 <div class="outline-text-2" id="text-notes">
@@ -987,18 +996,18 @@ for now, two days already passed and all is OK.
 
 <div id="text-footnotes">
 
-<div class="footdef"><sup><a id="fn.tomaoki" class="footnum" href="#fnr.tomaoki" role="doc-backlink">1</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+<div class="footdef"><sup><a id="fn.1" class="footnum" href="#fnr.1" role="doc-backlink">1</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
 <a href="https://mastodon.bsd.cafe/@TomAoki/114209804382234562">https://mastodon.bsd.cafe/@TomAoki/114209804382234562</a>
 </p></div></div>
 
-<div class="footdef"><sup><a id="fn.pkg" class="footnum" href="#fnr.pkg" role="doc-backlink">2</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+<div class="footdef"><sup><a id="fn.2" class="footnum" href="#fnr.2" role="doc-backlink">2</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
 It may be necessary to build a <code>ports-mgmt/pkg</code> before building anything
 in the jail. In my case poudriere won't install <code>cmake-core</code> because it has
 unsatisfied dependency — the <code>pkg</code>. Despite the <code>pkg</code> of necessary version was
 previously bootstrapped to install binary packages in the jail.
 </p></div></div>
 
-<div class="footdef"><sup><a id="fn.cpu-cores" class="footnum" href="#fnr.cpu-cores" role="doc-backlink">3</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+<div class="footdef"><sup><a id="fn.3" class="footnum" href="#fnr.3" role="doc-backlink">3</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
 Except the Qt building process. There is a line in
 <code>/usr/local/etc/poudriere.conf</code>, which instructs to build some packages on the
 all accessible CPU cores:

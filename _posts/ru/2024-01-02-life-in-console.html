@@ -32,6 +32,7 @@ summary: Ностальгическая статья о том, как прои�
 обязательным красноглазием, скаканием между дистрибутивами и, в конечном
 итоге, обретением дзена.
 </p>
+
 <div class="outline-2">
 <h2>Как я пришёл к Linux'у</h2>
 <div class="outline-text-2">
@@ -127,6 +128,7 @@ Linux в те времена было плохо, да и без игр сери
 </p>
 </div>
 </div>
+
 <div class="outline-2">
 <h2>Период красноглазия</h2>
 <div class="outline-text-2">
@@ -241,6 +243,7 @@ IP-адрес. У меня даже был пользователь из Инд�
 </p>
 </div>
 </div>
+
 <div class="outline-2">
 <h2>Regexp 101 в ИТМО</h2>
 <div class="outline-text-2">
@@ -290,6 +293,7 @@ grep'а, sed'а и awk. А регулярные выражения прошли 
 </p>
 </div>
 </div>
+
 <div class="outline-2">
 <h2>Linux и embedded-программирование</h2>
 <div class="outline-text-2">
@@ -425,7 +429,7 @@ mutt. К счастью, эта штука не подвержена <i>СаМы
 <ul class="org-ul">
 <li>Не делать ничего критичного, типа обновления ПО, без моего ведома</li>
 <li>Обеспечивать работу привычных мне программ</li>
-<li>Придерживаться FHS <sup><a id="fnr.fhs" class="footref" href="#fn.fhs" role="doc-backlink">1</a></sup> и прочих стандартных вещей, которые я узнал ещё
+<li>Придерживаться FHS <sup><a id="fnr.1" class="footref" href="#fn.1" role="doc-backlink">1</a></sup> и прочих стандартных вещей, которые я узнал ещё
 со времён Slackware — чтобы если <i>вдруг</i> возникнет какая-то проблема — я мог
 быстро и спокойно в ней разобраться, понимая, что творится в системе.</li>
 <li>Не навязывать мне способ хранения <b>моих файлов</b> — всё должно быть
@@ -434,6 +438,7 @@ mutt. К счастью, эта штука не подвержена <i>СаМы
 </ul>
 </div>
 </div>
+
 <div class="outline-2">
 <h2>Работа и Linux</h2>
 <div class="outline-text-2">
@@ -460,11 +465,10 @@ git'е переименовали ветку <code>master</code> на <code>main
 заокеанской стране. К счастью, благодаря гибкости консольного ПО, этого
 ненужного изменения мне удалось избежать:
 </p>
-<div class="org-src-container">
-<pre class="src src-nil">[init]
+<pre class="example">
+[init]
   defaultbranch = master
 </pre>
-</div>
 
 <p>
 Потом стала популярной замена привычных утилит типа <code>grep</code> или <code>ls</code> на их аналоги,
@@ -531,10 +535,9 @@ Mint на Gentoo.
 <p>
 Прописал в <code>/etc/portage/make.conf</code> строку:
 </p>
-<div class="org-src-container">
-<pre class="src src-nil">USE="-systemd unicode -pulseaudio X alsa"
+<pre class="example">
+USE="-systemd unicode -pulseaudio X alsa"
 </pre>
-</div>
 
 <p>
 И горя с тех пор не знаю. Эта система стабильно живёт у меня уже 5 лет,
@@ -556,13 +559,14 @@ Mint на Gentoo.
 
 <p>
 Вторая проблема, с которой я сталкивался — как-то раз мейнтейнер бинарного
-пакета для Firefox забыл слинковать его с библиотеками для ALSA <sup><a id="fnr.alsa" class="footref" href="#fn.alsa" role="doc-backlink">2</a></sup> — в
+пакета для Firefox забыл слинковать его с библиотеками для ALSA <sup><a id="fnr.2" class="footref" href="#fn.2" role="doc-backlink">2</a></sup> — в
 итоге в браузере не было звука. Я откатился на прежнюю версию Firefox'а, полез
 в багтрекер Gentoo заводить новый баг — а он там уже есть и в нём люди активно
 комментят. Ещё через несколько дней пакет пересобрали правильно и на этом всё.
 </p>
 </div>
 </div>
+
 <div class="outline-2">
 <h2>What I expected and what I got</h2>
 <div class="outline-text-2">
@@ -602,8 +606,8 @@ Mint на Gentoo.
 Создаём файлик <code>/etc/X11/xorg.conf.d/50trackball.conf</code> со следующим
 содержимым:
 </p>
-<div class="org-src-container">
-<pre class="src src-nil">Section "InputClass"
+<pre class="example">
+Section "InputClass"
     Identifier "Marble Mouse"
     MatchProduct "Logitech USB Trackball"
     Option "EmulateWheel" "true"
@@ -613,7 +617,6 @@ Mint на Gentoo.
     Option "XAxisMapping"  "6 7"
 EndSection
 </pre>
-</div>
 
 <p>
 Теперь кнопка «Назад» работает как средняя кнопка мыши, кнопка «Вперёд»,
@@ -626,19 +629,18 @@ EndSection
 браузера, но нет кнопок для регулирования громкости? Не беда! Расчехляем
 <code>xmodmap</code> и переназначаем коды кнопок в сгенерированном им файле:
 </p>
-<div class="org-src-container">
-<pre class="src src-nil">keycode 152 = XF86AudioLowerVolume NoSymbol XF86AudioLowerVolume
+<pre class="example">
+keycode 152 = XF86AudioLowerVolume NoSymbol XF86AudioLowerVolume
 keycode 163 = XF86AudioRaiseVolume NoSymbol XF86AudioRaiseVolume
 keycode 180 = XF86AudioMute NoSymbol XF86AudioMute
-</pre>
-</div></li>
+</pre></li>
 </ul>
 
 <p>
 В итоге, Linux сейчас для меня стал просто системой, которая обеспечивает
 среду выполнения для привычных мне программ — что и составляют привычное для
 меня пользовательское окружение, как стена состоит из кирпичей. Бастионы — в
-лице Gentoo и Devuan <sup><a id="fnr.devuan" class="footref" href="#fn.devuan" role="doc-backlink">3</a></sup> — пока прикрывают меня от бушующего моря
+лице Gentoo и Devuan <sup><a id="fnr.3" class="footref" href="#fn.3" role="doc-backlink">3</a></sup> — пока прикрывают меня от бушующего моря
 лишних для меня изменений (раз X-сервер у меня прекрасно работает — зачем его
 менять на Wayland?) и связанных с ними проблем. Пока во всём остальном
 Linux-мире меняют системы инициализации, выкидывают на мороз X-сервер и
@@ -686,7 +688,7 @@ master». Зато в итоге, год за годом были сформир
 <p>
 В-третьих, будем честны, на данный момент, для ряда языков, большая и тяжёлая
 IDE по прежнему является лучшим выбором, чем Vim или Emacs. Даже невзирая на
-наличие LSP-сервера <sup><a id="fnr.lsp" class="footref" href="#fn.lsp" role="doc-backlink">4</a></sup> для вашего редактора. Например, Emacs'овый LSP
+наличие LSP-сервера <sup><a id="fnr.4" class="footref" href="#fn.4" role="doc-backlink">4</a></sup> для вашего редактора. Например, Emacs'овый LSP
 для Java до сих пор работает не очень хорошо — падает на простых вещах, не
 обновляет контекст изменений в файлах так быстро, как это делает IDEA, надо
 творить всякие хитрые заклинания, чтобы он работал с Lombok и так далее.
@@ -705,6 +707,7 @@ GIMP, смотреть сайт в Firefox'е и так далее. Но для 
 </p>
 </div>
 </div>
+
 <div class="outline-2">
 <h2>Примечания</h2>
 <div class="outline-text-2">
@@ -714,15 +717,15 @@ GIMP, смотреть сайт в Firefox'е и так далее. Но для 
 
 <div id="text-footnotes">
 
-<div class="footdef"><sup><a id="fn.fhs" class="footnum" href="#fnr.fhs" role="doc-backlink">1</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+<div class="footdef"><sup><a id="fn.1" class="footnum" href="#fnr.1" role="doc-backlink">1</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
 Filesystem Hierarchy Standard
 </p></div></div>
 
-<div class="footdef"><sup><a id="fn.alsa" class="footnum" href="#fnr.alsa" role="doc-backlink">2</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+<div class="footdef"><sup><a id="fn.2" class="footnum" href="#fnr.2" role="doc-backlink">2</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
 <a href="https://www.alsa-project.org/wiki/Main_Page">Advanced Linux Sound Architecture</a>
 </p></div></div>
 
-<div class="footdef"><sup><a id="fn.devuan" class="footnum" href="#fnr.devuan" role="doc-backlink">3</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+<div class="footdef"><sup><a id="fn.3" class="footnum" href="#fnr.3" role="doc-backlink">3</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
 Systemd-free дистрибутив Debian:
 <a href="https://www.devuan.org/">https://www.devuan.org/</a>. Использую его на ноутбуке, потому что сборка Gentoo
 на Thinkpad X220 с Intel Core i7, способна устроить натуральное глобальное
@@ -730,7 +733,7 @@ Systemd-free дистрибутив Debian:
 процессора под нагрузкой.
 </p></div></div>
 
-<div class="footdef"><sup><a id="fn.lsp" class="footnum" href="#fnr.lsp" role="doc-backlink">4</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+<div class="footdef"><sup><a id="fn.4" class="footnum" href="#fnr.4" role="doc-backlink">4</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
 <a href="https://langserver.org/">Language Server Protocol</a>
 </p></div></div>
 

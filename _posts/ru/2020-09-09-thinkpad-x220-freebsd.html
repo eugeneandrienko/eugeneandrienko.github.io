@@ -31,6 +31,7 @@ Lenovo ThinkPad X220 &#x2014; чтобы не забыть неочевидны�
 <li><a href="https://wiki.archlinux.org/title/Lenovo_ThinkPad_X230">https://wiki.archlinux.org/title/Lenovo_ThinkPad_X230</a></li>
 <li><a href="https://www.sacredheartsc.com/blog/freebsd-14-on-the-desktop/">https://www.sacredheartsc.com/blog/freebsd-14-on-the-desktop/</a></li>
 </ul>
+
 <div class="outline-2">
 <h2>TOC&#xa0;&#xa0;&#xa0;<span class="tag"></span></h2>
 <div class="outline-text-2">
@@ -72,6 +73,7 @@ Lenovo ThinkPad X220 &#x2014; чтобы не забыть неочевидны�
 </ul>
 </div>
 </div>
+
 <div id="outline-container-home-directory" class="outline-2">
 <h2 id="home-directory">Корректное отображение ~ в пути, в приглашении bash</h2>
 <div class="outline-text-2" id="text-home-directory">
@@ -90,6 +92,7 @@ chsh username</code>.
 </p>
 </div>
 </div>
+
 <div id="outline-container-minimal-set-of-groups" class="outline-2">
 <h2 id="minimal-set-of-groups">Минимальный набор групп для доступа к устройствам ноутбука</h2>
 <div class="outline-text-2" id="text-minimal-set-of-groups">
@@ -100,6 +103,7 @@ chsh username</code>.
 </ul>
 </div>
 </div>
+
 <div id="outline-container-power-control" class="outline-2">
 <h2 id="power-control">Управление питанием</h2>
 <div class="outline-text-2" id="text-power-control">
@@ -128,6 +132,7 @@ kern.hz=100
 </p>
 </div>
 </div>
+
 <div id="outline-container-sound" class="outline-2">
 <h2 id="sound">Звук</h2>
 <div class="outline-text-2" id="text-sound">
@@ -151,6 +156,7 @@ hint.hdaa.0.nid21.config="as=1 seq=15 device=Headphones"
 </pre>
 </div>
 </div>
+
 <div id="outline-container-brightness" class="outline-2">
 <h2 id="brightness">Управление яркостью</h2>
 <div class="outline-text-2" id="text-brightness">
@@ -175,6 +181,7 @@ acpi_video_load="YES"
 </p>
 </div>
 </div>
+
 <div id="outline-container-multimedia-keys" class="outline-2">
 <h2 id="multimedia-keys">Мультимедиа-клавиши</h2>
 <div class="outline-text-2" id="text-multimedia-keys">
@@ -218,6 +225,7 @@ notify 10 {
 </p>
 </div>
 </div>
+
 <div id="outline-container-touchpad-and-trackpoint" class="outline-2">
 <h2 id="touchpad-and-trackpoint">Тачпад и трекпойнт</h2>
 <div class="outline-text-2" id="text-touchpad-and-trackpoint">
@@ -252,6 +260,7 @@ hw.psm.trackpoint.upper_plateau=125
 </pre>
 </div>
 </div>
+
 <div id="outline-container-web-camera" class="outline-2">
 <h2 id="web-camera">Веб-камера</h2>
 <div class="outline-text-2" id="text-web-camera">
@@ -292,6 +301,7 @@ sudo pw groupmod webcamd -m &lt;username&gt;
 </pre>
 </div>
 </div>
+
 <div id="outline-container-sleep" class="outline-2">
 <h2 id="sleep">Сон</h2>
 <div class="outline-text-2" id="text-sleep">
@@ -305,6 +315,7 @@ sudo pw groupmod webcamd -m &lt;username&gt;
 </p>
 </div>
 </div>
+
 <div id="outline-container-drm-kmod" class="outline-2">
 <h2 id="drm-kmod">Включение drm-kmod</h2>
 <div class="outline-text-2" id="text-drm-kmod">
@@ -318,6 +329,7 @@ kld_list="${kld_list} /boot/modules/i915kms.ko"
 </pre>
 </div>
 </div>
+
 <div id="outline-container-wifi" class="outline-2">
 <h2 id="wifi">Wi-Fi</h2>
 <div class="outline-text-2" id="text-wifi">
@@ -354,6 +366,7 @@ fast_reauth=1
 </pre>
 </div>
 </div>
+
 <div id="outline-container-misc" class="outline-2">
 <h2 id="misc">Разное</h2>
 <div class="outline-text-2" id="text-misc">
@@ -402,6 +415,7 @@ kern.vt.enable_bell=0
 </pre>
 </div>
 </div>
+
 <div id="outline-container-update-2024-04-28" class="outline-2">
 <h2 id="update-2024-04-28">Обновление 2024-04-28</h2>
 <div class="outline-text-2" id="text-update-2024-04-28">
@@ -412,6 +426,7 @@ kern.vt.enable_bell=0
 статье:
 </p>
 </div>
+
 <div id="outline-container-s3-mode" class="outline-3">
 <h3 id="s3-mode">Корректная работа режима сна</h3>
 <div class="outline-text-3" id="text-s3-mode">
@@ -461,6 +476,7 @@ hw.acpi.sleep_button_state=S3
 </pre>
 </div>
 </div>
+
 <div id="outline-container-bootlog-2k-display" class="outline-3">
 <h3 id="bootlog-2k-display">Вывод лога загрузки на «второй» 2K-монитор</h3>
 <div class="outline-text-3" id="text-bootlog-2k-display">
@@ -489,6 +505,7 @@ vbe_max_resolution=2560x1440
 </pre>
 </div>
 </div>
+
 <div id="outline-container-boot-mess-reduce" class="outline-3">
 <h3 id="boot-mess-reduce">Уменьшение количества сообщений при загрузке</h3>
 <div class="outline-text-3" id="text-boot-mess-reduce">
@@ -507,6 +524,7 @@ rc_startmsgs="NO"
 </pre>
 </div>
 </div>
+
 <div id="outline-container-videocard-powersave" class="outline-3">
 <h3 id="videocard-powersave">Энергосбережение для видеокарты</h3>
 <div class="outline-text-3" id="text-videocard-powersave">
@@ -520,6 +538,7 @@ drm.i915.intel_iommu_enabled="1"
 </pre>
 </div>
 </div>
+
 <div id="outline-container-intel-8260" class="outline-3">
 <h3 id="intel-8260">Intel 8260</h3>
 <div class="outline-text-3" id="text-intel-8260">
@@ -534,6 +553,7 @@ WiFi работать на полную катушку — это исполь�
 </ul>
 </div>
 </div>
+
 <div id="outline-container-coreboot-sound" class="outline-3">
 <h3 id="coreboot-sound">Звук и coreboot</h3>
 <div class="outline-text-3" id="text-coreboot-sound">
@@ -561,6 +581,7 @@ hint.hdaa.0.nid35.config="as=1 seq=15 device=Headphones"
 </pre>
 </div>
 </div>
+
 <div id="outline-container-gui-glitches" class="outline-3">
 <h3 id="gui-glitches">Глитчи в GUI</h3>
 <div class="outline-text-3" id="text-gui-glitches">
@@ -607,6 +628,7 @@ drm.i915.enable_fbc="1"
 </pre>
 </div>
 </div>
+
 <div id="outline-container-misc-2" class="outline-3">
 <h3 id="misc-2">Разное (2)</h3>
 <div class="outline-text-3" id="text-misc-2">
@@ -635,6 +657,7 @@ acpi_dock_load="YES"
 </div>
 </div>
 </div>
+
 <div id="outline-container-update-2024-11-30" class="outline-2">
 <h2 id="update-2024-11-30">Обновление 2024-11-30</h2>
 <div class="outline-text-2" id="text-update-2024-11-30">
@@ -643,6 +666,7 @@ acpi_dock_load="YES"
 следующие настройки:
 </p>
 </div>
+
 <div id="outline-container-intel-graphics-optimizations" class="outline-3">
 <h3 id="intel-graphics-optimizations">Оптимизации для графики Intel</h3>
 <div class="outline-text-3" id="text-intel-graphics-optimizations">
@@ -655,6 +679,7 @@ drm.i915.fastboot="1"
 </pre>
 </div>
 </div>
+
 <div id="outline-container-faster-soreceive" class="outline-3">
 <h3 id="faster-soreceive">Быстрая реализация soreceive()</h3>
 <div class="outline-text-3" id="text-faster-soreceive">
@@ -666,6 +691,7 @@ net.inet.tcp.soreceive_stream="1"
 </pre>
 </div>
 </div>
+
 <div id="outline-container-nqueue-len" class="outline-3">
 <h3 id="nqueue-len">Увеличенный размер очереди для сетевых интерфейсов</h3>
 <div class="outline-text-3" id="text-nqueue-len">
@@ -678,6 +704,7 @@ net.link.ifqmaxlen="2048"
 </pre>
 </div>
 </div>
+
 <div id="outline-container-much-more-powersaving" class="outline-3">
 <h3 id="much-more-powersaving">Опции для энергосбережения</h3>
 <div class="outline-text-3" id="text-much-more-powersaving">
@@ -694,6 +721,7 @@ compat.linuxkpi.i915_enable_dc="2"
 </pre>
 </div>
 </div>
+
 <div id="outline-container-network-stack-performance" class="outline-3">
 <h3 id="network-stack-performance">Настройки для повышения производительности сетевого стека</h3>
 <div class="outline-text-3" id="text-network-stack-performance">
@@ -745,6 +773,7 @@ net.local.stream.sendspace=65536
 </pre>
 </div>
 </div>
+
 <div id="outline-container-intel-microcode" class="outline-3">
 <h3 id="intel-microcode">Установка microcode от Intel</h3>
 <div class="outline-text-3" id="text-intel-microcode">
@@ -758,6 +787,7 @@ cpu_microcode_name="/boot/firmware/intel-ucode.bin"
 </pre>
 </div>
 </div>
+
 <div id="outline-container-oss-tui" class="outline-3">
 <h3 id="oss-tui">Alsamixer, но для OSS</h3>
 <div class="outline-text-3" id="text-oss-tui">
@@ -766,6 +796,7 @@ pkg install mixertui
 </pre>
 </div>
 </div>
+
 <div id="outline-container-misc-3" class="outline-3">
 <h3 id="misc-3">Разное (3)</h3>
 <div class="outline-text-3" id="text-misc-3">

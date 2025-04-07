@@ -44,6 +44,7 @@ kernel module for VirtualBox and VirtualBox Guest Addons in the guest
 system. But for now I can simply use «standard» FreeBSD capabilities — <a href="https://bhyve.org/">bhyve</a>
 hypervisor and <a href="https://github.com/churchers/vm-bhyve">vm-bhyve</a> virtual machines manager, which supports Windows.
 </p>
+
 <div class="outline-2">
 <h2>TOC&#xa0;&#xa0;&#xa0;<span class="tag"></span></h2>
 <div class="outline-text-2">
@@ -58,6 +59,7 @@ hypervisor and <a href="https://github.com/churchers/vm-bhyve">vm-bhyve</a> virt
 </ul>
 </div>
 </div>
+
 <div id="outline-container-zfs-dataset" class="outline-2">
 <h2 id="zfs-dataset">ZFS dataset for my VMs (optional part)</h2>
 <div class="outline-text-2" id="text-zfs-dataset">
@@ -99,6 +101,7 @@ files on this hard drive, rather than on the two main system disks.
 </p>
 </div>
 </div>
+
 <div id="outline-container-bhyve-setup" class="outline-2">
 <h2 id="bhyve-setup">Setup bhyve and vm-bhyve</h2>
 <div class="outline-text-2" id="text-bhyve-setup">
@@ -150,6 +153,7 @@ drwxr-xr-x  2 root wheel    4B Oct 27 10:53 .templates/
 </ol>
 </div>
 </div>
+
 <div id="outline-container-vm-profile" class="outline-2">
 <h2 id="vm-profile">Windows profile for VM</h2>
 <div class="outline-text-2" id="text-vm-profile">
@@ -189,6 +193,7 @@ This profile is stored in <code>/hdd/vms/.templates/windows.conf</code>.
 </ul>
 </div>
 </div>
+
 <div id="outline-container-network-setup" class="outline-2">
 <h2 id="network-setup">Network setup</h2>
 <div class="outline-text-2" id="text-network-setup">
@@ -230,6 +235,7 @@ public  standard  vm-public  169.254.0.1/16  no       -    -     -
 </pre>
 </div>
 </div>
+
 <div id="outline-container-windows-setup" class="outline-2">
 <h2 id="windows-setup">Windows installation</h2>
 <div class="outline-text-2" id="text-windows-setup">
@@ -303,6 +309,7 @@ And then it's business as usual :-)
 </ol>
 </div>
 </div>
+
 <div id="outline-container-rdp-client" class="outline-2">
 <h2 id="rdp-client">RDP client</h2>
 <div class="outline-text-2" id="text-rdp-client">
@@ -366,6 +373,7 @@ ignored. In some cases this can be useful.
 </ul>
 </div>
 </div>
+
 <div id="outline-container-main-bhyve-vm-commands" class="outline-2">
 <h2 id="main-bhyve-vm-commands">Basic commands to operate with VM</h2>
 <div class="outline-text-2" id="text-main-bhyve-vm-commands">

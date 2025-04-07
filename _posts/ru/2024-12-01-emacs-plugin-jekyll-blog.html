@@ -14,6 +14,7 @@ banner:
 summary: Emacs Lisp программа, упрощающая сборку Jekyll-блога из org-файлов
 tags: emacs
 ---
+
 <div class="outline-2">
 <h2>TOC&#xa0;&#xa0;&#xa0;<span class="tag"></span></h2>
 <div class="outline-text-2">
@@ -40,6 +41,7 @@ tags: emacs
 </ul>
 </div>
 </div>
+
 <div id="outline-container-preface" class="outline-2">
 <h2 id="preface">Введение</h2>
 <div class="outline-text-2" id="text-preface">
@@ -69,19 +71,19 @@ tags: emacs
 MySQL/PostgreSQL, php-fpm и т.д. и т.п. — изрядно мне надоела. Как и всякие
 куцые WYSIWYG-редакторы и ненужные «обновления» блоггинг-платформ. Тут же как
 раз подоспел всякий «virtue signaling», из-за которого я
-лишился<sup><a id="fnr.virtue_signaling" class="footref" href="#fn.virtue_signaling" role="doc-backlink">1</a></sup> своего VPS (он обеспечивал мне доступ в «большой
+лишился<sup><a id="fnr.1" class="footref" href="#fn.1" role="doc-backlink">1</a></sup> своего VPS (он обеспечивал мне доступ в «большой
 интернет» — раньше, в 90-х и нулевых была такая глобальная сеть, при помощи
 которой можно было свободно общаться с людьми по всему миру и без границ,
 блокировок по GeoIP и DPI). А также почти лишился доменного
-имени<sup><a id="fnr.namecheap" class="footref" href="#fn.namecheap" role="doc-backlink">2</a></sup>.
+имени<sup><a id="fnr.2" class="footref" href="#fn.2" role="doc-backlink">2</a></sup>.
 </p>
 
 <p>
-Примерно в этот момент я пришёл к использованию <a href="https://jekyllrb.com/">Jekyll</a><sup><a id="fnr.jekyll" class="footref" href="#fn.jekyll" role="doc-backlink">3</a></sup> в качестве
+Примерно в этот момент я пришёл к использованию <a href="https://jekyllrb.com/">Jekyll</a><sup><a id="fnr.3" class="footref" href="#fn.3" role="doc-backlink">3</a></sup> в качестве
 статического генератора для своего блога. Его копия, со всеми HTML и CSS
 файлами, хранится у меня на машине и не зависит от сторонних CDN, библиотек и
 всего прочего, к чему я могу потерять доступ в любой момент. Пришлось
-«немного» подправить тему <a href="https://github.com/jeffreytse/jekyll-theme-yat">Yat</a>, чтобы там не было ни JS<sup><a id="fnr.javascript" class="footref" href="#fn.javascript" role="doc-backlink">4</a></sup>, ни
+«немного» подправить тему <a href="https://github.com/jeffreytse/jekyll-theme-yat">Yat</a>, чтобы там не было ни JS<sup><a id="fnr.4" class="footref" href="#fn.4" role="doc-backlink">4</a></sup>, ни
 подгрузки ресурсов со сторонних CDN. При локальном использовании, единственная
 оставшаяся зависимость — от самого Jekyll и от его плагинов. Но они и так уже
 лежат на жёстком диске и работают без подключения к Интернету — а с жёсткого
@@ -117,6 +119,7 @@ Jekyll вдруг решат дискриминировать людей по г
 </p>
 </div>
 </div>
+
 <div id="outline-container-generator-first-version" class="outline-2">
 <h2 id="generator-first-version">Первая версия генератора блога</h2>
 <div class="outline-text-2" id="text-generator-first-version">
@@ -219,20 +222,21 @@ the web with Jekyll, Emacs and Org-Mode</a>&#x2026;
 </p>
 </div>
 </div>
+
 <div id="outline-container-emacs-lisp-jekyll-gen" class="outline-2">
 <h2 id="emacs-lisp-jekyll-gen">Генерация Jekyll-блога c помощью Emacs Lisp</h2>
 <div class="outline-text-2" id="text-emacs-lisp-jekyll-gen">
 <p>
 Как оказалось, весь мой конвейер из <code>sed</code> + <code>awk</code> + <code>pandoc</code> + <code>Java-фильтр</code> можно
 спокойно выкинуть и заменить на вызов функции
-<code>org-publish-project</code><sup><a id="fnr.org-publish-project" class="footref" href="#fn.org-publish-project" role="doc-backlink">5</a></sup>. Org Mode сам может экспортировать
+<code>org-publish-project</code><sup><a id="fnr.5" class="footref" href="#fn.5" role="doc-backlink">5</a></sup>. Org Mode сам может экспортировать
 org-файлы в HTML-файлы, сразу готовые для использования в Jekyll, без
 дополнительной конвертации Markdown⇒HTML.
 </p>
 
 <p>
 У меня уже был некоторый опыт программирования на Lisp, а точнее на
-Clojure<sup><a id="fnr.clojure" class="footref" href="#fn.clojure" role="doc-backlink">6</a></sup>, поэтому я спокойно взялся писать свой плагин, по мотивам
+Clojure<sup><a id="fnr.6" class="footref" href="#fn.6" role="doc-backlink">6</a></sup>, поэтому я спокойно взялся писать свой плагин, по мотивам
 кода от <a href="https://mastodon.social/@fabrik42">Christian Dewein</a>. Программировать на Emacs Lisp в Emacs одно
 удовольствие — тут тебе и встроенная справка по языку через <code>C-h f</code>, <code>C-h v</code> и так
 далее. И встроенный REPL (<code>M-x ielm</code>). И встроенный отладчик. Можно спокойно
@@ -240,6 +244,7 @@ Clojure<sup><a id="fnr.clojure" class="footref" href="#fn.clojure" role="doc-bac
 и строить программу «по кирпичикам».
 </p>
 </div>
+
 <div id="outline-container-convert-org2html" class="outline-3">
 <h3 id="convert-org2html">Преобразование org-файлов в HTML</h3>
 <div class="outline-text-3" id="text-convert-org2html">
@@ -296,7 +301,7 @@ Jekyll и сохранять в <code>~/results</code>, будет выгляд�
 <p>
 Неплохо бы иметь возможность настраивать имена каталогов, чтобы не копаться
 каждый раз в исходном коде, меняя строковые константы. Для этого в Emacs Lisp
-есть функция <code>defcustom</code><sup><a id="fnr.defcustom" class="footref" href="#fn.defcustom" role="doc-backlink">7</a></sup>. Она позволяет описать настройки для
+есть функция <code>defcustom</code><sup><a id="fnr.7" class="footref" href="#fn.7" role="doc-backlink">7</a></sup>. Она позволяет описать настройки для
 плагина так, чтобы их можно было менять общепринятыми способами — через <code>M-x
 customize</code> или через секцию <code>:custom</code> в <code>use-package</code>:
 </p>
@@ -396,7 +401,7 @@ customize</code> или через секцию <code>:custom</code> в <code>us
 <p>
 Чтобы определить список, в котором отдельные элементы являются исполняемым
 кодом, нужно использовать обратную кавычку, вместо
-обычной<sup><a id="fnr.quoting" class="footref" href="#fn.quoting" role="doc-backlink">8</a></sup>. Элементы, которые будут исполняемыми S-expressions,
+обычной<sup><a id="fnr.8" class="footref" href="#fn.8" role="doc-backlink">8</a></sup>. Элементы, которые будут исполняемыми S-expressions,
 отмечаются при помощи запятой:
 </p>
 
@@ -435,13 +440,14 @@ customize</code> или через секцию <code>:custom</code> в <code>us
 </p>
 </div>
 </div>
+
 <div id="outline-container-copy-2-tmp-catalog" class="outline-3">
 <h3 id="copy-2-tmp-catalog">Копирование файлов в промежуточный каталог</h3>
 <div class="outline-text-3" id="text-copy-2-tmp-catalog">
 <p>
 Сначала нужно получить список org-файлов с постами, которые есть в каталоге
 <code>articles/</code>. Его нам может вернуть функция
-<code>directory-files-recursively</code><sup><a id="fnr.directory-files-recursively" class="footref" href="#fn.directory-files-recursively" role="doc-backlink">9</a></sup>, если ей передать
+<code>directory-files-recursively</code><sup><a id="fnr.9" class="footref" href="#fn.9" role="doc-backlink">9</a></sup>, если ей передать
 путь к каталогу и регулярку, которой будут выбираться только org-файлы:
 </p>
 
@@ -462,7 +468,7 @@ customize</code> или через секцию <code>:custom</code> в <code>us
 <p>
 Как видно, в результате есть и черновики, которые не нужно экспортировать в
 HTML, и файл с шаблоном для новых постов. Эти лишние файлы можно отфильтровать
-при помощи <code>seq-filter</code><sup><a id="fnr.seq-filter" class="footref" href="#fn.seq-filter" role="doc-backlink">10</a></sup> — он умеет убирать из списка (передаётся
+при помощи <code>seq-filter</code><sup><a id="fnr.10" class="footref" href="#fn.10" role="doc-backlink">10</a></sup> — он умеет убирать из списка (передаётся
 вторым параметром) элементы не проходящие проверку в предикате из первого
 параметра:
 </p>
@@ -499,7 +505,7 @@ HTML, и файл с шаблоном для новых постов. Эти л�
 <p>
 Теперь, когда у нас есть <i>правильный</i> список путей к файлам, надо каждый его
 элемент передать в функцию для копирования файлов. Это делается при помощи
-<code>mapc</code><sup><a id="fnr.mapc" class="footref" href="#fn.mapc" role="doc-backlink">11</a></sup>, которая применяет лямбда-функцию из первого параметра к каждому
+<code>mapc</code><sup><a id="fnr.11" class="footref" href="#fn.11" role="doc-backlink">11</a></sup>, которая применяет лямбда-функцию из первого параметра к каждому
 элементу списка, переданному вторым параметром:
 </p>
 
@@ -517,11 +523,11 @@ HTML, и файл с шаблоном для новых постов. Эти л�
 </div>
 
 <p>
-Элементы пути из переменной <code>article</code>: дата, URL и код языка<sup><a id="fnr.lang_code" class="footref" href="#fn.lang_code" role="doc-backlink">12</a></sup> — я
+Элементы пути из переменной <code>article</code>: дата, URL и код языка<sup><a id="fnr.12" class="footref" href="#fn.12" role="doc-backlink">12</a></sup> — я
 использую, для того чтобы получить уникальное имя файла для промежуточного
 каталога. Чтобы вытащить всё что надо из исходного пути к файлу — есть
 регулярки с capturing groups. В Emacs для этого можно использовать функции
-<code>string-match</code> и <code>match-string</code><sup><a id="fnr.regex-search" class="footref" href="#fn.regex-search" role="doc-backlink">13</a></sup>:
+<code>string-match</code> и <code>match-string</code><sup><a id="fnr.13" class="footref" href="#fn.13" role="doc-backlink">13</a></sup>:
 </p>
 
 <div class="org-src-container">
@@ -546,7 +552,7 @@ HTML, и файл с шаблоном для новых постов. Эти л�
 </div>
 
 <p>
-В коде лямбды я заворачиваю всё это в <code>let*</code><sup><a id="fnr.let-star" class="footref" href="#fn.let-star" role="doc-backlink">14</a></sup>, чтобы впоследствии
+В коде лямбды я заворачиваю всё это в <code>let*</code><sup><a id="fnr.14" class="footref" href="#fn.14" role="doc-backlink">14</a></sup>, чтобы впоследствии
 просто обращаться к соответствующим переменным:
 </p>
 
@@ -577,7 +583,7 @@ HTML, и файл с шаблоном для новых постов. Эти л�
 <code>article-lang</code>. Путь к каталогу <code>_articles/</code> можно вытащить из настроек проекта
 <code>"org-jekyll-org"</code> — список с этими настройками передаётся в виде
 единственного параметра в функцию <code>org-jekyll--prepare-articles</code> и по имени
-параметра (<code>:base-directory</code>) можно получить нужное значение<sup><a id="fnr.plist-get" class="footref" href="#fn.plist-get" role="doc-backlink">15</a></sup>:
+параметра (<code>:base-directory</code>) можно получить нужное значение<sup><a id="fnr.15" class="footref" href="#fn.15" role="doc-backlink">15</a></sup>:
 </p>
 <div class="org-src-container">
 <pre class="src src-emacs-lisp"><span style="color: #2aa198;">(</span>article-new-catalog <span style="color: #b58900;">(</span>concat
@@ -690,6 +696,7 @@ HTML, и файл с шаблоном для новых постов. Эти л�
 </p>
 </div>
 </div>
+
 <div id="outline-container-html-file-editing" class="outline-3">
 <h3 id="html-file-editing">Редактирование HTML файлов</h3>
 <div class="outline-text-3" id="text-html-file-editing">
@@ -701,7 +708,7 @@ HTML, и файл с шаблоном для новых постов. Эти л�
 <li>Рандомно сгенерированные ID из HTML-тэгов</li>
 <li>Нумерацию изображений</li>
 <li>Тэг <code>:TOC_2_blog:</code> после заголовка «TOC». Этот тег нужен, чтобы расширение
-<a href="https://github.com/snosov1/toc-org/">toc-org</a> автоматически генерировало<sup><a id="fnr.toc-org" class="footref" href="#fn.toc-org" role="doc-backlink">16</a></sup> содержание для поста при
+<a href="https://github.com/snosov1/toc-org/">toc-org</a> автоматически генерировало<sup><a id="fnr.16" class="footref" href="#fn.16" role="doc-backlink">16</a></sup> содержание для поста при
 каждом сохранении файла.</li>
 <li>Лишний заголовок для примечаний, причём не на языке поста.</li>
 </ul>
@@ -803,6 +810,7 @@ HTML, и файл с шаблоном для новых постов. Эти л�
 </div>
 </div>
 </div>
+
 <div id="outline-container-static-files-export" class="outline-3">
 <h3 id="static-files-export">Экспорт статических файлов</h3>
 <div class="outline-text-3" id="text-static-files-export">
@@ -883,6 +891,7 @@ HTML, и файл с шаблоном для новых постов. Эти л�
 </div>
 </div>
 </div>
+
 <div id="outline-container-jekyll-build-from-emacs" class="outline-3">
 <h3 id="jekyll-build-from-emacs">Вызов Jekyll из Emacs</h3>
 <div class="outline-text-3" id="text-jekyll-build-from-emacs">
@@ -896,7 +905,7 @@ HTML, и файл с шаблоном для новых постов. Эти л�
 <p>
 В статье <a href="https://mastodon.social/@fabrik42">Christian Dewein</a> для вызова консольной команды используется плагин
 <a href="https://github.com/rejeep/prodigy.el">Prodigy</a>. Я счёл этот подход переусложнённым и просто запускаю отдельный
-процесс при помощи функции <code>make-process</code><sup><a id="fnr.make-process" class="footref" href="#fn.make-process" role="doc-backlink">17</a></sup>:
+процесс при помощи функции <code>make-process</code><sup><a id="fnr.17" class="footref" href="#fn.17" role="doc-backlink">17</a></sup>:
 </p>
 
 <div class="org-src-container">
@@ -924,8 +933,8 @@ HTML, и файл с шаблоном для новых постов. Эти л�
 
 <p>
 Сообщения для пользователя печатаются в minibuffer при помощи функции
-<code>message</code><sup><a id="fnr.message" class="footref" href="#fn.message" role="doc-backlink">18</a></sup>, текстом синего текста (настраивается при помощи
-<code>propertize</code><sup><a id="fnr.propertize" class="footref" href="#fn.propertize" role="doc-backlink">19</a></sup>):
+<code>message</code><sup><a id="fnr.18" class="footref" href="#fn.18" role="doc-backlink">18</a></sup>, текстом синего текста (настраивается при помощи
+<code>propertize</code><sup><a id="fnr.19" class="footref" href="#fn.19" role="doc-backlink">19</a></sup>):
 </p>
 
 
@@ -979,6 +988,7 @@ HTML, и файл с шаблоном для новых постов. Эти л�
 </p>
 </div>
 </div>
+
 <div id="outline-container-create-new-post" class="outline-3">
 <h3 id="create-new-post">Создание нового поста</h3>
 <div class="outline-text-3" id="text-create-new-post">
@@ -1180,6 +1190,7 @@ hidden:
 </p>
 </div>
 </div>
+
 <div id="outline-container-jekyll-local-server" class="outline-3">
 <h3 id="jekyll-local-server">Запуск локального сервера Jekyll</h3>
 <div class="outline-text-3" id="text-jekyll-local-server">
@@ -1238,6 +1249,7 @@ hidden:
 </div>
 </div>
 </div>
+
 <div id="outline-container-jekyll-clean" class="outline-3">
 <h3 id="jekyll-clean">Очистка рабочего каталога Jekyll</h3>
 <div class="outline-text-3" id="text-jekyll-clean">
@@ -1328,7 +1340,7 @@ S-expression:
 </div>
 
 <p>
-S-expression с <code>mapcan</code><sup><a id="fnr.mapcan" class="footref" href="#fn.mapcan" role="doc-backlink">20</a></sup> делает следующее:
+S-expression с <code>mapcan</code><sup><a id="fnr.20" class="footref" href="#fn.20" role="doc-backlink">20</a></sup> делает следующее:
 </p>
 <ol class="org-ol">
 <li>Берёт первый элемент списка с путями/регулярками через <code>(car x)</code> — это будет
@@ -1433,6 +1445,7 @@ S-expression с <code>mapcan</code><sup><a id="fnr.mapcan" class="footref" href=
 </div>
 </div>
 </div>
+
 <div id="outline-container-transient-ui" class="outline-3">
 <h3 id="transient-ui">Интерфейс пользователя (transient)</h3>
 <div class="outline-text-3" id="text-transient-ui">
@@ -1523,6 +1536,7 @@ S-expression с <code>mapcan</code><sup><a id="fnr.mapcan" class="footref" href=
 </p>
 </div>
 </div>
+
 <div id="outline-container-emacs-plugin" class="outline-3">
 <h3 id="emacs-plugin">Оформление в виде плагина</h3>
 <div class="outline-text-3" id="text-emacs-plugin">
@@ -1584,6 +1598,7 @@ Mode. Использование библиотеки <code>transient</code> я 
 </p>
 </div>
 </div>
+
 <div id="outline-container-loading-plugin-in-emacs" class="outline-3">
 <h3 id="loading-plugin-in-emacs">Загрузка плагина в Emacs</h3>
 <div class="outline-text-3" id="text-loading-plugin-in-emacs">
@@ -1612,7 +1627,7 @@ mode сам включался только при открытии файла �
 </p>
 
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #2aa198;">(</span><span style="color: #859900; font-weight: bold;">use-package</span> org-jekyll
+<pre class="src src-emacs-lisp"><span style="color: #2aa198;">(</span><span style="color: #859900; font-weight: bold;">use-package</span> <span style="color: #268bd2; font-weight: bold;">org-jekyll</span>
   <span style="color: #657b83; font-weight: bold;">:load-path</span> <span style="color: #2aa198;">"~/rsync/blog/"</span>
   <span style="color: #657b83; font-weight: bold;">:ensure</span> nil
   <span style="color: #657b83; font-weight: bold;">:commands</span> org-jekyll-init
@@ -1628,6 +1643,7 @@ mode сам включался только при открытии файла �
 </div>
 </div>
 </div>
+
 <div id="outline-container-source-code" class="outline-2">
 <h2 id="source-code">Исходный код плагина</h2>
 <div class="outline-text-2" id="text-source-code">
@@ -1651,6 +1667,7 @@ mode сам включался только при открытии файла �
 </p>
 </div>
 </div>
+
 <div id="outline-container-plugin-improvement" class="outline-2">
 <h2 id="plugin-improvement">Что ещё можно улучшить?</h2>
 <div class="outline-text-2" id="text-plugin-improvement">
@@ -1685,6 +1702,8 @@ mode сам включался только при открытии файла �
 </ol>
 </div>
 </div>
+
+
 <div id="outline-container-notes" class="outline-2">
 <h2 id="notes">Примечания</h2>
 <div class="outline-text-2" id="text-notes">
@@ -1694,14 +1713,14 @@ mode сам включался только при открытии файла �
 
 <div id="text-footnotes">
 
-<div class="footdef"><sup><a id="fn.virtue_signaling" class="footnum" href="#fnr.virtue_signaling" role="doc-backlink">1</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+<div class="footdef"><sup><a id="fn.1" class="footnum" href="#fnr.1" role="doc-backlink">1</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
 Сначала, в середине марта 2022 года, Visa и Master Card
 отрезали меня практически от всего, что можно купить за деньги за пределами
 страны. Из-за чего я не смог ни перенести свой домен к другому регистратору,
 ни оплатить свой VPS в Финляндии.
 </p></div></div>
 
-<div class="footdef"><sup><a id="fn.namecheap" class="footnum" href="#fnr.namecheap" role="doc-backlink">2</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+<div class="footdef"><sup><a id="fn.2" class="footnum" href="#fnr.2" role="doc-backlink">2</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
 Это отдельная и совершенно «прекрасная» история. 28 февраля
 2022 года NameCheap прислал мне письмо-уведомление о том, что они
 разделегируют мой домен через 7 дней потому что я из «неправильной» страны
@@ -1761,22 +1780,22 @@ signaling):
 случай если что-то пойдёт не так.
 </p></div></div>
 
-<div class="footdef"><sup><a id="fn.jekyll" class="footnum" href="#fnr.jekyll" role="doc-backlink">3</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+<div class="footdef"><sup><a id="fn.3" class="footnum" href="#fnr.3" role="doc-backlink">3</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
 Он выглядел достаточно простым и в то же время оказался достаточно
 популярным и часто использовался (и используется до сих пор) у разных хостеров
 в качестве предустановленного приложения для блоггинга.
 </p></div></div>
 
-<div class="footdef"><sup><a id="fn.javascript" class="footnum" href="#fnr.javascript" role="doc-backlink">4</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+<div class="footdef"><sup><a id="fn.4" class="footnum" href="#fnr.4" role="doc-backlink">4</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
 Не нравится мне JS, к тому же без него блог невообразимо
 быстро открывается и работает на моём Thinkpad X220.
 </p></div></div>
 
-<div class="footdef"><sup><a id="fn.org-publish-project" class="footnum" href="#fnr.org-publish-project" role="doc-backlink">5</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+<div class="footdef"><sup><a id="fn.5" class="footnum" href="#fnr.5" role="doc-backlink">5</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
 <a href="https://orgmode.org/worg/org-tutorials/org-publish-html-tutorial.html">https://orgmode.org/worg/org-tutorials/org-publish-html-tutorial.html</a>
 </p></div></div>
 
-<div class="footdef"><sup><a id="fn.clojure" class="footnum" href="#fnr.clojure" role="doc-backlink">6</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+<div class="footdef"><sup><a id="fn.6" class="footnum" href="#fnr.6" role="doc-backlink">6</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
 Во времена учёбы в университете я немного интересовался Lisp'ом,
 почитывал «Structure and Interpretation of Computer Programs» и писал разные
 простенькие программки на Clojure. Исходный код некоторых из них сохранился до
@@ -1787,53 +1806,53 @@ signaling):
 <li><a href="https://codeberg.org/evgandr/cs-alias-clj">https://codeberg.org/evgandr/cs-alias-clj</a></li>
 </ul></div></div>
 
-<div class="footdef"><sup><a id="fn.defcustom" class="footnum" href="#fnr.defcustom" role="doc-backlink">7</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+<div class="footdef"><sup><a id="fn.7" class="footnum" href="#fnr.7" role="doc-backlink">7</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
 <a href="https://www.gnu.org/software/emacs/manual/html_node/eintr/defcustom.html">https://www.gnu.org/software/emacs/manual/html_node/eintr/defcustom.html</a>
 </p></div></div>
 
-<div class="footdef"><sup><a id="fn.quoting" class="footnum" href="#fnr.quoting" role="doc-backlink">8</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+<div class="footdef"><sup><a id="fn.8" class="footnum" href="#fnr.8" role="doc-backlink">8</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
 См. <a href="https://www.gnu.org/software/emacs/manual/html_node/elisp/Quoting.html">https://www.gnu.org/software/emacs/manual/html_node/elisp/Quoting.html</a>
 и <a href="https://www.gnu.org/software/emacs/manual/html_node/elisp/Backquote.html">https://www.gnu.org/software/emacs/manual/html_node/elisp/Backquote.html</a>
 </p></div></div>
 
-<div class="footdef"><sup><a id="fn.directory-files-recursively" class="footnum" href="#fnr.directory-files-recursively" role="doc-backlink">9</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+<div class="footdef"><sup><a id="fn.9" class="footnum" href="#fnr.9" role="doc-backlink">9</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
 <a href="https://www.gnu.org/software/emacs/manual/html_node/elisp/Contents-of-Directories.html#index-directory_002dfiles_002drecursively">https://www.gnu.org/software/emacs/manual/html_node/elisp/Contents-of-Directories.html#index-directory_002dfiles_002drecursively</a>
 </p></div></div>
 
-<div class="footdef"><sup><a id="fn.seq-filter" class="footnum" href="#fnr.seq-filter" role="doc-backlink">10</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+<div class="footdef"><sup><a id="fn.10" class="footnum" href="#fnr.10" role="doc-backlink">10</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
 <a href="https://www.gnu.org/software/emacs/manual/html_node/elisp/Sequence-Functions.html#index-seq_002dfilter">https://www.gnu.org/software/emacs/manual/html_node/elisp/Sequence-Functions.html#index-seq_002dfilter</a>
 </p></div></div>
 
-<div class="footdef"><sup><a id="fn.mapc" class="footnum" href="#fnr.mapc" role="doc-backlink">11</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+<div class="footdef"><sup><a id="fn.11" class="footnum" href="#fnr.11" role="doc-backlink">11</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
 <a href="https://www.gnu.org/software/emacs/manual/html_node/elisp/Mapping-Functions.html#index-mapc">https://www.gnu.org/software/emacs/manual/html_node/elisp/Mapping-Functions.html#index-mapc</a>
 </p></div></div>
 
-<div class="footdef"><sup><a id="fn.lang_code" class="footnum" href="#fnr.lang_code" role="doc-backlink">12</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+<div class="footdef"><sup><a id="fn.12" class="footnum" href="#fnr.12" role="doc-backlink">12</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
 Отдельный каталог для каждого языка нужен для плагина
 <a href="https://github.com/untra/polyglot">jekyll-polyglot</a>, который предоставляет свободный от JavaScript способ
 публиковать одну и ту же статью на разных языках.
 </p></div></div>
 
-<div class="footdef"><sup><a id="fn.regex-search" class="footnum" href="#fnr.regex-search" role="doc-backlink">13</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+<div class="footdef"><sup><a id="fn.13" class="footnum" href="#fnr.13" role="doc-backlink">13</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
 <a href="https://www.gnu.org/software/emacs/manual/html_node/elisp/Regexp-Search.html">https://www.gnu.org/software/emacs/manual/html_node/elisp/Regexp-Search.html</a>
 </p></div></div>
 
-<div class="footdef"><sup><a id="fn.let-star" class="footnum" href="#fnr.let-star" role="doc-backlink">14</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+<div class="footdef"><sup><a id="fn.14" class="footnum" href="#fnr.14" role="doc-backlink">14</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
 <a href="https://www.gnu.org/software/emacs/manual/html_node/elisp/Local-Variables.html#index-let_002a">https://www.gnu.org/software/emacs/manual/html_node/elisp/Local-Variables.html#index-let_002a</a>
 </p></div></div>
 
-<div class="footdef"><sup><a id="fn.plist-get" class="footnum" href="#fnr.plist-get" role="doc-backlink">15</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+<div class="footdef"><sup><a id="fn.15" class="footnum" href="#fnr.15" role="doc-backlink">15</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
 <a href="https://www.gnu.org/software/emacs/manual/html_node/elisp/Plist-Access.html#index-plist_002dget">https://www.gnu.org/software/emacs/manual/html_node/elisp/Plist-Access.html#index-plist_002dget</a>
 </p></div></div>
 
-<div class="footdef"><sup><a id="fn.toc-org" class="footnum" href="#fnr.toc-org" role="doc-backlink">16</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+<div class="footdef"><sup><a id="fn.16" class="footnum" href="#fnr.16" role="doc-backlink">16</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
 Мои настройки для плагина toc-org, с которыми он начинает
 понимать тег <code>:TOC_2_blog:</code> и генерирует ссылки на разделы, правильно
 обрабатываемые при экспорте в HTML:
 </p>
 
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #2aa198;">(</span><span style="color: #859900; font-weight: bold;">use-package</span> toc-org
+<pre class="src src-emacs-lisp"><span style="color: #2aa198;">(</span><span style="color: #859900; font-weight: bold;">use-package</span> <span style="color: #268bd2; font-weight: bold;">toc-org</span>
   <span style="color: #657b83; font-weight: bold;">:pin</span> melpa
   <span style="color: #657b83; font-weight: bold;">:hook</span> <span style="color: #b58900;">(</span>org-mode . toc-org-mode<span style="color: #b58900;">)</span>
   <span style="color: #657b83; font-weight: bold;">:config</span>
@@ -1842,19 +1861,19 @@ signaling):
 </pre>
 </div></div></div>
 
-<div class="footdef"><sup><a id="fn.make-process" class="footnum" href="#fnr.make-process" role="doc-backlink">17</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+<div class="footdef"><sup><a id="fn.17" class="footnum" href="#fnr.17" role="doc-backlink">17</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
 <a href="https://www.gnu.org/software/emacs/manual/html_node/elisp/Asynchronous-Processes.html#index-make_002dprocess">https://www.gnu.org/software/emacs/manual/html_node/elisp/Asynchronous-Processes.html#index-make_002dprocess</a>
 </p></div></div>
 
-<div class="footdef"><sup><a id="fn.message" class="footnum" href="#fnr.message" role="doc-backlink">18</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+<div class="footdef"><sup><a id="fn.18" class="footnum" href="#fnr.18" role="doc-backlink">18</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
 <a href="https://www.gnu.org/software/emacs/manual/html_node/elisp/Displaying-Messages.html#index-message">https://www.gnu.org/software/emacs/manual/html_node/elisp/Displaying-Messages.html#index-message</a>
 </p></div></div>
 
-<div class="footdef"><sup><a id="fn.propertize" class="footnum" href="#fnr.propertize" role="doc-backlink">19</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+<div class="footdef"><sup><a id="fn.19" class="footnum" href="#fnr.19" role="doc-backlink">19</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
 <a href="https://www.gnu.org/software/emacs/manual/html_node/elisp/Changing-Properties.html#index-propertize">https://www.gnu.org/software/emacs/manual/html_node/elisp/Changing-Properties.html#index-propertize</a>
 </p></div></div>
 
-<div class="footdef"><sup><a id="fn.mapcan" class="footnum" href="#fnr.mapcan" role="doc-backlink">20</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+<div class="footdef"><sup><a id="fn.20" class="footnum" href="#fnr.20" role="doc-backlink">20</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
 <a href="https://www.gnu.org/software/emacs/manual/html_node/elisp/Mapping-Functions.html#index-mapcan">https://www.gnu.org/software/emacs/manual/html_node/elisp/Mapping-Functions.html#index-mapcan</a>
 </p></div></div>
 

@@ -27,6 +27,7 @@ other things that are familiar to us now. And with a continuation in more
 civilized places, with the obligatory red eyes from night coding, jumping
 between Linux distributions and, ultimately, finding zen.
 </p>
+
 <div class="outline-2">
 <h2>How I came to Linux</h2>
 <div class="outline-text-2">
@@ -126,6 +127,7 @@ software.
 </p>
 </div>
 </div>
+
 <div class="outline-2">
 <h2>Red-eyed period</h2>
 <div class="outline-text-2">
@@ -146,7 +148,7 @@ this book)</li>
 </ul>
 
 <p>
-Since at that time I had the Internet via dial-up, by the cards<sup><a id="fnr.cards" class="footref" href="#fn.cards" role="doc-backlink">1</a></sup>, I
+Since at that time I had the Internet via dial-up, by the cards<sup><a id="fnr.1" class="footref" href="#fn.1" role="doc-backlink">1</a></sup>, I
 rarely used it. Mainly I check de.ifmo.ru portal for students and download
 free as beer books from the Moshkov Library (Lib.Ru). When I tried to do
 something longer, the time on the card ran out, my Acorp Sprinter@56K hung up
@@ -246,12 +248,13 @@ knowledge into practice.
 </p>
 </div>
 </div>
+
 <div class="outline-2">
 <h2>Regexp 101 in ITMO University</h2>
 <div class="outline-text-2">
 <p>
 Somewhere in my 2nd or 3rd year at the university, I started taking
-classes<sup><a id="fnr.bologna_process" class="footref" href="#fn.bologna_process" role="doc-backlink">2</a></sup> on system programming. At first we were taught to
+classes<sup><a id="fnr.2" class="footref" href="#fn.2" role="doc-backlink">2</a></sup> on system programming. At first we were taught to
 use the terminal and vim on thin clients from Sun Microsystems, with
 pot-bellied CRT monitors. During these classes, I do nothing for a whole
 semester — after all, I had already studied all this back in school. But then
@@ -296,6 +299,7 @@ of texts with amazing stories.
 </p>
 </div>
 </div>
+
 <div class="outline-2">
 <h2>Linux and embedded-programming</h2>
 <div class="outline-text-2">
@@ -430,7 +434,7 @@ needed a little of:
 <ul class="org-ul">
 <li>Do not do anything critical, such as software updates, without my knowledge.</li>
 <li>Just execut ethe programs, which are familiar to me.</li>
-<li>Stick to FHS<sup><a id="fnr.fhs" class="footref" href="#fn.fhs" role="doc-backlink">3</a></sup> and other standard things that I have learned since the
+<li>Stick to FHS<sup><a id="fnr.3" class="footref" href="#fn.3" role="doc-backlink">3</a></sup> and other standard things that I have learned since the
 days of Slackware — so that if some problem <i>suddenly</i> arises, I can quickly
 and calmly figure it out, understanding what is going on in the system.</li>
 <li>Do not impose on me a way to store <b>my files</b> — everything should be sorted
@@ -439,6 +443,7 @@ stars with the file rating. Or predefined directories.</li>
 </ul>
 </div>
 </div>
+
 <div class="outline-2">
 <h2>Linux and the job</h2>
 <div class="outline-text-2">
@@ -466,11 +471,10 @@ political issues related to a single and distant country on the other side of
 the globe. Luckily, I was able to avoid this unnecessary change, thanks to the
 flexibility of the console software:
 </p>
-<div class="org-src-container">
-<pre class="src src-nil">[init]
+<pre class="example">
+[init]
   defaultbranch = master
 </pre>
-</div>
 
 <p>
 Then it became popular to replace the usual utilities like <code>grep</code> or <code>ls</code> with
@@ -538,10 +542,9 @@ which is very, very similar to the System V initialization system.
 <p>
 I wrote in <code>/etc/portage/make.conf</code> the next line:
 </p>
-<div class="org-src-container">
-<pre class="src src-nil">USE="-systemd unicode -pulseaudio X alsa"
+<pre class="example">
+USE="-systemd unicode -pulseaudio X alsa"
 </pre>
-</div>
 
 <p>
 I haven’t experienced any grief since then. This system has been rock-solid
@@ -564,7 +567,7 @@ configuration files. And I had to rename it myself.
 
 <p>
 The second issue I came across was that the person maintaining the binary
-package for Firefox forgot to link it with the libraries for ALSA<sup><a id="fnr.alsa" class="footref" href="#fn.alsa" role="doc-backlink">4</a></sup>.
+package for Firefox forgot to link it with the libraries for ALSA<sup><a id="fnr.4" class="footref" href="#fn.4" role="doc-backlink">4</a></sup>.
 As a result, there was no sound in the browser. I rolled back to the previous
 version of Firefox, went to the Gentoo bug tracker to create a new bug, but it
 was already there and people were actively commenting on it. A few more days
@@ -572,6 +575,7 @@ later the package was put back together correctly and that was that.
 </p>
 </div>
 </div>
+
 <div class="outline-2">
 <h2>What I expected and what I got</h2>
 <div class="outline-text-2">
@@ -611,8 +615,8 @@ button or scroll. And this is not a problem.
 I create a file <code>/etc/X11/xorg.conf.d/50trackball.conf</code> with the following
 lines:
 </p>
-<div class="org-src-container">
-<pre class="src src-nil">Section "InputClass"
+<pre class="example">
+Section "InputClass"
     Identifier "Marble Mouse"
     MatchProduct "Logitech USB Trackball"
     Option "EmulateWheel" "true"
@@ -622,7 +626,6 @@ lines:
     Option "XAxisMapping"  "6 7"
 EndSection
 </pre>
-</div>
 
 <p>
 The "Back" button now works like the middle mouse button, and if hold down
@@ -635,18 +638,17 @@ The new keyboard has Fn buttons for "My Computer", "Search", and "Browser",
 but no buttons for volume control? No problem! I use <code>xmodmap</code> to reassign the
 button codes in the file it generates:
 </p>
-<div class="org-src-container">
-<pre class="src src-nil">keycode 152 = XF86AudioLowerVolume NoSymbol XF86AudioLowerVolume
+<pre class="example">
+keycode 152 = XF86AudioLowerVolume NoSymbol XF86AudioLowerVolume
 keycode 163 = XF86AudioRaiseVolume NoSymbol XF86AudioRaiseVolume
 keycode 180 = XF86AudioMute NoSymbol XF86AudioMute
-</pre>
-</div></li>
+</pre></li>
 </ul>
 
 <p>
 So, for me, Linux is now just a system that runs the programs I'm used to —
 which, like a wall made of bricks, form my familiar user environment. The
-bastions — represented by Gentoo and Devuan<sup><a id="fnr.devuan" class="footref" href="#fn.devuan" role="doc-backlink">5</a></sup> — are currently
+bastions — represented by Gentoo and Devuan<sup><a id="fnr.5" class="footref" href="#fn.5" role="doc-backlink">5</a></sup> — are currently
 protecting me from the overwhelming ​​changes that aren't necessary for me and
 related problems. While the rest of the Linux world is changing the
 initialization systems, moving away from the X server and rewriting coreutils
@@ -694,7 +696,7 @@ of a piece of paper.
 <p>
 Third, let's be real. Right now, for a lot of languages, a big, complex IDE is
 still a better choice than Vim or Emacs. Even if you have an LSP
-server<sup><a id="fnr.lsp" class="footref" href="#fn.lsp" role="doc-backlink">6</a></sup> for your editor. For instance, Emacs' LSP for Java still
+server<sup><a id="fnr.6" class="footref" href="#fn.6" role="doc-backlink">6</a></sup> for your editor. For instance, Emacs' LSP for Java still
 doesn't work very well — it crashes on simple things, it doesn't update the
 context of changes in files as quickly as IDEA does, and requires some finesse
 to make it work with Lombok.
@@ -713,6 +715,7 @@ with the machine by text.
 </p>
 </div>
 </div>
+
 <div class="outline-2">
 <h2>Notes</h2>
 <div class="outline-text-2">
@@ -722,7 +725,7 @@ with the machine by text.
 
 <div id="text-footnotes">
 
-<div class="footdef"><sup><a id="fn.cards" class="footnum" href="#fnr.cards" role="doc-backlink">1</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+<div class="footdef"><sup><a id="fn.1" class="footnum" href="#fnr.1" role="doc-backlink">1</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
 In Russia, you could buy a special card with a code and other
 credentials to connect to the Internet at the <i>street kiosk</i> or at the post
 office. These credentials were used to connect to the Internet via a dialup
@@ -730,7 +733,7 @@ modem. As a rule, one card allows access to the Internet for a few hours (two
 or three, if I remember correctly).
 </p></div></div>
 
-<div class="footdef"><sup><a id="fn.bologna_process" class="footnum" href="#fnr.bologna_process" role="doc-backlink">2</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+<div class="footdef"><sup><a id="fn.2" class="footnum" href="#fnr.2" role="doc-backlink">2</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
 I didn't just "started taking classes" of course. The
 Russian implementation of the Bologna process didn't give students as much
 freedom as in other countires. You weren't able to choose any classes. The
@@ -739,21 +742,21 @@ year at university, we were got permission of selecting between two classes:
 «Philosophy» and «Ethics» (or «Rhetorics», I don't remember).
 </p></div></div>
 
-<div class="footdef"><sup><a id="fn.fhs" class="footnum" href="#fnr.fhs" role="doc-backlink">3</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+<div class="footdef"><sup><a id="fn.3" class="footnum" href="#fnr.3" role="doc-backlink">3</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
 Filesystem Hierarchy Standard
 </p></div></div>
 
-<div class="footdef"><sup><a id="fn.alsa" class="footnum" href="#fnr.alsa" role="doc-backlink">4</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+<div class="footdef"><sup><a id="fn.4" class="footnum" href="#fnr.4" role="doc-backlink">4</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
 <a href="https://www.alsa-project.org/wiki/Main_Page">Advanced Linux Sound Architecture</a>
 </p></div></div>
 
-<div class="footdef"><sup><a id="fn.devuan" class="footnum" href="#fnr.devuan" role="doc-backlink">5</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+<div class="footdef"><sup><a id="fn.5" class="footnum" href="#fnr.5" role="doc-backlink">5</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
 Systemd-free Debian: <a href="https://www.devuan.org/">https://www.devuan.org/</a>. I use it on a
 laptop, because building programs from source under Gentoo on a Thinkpad X220
 with an Intel Core i7 can cause the CPU to overheat.
 </p></div></div>
 
-<div class="footdef"><sup><a id="fn.lsp" class="footnum" href="#fnr.lsp" role="doc-backlink">6</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+<div class="footdef"><sup><a id="fn.6" class="footnum" href="#fnr.6" role="doc-backlink">6</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
 <a href="https://langserver.org/">Language Server Protocol</a>
 </p></div></div>
 

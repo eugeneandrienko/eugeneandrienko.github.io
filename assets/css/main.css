@@ -865,6 +865,16 @@ ul.page-segments-list > li > span.post-meta {
         padding-top: 0px;
         padding-bottom: 0px;
     }
+    *:not(pre) > code {
+        background-color: lightgrey;
+    }
+    pre {
+        background-color: lightgrey;
+    }
+
+    .org-src-name {
+        background-color: lightgrey;
+    }
     footer {
         display: none;
     }

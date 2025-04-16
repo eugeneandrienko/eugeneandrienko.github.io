@@ -12,9 +12,6 @@
     {% if post.lang == site.active_lang %}
     <li>
       {%- assign date_format = "%Y.%m.%d" -%}
-
-      {% assign article = post.content %}
-      {% assign lang = post.lang %}
       {%- assign post_url = post.url | relative_url -%}
 
       <div class="post-meta">

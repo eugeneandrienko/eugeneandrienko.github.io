@@ -38,7 +38,7 @@ In my case, I upgraded my Thinkpad X220 with an extension board for a new
 2K screen and added some new peripherals — then the BIOS became the
 problem. First, Lenovo's whitelist disallowed the use of new peripherals,
 because they weren't "approved by the
-manufacturer"<sup><a id="fnr.1" class="footref" href="#fn.1" role="doc-backlink">1</a></sup>. Second, the original proprietary BIOS was
+manufacturer"<sup><a id="fnr.manufacturer_approve" class="footref" href="#fn.manufacturer_approve" role="doc-backlink">1</a></sup>. Second, the original proprietary BIOS was
 made with the intention that the original display would <b>always</b> be connected
 via the LVDS bus. Even if it is changed to a new display connected via the
 Display Port (or via an extension board soldered to the DP-3 line). An
@@ -51,7 +51,6 @@ Fortunately, the open source community comes to the rescue! There is the
 <a href="https://www.coreboot.org/">coreboot</a> project — an open source realization of the BIOS for some
 motherboards.
 </p>
-
 <div class="outline-2">
 <h2>Table of Contents&#xa0;&#xa0;&#xa0;<span class="tag"></span></h2>
 <div class="outline-text-2">
@@ -70,7 +69,6 @@ motherboards.
 </ul>
 </div>
 </div>
-
 <div id="outline-container-coreboot" class="outline-2">
 <h2 id="coreboot">Coreboot</h2>
 <div class="outline-text-2" id="text-coreboot">
@@ -80,7 +78,7 @@ called LinuxBIOS. One of it's authors (Ron Minnich) found that he needed to
 connect each handmande cluster node to a KVM switch — to manually press F1 and
 continue the boot process if something went wrong. Ron Minnich also wanted to
 speed up BIOS loading and remove user interaction as much as
-possible<sup><a id="fnr.2" class="footref" href="#fn.2" role="doc-backlink">2</a></sup>. Later, support for many <a href="https://doc.coreboot.org/mainboard/index.html">motherboards</a> and <a href="https://doc.coreboot.org/soc/index.html">SoCs</a> was added
+possible<sup><a id="fnr.linuxbios" class="footref" href="#fn.linuxbios" role="doc-backlink">2</a></sup>. Later, support for many <a href="https://doc.coreboot.org/mainboard/index.html">motherboards</a> and <a href="https://doc.coreboot.org/soc/index.html">SoCs</a> was added
 to the project. Including the Thinkpad X220 motherboard.
 </p>
 
@@ -130,7 +128,7 @@ inside the CPU, where unknown program with closed sources is running even
 when the laptop is turned off (but while the power is supplied to the
 motherboard); with access to DMA controller, with access to network card
 (and with its own MAC address), with reserved memory in RAM and embedded JVM
-with cryptography classes<sup><a id="fnr.3" class="footref" href="#fn.3" role="doc-backlink">3</a></sup>.
+with cryptography classes<sup><a id="fnr.intel_me" class="footref" href="#fn.intel_me" role="doc-backlink">3</a></sup>.
 </p>
 
 <p>
@@ -205,7 +203,6 @@ the boot log appeared on the new display.
 </p>
 </div>
 </div>
-
 <div id="outline-container-libreboot" class="outline-2">
 <h2 id="libreboot">Libreboot</h2>
 <div class="outline-text-2" id="text-libreboot">
@@ -286,12 +283,10 @@ So, I started to bring my laptop to unattainable perfection, armed with
 screwdriver, serial memory programmer and some free time.
 </p>
 </div>
-
 <div id="outline-container-libreboot-preparations" class="outline-3">
 <h3 id="libreboot-preparations">Preparations</h3>
 <div class="outline-text-3" id="text-libreboot-preparations">
 </div>
-
 <div id="outline-container-reading-docs" class="outline-4">
 <h4 id="reading-docs">Careful (haha, no) reading of the documentation</h4>
 <div class="outline-text-4" id="text-reading-docs">
@@ -313,7 +308,6 @@ build system manual.</li>
 </ul>
 </div>
 </div>
-
 <div id="outline-container-mac-addr-saving" class="outline-4">
 <h4 id="mac-addr-saving">Storing MAC address of internal Ethernet card</h4>
 <div class="outline-text-4" id="text-mac-addr-saving">
@@ -325,7 +319,6 @@ flashing Libreboot.
 </p>
 </div>
 </div>
-
 <div id="outline-container-coreboot-backup" class="outline-4">
 <h4 id="coreboot-backup">Firmware backup</h4>
 <div class="outline-text-4" id="text-coreboot-backup">
@@ -338,7 +331,7 @@ coreboot firmware is necessary.
 <p>
 This is why the serial memory programmer is necessary. As I found out, reading
 the coreboot dump with the laptop turned on returns different dumps on each
-read<sup><a id="fnr.4" class="footref" href="#fn.4" role="doc-backlink">4</a></sup>.
+read<sup><a id="fnr.coreboot_readings" class="footref" href="#fn.coreboot_readings" role="doc-backlink">4</a></sup>.
 </p>
 
 <p>
@@ -378,7 +371,7 @@ It should print something like the following lines, not the error messages:
 </p>
 <pre class="example">
 thinkpad/libreboot % sudo flashrom -p ch341a_spi -c "W25Q64BV/W25Q64CV/W25Q64FV" -r coreboot_original1.rom -V
-                                                                                                             
+
 flashrom v1.3.0 on Linux 6.1.57-gentoo-x86_64 (x86_64)
 flashrom is free software, get the source code at https://flashrom.org
 
@@ -502,7 +495,6 @@ soldered and the backup copy of the coreboot has been properly read.
 </div>
 </div>
 </div>
-
 <div id="outline-container-get-libreboot-binary" class="outline-3">
 <h3 id="get-libreboot-binary">Downloading Libreboot binary</h3>
 <div class="outline-text-3" id="text-get-libreboot-binary">
@@ -525,7 +517,7 @@ binary: <a href="https://mirror.math.princeton.edu/pub/libreboot/lbkey.asc">http
 Download the next 3 files from selected project mirror:
 </p>
 <pre class="example">
-libreboot-20240612_x220_8mb.tar.xz 
+libreboot-20240612_x220_8mb.tar.xz
 libreboot-20240612_x220_8mb.tar.xz.sha512
 libreboot-20240612_x220_8mb.tar.xz.sig
 </pre></li>
@@ -573,7 +565,6 @@ Primary key fingerprint: 8BB1 F7D2 8CF7 696D BF4F  7192 5C65 4067 D383 B1FF
 </ol>
 </div>
 </div>
-
 <div id="outline-container-prepare-libreboot-binary" class="outline-3">
 <h3 id="prepare-libreboot-binary">Preparing Libreboot binary for flashing</h3>
 <div class="outline-text-3" id="text-prepare-libreboot-binary">
@@ -622,7 +613,6 @@ Prepared binaries will be inside the lbmk catalog, in this path:
 </p>
 </div>
 </div>
-
 <div id="outline-container-libreboot-flashing" class="outline-3">
 <h3 id="libreboot-flashing">Flashing prepared Libreboot binary</h3>
 <div class="outline-text-3" id="text-libreboot-flashing">
@@ -684,7 +674,6 @@ configured everything for coreboot:
 </p>
 </div>
 </div>
-
 <div id="outline-container-mac-address" class="outline-3">
 <h3 id="mac-address">MAC address</h3>
 <div class="outline-text-3" id="text-mac-address">
@@ -713,7 +702,6 @@ After that, I just flashed the modified libreboot to the motherboard again.
 </div>
 </div>
 </div>
-
 <div id="outline-container-libreboot-customization" class="outline-2">
 <h2 id="libreboot-customization">Libreboot customization</h2>
 <div class="outline-text-2" id="text-libreboot-customization">
@@ -799,7 +787,6 @@ freezing.
 </p>
 </div>
 </div>
-
 <div id="outline-container-notes" class="outline-2">
 <h2 id="notes">Notes</h2>
 <div class="outline-text-2" id="text-notes">
@@ -809,7 +796,7 @@ freezing.
 
 <div id="text-footnotes">
 
-<div class="footdef"><sup><a id="fn.1" class="footnum" href="#fnr.1" role="doc-backlink">1</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+<div class="footdef"><sup><a id="fn.manufacturer_approve" class="footnum" href="#fnr.manufacturer_approve" role="doc-backlink">1</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
 Since IBM sold its own laptop business to the Lenovo,
 the soul of the old Thinkpads is slowly but inexorably dissapearing from the
 new Lenovo laptops.
@@ -965,11 +952,11 @@ typing" and hasn't worked with gloves, so it seems to him that TrackPoint is
 "an inconvenient thing that gets in the way".
 </p></div></div>
 
-<div class="footdef"><sup><a id="fn.2" class="footnum" href="#fnr.2" role="doc-backlink">2</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+<div class="footdef"><sup><a id="fn.linuxbios" class="footnum" href="#fnr.linuxbios" role="doc-backlink">2</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
 <a href="https://web.archive.org/web/20120916212555/http://www.h-online.com/open/features/The-Open-Source-BIOS-is-Ten-An-interview-with-the-coreboot-developers-746525.html?view=print">https://web.archive.org/web/20120916212555/http://www.h-online.com/open/features/The-Open-Source-BIOS-is-Ten-An-interview-with-the-coreboot-developers-746525.html?view=print</a>
 </p></div></div>
 
-<div class="footdef"><sup><a id="fn.3" class="footnum" href="#fnr.3" role="doc-backlink">3</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+<div class="footdef"><sup><a id="fn.intel_me" class="footnum" href="#fnr.intel_me" role="doc-backlink">3</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
 Quote from <a href="https://libreboot.org/faq.html">https://libreboot.org/faq.html</a>:
 </p>
 
@@ -1007,7 +994,7 @@ Management Technology (AMT), an implementation of a Trusted Platform Module
 </p>
 </blockquote></div></div>
 
-<div class="footdef"><sup><a id="fn.4" class="footnum" href="#fnr.4" role="doc-backlink">4</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+<div class="footdef"><sup><a id="fn.coreboot_readings" class="footnum" href="#fnr.coreboot_readings" role="doc-backlink">4</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
 Once, I found an explanation of this on Reddit, but now I
 can't find the link. The fact that flashrom returns different coreboot dumps
 every time when using <code>-p internal</code> on Thinkpad X220 is completely normal and to

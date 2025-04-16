@@ -16,7 +16,6 @@ summary: Ведение личного бюджета методом «дене�
 потратить и так далее. К тому же, просто приятно глядеть на числа со своими
 доходами (и, увы, менее приятно — на свои расходы).
 </p>
-
 <div class="outline-2">
 <h2>Блокнот и ручка</h2>
 <div class="outline-text-2">
@@ -74,7 +73,6 @@ summary: Ведение личного бюджета методом «дене�
 </p>
 </div>
 </div>
-
 <div class="outline-2">
 <h2>Emacs и Org Mode</h2>
 <div class="outline-text-2">
@@ -169,7 +167,6 @@ machine-friendly интерфейса для работы с архивиров�
 </p>
 </div>
 </div>
-
 <div class="outline-2">
 <h2>Hledger и SQL-скрипты</h2>
 <div class="outline-text-2">
@@ -206,7 +203,6 @@ machine-friendly интерфейса для работы с архивиров�
 </p>
 </div>
 </div>
-
 <div class="outline-3">
 <h3>«Денежные конверты» в hledger</h3>
 <div class="outline-text-3">
@@ -373,7 +369,6 @@ YYYY-MM-DD</code>, с которыми hledger смотрел только на 
 </div>
 </div>
 </div>
-
 <div class="outline-3">
 <h3>Конвертация в рубли</h3>
 <div class="outline-text-3">
@@ -407,19 +402,19 @@ P 2023-12-16 EUR 98.4186 RUB
 <p>
 Естественно, заполнять его вручную не нужно — для этого есть bash, curl и
 xsltproc. Курсы валют можно забирать с сайта ЦБ РФ, благо они предоставляют
-пригодный к использованию XML<sup><a id="fnr.1" class="footref" href="#fn.1" role="doc-backlink">1</a></sup>. Например, для получения курса
+пригодный к использованию XML<sup><a id="fnr.vbr_xml" class="footref" href="#fn.vbr_xml" role="doc-backlink">1</a></sup>. Например, для получения курса
 доллара на дату 2022-12-12 нужно выполнить запрос:
 <a href="https://cbr.ru/scripts/XML_dynamic.asp?date_req1=12/12/2023&amp;date_req2=12/12/2023&amp;VAL_NM_RQ=R01235">https://cbr.ru/scripts/XML_dynamic.asp?date_req1=12/12/2023&amp;date_req2=12/12/2023&amp;VAL_NM_RQ=R01235</a>. В
 ответ вернётся вот такой XML:
 </p>
 <div class="org-src-container">
-<pre class="src src-xml">&lt;<span style="color: #268bd2;">ValCurs</span> <span style="color: #268bd2;">ID</span>=<span style="color: #2aa198;">"R01235"</span> <span style="color: #268bd2;">DateRange1</span>=<span style="color: #2aa198;">"12.12.2023"</span> <span style="color: #268bd2;">DateRange2</span>=<span style="color: #2aa198;">"12.12.2023"</span> <span style="color: #268bd2;">name</span>=<span style="color: #2aa198;">"Foreign Currency Market Dynamic"</span>&gt;
-    &lt;<span style="color: #268bd2;">Record</span> <span style="color: #268bd2;">Date</span>=<span style="color: #2aa198;">"12.12.2023"</span> <span style="color: #268bd2;">Id</span>=<span style="color: #2aa198;">"R01235"</span>&gt;
-        &lt;<span style="color: #268bd2;">Nominal</span>&gt;1&lt;/<span style="color: #268bd2;">Nominal</span>&gt;
-        &lt;<span style="color: #268bd2;">Value</span>&gt;90,9846&lt;/<span style="color: #268bd2;">Value</span>&gt;
-        &lt;<span style="color: #268bd2;">VunitRate</span>&gt;90,9846&lt;/<span style="color: #268bd2;">VunitRate</span>&gt;
-    &lt;/<span style="color: #268bd2;">Record</span>&gt;
-&lt;/<span style="color: #268bd2;">ValCurs</span>&gt;
+<pre class="src src-xml"><span style="color: #657b83; background-color: #fdf6e3;">&lt;</span><span style="color: #268bd2;">ValCurs</span> <span style="color: #268bd2;">ID</span>=<span style="color: #2aa198;">"R01235"</span> <span style="color: #268bd2;">DateRange1</span>=<span style="color: #2aa198;">"12.12.2023"</span> <span style="color: #268bd2;">DateRange2</span>=<span style="color: #2aa198;">"12.12.2023"</span> <span style="color: #268bd2;">name</span>=<span style="color: #2aa198;">"Foreign Currency Market Dynamic"</span><span style="color: #657b83; background-color: #fdf6e3;">&gt;</span>
+    <span style="color: #657b83; background-color: #fdf6e3;">&lt;</span><span style="color: #268bd2;">Record</span> <span style="color: #268bd2;">Date</span>=<span style="color: #2aa198;">"12.12.2023"</span> <span style="color: #268bd2;">Id</span>=<span style="color: #2aa198;">"R01235"</span><span style="color: #657b83; background-color: #fdf6e3;">&gt;</span>
+        <span style="color: #657b83; background-color: #fdf6e3;">&lt;</span><span style="color: #268bd2;">Nominal</span><span style="color: #657b83; background-color: #fdf6e3;">&gt;</span><span style="color: #657b83; background-color: #fdf6e3;">1</span><span style="color: #657b83; background-color: #fdf6e3;">&lt;</span><span style="color: #657b83; background-color: #fdf6e3;">/</span><span style="color: #268bd2;">Nominal</span><span style="color: #657b83; background-color: #fdf6e3;">&gt;</span>
+        <span style="color: #657b83; background-color: #fdf6e3;">&lt;</span><span style="color: #268bd2;">Value</span><span style="color: #657b83; background-color: #fdf6e3;">&gt;</span><span style="color: #657b83; background-color: #fdf6e3;">90,9846</span><span style="color: #657b83; background-color: #fdf6e3;">&lt;</span><span style="color: #657b83; background-color: #fdf6e3;">/</span><span style="color: #268bd2;">Value</span><span style="color: #657b83; background-color: #fdf6e3;">&gt;</span>
+        <span style="color: #657b83; background-color: #fdf6e3;">&lt;</span><span style="color: #268bd2;">VunitRate</span><span style="color: #657b83; background-color: #fdf6e3;">&gt;</span><span style="color: #657b83; background-color: #fdf6e3;">90,9846</span><span style="color: #657b83; background-color: #fdf6e3;">&lt;</span><span style="color: #657b83; background-color: #fdf6e3;">/</span><span style="color: #268bd2;">VunitRate</span><span style="color: #657b83; background-color: #fdf6e3;">&gt;</span>
+    <span style="color: #657b83; background-color: #fdf6e3;">&lt;</span><span style="color: #657b83; background-color: #fdf6e3;">/</span><span style="color: #268bd2;">Record</span><span style="color: #657b83; background-color: #fdf6e3;">&gt;</span>
+<span style="color: #657b83; background-color: #fdf6e3;">&lt;</span><span style="color: #657b83; background-color: #fdf6e3;">/</span><span style="color: #268bd2;">ValCurs</span><span style="color: #657b83; background-color: #fdf6e3;">&gt;</span>
 </pre>
 </div>
 
@@ -428,14 +423,14 @@ xsltproc. Курсы валют можно забирать с сайта ЦБ �
 XSLT:
 </p>
 <div class="org-src-container">
-<pre class="src src-xml">&lt;<span style="color: #657b83; font-weight: bold;">xsl</span>:<span style="color: #268bd2;">stylesheet</span> <span style="color: #657b83; font-weight: bold;">xmlns</span>:<span style="color: #268bd2;">xsl</span>=<span style="color: #2aa198;">"http://www.w3.org/1999/XSL/Transform"</span> <span style="color: #268bd2;">version</span>=<span style="color: #2aa198;">"1.0"</span>&gt;
-  &lt;<span style="color: #657b83; font-weight: bold;">xsl</span>:<span style="color: #268bd2;">output</span> <span style="color: #268bd2;">method</span>=<span style="color: #2aa198;">"text"</span>/&gt;
-  &lt;<span style="color: #657b83; font-weight: bold;">xsl</span>:<span style="color: #268bd2;">template</span> <span style="color: #268bd2;">match</span>=<span style="color: #2aa198;">"ValCurs"</span>&gt;
-    &lt;<span style="color: #657b83; font-weight: bold;">xsl</span>:<span style="color: #268bd2;">for-each</span> <span style="color: #268bd2;">select</span>=<span style="color: #2aa198;">"Record"</span>&gt;
-      &lt;<span style="color: #657b83; font-weight: bold;">xsl</span>:<span style="color: #268bd2;">value-of</span> <span style="color: #268bd2;">select</span>=<span style="color: #2aa198;">"Value"</span>/&gt;
-    &lt;/<span style="color: #657b83; font-weight: bold;">xsl</span>:<span style="color: #268bd2;">for-each</span>&gt;
-  &lt;/<span style="color: #657b83; font-weight: bold;">xsl</span>:<span style="color: #268bd2;">template</span>&gt;
-&lt;/<span style="color: #657b83; font-weight: bold;">xsl</span>:<span style="color: #268bd2;">stylesheet</span>&gt;
+<pre class="src src-xml"><span style="color: #657b83; background-color: #fdf6e3;">&lt;</span><span style="color: #657b83; font-weight: bold;">xsl</span><span style="color: #657b83; background-color: #fdf6e3;">:</span><span style="color: #268bd2;">stylesheet</span> <span style="color: #657b83; font-weight: bold;">xmlns</span><span style="color: #657b83; background-color: #fdf6e3;">:</span><span style="color: #268bd2;">xsl</span>=<span style="color: #2aa198;">"http://www.w3.org/1999/XSL/Transform"</span> <span style="color: #268bd2;">version</span>=<span style="color: #2aa198;">"1.0"</span><span style="color: #657b83; background-color: #fdf6e3;">&gt;</span>
+  <span style="color: #657b83; background-color: #fdf6e3;">&lt;</span><span style="color: #657b83; font-weight: bold;">xsl</span><span style="color: #657b83; background-color: #fdf6e3;">:</span><span style="color: #268bd2;">output</span> <span style="color: #268bd2;">method</span>=<span style="color: #2aa198;">"text"</span><span style="color: #657b83; background-color: #fdf6e3;">/</span><span style="color: #657b83; background-color: #fdf6e3;">&gt;</span>
+  <span style="color: #657b83; background-color: #fdf6e3;">&lt;</span><span style="color: #657b83; font-weight: bold;">xsl</span><span style="color: #657b83; background-color: #fdf6e3;">:</span><span style="color: #268bd2;">template</span> <span style="color: #268bd2;">match</span>=<span style="color: #2aa198;">"ValCurs"</span><span style="color: #657b83; background-color: #fdf6e3;">&gt;</span>
+    <span style="color: #657b83; background-color: #fdf6e3;">&lt;</span><span style="color: #657b83; font-weight: bold;">xsl</span><span style="color: #657b83; background-color: #fdf6e3;">:</span><span style="color: #268bd2;">for-each</span> <span style="color: #268bd2;">select</span>=<span style="color: #2aa198;">"Record"</span><span style="color: #657b83; background-color: #fdf6e3;">&gt;</span>
+      <span style="color: #657b83; background-color: #fdf6e3;">&lt;</span><span style="color: #657b83; font-weight: bold;">xsl</span><span style="color: #657b83; background-color: #fdf6e3;">:</span><span style="color: #268bd2;">value-of</span> <span style="color: #268bd2;">select</span>=<span style="color: #2aa198;">"Value"</span><span style="color: #657b83; background-color: #fdf6e3;">/</span><span style="color: #657b83; background-color: #fdf6e3;">&gt;</span>
+    <span style="color: #657b83; background-color: #fdf6e3;">&lt;</span><span style="color: #657b83; background-color: #fdf6e3;">/</span><span style="color: #657b83; font-weight: bold;">xsl</span><span style="color: #657b83; background-color: #fdf6e3;">:</span><span style="color: #268bd2;">for-each</span><span style="color: #657b83; background-color: #fdf6e3;">&gt;</span>
+  <span style="color: #657b83; background-color: #fdf6e3;">&lt;</span><span style="color: #657b83; background-color: #fdf6e3;">/</span><span style="color: #657b83; font-weight: bold;">xsl</span><span style="color: #657b83; background-color: #fdf6e3;">:</span><span style="color: #268bd2;">template</span><span style="color: #657b83; background-color: #fdf6e3;">&gt;</span>
+<span style="color: #657b83; background-color: #fdf6e3;">&lt;</span><span style="color: #657b83; background-color: #fdf6e3;">/</span><span style="color: #657b83; font-weight: bold;">xsl</span><span style="color: #657b83; background-color: #fdf6e3;">:</span><span style="color: #268bd2;">stylesheet</span><span style="color: #657b83; background-color: #fdf6e3;">&gt;</span>
 </pre>
 </div>
 
@@ -482,7 +477,6 @@ rm -f <span style="color: #2aa198;">"$CBR_XSLT"</span>
 </p>
 </div>
 </div>
-
 <div class="outline-3">
 <h3>Статистика по расходам за каждый месяц</h3>
 <div class="outline-text-3">
@@ -714,7 +708,6 @@ WINDOW expenses_win <span style="color: #859900; font-weight: bold;">AS</span>(P
 </ol>
 </div>
 </div>
-
 <div class="outline-3">
 <h3>Данные по накоплениям</h3>
 <div class="outline-text-3">
@@ -730,7 +723,6 @@ WINDOW expenses_win <span style="color: #859900; font-weight: bold;">AS</span>(P
 </p>
 </div>
 </div>
-
 <div class="outline-3">
 <h3>Планирование нового бюджета</h3>
 <div class="outline-text-3">
@@ -841,7 +833,7 @@ WINDOW expenses_win <span style="color: #859900; font-weight: bold;">AS</span>(P
 
 <div id="text-footnotes">
 
-<div class="footdef"><sup><a id="fn.1" class="footnum" href="#fnr.1" role="doc-backlink">1</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+<div class="footdef"><sup><a id="fn.vbr_xml" class="footnum" href="#fnr.vbr_xml" role="doc-backlink">1</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
 С техническим описанием можно ознакомиться тут:
 <a href="https://cbr.ru/development/SXML/">https://cbr.ru/development/SXML/</a>
 </p></div></div>

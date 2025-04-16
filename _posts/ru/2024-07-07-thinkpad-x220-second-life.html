@@ -18,7 +18,7 @@ banner:
 Lenovo Thinkpad X220 — одна из обожаемых мною моделей ноутбуков (вторая из
 обожаемых — это Panasonic Toughbook CF-19). Прекрасная семирядная клавиатура,
 где нашлось место для всех необходимых кнопок — есть даже отдельные кнопки для
-<code>Home</code>, <code>End</code>, <code>Pause</code><sup><a id="fnr.1" class="footref" href="#fn.1" role="doc-backlink">1</a></sup> и <code>Insert</code>! Прочный корпус из магниевого сплава,
+<code>Home</code>, <code>End</code>, <code>Pause</code><sup><a id="fnr.pause" class="footref" href="#fn.pause" role="doc-backlink">1</a></sup> и <code>Insert</code>! Прочный корпус из магниевого сплава,
 покрытый чем-то вроде резины для лучшей «хватабельности». Запоминающийся
 внешний вид — угловатый чёрный прямоугольник, который выглядит строго и в то
 же время достаточно ретро-футуристично. И сравнительно мощное железо, которым
@@ -52,7 +52,7 @@ Thinkpad X220 приглянулся мне ещё со времён униве�
 19000 рублей (около 300$). Это была машина с четырёхъядерным Intel Core i7 на
 2.7 GHz, 8 Gb оперативной памяти и с SSD. К счастью, его предыдущий владелец
 был аккуратен и у ноутбука было лишь несколько светлых пятен на
-матрице<sup><a id="fnr.2" class="footref" href="#fn.2" role="doc-backlink">2</a></sup> от случайных ударов и микроскопические потёртости на
+матрице<sup><a id="fnr.ips_problem" class="footref" href="#fn.ips_problem" role="doc-backlink">2</a></sup> от случайных ударов и микроскопические потёртости на
 углах крышки.
 </p>
 
@@ -94,7 +94,6 @@ WiFi-карты и прочую внутреннюю периферию, кот�
 <p><img src="/assets/static/d71f964b-c3d0-d724-a205-dfe2fcbe9d5a.jpg" alt="meme" align="center" />
 </p>
 </div>
-
 <div class="outline-2">
 <h2>TOC&#xa0;&#xa0;&#xa0;<span class="tag"></span></h2>
 <div class="outline-text-2">
@@ -121,7 +120,6 @@ WiFi-карты и прочую внутреннюю периферию, кот�
 </ul>
 </div>
 </div>
-
 <div id="outline-container-new-screen-installation" class="outline-2">
 <h2 id="new-screen-installation">Установка нового 2K экрана</h2>
 <div class="outline-text-2" id="text-new-screen-installation">
@@ -302,7 +300,7 @@ C584 — эти жилы потом будут припаяны к плате �
 
 <p>
 Впервые, за всё то время что этот ноутбук был у меня, я установил на него
-Windows. После такого кощунства<sup><a id="fnr.3" class="footref" href="#fn.3" role="doc-backlink">3</a></sup> он намертво завис — да так, что
+Windows. После такого кощунства<sup><a id="fnr.1st_mb_fail" class="footref" href="#fn.1st_mb_fail" role="doc-backlink">3</a></sup> он намертво завис — да так, что
 даже не реагировал на долгое нажатие кнопки включения питания. Ну а я взял и
 необдуманно выдернул из работающего ноутбука аккумулятор — и дальше он уже не
 включался, просто моргал один раз кнопкой включения питания и всё&#x2026;
@@ -352,7 +350,6 @@ Lenovo — закинул в угол сломанную плату и пост
 никуда не торопиться и аккуратно паять.
 </p>
 </div>
-
 <div id="outline-container-coreboot-flashing" class="outline-3">
 <h3 id="coreboot-flashing">Прошивка coreboot</h3>
 <div class="outline-text-3" id="text-coreboot-flashing">
@@ -488,7 +485,7 @@ $ md5sum *.rom
 coreboot с libgfxinit — не отображается на втором дисплее. И ещё не
 поддерживает загрузку ОС в текстовом режиме. Например, вместо текстового
 установщика FreeBSD в верхней части экрана видна узкая полоса с чем-то,
-наподобие видеопомех<sup><a id="fnr.4" class="footref" href="#fn.4" role="doc-backlink">4</a></sup>.
+наподобие видеопомех<sup><a id="fnr.freebsd_coreboot_fix" class="footref" href="#fn.freebsd_coreboot_fix" role="doc-backlink">4</a></sup>.
 </p>
 
 <div class="figure">
@@ -637,7 +634,6 @@ coreboot «с нуля» я включил пару опций, которых �
 </p>
 </div>
 </div>
-
 <div id="outline-container-set-new-display" class="outline-3">
 <h3 id="set-new-display">Установка нового дисплея</h3>
 <div class="outline-text-3" id="text-set-new-display">
@@ -653,7 +649,7 @@ coreboot «с нуля» я включил пару опций, которых �
 
 <p>
 Сначала я разобрал оригинальный дисплейный модуль по сервисному
-мануалу<sup><a id="fnr.5" class="footref" href="#fn.5" role="doc-backlink">5</a></sup> и вытащил оттуда всё ненужное:
+мануалу<sup><a id="fnr.display_module_disassemble" class="footref" href="#fn.display_module_disassemble" role="doc-backlink">5</a></sup> и вытащил оттуда всё ненужное:
 </p>
 
 <ul class="org-ul">
@@ -822,7 +818,6 @@ coreboot «с нуля» я включил пару опций, которых �
 </div>
 </div>
 </div>
-
 <div id="outline-container-new-display-freebsd" class="outline-3">
 <h3 id="new-display-freebsd">Новый дисплей и FreeBSD</h3>
 <div class="outline-text-3" id="text-new-display-freebsd">
@@ -1007,7 +1002,6 @@ Linux. Правда, вместо правила для devd придётся и
 </div>
 </div>
 </div>
-
 <div id="outline-container-wifi-module-replacement" class="outline-2">
 <h2 id="wifi-module-replacement">Замена WiFi модуля</h2>
 <div class="outline-text-2" id="text-wifi-module-replacement">
@@ -1027,7 +1021,7 @@ Linux. Правда, вместо правила для devd придётся и
 </p>
 
 <p>
-Раз отдельная Bluetooth daughter card<sup><a id="fnr.6" class="footref" href="#fn.6" role="doc-backlink">6</a></sup> в ноутбуке больше не нужна — я снял
+Раз отдельная Bluetooth daughter card<sup><a id="fnr.bdc" class="footref" href="#fn.bdc" role="doc-backlink">6</a></sup> в ноутбуке больше не нужна — я снял
 её и поставил в освободившийся разъём <a href="https://aliexpress.ru/item/1005002489857902.html">переходник с BDC на USB</a> — и в итоге
 получил внутри ноутбука ещё один USB-разъём, к которому можно что-нибудь
 подключить. Что именно — я пока так и не придумал. Два WiFi-модуля мне не
@@ -1148,13 +1142,12 @@ WiFi с телефона — она работает без нареканий.
 </div>
 </div>
 </div>
-
 <div id="outline-container-keyboard-replacement" class="outline-2">
 <h2 id="keyboard-replacement">Замена клавиатуры</h2>
 <div class="outline-text-2" id="text-keyboard-replacement">
 <p>
 Изначально, на моём ноутбуке была установлена клавиатура с британской
-раскладкой<sup><a id="fnr.7" class="footref" href="#fn.7" role="doc-backlink">7</a></sup>, которая мне очень не нравится — я всегда пользовался
+раскладкой<sup><a id="fnr.kbd_layouts" class="footref" href="#fn.kbd_layouts" role="doc-backlink">7</a></sup>, которая мне очень не нравится — я всегда пользовался
 клавиатурами с американской раскладкой. Постоянно попадать пальцем по Enter,
 когда ты хочешь ввести символ пайпа — раздражает.
 </p>
@@ -1242,7 +1235,6 @@ WiFi с телефона — она работает без нареканий.
 </div>
 </div>
 </div>
-
 <div id="outline-container-notebook-power" class="outline-2">
 <h2 id="notebook-power">Питание ноутбука</h2>
 <div class="outline-text-2" id="text-notebook-power">
@@ -1278,7 +1270,6 @@ Baseus — действительно, они одновременно заря
 «бочонок», он как-то понадёжнее выглядит.
 </p>
 </div>
-
 <div id="outline-container-battery-recelling" class="outline-3">
 <h3 id="battery-recelling">Battery recelling</h3>
 <div class="outline-text-3" id="text-battery-recelling">
@@ -1313,7 +1304,7 @@ Baseus — действительно, они одновременно заря
 статей обновлял аккумулятор не от X220, но из его статьи можно почерпнуть
 полезные идеи о том, как провести замену ячеек в аккумуляторе. Также, в
 конце второй статьи он пишет о том, что ёмкость ячеек по видимому
-запрограммирована в BMS<sup><a id="fnr.8" class="footref" href="#fn.8" role="doc-backlink">8</a></sup> аккумулятора, поэтому нет смысла ставить ячейки
+запрограммирована в BMS<sup><a id="fnr.bms" class="footref" href="#fn.bms" role="doc-backlink">8</a></sup> аккумулятора, поэтому нет смысла ставить ячейки
 с ёмкостью большей, чем с завода, если нет программатора и исправленной
 прошивки для BMS.</li>
 <li><a href="https://www.coreboot.org/Board:lenovo/x220#Recalibrate_batteries">Recalibrate batteries</a> — тут описана команда из набора утилит coreboot
@@ -1519,7 +1510,6 @@ SMD-деталь с выводами <b>под ней</b>, расположен�
 </p>
 </div>
 </div>
-
 <div id="outline-container-second-battery" class="outline-3">
 <h3 id="second-battery">Встраивание второго аккумулятора в ноутбук (незаконченное)</h3>
 <div class="outline-text-3" id="text-second-battery">
@@ -1691,7 +1681,6 @@ ThinkPad'а — был слив для воды. Естественно, что
 </div>
 </div>
 </div>
-
 <div id="outline-container-additional-ports" class="outline-2">
 <h2 id="additional-ports">Дополнительные разъёмы и кнопочки</h2>
 <div class="outline-text-2" id="text-additional-ports">
@@ -2057,7 +2046,6 @@ pcib2: Timed out waiting for Data Link Layer Active
 </div>
 </div>
 </div>
-
 <div id="outline-container-new-case" class="outline-2">
 <h2 id="new-case">Прошивка нового чехла</h2>
 <div class="outline-text-2" id="text-new-case">
@@ -2151,7 +2139,7 @@ pcib2: Timed out waiting for Data Link Layer Active
 <p>
 Передняя и задняя стенки соединяются швом «крест-накрест», как описывается <a href="https://www.youtube.com/watch?v=jxWiJ20esyo">в
 этом видео</a>. Ну а боковые стенки пришиваются тем же методом, который описан в
-книге Al Stohlman: «The art of hand sewing leather»<sup><a id="fnr.9" class="footref" href="#fn.9" role="doc-backlink">9</a></sup>.
+книге Al Stohlman: «The art of hand sewing leather»<sup><a id="fnr.leather_box" class="footref" href="#fn.leather_box" role="doc-backlink">9</a></sup>.
 </p>
 
 <p>
@@ -2179,7 +2167,6 @@ pcib2: Timed out waiting for Data Link Layer Active
 </p>
 </div>
 </div>
-
 <div id="outline-container-update-17-07-2024" class="outline-2">
 <h2 id="update-17-07-2024">Апдейт за 17.07.2024</h2>
 <div class="outline-text-2" id="text-update-17-07-2024">
@@ -2216,7 +2203,6 @@ pcib2: Timed out waiting for Data Link Layer Active
 </p>
 </div>
 </div>
-
 <div id="outline-container-update-22-12-2024" class="outline-2">
 <h2 id="update-22-12-2024">Апдейт за 22.12.2024</h2>
 <div class="outline-text-2" id="text-update-22-12-2024">
@@ -2321,7 +2307,6 @@ USB-хабу от Microchip. Последние всё равно были ра�
 </p>
 </div>
 </div>
-
 <div id="outline-container-results" class="outline-2">
 <h2 id="results">Итоговые результаты</h2>
 <div class="outline-text-2" id="text-results">
@@ -2404,7 +2389,6 @@ USB-хабу от Microchip. Последние всё равно были ра�
 <hr />
 </div>
 </div>
-
 <div id="outline-container-notes" class="outline-2">
 <h2 id="notes">Примечания</h2>
 <div class="outline-text-2" id="text-notes">
@@ -2414,14 +2398,14 @@ USB-хабу от Microchip. Последние всё равно были ра�
 
 <div id="text-footnotes">
 
-<div class="footdef"><sup><a id="fn.1" class="footnum" href="#fnr.1" role="doc-backlink">1</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+<div class="footdef"><sup><a id="fn.pause" class="footnum" href="#fnr.pause" role="doc-backlink">1</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
 Кнопку Pause я использую, чтобы ставить на паузу приложения, грузящие
 процессор на 100%, если он мне нужен для чего-то другого. Заодно и для
 экономии заряда батареи — если Firefox используется через раз, то пока он мне
 не нужен, он стоит на паузе. Работает это <a href="https://vermaden.wordpress.com/2018/09/19/freebsd-desktop-part-16-configuration-pause-any-application/">примерно так</a>.
 </p></div></div>
 
-<div class="footdef"><sup><a id="fn.2" class="footnum" href="#fnr.2" role="doc-backlink">2</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+<div class="footdef"><sup><a id="fn.ips_problem" class="footnum" href="#fnr.ips_problem" role="doc-backlink">2</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
 Это проблема IPS матриц, используемых в этих Thinkpad'ах —
 при сильном ударе по крышке на экране появляется пятно, которое светится
 немного ярче, чем окружающий экран:
@@ -2432,14 +2416,14 @@ USB-хабу от Microchip. Последние всё равно были ра�
 </p>
 </div></div></div>
 
-<div class="footdef"><sup><a id="fn.3" class="footnum" href="#fnr.3" role="doc-backlink">3</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+<div class="footdef"><sup><a id="fn.1st_mb_fail" class="footnum" href="#fnr.1st_mb_fail" role="doc-backlink">3</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
 На самом деле, первая материнская плата уже давно умирала, но
 поскольку ноутбуком я пользовался аккуратно — аналогичные «симптомы»
 проявлялись всего пару раз. А вмешательство во внутренности системы с
 паяльником — всего лишь ускорило неизбежную кончину.
 </p></div></div>
 
-<div class="footdef"><sup><a id="fn.4" class="footnum" href="#fnr.4" role="doc-backlink">4</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+<div class="footdef"><sup><a id="fn.freebsd_coreboot_fix" class="footnum" href="#fnr.freebsd_coreboot_fix" role="doc-backlink">4</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
 В интернете <a href="https://libreboot.org/docs/bsd/#freebsd-and-corebootfb">пишут</a>, что libgfxinit с framebuffer и
 установщики *BSD очень сильно не дружат. Но я нашёл способ их подружить — в
 процессе загрузки, когда на экране уже напечатаны строки:
@@ -2455,30 +2439,30 @@ on</code>. После этого на экране отобразится при
 и уже можно спокойно загружать FreeBSD командой <code>boot</code>.
 </p></div></div>
 
-<div class="footdef"><sup><a id="fn.5" class="footnum" href="#fnr.5" role="doc-backlink">5</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+<div class="footdef"><sup><a id="fn.display_module_disassemble" class="footnum" href="#fnr.display_module_disassemble" role="doc-backlink">5</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
 Раздел «2010 LCD front bezel» (страница 88),
 «2050 LCD panel and LCD cable» (страница 99), «2020 LED board» (страница 89),
 «2040 Integrated camera» (страница 98) и «2070 LCD rear cover and wireless
 antenna cables» (страница 102).
 </p></div></div>
 
-<div class="footdef"><sup><a id="fn.6" class="footnum" href="#fnr.6" role="doc-backlink">6</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+<div class="footdef"><sup><a id="fn.bdc" class="footnum" href="#fnr.bdc" role="doc-backlink">6</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
 См «2030 Bluetooth daughter card (BDC-2.1)» на странице 91 в
 сервисном мануале.
 </p></div></div>
 
-<div class="footdef"><sup><a id="fn.7" class="footnum" href="#fnr.7" role="doc-backlink">7</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+<div class="footdef"><sup><a id="fn.kbd_layouts" class="footnum" href="#fnr.kbd_layouts" role="doc-backlink">7</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
 Глобально, есть две раскладки клавиатуры. Британская — где
 Г-образный Enter, короткий левый Shift и есть дополнительная кнопка с
 символами <code>&lt;</code>, <code>&gt;</code>, <code>\</code> слева от кнопки <code>z</code>. И американская, где вытянутый Enter и
 длинный Shift.
 </p></div></div>
 
-<div class="footdef"><sup><a id="fn.8" class="footnum" href="#fnr.8" role="doc-backlink">8</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+<div class="footdef"><sup><a id="fn.bms" class="footnum" href="#fnr.bms" role="doc-backlink">8</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
 Battery Management System
 </p></div></div>
 
-<div class="footdef"><sup><a id="fn.9" class="footnum" href="#fnr.9" role="doc-backlink">9</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+<div class="footdef"><sup><a id="fn.leather_box" class="footnum" href="#fnr.leather_box" role="doc-backlink">9</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
 Секция «Sewing a miter joint», страница 22.
 </p></div></div>
 

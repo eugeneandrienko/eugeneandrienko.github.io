@@ -18,7 +18,7 @@ banner:
 Lenovo Thinkpad X220 is one of my favorite laptop models (the other one is
 Panasonic Toughbook CF-19). It has a beautiful seven-row keyboard with space
 for all the necessary buttons — there are even separate buttons for <code>Home</code>, <code>End</code>,
-<code>Pause</code><sup><a id="fnr.1" class="footref" href="#fn.1" role="doc-backlink">1</a></sup> and <code>Insert</code>! Rugged magnesium alloy case covered with some kind
+<code>Pause</code><sup><a id="fnr.pause" class="footref" href="#fn.pause" role="doc-backlink">1</a></sup> and <code>Insert</code>! Rugged magnesium alloy case covered with some kind
 of rubber for better grip. A memorable appearance — an angular black rectangle
 that looks austere and at the same time quite retro-futuristic. And relatively
 powerful hardware, which can be used to this day.
@@ -50,7 +50,7 @@ Thankfully, at 2019, the prices for a used Thinkpad X220 are no longer the
 barrier and I found a used laptop from Europe quite quickly for about 19000
 rubles (about $300). It was a machine with a 2.7 GHz quad-core Intel Core i7,
 8 Gb of RAM and with an SSD. Fortunately, its previous owner was careful and
-the laptop had only a few light spots on the display<sup><a id="fnr.2" class="footref" href="#fn.2" role="doc-backlink">2</a></sup> from
+the laptop had only a few light spots on the display<sup><a id="fnr.ips_problem" class="footref" href="#fn.ips_problem" role="doc-backlink">2</a></sup> from
 accidental bumps and microscopic scuffs on the corners of the lid.
 </p>
 
@@ -93,7 +93,6 @@ someone has to keep doing fun things, right?
 <p><img src="/assets/static/d71f964b-c3d0-d724-a205-dfe2fcbe9d5a-en.jpg" alt="meme" align="center" />
 </p>
 </div>
-
 <div class="outline-2">
 <h2>TOC&#xa0;&#xa0;&#xa0;<span class="tag"></span></h2>
 <div class="outline-text-2">
@@ -120,7 +119,6 @@ someone has to keep doing fun things, right?
 </ul>
 </div>
 </div>
-
 <div id="outline-container-new-screen-installation" class="outline-2">
 <h2 id="new-screen-installation">Installing a new 2K screen</h2>
 <div class="outline-text-2" id="text-new-screen-installation">
@@ -301,7 +299,7 @@ burned the motherboard&#x2026;
 
 <p>
 For the first time in all the time I had this laptop, I installed Windows on
-it. After such a sacrilege<sup><a id="fnr.3" class="footref" href="#fn.3" role="doc-backlink">3</a></sup> it froze intentionally — so much so
+it. After such a sacrilege<sup><a id="fnr.1st_mb_fail" class="footref" href="#fn.1st_mb_fail" role="doc-backlink">3</a></sup> it froze intentionally — so much so
 that it didn't even respond to a long press of the power button. I rashly
 removed the battery from the working laptop — and then it didn't even turn on,
 just blinking once with the power button and that's all&#x2026;
@@ -343,7 +341,6 @@ from the first time. So I can say that this is not the most difficult stage of
 laptop modification, the main thing is not to hurry and solder carefully.
 </p>
 </div>
-
 <div id="outline-container-coreboot-flashing" class="outline-3">
 <h3 id="coreboot-flashing">Flashing the coreboot</h3>
 <div class="outline-text-3" id="text-coreboot-flashing">
@@ -480,7 +477,7 @@ principle. After the green squares coreboot hangs intentionally.</li>
 coreboot with libgfxinit — not shown on the second display. Also, it does
 not support booting the OS in text mode. For example, instead of the FreeBSD
 text installer, you can see a narrow bar with something like video
-interference<sup><a id="fnr.4" class="footref" href="#fn.4" role="doc-backlink">4</a></sup> at the top of the screen.
+interference<sup><a id="fnr.freebsd_coreboot_fix" class="footref" href="#fn.freebsd_coreboot_fix" role="doc-backlink">4</a></sup> at the top of the screen.
 </p>
 
 <div class="figure">
@@ -621,7 +618,6 @@ on the only (out of two) working boards.
 </p>
 </div>
 </div>
-
 <div id="outline-container-set-new-display" class="outline-3">
 <h3 id="set-new-display">Installing the new display</h3>
 <div class="outline-text-3" id="text-set-new-display">
@@ -637,7 +633,7 @@ What remains is &#x2026; to install the display in its rightful place.
 
 <p>
 First, I disassembled the original display module according to the service
-manual<sup><a id="fnr.5" class="footref" href="#fn.5" role="doc-backlink">5</a></sup> and took everything unnecessary out of
+manual<sup><a id="fnr.display_module_disassemble" class="footref" href="#fn.display_module_disassemble" role="doc-backlink">5</a></sup> and took everything unnecessary out of
 there:
 </p>
 
@@ -808,7 +804,6 @@ really like them.
 </div>
 </div>
 </div>
-
 <div id="outline-container-new-display-freebsd" class="outline-3">
 <h3 id="new-display-freebsd">New display and FreeBSD</h3>
 <div class="outline-text-3" id="text-new-display-freebsd">
@@ -998,7 +993,6 @@ source code can be downloaded here:
 </div>
 </div>
 </div>
-
 <div id="outline-container-wifi-module-replacement" class="outline-2">
 <h2 id="wifi-module-replacement">Replacing the WiFi module</h2>
 <div class="outline-text-2" id="text-wifi-module-replacement">
@@ -1018,7 +1012,7 @@ to close with tape 51 pin, otherwise the built-in Bluetooth will not work.
 </p>
 
 <p>
-Since a separate Bluetooth daughter card<sup><a id="fnr.6" class="footref" href="#fn.6" role="doc-backlink">6</a></sup> is no longer needed in the
+Since a separate Bluetooth daughter card<sup><a id="fnr.bdc" class="footref" href="#fn.bdc" role="doc-backlink">6</a></sup> is no longer needed in the
 laptop, I removed it and put <a href="https://aliexpress.ru/item/1005002489857902.html">a BDC to USB adapter</a> into the vacated slot.
 And as a result I got another USB slot inside the laptop to which I can
 connect something. What exactly — I haven't thought of it yet. I don't need
@@ -1137,12 +1131,11 @@ exposed it's features and I was forced to use wifibox.
 </div>
 </div>
 </div>
-
 <div id="outline-container-keyboard-replacement" class="outline-2">
 <h2 id="keyboard-replacement">Replacing the keyboard</h2>
 <div class="outline-text-2" id="text-keyboard-replacement">
 <p>
-Originally, my laptop had a keyboard with a UK<sup><a id="fnr.7" class="footref" href="#fn.7" role="doc-backlink">7</a></sup> layout, which I
+Originally, my laptop had a keyboard with a UK<sup><a id="fnr.kbd_layouts" class="footref" href="#fn.kbd_layouts" role="doc-backlink">7</a></sup> layout, which I
 really dislike — I've always used keyboards with an US layout. Having to
 constantly hit Enter with your finger when you want to enter a pipe character
 is annoying.
@@ -1235,7 +1228,6 @@ some reason.
 </div>
 </div>
 </div>
-
 <div id="outline-container-notebook-power" class="outline-2">
 <h2 id="notebook-power">Laptop power</h2>
 <div class="outline-text-2" id="text-notebook-power">
@@ -1271,7 +1263,6 @@ gave up on this idea. Such a connector doesn't look particularly reliable —
 I'd rather go for a traditional "barrel", it looks more reliable for me.
 </p>
 </div>
-
 <div id="outline-container-battery-recelling" class="outline-3">
 <h3 id="battery-recelling">Battery recelling</h3>
 <div class="outline-text-3" id="text-battery-recelling">
@@ -1309,7 +1300,7 @@ replacement wizard at the end of the thread.</li>
 of these articles did not upgrade the battery from X220, but from his
 article I can get some useful ideas on how to replace the cells in the
 battery. Also, at the end of the second article he writes that cell capacity
-is apparently programmed in BMS<sup><a id="fnr.8" class="footref" href="#fn.8" role="doc-backlink">8</a></sup>, so there is no sense to put cells
+is apparently programmed in BMS<sup><a id="fnr.bms" class="footref" href="#fn.bms" role="doc-backlink">8</a></sup>, so there is no sense to put cells
 with capacity higher than from the factory, if there is no programmer and
 corrected firmware for BMS.</li>
 <li><a href="https://www.coreboot.org/Board:lenovo/x220#Recalibrate_batteries">Recalibrate batteries</a> — this describes the command from the coreboot utility
@@ -1515,7 +1506,6 @@ battery life while surfing the web.
 </p>
 </div>
 </div>
-
 <div id="outline-container-second-battery" class="outline-3">
 <h3 id="second-battery">Second battery for the laptop (unfinished)</h3>
 <div class="outline-text-3" id="text-second-battery">
@@ -1689,7 +1679,6 @@ docking station, but not now&#x2026;.
 </div>
 </div>
 </div>
-
 <div id="outline-container-additional-ports" class="outline-2">
 <h2 id="additional-ports">Additional connectors and buttons</h2>
 <div class="outline-text-2" id="text-additional-ports">
@@ -2053,7 +2042,6 @@ slot, didn't get warm and didn't turn off after ~10 minutes in use.
 </div>
 </div>
 </div>
-
 <div id="outline-container-new-case" class="outline-2">
 <h2 id="new-case">Stitching a new case</h2>
 <div class="outline-text-2" id="text-new-case">
@@ -2149,7 +2137,7 @@ just about 60 mm in diameter, as I needed.
 The front and back walls are joined with a cross stitch as described <a href="https://www.youtube.com/watch?v=jxWiJ20esyo">in this
 video</a> (RU language). The side panels are sewn using the same method
 described in Al Stohlman's book "The art of hand sewing
-leather"<sup><a id="fnr.9" class="footref" href="#fn.9" role="doc-backlink">9</a></sup>.
+leather"<sup><a id="fnr.leather_box" class="footref" href="#fn.leather_box" role="doc-backlink">9</a></sup>.
 </p>
 
 <p>
@@ -2177,7 +2165,6 @@ everything was carefully measured and calculated beforehand :-).
 </p>
 </div>
 </div>
-
 <div id="outline-container-update-17-07-2024" class="outline-2">
 <h2 id="update-17-07-2024">17.07.2024 update</h2>
 <div class="outline-text-2" id="text-update-17-07-2024">
@@ -2214,7 +2201,6 @@ At the moment the screen is stable again and is not going to break.
 </p>
 </div>
 </div>
-
 <div id="outline-container-update-22-12-2024" class="outline-2">
 <h2 id="update-22-12-2024">22.12.2024 update</h2>
 <div class="outline-text-2" id="text-update-22-12-2024">
@@ -2320,7 +2306,6 @@ As a result — the ports on the back of the docking station now work!
 </p>
 </div>
 </div>
-
 <div id="outline-container-results" class="outline-2">
 <h2 id="results">Final result</h2>
 <div class="outline-text-2" id="text-results">
@@ -2403,7 +2388,6 @@ eating up 8 GB per tab, it's going to be tough.
 <hr />
 </div>
 </div>
-
 <div id="outline-container-notes" class="outline-2">
 <h2 id="notes">Notes</h2>
 <div class="outline-text-2" id="text-notes">
@@ -2413,14 +2397,14 @@ eating up 8 GB per tab, it's going to be tough.
 
 <div id="text-footnotes">
 
-<div class="footdef"><sup><a id="fn.1" class="footnum" href="#fnr.1" role="doc-backlink">1</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+<div class="footdef"><sup><a id="fn.pause" class="footnum" href="#fnr.pause" role="doc-backlink">1</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
 I use the <code>Pause</code> button to pause applications that load the
 processor to 100% but I need it for something else. I also use it to save
 battery power — if Firefox is used once in a while, it is paused while I don't
 need it. <a href="https://vermaden.wordpress.com/2018/09/19/freebsd-desktop-part-16-configuration-pause-any-application/">It works like this</a>.
 </p></div></div>
 
-<div class="footdef"><sup><a id="fn.2" class="footnum" href="#fnr.2" role="doc-backlink">2</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+<div class="footdef"><sup><a id="fn.ips_problem" class="footnum" href="#fnr.ips_problem" role="doc-backlink">2</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
 This is a problem with the IPS matrices used in these
 Thinkpads — when you hit the cover hard, a spot appears on the screen. This
 spot glows slightly brighter than the surrounding screen:
@@ -2431,14 +2415,14 @@ spot glows slightly brighter than the surrounding screen:
 </p>
 </div></div></div>
 
-<div class="footdef"><sup><a id="fn.3" class="footnum" href="#fnr.3" role="doc-backlink">3</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+<div class="footdef"><sup><a id="fn.1st_mb_fail" class="footnum" href="#fnr.1st_mb_fail" role="doc-backlink">3</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
 In fact, the first motherboard had been dying for a long
 time, but since I used the laptop carefully, similar "symptoms" occurred only
 a couple of times. And tampering with the system with a soldering iron only
 accelerated the inevitable demise.
 </p></div></div>
 
-<div class="footdef"><sup><a id="fn.4" class="footnum" href="#fnr.4" role="doc-backlink">4</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+<div class="footdef"><sup><a id="fn.freebsd_coreboot_fix" class="footnum" href="#fnr.freebsd_coreboot_fix" role="doc-backlink">4</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
 <a href="https://libreboot.org/docs/bsd/#freebsd-and-corebootfb">As I read</a>, libgfxinit with initialized framebuffer
 and *BSD installers don't working together. But I found a way to make them
 friends — during the boot process, when lines are already printed on the
@@ -2454,30 +2438,30 @@ blindly press <code>&lt;Esc&gt;</code> and type <code>vbe on</code>. This will b
 prompt, and you can safely boot FreeBSD with the <code>boot</code> command.
 </p></div></div>
 
-<div class="footdef"><sup><a id="fn.5" class="footnum" href="#fnr.5" role="doc-backlink">5</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+<div class="footdef"><sup><a id="fn.display_module_disassemble" class="footnum" href="#fnr.display_module_disassemble" role="doc-backlink">5</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
 Section "2010 LCD front bezel" (page 88),
 "2050 LCD panel and LCD cable" (page 99), "2020 LED board" (page 89), "2040
 Integrated camera" (page 98), and "2070 LCD rear cover and wireless antenna
 cables" (page 102).
 </p></div></div>
 
-<div class="footdef"><sup><a id="fn.6" class="footnum" href="#fnr.6" role="doc-backlink">6</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+<div class="footdef"><sup><a id="fn.bdc" class="footnum" href="#fnr.bdc" role="doc-backlink">6</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
 Refer to "2030 Bluetooth daughter card (BDC-2.1)" on page 91 in the
 service manual.
 </p></div></div>
 
-<div class="footdef"><sup><a id="fn.7" class="footnum" href="#fnr.7" role="doc-backlink">7</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+<div class="footdef"><sup><a id="fn.kbd_layouts" class="footnum" href="#fnr.kbd_layouts" role="doc-backlink">7</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
 Globally, there are two keyboard layouts. British — where the
 L-shaped <code>Enter</code>, short left <code>Shift</code> and there is an additional button with the
 symbols <code>&lt;</code>, <code>&gt;</code>, <code>\</code> to the left of the <code>z</code> button. And American, with elongated
 <code>Enter</code> and long <code>Shift</code> too.
 </p></div></div>
 
-<div class="footdef"><sup><a id="fn.8" class="footnum" href="#fnr.8" role="doc-backlink">8</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+<div class="footdef"><sup><a id="fn.bms" class="footnum" href="#fnr.bms" role="doc-backlink">8</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
 Battery Management System
 </p></div></div>
 
-<div class="footdef"><sup><a id="fn.9" class="footnum" href="#fnr.9" role="doc-backlink">9</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+<div class="footdef"><sup><a id="fn.leather_box" class="footnum" href="#fnr.leather_box" role="doc-backlink">9</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
 Section «Sewing a miter joint», page 22.
 </p></div></div>
 

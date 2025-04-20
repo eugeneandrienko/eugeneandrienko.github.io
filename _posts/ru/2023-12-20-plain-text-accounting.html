@@ -440,7 +440,7 @@ XSLT:
 <div class="org-src-container">
 <pre class="src src-bash"><span style="color: #93a1a1;">#</span><span style="color: #93a1a1;">!/usr/bin/</span><span style="color: #859900; font-weight: bold;">env</span><span style="color: #93a1a1;"> bash</span>
 
-<span style="color: #657b83; font-weight: bold;">declare</span> -A <span style="color: #268bd2;">CURRENCY_CODES</span>=([<span style="color: #2aa198;">"$"</span>]=<span style="color: #2aa198;">"R01235"</span> [<span style="color: #2aa198;">"EUR"</span>]=<span style="color: #2aa198;">"R01239"</span>)
+declare -A <span style="color: #268bd2;">CURRENCY_CODES</span>=([<span style="color: #2aa198;">"$"</span>]=<span style="color: #2aa198;">"R01235"</span> [<span style="color: #2aa198;">"EUR"</span>]=<span style="color: #2aa198;">"R01239"</span>)
 <span style="color: #268bd2;">CBR_DATE</span>=$(date <span style="color: #2aa198;">'+%d/%m/%Y'</span>)
 <span style="color: #268bd2;">CBR_XSLT</span>=$(mktemp /tmp/cbr.XXXXXX.xslt)
 

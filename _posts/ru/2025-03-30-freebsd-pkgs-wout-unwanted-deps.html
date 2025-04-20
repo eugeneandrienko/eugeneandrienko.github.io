@@ -316,8 +316,8 @@ prevent enabling the unwanted options when configuring the port(s):
 
 <div class="org-src-container">
 <pre class="src src-shell"><span style="color: #268bd2;">DISABLE_LICENSES</span>=yes
-<span style="color: #268bd2;">OPTIONS_UNSET</span>+=JACK PIPEWIRE PULSEAUDIO WAYLAND
-<span style="color: #268bd2;">OPTIONS_SET</span>+=OSS SNDIO X11
+OPTIONS_UNSET+=JACK PIPEWIRE PULSEAUDIO WAYLAND
+OPTIONS_SET+=OSS SNDIO X11
 </pre>
 </div>
 
@@ -446,7 +446,7 @@ dunstify <span style="color: #2aa198;">"Poudriere"</span> <span style="color: #2
 sudo poudriere ports -p local -u
 dunstify <span style="color: #2aa198;">"Poudriere"</span> <span style="color: #2aa198;">"Ports updated"</span> $<span style="color: #268bd2;">DUNST_OPTS</span>
 
-<span style="color: #859900; font-weight: bold;">while </span><span style="color: #657b83; font-weight: bold;">true</span>; <span style="color: #859900; font-weight: bold;">do</span>
+<span style="color: #859900; font-weight: bold;">while</span> true; <span style="color: #859900; font-weight: bold;">do</span>
     dunstify <span style="color: #2aa198;">"Poudriere"</span> <span style="color: #b58900; font-weight: bold;">\</span>
         <span style="color: #2aa198;">"Dry run start.\nCheck that all will build correctly before the real&#128526; build"</span> <span style="color: #b58900; font-weight: bold;">\</span>
         $<span style="color: #268bd2;">DUNST_OPTS</span>

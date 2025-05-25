@@ -2,6 +2,7 @@
 .bundle
 _site
 Gemfile.lock
+TAGS
 _articles/
 _static/
 articles/.project

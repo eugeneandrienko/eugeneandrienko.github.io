@@ -1,0 +1,145 @@
+#+BEGIN_EXPORT html
+---
+layout: post
+title: Network provincialism and balkanization
+category: it
+date: 2025-05-25
+lang: ru
+comments: false
+hidden:
+  - related_posts
+summary: There is evidence of the slow death of the Internet as we know it. The Internet that unites people…
+tags:
+image: /assets/static/header-network-provincialism.jpg
+banner:
+  image: /assets/static/header-network-provincialism.jpg
+  opacity: 0.6
+---
+#+END_EXPORT
+
+#+begin_example
+ ____                                   __       ___
+/\  _`\                                /\ \     /\_ \
+\ \ \L\ \_ __    __     __      ___ ___\ \ \____\//\ \      __
+ \ \ ,__/\`'__\/'__`\ /'__`\  /' __` __`\ \ '__`\ \ \ \   /'__`\
+  \ \ \/\ \ \//\  __//\ \L\.\_/\ \/\ \/\ \ \ \L\ \ \_\ \_/\  __/
+   \ \_\ \ \_\\ \____\ \__/.\_\ \_\ \_\ \_\ \_,__/ /\____\ \____\
+    \/_/  \/_/ \/____/\/__/\/_/\/_/\/_/\/_/\/___/  \/____/\/____/
+
+#+end_example
+
+This post will (I hope not) become a beautiful epitaph to the international
+network as we know it…
+
+This network used to unite people. Although I was born at the end of
+XX century, I missed the rise and fall of the [[https://en.wikipedia.org/wiki/FidoNet][FidoNet]] (it was popular enough
+in Russia after the fall of USSR and before the network equipment for coaxial
+cable or twisted pair became cheaper. We called it [[https://neolurk.org/wiki/%D0%A4%D0%B8%D0%B4%D0%BE%D0%BD%D0%B5%D1%82][Фидонет]]).
+
+But I was born just in time to meet the 56k modems (I had the Acorp
+Sprinter@56K), ICQ, forums (hello, phpBB), XMPP and it's transports,
+Bombus[fn:bombus] on my Siemens C75 with 2G Internet access from Tele2 and so
+on. So I remembered /the spirit/ of the old Internet that really connected
+people.
+
+Things changed a bit after 201x — when the new government agency was
+established. It was cringe when they blocked site with Doxygen docs and it was
+funny when they blocked =127.0.0.1= and so on.
+
+But things changed a lot after 2022 — when a *lot* of Internet-related
+services started to reuse "the best practices" of breaking the connectivity
+between people and breaking the /international/ network itself.
+
+Finally, in one day I decided to write this post to document the things that
+were happening. That day, I read [[https://mastodon.bsd.cafe/@mudala/114417527646601267][a post]] about the FreeBSD 2025 survey in
+Mastodon, tried to open the attached link to the third-party site with the
+survey itself, and … failed. Just because that site decided to block all
+people with russian IPs. I don't know the intention of this decision,
+especially in the year 2025 — in this year, I hope, almost all people
+understood /how the things work/ and stopped pursuing the dream that blocking
+residental russian IPs could make the world a better place.
+
+Not only I, but a lot of people met the same discrimination before and will
+meet it in the future. For example, you can see [[https://mastodon.social/@grishka/111934602844613193][this enormously long thread]],
+made by [[https://mastodon.social/@grishka][@grishka@mastodon.social]].
+
+BTW, after this "incident" with the survey, [[https://mas.to/@evgandr/114426048680177117][I decided]] to make a separate post
+in my blog with evidence of Internet de-internationalization.
+
+Sad to say, but this post will be constantly updated with newly found evidence
+of network "balkanization".
+
+#+begin_example
+ ____                     __
+/\  _`\            __    /\ \
+\ \ \L\_\  __  __ /\_\   \_\ \     __    ___     ___     __
+ \ \  _\L /\ \/\ \\/\ \  /'_` \  /'__`\/' _ `\  /'___\ /'__`\
+  \ \ \L\ \ \ \_/ |\ \ \/\ \L\ \/\  __//\ \/\ \/\ \__//\  __/
+   \ \____/\ \___/  \ \_\ \___,_\ \____\ \_\ \_\ \____\ \____\
+    \/___/  \/__/    \/_/\/__,_ /\/____/\/_/\/_/\/____/\/____/
+
+#+end_example
+
+Let's get started. There will be no examples of the "modern" enshittified
+websites that constantly spam users with ads, popups and other nonsense. A lot
+of people have already written a lot about this, see for example [[https://garry.net/posts/the-death-of-the-web][The Death Of
+The Web]] blogpost.
+
+I will write about sites that block access from some region(s) of our
+planet. And about sites that block access from everyone not coming from some
+region(s). All those made not for some kind of security, but directly to
+prohibit people from the "wrong" areas to see their "precious content".
+
+The format is simple: screenshot and a little descriptive text below, if
+necessary.
+
+#+CAPTION: OpenCulture is not so open — it blocks access from russian IPs with obscure message
+#+ATTR_HTML: :align center :width 80% :alt Error 405, access denied at the openculture.com
+[[file:2025-04-30-openculture.com.png]]
+
+#+CAPTION: World-wide surveys, but … if you a russian, you can't participate
+#+ATTR_HTML: :align center :width 80% :alt Error 403, geo block russia on the surveymonkey.com
+[[file:2025-04-30-surveymonkey.com.png]]
+
+#+CAPTION: Wanna download drivers for an old Intel GMA X3100? How about NO?
+#+ATTR_HTML: :align center :width 80% :alt Opening any useful links from intel.com are prohibited just because you are in the "wrong country"
+[[file:2025-05-02-intel.com.png]]
+
+Translation of the text on the previous screenshot:
+
+#+begin_quote
+We immediately suspended all business operations in Russia. This follows our
+previous decision to suspend all deliveries to customers in Russia and
+Belarus.
+#+end_quote
+
+#+CAPTION: Can't view the item page from the outer world. Funny, but the main page opens without problems from the same IP.
+#+ATTR_HTML: :align center :width 80% :alt Access restricted if you try to open page from outside
+[[file:2025-05-12-ozon.ru.png]]
+
+Translation:
+
+#+begin_quote
+Access is restricted. To solve the problem try this:
+- Wait and reload the page
+- Disable VPN
+- Update browser or mobile app
+- Connect to the another WiFi or mobile network
+- Restart a router
+#+end_quote
+
+Obviously, none of these items are helpful.
+
+#+CAPTION: One of the biggest online retailers [ru] won't open from the outer world
+#+ATTR_HTML: :align center :width 80% :alt "403 Forbidden" error when opening lamoda.ru from the outer world
+[[file:2025-05-21-lamoda.ru.png]]
+
+#+CAPTION: DeviantArt returns 403 error if you connect through some sort of secure tunnel via the datacenter, not from residental IP (exposing yourself to the ISP, at least)
+#+ATTR_HTML: :align center :widht 80% :alt "403 Error" when opening deviantart.com through VPN
+[[file:2025-05-25-deviantart.com.png]]
+
+*To be continued…*
+
+----------------------
+
+[fn:bombus] Bombus — XMPP client written in Java ME for mobile phones.

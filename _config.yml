@@ -26,6 +26,8 @@ future: true
 exclude:
   - README.org
   - articles/
+include:
+  - .well-known
 header_pages:
   - now.html
   - about.html

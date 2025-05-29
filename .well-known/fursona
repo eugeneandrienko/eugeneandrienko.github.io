@@ -1,0 +1,22 @@
+{
+	"sonas": [
+		{
+			"name": "Eugene",
+			"pronouns": "He/Him",
+			"gender": "Male",
+			"species": "Dragon",
+			"description": "A quadruped male dragon with wings. Scales are black, claws are blue, spikes on the tail and on the wings are blue too. Horns and breastplate are dark grey.",
+			"avatar": "https://eugene-andrienko.com/avatar.png",
+			"avatarAlt": "A black dragon with drak grey horns and blue claws, and spikes on the tail",
+			"avatarAttribution": "CC BY 4.0",
+			"age": 34,
+			"birthdate": "1990-01-01T00:00:00+03:00",
+			"colors": [
+				"#000000",
+				"#006699",
+				"#333333",
+				"#ff3333"
+			]
+		}
+	]
+}

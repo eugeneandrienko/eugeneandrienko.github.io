@@ -27,6 +27,8 @@ hw.acpi.sleep_button_state=S3
 hw.acpi.thermal.user_override=1
 hw.acpi.thermal.tz0._PSV=80C
 hw.acpi.thermal.tz1._PSV=80C
+hw.acpi.thermal.tz0._CRT=199C
+hw.acpi.thermal.tz1._CRT=199C
 
 ###############
 # VFS settings:

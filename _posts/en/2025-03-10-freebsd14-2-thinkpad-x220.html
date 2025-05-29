@@ -672,6 +672,8 @@ The next section in the file is hardware-specific:
 <span id="coderef-sysctl-conf-acpi-thermal" class="coderef-off"><span class="linenr">26: </span>hw.acpi.thermal.user_override=1</span>
 <span class="linenr">27: </span>hw.acpi.thermal.tz0._PSV=80C
 <span class="linenr">28: </span>hw.acpi.thermal.tz1._PSV=80C
+<span class="linenr">29: </span>hw.acpi.thermal.tz0._CRT=199C
+<span class="linenr">30: </span>hw.acpi.thermal.tz1._CRT=199C
 </pre>
 </div>
 
@@ -691,11 +693,25 @@ X220).
 </p>
 
 <p>
-The three lines from <a href="#coderef-sysctl-conf-acpi-thermal" class="coderef" onmouseover="CodeHighlightOn(this, 'coderef-sysctl-conf-acpi-thermal');" onmouseout="CodeHighlightOff(this, 'coderef-sysctl-conf-acpi-thermal');">26</a> line are the <b>DANGEROUS</b> ones!
+The five lines from <a href="#coderef-sysctl-conf-acpi-thermal" class="coderef" onmouseover="CodeHighlightOn(this, 'coderef-sysctl-conf-acpi-thermal');" onmouseout="CodeHighlightOff(this, 'coderef-sysctl-conf-acpi-thermal');">26</a> line are the <b>DANGEROUS</b> ones!
 The first allows you to override thermal protections for the laptop. So, if
 you configure something wrong, the laptop might melt🫠. The next two lines
 lower the default temperature to disable the passive cooling — the defaults
 were set to 90°C, which is too high for me.
+</p>
+
+<p>
+And the last two lines are necessary to prevent some weird behaviour of my
+laptop when it wakes up from the sleep state. Due to a some bug in the
+Libreboot, my ThinkPad X220 doing some hard calculations with it's CPU for a
+second, when it is waking up. And this second is enough for ACPI to decide,
+"on ho, the CPU is overheating — let's turn off the everything!"
+</p>
+
+<p>
+So, to prevent this unwanted shutdown I added those two lines. For now, laptop
+still overheats for a second (fan noise increases) but it is successfully
+wakes up and working like a charm. And it is not melt (yet)!
 </p>
 
 <p>
@@ -766,8 +782,7 @@ The next lines are not written by me — I took them from <a href="https://www.
 
 <p>
 The next lines were added when I was experimenting with sleep on my
-librebooted laptop. I couldn't get it to work properly — the laptop still
-sometimes overheats and shuts down due to ACPI temperature protection.
+librebooted laptop:
 </p>
 
 <div class="org-src-container">

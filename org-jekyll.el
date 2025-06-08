@@ -123,15 +123,14 @@ and initialize worktree with `site' branch in it via Git."
                            "/_site")))
     (if (not (file-directory-p site-path))
         (progn
-            (cd org-jekyll-paths-base-path)
+          (cd org-jekyll-paths-base-path)
           (message "%s" (propertize "./_site directory not exists, creating a new one"
                                     'face '(:foreground "orange")))
           (make-directory site-path)
           (make-process
            :name "jekyll-git-worktree"
            :buffer nil
-           :command '("git" "worktree" "add" "--checkout" "--lock" "--reason"
-                      "\"Necessary to deploy the blog\""
+           :command '("git" "worktree" "add" "-f" "--checkout"
                       "./_site" "site"))
           (cd current-path))
       (message "./_site directory exists, continuing..."))))

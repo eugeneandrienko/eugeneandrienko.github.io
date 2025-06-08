@@ -1,8 +1,0 @@
-Section "InputClass"
-    Identifier "IBM MU29J Mouse"
-    Driver "libinput"
-    MatchDevicePath "/dev/input/event9"
-    Option "MiddleEmulation" "on"
-    Option "AccelProfile" "flat"
-    Option "AccelSpeed" "1.0"
-EndSection

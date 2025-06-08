@@ -1,0 +1,144 @@
+motorola_defy/bootloader_unlock % fastboot flash partition gpt.bin
+Warning: skip copying partition image avb footer (partition partition size: 0, partition image size: 38400).
+Sending 'partition' (37 KB)                        OKAY [  0.003s]
+Writing 'partition'                                (bootloader) Validating 'gpt.default.xml'
+(bootloader) Committing 'gpt.default.xml'
+(bootloader) - flashing 'gpt_main0.bin' to 'partition:0'
+OKAY [  0.598s]
+Finished. Total time: 0.602s
+
+motorola_defy/bootloader_unlock % fastboot flash bootloader bootloader.img
+Warning: skip copying bootloader image avb footer (bootloader partition size: 0, bootloader image size: 14156032).
+Sending 'bootloader' (13824 KB)                    OKAY [  0.435s]
+Writing 'bootloader'                               (bootloader) Validating 'bootloader.default.xml'
+(bootloader) Committing 'bootloader.default.xml'
+(bootloader) - flashing 'keymaster.mbn' to 'keymaster'
+(bootloader) - flashing 'hyp.mbn' to 'hyp'
+(bootloader) - flashing 'tz.mbn' to 'tz'
+(bootloader) - flashing 'devcfg.mbn' to 'devcfg'
+(bootloader) - flashing 'storsec.mbn' to 'storsec'
+(bootloader) - flashing 'prov64.mbn' to 'prov'
+(bootloader) - flashing 'rpm.mbn' to 'rpm'
+(bootloader) - flashing 'abl.elf' to 'abl'
+(bootloader) - flashing 'uefi_sec.mbn' to 'uefisecapp'
+(bootloader) - flashing 'qupfw.elf' to 'qupfw'
+(bootloader) - flashing 'xbl_config.elf' to 'xbl_config'
+(bootloader) - flashing 'xbl.elf' to 'xbl'
+OKAY [  0.317s]
+Finished. Total time: 0.754s
+
+motorola_defy/bootloader_unlock % fastboot reboot-bootloader
+Rebooting into bootloader                          OKAY [  0.000s]
+Finished. Total time: 0.301s
+
+motorola_defy/bootloader_unlock % fastboot flash radio radio.img
+Warning: skip copying radio image avb footer (radio partition size: 0, radio image size: 90117888).
+Sending 'radio' (88005 KB)                         OKAY [  2.766s]
+Writing 'radio'                                    (bootloader) Validating 'radio.default.xml'
+(bootloader) Committing 'radio.default.xml'
+(bootloader) - flashing 'NON-HLOS.bin' to 'modem'
+(bootloader) - flashing 'fsg.mbn' to 'fsg'
+(bootloader) - erasing 'modemst1'
+(bootloader) - erasing 'modemst2'
+OKAY [  0.935s]
+Finished. Total time: 3.703s
+
+motorola_defy/bootloader_unlock % fastboot reboot-bootloader
+Rebooting into bootloader                          OKAY [  0.000s]
+Finished. Total time: 0.101s
+
+motorola_defy/bootloader_unlock % fastboot flash bluetooth BTFM.bin
+Sending 'bluetooth_a' (760 KB)                     OKAY [  0.025s]
+Writing 'bluetooth_a'                              OKAY [  0.022s]
+Finished. Total time: 0.050s
+
+motorola_defy/bootloader_unlock % fastboot flash dsp dspso.bin
+Sending 'dsp_a' (32768 KB)                         OKAY [  1.036s]
+Writing 'dsp_a'                                    OKAY [  0.342s]
+Finished. Total time: 1.426s
+
+motorola_defy/bootloader_unlock % fastboot flash logo logo.bin
+Sending 'logo_a' (4728 KB)                         OKAY [  0.149s]
+Writing 'logo_a'                                   OKAY [  0.052s]
+Finished. Total time: 0.210s
+
+motorola_defy/bootloader_unlock % fastboot flash boot boot.img
+Sending 'boot_a' (98304 KB)                        OKAY [  3.098s]
+Writing 'boot_a'                                   OKAY [  1.281s]
+Finished. Total time: 4.602s
+
+motorola_defy/bootloader_unlock % fastboot flash recovery recovery.img
+Sending 'recovery_a' (102400 KB)                   OKAY [  3.234s]
+Writing 'recovery_a'                               OKAY [  1.520s]
+Finished. Total time: 4.974s
+
+motorola_defy/bootloader_unlock % fastboot flash dtbo dtbo.img
+Sending 'dtbo_a' (24576 KB)                        OKAY [  0.779s]
+Writing 'dtbo_a'                                   OKAY [  0.299s]
+Finished. Total time: 1.110s
+
+motorola_defy/bootloader_unlock % fastboot flash vbmeta vbmeta.img
+Sending 'vbmeta_a' (4 KB)                          OKAY [  0.001s]
+Writing 'vbmeta_a'                                 OKAY [  0.006s]
+Finished. Total time: 0.009s
+
+motorola_defy/bootloader_unlock % fastboot flash super super.img_sparsechunk.0 
+Sending 'super' (459104 KB)                        OKAY [ 14.471s]
+Writing 'super'                                    OKAY [  0.059s]
+Finished. Total time: 15.175s
+
+motorola_defy/bootloader_unlock % fastboot flash super super.img_sparsechunk.1
+Sending 'super' (524208 KB)                        OKAY [ 16.512s]
+Writing 'super'                                    OKAY [  0.001s]
+Finished. Total time: 19.859s
+
+motorola_defy/bootloader_unlock % fastboot flash super super.img_sparsechunk.2
+Sending 'super' (516736 KB)                        OKAY [ 16.269s]
+Writing 'super'                                    OKAY [  0.001s]
+Finished. Total time: 16.987s
+
+motorola_defy/bootloader_unlock % fastboot flash super super.img_sparsechunk.3
+Sending 'super' (491992 KB)                        OKAY [ 15.498s]
+Writing 'super'                                    OKAY [  0.001s]
+Finished. Total time: 16.183s
+
+motorola_defy/bootloader_unlock % fastboot flash super super.img_sparsechunk.4
+Sending 'super' (518300 KB)                        OKAY [ 16.331s]
+Writing 'super'                                    OKAY [  0.001s]
+Finished. Total time: 18.129s
+
+motorola_defy/bootloader_unlock % fastboot flash super super.img_sparsechunk.5
+Sending 'super' (524212 KB)                        OKAY [ 16.505s]
+Writing 'super'                                    OKAY [  0.001s]
+Finished. Total time: 17.233s
+
+motorola_defy/bootloader_unlock % fastboot flash super super.img_sparsechunk.6
+Sending 'super' (524248 KB)                        OKAY [ 16.524s]
+Writing 'super'                                    OKAY [  0.001s]
+Finished. Total time: 17.269s
+
+motorola_defy/bootloader_unlock % fastboot flash super super.img_sparsechunk.7
+Sending 'super' (524252 KB)                        OKAY [ 16.513s]
+Writing 'super'                                    OKAY [  0.001s]
+Finished. Total time: 18.425s
+
+motorola_defy/bootloader_unlock % fastboot flash super super.img_sparsechunk.8
+Sending 'super' (351260 KB)                        OKAY [ 11.074s]
+Writing 'super'                                    OKAY [  0.001s]
+Finished. Total time: 12.269s
+
+motorola_defy/bootloader_unlock % fastboot erase userdata
+Erasing 'userdata'                                 OKAY [  0.181s]
+Finished. Total time: 0.182s
+
+motorola_defy/bootloader_unlock % fastboot erase ddr
+Erasing 'ddr'                                      OKAY [  0.004s]
+Finished. Total time: 0.005s
+
+motorola_defy/bootloader_unlock % fastboot oem fb_mode_clear
+OKAY [  0.000s]
+Finished. Total time: 0.000s
+
+motorola_defy/bootloader_unlock % fastboot reboot
+Rebooting                                          OKAY [  0.000s]
+Finished. Total time: 0.050s

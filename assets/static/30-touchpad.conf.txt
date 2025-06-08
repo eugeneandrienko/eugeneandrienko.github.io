@@ -1,0 +1,8 @@
+Section "InputClass"
+    Identifier "X220 Touchpad"
+    MatchIsTouchpad "on"
+    MatchDevicePath "/dev/input/event*"
+    Driver "libinput"
+    Option "Tapping" "on"
+    Option "SendEventsMode" "disabled-on-external-mouse"
+EndSection

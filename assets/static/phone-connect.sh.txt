@@ -1,0 +1,27 @@
+#!/usr/bin/env zsh
+
+if [ -f /usr/bin/x11-ssh-askpass ]; then
+    export SUDO_ASKPASS="/usr/bin/x11-ssh-askpass"
+elif [ -f /usr/local/bin/x11-ssh-askpass ]; then
+    export SUDO_ASKPASS="/usr/local/bin/x11-ssh-askpass"
+else
+    exit 1
+fi
+
+case $(echo "disable wifi:phone connect:phone disconnect" | rofi -dpi 0 -dmenu -sep ":" -p "Select") in
+    "disable wifi")
+        sudo -A service wifibox stop
+        ;;
+    "phone connect")
+        sudo -A service netif stop em0
+        sudo -A service wifibox stop
+        sudo -A service netif restart ue0
+        sudo -A service dhclient restart ue0
+        ;;
+    "phone disconnect")
+        sudo -A service netif restart
+        sudo -A service wifibox restart
+        sudo -A service dhclient restart em0
+        sudo -A service dhclient restart wifibox0
+        ;;
+esac

@@ -111,6 +111,31 @@
   :type '(file :must-match t)
   :group 'org-jekyll-paths)
 
+;; Some checks for directory structure:
+
+(defun org-jekyll--prepare-site-worktree ()
+  "Prepare worktree in `_site' catalog.
+
+Check is there the `./_site/' catalog exists.  If not, then creates it
+and initialize worktree with `site' branch in it via Git."
+  (let ((current-path (file-name-directory buffer-file-name))
+        (site-path (concat org-jekyll-paths-base-path
+                           "/_site")))
+    (if (not (file-directory-p site-path))
+        (progn
+            (cd org-jekyll-paths-base-path)
+          (message "%s" (propertize "./_site directory not exists, creating a new one"
+                                    'face '(:foreground "orange")))
+          (make-directory site-path)
+          (make-process
+           :name "jekyll-git-worktree"
+           :buffer nil
+           :command '("git" "worktree" "add" "--checkout" "--lock" "--reason"
+                      "\"Necessary to deploy the blog\""
+                      "./_site" "site"))
+          (cd current-path))
+      (message "./_site directory exists, continuing..."))))
+
 ;; OrgMode publication functions:
 
 (defun org-jekyll--prepare-article (article)
@@ -218,7 +243,7 @@ PROPERTY-LIST is a list of properties from
 (defun org-jekyll--start-jekyll-build (_property-list)
   "Execute `jekyll build' command when the all necessary files are ready.
 
-PROPERTY-LIST is a list of properties from `org-publish-project-alist'."
+_PROPERTY-LIST is a list of properties from `org-publish-project-alist'."
   (make-process
    :name "jekyll-build"
    :buffer "jekyll-build"
@@ -290,6 +315,7 @@ PROPERTY-LIST is a list of properties from `org-publish-project-alist'."
 (defun org-jekyll--suffix-build ()
   "Build the blog."
   (interactive)
+  (org-jekyll--prepare-site-worktree)
   (make-thread (lambda ()
                  (let ((org-publish-project-alist
                         `(("org-jekyll-org"
@@ -322,11 +348,8 @@ PROPERTY-LIST is a list of properties from `org-publish-project-alist'."
                            :exclude ,org-jekyll-exclude-regex
                            :recursive t)
                           ("org-jekyll" :components ("org-jekyll-org" "org-jekyll-static")))))
-                   (message "%s" "cd")
                    (cd (expand-file-name org-jekyll-paths-base-path))
-                   (message "%s" (expand-file-name org-jekyll-paths-base-path))
-                   (org-publish-project "org-jekyll" t nil)
-                   (message "%s" org-publish-project-alist)))
+                   (org-publish-project "org-jekyll" t nil)))
                "jekyll-build"))
 
 (defun org-jekyll--suffix-serve-toggle ()

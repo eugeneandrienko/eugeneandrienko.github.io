@@ -1,4 +1,4 @@
-;;; org-jekyll.el --- Custom Emacs plugin to operate with my OrgMode+Jekyll blog
+;;; org-jekyll.el --- Custom Emacs plugin to operate with my OrgMode+Jekyll blog --- -*- lexical-binding: t -*-
 
 ;; Copyright (c) 2024 Eugene Andrienko
 
@@ -142,8 +142,7 @@ PROPERTY-LIST is a list of properties from `org-publish-project-alist'."
                      "/\\(\\w+\\)/\\([0-9-]+\\)-\\([[:alnum:]-]+\\)/article-\\([[:lower:]]\\{2\\}\\)\\.org$")
              article)
             (let*
-                ((article-category (match-string 1 article))
-                 (article-date (match-string 2 article))
+                ((article-date (match-string 2 article))
                  (article-slug (match-string 3 article))
                  (article-lang (match-string 4 article))
                  (article-new-catalog (concat
@@ -388,7 +387,8 @@ PROPERTY-LIST is a list of properties from
                    (message "%s" (propertize "Blog cleaned" 'face '(:foreground "blue"))))
                   ((eq (process-status process) 'run)
                    (accept-process-output process))
-                  (t (error (concat "Jekyll Clean: " state))))))))
+                  (t (error (concat "Jekyll Clean: " state))))))
+    (cd current-path)))
 
 (defun org-jekyll--suffix-open-blog ()
   "Open locally served blog."

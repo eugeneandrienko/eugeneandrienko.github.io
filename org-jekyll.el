@@ -271,7 +271,16 @@ then the minifier will not be used."
                (cond
                 ((and (eq (process-status process) 'exit)
                       (zerop (process-exit-status process)))
-                 (message "%s" (propertize "Blog built" 'face '(:foreground "blue"))))
+                 (progn
+                   (message "%s" (propertize "Blog built" 'face '(:foreground "blue")))
+                   (delete-file (concat org-jekyll-paths-base-path
+                                        "/_site" "/org-jekyll.el"))
+                   (delete-file (concat org-jekyll-paths-base-path
+                                        "/_site" "/flycheck_org-jekyll.el"))
+                   (delete-file (concat org-jekyll-paths-base-path
+                                        "/_site" "/en" "/org-jekyll.el"))
+                   (delete-file (concat org-jekyll-paths-base-path
+                                        "/_site" "/en" "/flycheck_org-jekyll.el"))))
                 ((eq (process-status process) 'run)
                  (accept-process-output process))
                 (t (error (concat "Jekyll Build: " state)))))))

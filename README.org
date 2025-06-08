@@ -148,9 +148,5 @@ tag. After file save, a valid TOC will be automatically generated.
 
 * How to build blog
 
-Just eval =org-jekyll.org= file in Emacs, enable =org-jekyll-mode= minor mode and
-press =C-c b=.
-
-* How to minify blog on production
-
-Environment varible =JEKYLL_ENV= should be set to =true=.
+Just open any =article-XX.org= file and press =C-c b b= for devel build. Or press
+=C-c b p= for production ready build (minified files).

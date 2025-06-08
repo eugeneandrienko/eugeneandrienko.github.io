@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-<!-- Begin Jekyll SEO tag v2.8.0 -->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
 <title>Setting up FreeBSD for Lenovo Thinkpad X220 (2011 year) | Dragon’s notes</title>
 <meta name="generator" content="Jekyll v4.4.1">
 <meta property="og:title" content="Setting up FreeBSD for Lenovo Thinkpad X220 (2011 year)">
@@ -20,345 +20,81 @@
 <meta property="twitter:title" content="Setting up FreeBSD for Lenovo Thinkpad X220 (2011 year)">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Eugene Andrienko"},"dateModified":"2020-09-26T00:00:00+03:00","datePublished":"2020-09-26T00:00:00+03:00","description":"There are a bunch of tips and tricks about FreeBSD setup for Thinkpad X220 in this little note. I wrote it to not forget non-obvious actions, wchich should be done after system installation. Used Thinkpad came from 2011 year — from that times, when it used decent design from IBM with blue Enter and 7-row keyboard.","headline":"Setting up FreeBSD for Lenovo Thinkpad X220 (2011 year)","mainEntityOfPage":{"@type":"WebPage","@id":"https://eugene-andrienko.com/it/2020/09/26/thinkpad-x220-freebsd.html"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://eugene-andrienko.com/assets/images/home.jpg"},"name":"Eugene Andrienko"},"url":"https://eugene-andrienko.com/it/2020/09/26/thinkpad-x220-freebsd.html"}</script>
-<!-- End Jekyll SEO tag -->
+
 <link rel="apple-touch-icon" sizes="180x180" href="/en/apple-touch-icon.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/en/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/en/favicon-16x16.png">
-  <link rel="mask-icon" href="/en/safari-pinned-tab.svg" color="#5bbad5">
-  <meta name="theme-color" content="#ffffff">
-  <link rel="me" href="https://mas.to/@evgandr">
-  <link rel="stylesheet" href="/assets/css/main.css">
-  <meta name="fediverse:creator" content="@evgandr@mas.to">
+<link rel="icon" type="image/png" sizes="32x32" href="/en/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/en/favicon-16x16.png">
+<link rel="mask-icon" href="/en/safari-pinned-tab.svg" color="#5bbad5">
+<meta name="theme-color" content="#ffffff">
+<link rel="me" href="https://mas.to/@evgandr">
+<link rel="stylesheet" href="/assets/css/main.css">
+<meta name="fediverse:creator" content="@evgandr@mas.to">
 <link type="application/atom+xml" rel="alternate" href="https://eugene-andrienko.com/en/feed.xml" title="Dragon's notes">
 </head>
 <body>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <header class="site-header">
-  <div class="wrapper">
-    <div class="site-header-inner"><ul class="site-nav">
-        <li>
-          <a class="site-brand" rel="author" href="/en/">
-            Dragon's notes
-          </a>
-        </li>
+<div class="wrapper">
+<div class="site-header-inner"><ul class="site-nav">
 <li>
-          <a class="page-link" href="/en/now.html">NOW</a>
-        </li>
+<a class="site-brand" rel="author" href="/en/">
+Dragon's notes
+</a>
+</li>
 <li>
-          <a class="page-link" href="/en/about.html">ABOUT</a>
-        </li>
+<a class="page-link" href="/en/now.html">NOW</a>
+</li>
 <li>
-          <a class="page-link" href="/en/links.html">LINKS</a>
-        </li>
-<!-- RSS -->
-        <li>
-          
-          <a class="page-link" aria-label="RSS feed link" href="/en/feed.xml">
-            <span class="rss-text">RSS</span>
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg>
-          </a>
-          
-        </li>
-        <!-- Languages -->
-        <div class="lang-separator">
-          <hr>
-        </div>
-        
-        
-        <li class="nav-right"><a class="page-link active">EN</a></li>
-        
-        
-        
-        
-        <li class="nav-right">
-          <a class="page-link" href="/it/2020/09/26/thinkpad-x220-freebsd.html">RU</a>
-        </li>
-        
-        
-        
-      </ul></div>
-  </div>
+<a class="page-link" href="/en/about.html">ABOUT</a>
+</li>
+<li>
+<a class="page-link" href="/en/links.html">LINKS</a>
+</li>
+
+<li>
+<a class="page-link" aria-label="RSS feed link" href="/en/feed.xml">
+<span class="rss-text">RSS</span>
+<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg>
+</a>
+</li>
+
+<div class="lang-separator">
+<hr>
+</div>
+<li class="nav-right"><a class="page-link active">EN</a></li>
+<li class="nav-right">
+<a class="page-link" href="/it/2020/09/26/thinkpad-x220-freebsd.html">RU</a>
+</li>
+</ul></div>
+</div>
 </header>
 <main class="page-content" aria-label="Content">
-      <div class="wrapper">
-        <div class="framework main">
-  <div class="post">
-  <section>
-
-
-
-
-
-
-
-
-
+<div class="wrapper">
+<div class="framework main">
+<div class="post">
+<section>
 <header class="post-header">
-  <h1 class="post-title p-name" itemprop="name headline">Setting up FreeBSD for Lenovo Thinkpad X220 (2011 year)</h1>
+<h1 class="post-title p-name" itemprop="name headline">Setting up FreeBSD for Lenovo Thinkpad X220 (2011 year)</h1>
 <p class="post-meta">
-      <time class="dt-published" datetime="2020-09-26T00:00:00+03:00" itemprop="datePublished"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
-        2020.09.26
-      </time>
-
-      
-      
-      <span class="left-vsplit">
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-folder"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>
-        it
-      </span>
-    </p>
+<time class="dt-published" datetime="2020-09-26T00:00:00+03:00" itemprop="datePublished"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+2020.09.26
+</time>
+<span class="left-vsplit">
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-folder"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>
+it
+</span>
+</p>
 <div class="post-tags">
 <a class="post-tag" href="/en/tags.html#freebsd">#freebsd</a><a class="post-tag" href="/en/tags.html#thinkpad">#thinkpad</a>
 </div></header>
 <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
-  <div class="post-content e-content" itemprop="articleBody">
-    <p>
+<div class="post-content e-content" itemprop="articleBody">
+<p>
 There are a bunch of tips and tricks about FreeBSD setup for Thinkpad X220 in
 this little note. I wrote it to not forget non-obvious actions, wchich should
 be done after system installation. Used Thinkpad came from 2011 year — from
 that times, when it used decent design from IBM with blue Enter and 7-row
 keyboard.
 </p>
-
 <p>
 This post based on information from the next pages:
 </p>
@@ -425,7 +161,6 @@ In FreeBSD all users' home catalogs placed in <code>/usr/home/</code>. The <code
 symbolic link to <code>/usr/home/</code>. So, thats why in command prompt <code>\w</code> will be
 substituted to <code>/usr/home/catalog_name</code>, not to <code>~/catalog_name</code>.
 </p>
-
 <p>
 To fix that you need to set path to home catalog directly to
 <code>/usr/home/user_catalog</code>, not to <code>/home/user_catalog</code>. Use <code>sudo chsh username</code> for
@@ -453,23 +188,19 @@ this.
 <p>
 <code>/etc/rc.conf</code> settings:
 </p>
-
 <pre class="example">
 powerd_enable="YES"
 powerd_flags="-a hiadaptive -b adaptive -M 2000"
 performance_cx_lowest="Cmax"
 economy_cx_lowest="Cmax"
 </pre>
-
 <p>
 <code>/boot/loader.conf</code> settings:
 </p>
-
 <pre class="example">
 cpufreq_load="YES"
 kern.hz=100
 </pre>
-
 <p>
 Thanks to these settings — notebook will become slowly but more energy-saving.
 </p>
@@ -481,16 +212,13 @@ Thanks to these settings — notebook will become slowly but more energy-saving.
 <p>
 Need to load <code>snd_hda</code> module on system startup. Add this to <code>/boot/loader.conf</code>:
 </p>
-
 <pre class="example">
 snd_hda_load="YES"
 </pre>
-
 <p>
 To switch between speakers and earphone on the fly — add these lines to
 <code>/boot/device.hints</code>:
 </p>
-
 <pre class="example">
 hint.hdaa.0.nid20.config="as=1 seq=0 device=Speaker"
 hint.hdaa.0.nid21.config="as=1 seq=15 device=Headphones"
@@ -503,12 +231,10 @@ hint.hdaa.0.nid21.config="as=1 seq=15 device=Headphones"
 <p>
 Add these lines to <code>/boot/loader.conf</code>:
 </p>
-
 <pre class="example">
 acpi_ibm_load="YES"
 acpi_video_load="YES"
 </pre>
-
 <p>
 First line loads kernel module to operate with Thinkpad peripherals —
 multimedia-keys, brightness-control keys, etc. Second line loads kernel module
@@ -523,12 +249,10 @@ setup).
 <p>
 First, module <code>acpi_ibm</code> should be already loaded in system.
 </p>
-
 <p>
 The next strings should be added to <code>/etc/devd.conf</code>, with them devd could
 process Fn+Fkey keypresses and send it to our script:
 </p>
-
 <pre class="example">
 notify 10 {
     match "system" "ACPI";
@@ -536,11 +260,9 @@ notify 10 {
     action "/etc/acpi_thinkpad.sh $notify";
 };
 </pre>
-
 <p>
 Script content (incomplete):
 </p>
-
 <div class="org-src-container">
 <pre class="src src-bash"><span style="color: #93a1a1;">#</span><span style="color: #93a1a1;">!/bin/</span><span style="color: #859900; font-weight: bold;">sh</span>
 
@@ -553,7 +275,6 @@ Script content (incomplete):
 <span style="color: #859900; font-weight: bold;">esac</span>
 </pre>
 </div>
-
 <p>
 To watch key scan-codes just stop devd and launch it from root with <code>-d</code>
 argument.
@@ -566,22 +287,18 @@ argument.
 <p>
 First, enable Synaptics touchpad and trackpoint support in <code>/boot/loader.conf</code>:
 </p>
-
 <pre class="example">
 hw.psm.synaptics_support=1
 hw.psm.trackpoint_support=1
 </pre>
-
 <p>
 Package <code>xf86-input-synaptics</code> should be replaced with <code>xf86-input-evdev</code>. With
 these changes — touchpad, trackpoint and middle mouse button above of touchpad
 will be working. Also, scrolling with middle button and trackpoint will work.
 </p>
-
 <p>
 I'd like sensitive trackpoint — so I add the next lines to <code>/etc/systcl.conf</code>:
 </p>
-
 <pre class="example">
 hw.psm.trackpoint.sensitivity=150
 hw.psm.trackpoint.upper_plateau=125
@@ -608,11 +325,9 @@ webcamd_enable="YES"
 kern.evdev.rcpt_mask=12
 </pre></dd>
 </dl>
-
 <p>
 After that add user to <code>webcamd</code> group:
 </p>
-
 <pre class="example">
 sudo pw groupmod webcamd -m &lt;username&gt;
 </pre>
@@ -624,7 +339,6 @@ sudo pw groupmod webcamd -m &lt;username&gt;
 <p>
 First, the module <code>acpi_ibm</code> should be loaded:
 </p>
-
 <p>
 Then, we can go to sleep mode via <code>acpiconf -s 3</code> command. Or via <code>zzz</code> command.
 </p>
@@ -637,7 +351,6 @@ Then, we can go to sleep mode via <code>acpiconf -s 3</code> command. Or via <co
 Install the package <code>graphics/drm-kmod</code>. After, enable module <code>i915kms.ko</code> — add
 next line to <code>/etc/rc.conf</code>:
 </p>
-
 <pre class="example">
 kld_list="${kld_list} /boot/modules/i915kms.ko"
 </pre>
@@ -649,29 +362,24 @@ kld_list="${kld_list} /boot/modules/i915kms.ko"
 <p>
 Add next lines to <code>/boot/loader.conf</code>:
 </p>
-
 <pre class="example">
 if_iwn_load="YES"
 wlan_wep_load="YES"
 wlan_ccmp_load="YES"
 wlan_tkip_load="YES"
 </pre>
-
 <p>
 And these lines to <code>/etc/rc.conf</code> (select proper country code in last line):
 </p>
-
 <pre class="example">
 wlans_iwn0="wlan0"
 ifconfig_wlan0="WPA DHCP powersave"
 create_args_wlan0="country RU regdomain NONE"
 </pre>
-
 <p>
 Install package <code>wpa_supplicant</code> to operate with Wi-Fi networks from user
 mode. And add next lines to the start of <code>/etc/wpa_supplicant.conf</code>:
 </p>
-
 <pre class="example">
 ctrl_interface=/var/run/wpa_supplicant
 eapol_version=2
@@ -685,7 +393,6 @@ fast_reauth=1
 <p>
 You can add next lines to <code>/boot/loader.conf</code>:
 </p>
-
 <pre class="example">
 autoboot_delay="2"
 kern.maxproc="100000"
@@ -698,26 +405,21 @@ libmchain_load="YES"
 cd9660_iconv_load="YES"
 msdosfs_iconv_load="YES"
 </pre>
-
 <p>
 These lines enable support of temperature sensors in system, will reduce delay
 to two seconds before the system boots and so on.
 </p>
-
 <p>
 To load DHCP client in background on system startup and reduce system boot
 time — add next line to <code>/etc/rc.conf</code>:
 </p>
-
 <pre class="example">
 background_dhclient="YES"
 </pre>
-
 <p>
 To mount filesystems without root privileges, to disable system beeper and so
 on — add next lines to <code>/etc/sysctl.conf</code>:
 </p>
-
 <pre class="example">
 vfs.read_max=128
 vfs.usermount=1
@@ -745,13 +447,11 @@ switches laptop to sleep mode. <b>But</b>, after wakeup I can see screen with i3
 for seconds and after that system behaves like I have entered <code>sudo shutdown -h
 now</code> command. But I didn't enter it either!
 </p>
-
 <p>
 After digging on FreeBSD forum, I found a topic, where a man with HP laptop
 describing his issues with non-working sleep mode. Suddenly, but advice from
 this topic helped me a lot.
 </p>
-
 <p>
 There are should be the next lines in <code>/etc/sysctl.conf</code>:
 </p>
@@ -759,7 +459,6 @@ There are should be the next lines in <code>/etc/sysctl.conf</code>:
 hw.pci.do_power_suspend=0
 hw.pci.do_power_nodriver=1
 </pre>
-
 <p>
 And next in <code>/boot/loader.conf</code>:
 </p>
@@ -767,12 +466,10 @@ And next in <code>/boot/loader.conf</code>:
 hint.p4tcc.0.disabled="1"
 hint.acpi_throttle.0.disabled="1"
 </pre>
-
 <p>
 After restart, sleep mode finally works well as before! Without strange
 shutdown after wake up.
 </p>
-
 <p>
 To enable sleeping after closing the lid, I've added one more line to
 <code>/etc/sysctl.conf</code>:
@@ -780,7 +477,6 @@ To enable sleeping after closing the lid, I've added one more line to
 <pre class="example">
 hw.acpi.lid_switch_state=S3
 </pre>
-
 <p>
 To enable sleeping after press to "Sleep" butoon:
 </p>
@@ -797,13 +493,11 @@ Coreboot with SeaBIOS payload FreeBSD bootloader don't works very well
 together. If you try to boot FreeBSD on the machine with coreboot, you'll see
 a thin line of something like video interference on the top of the screen.
 </p>
-
 <p>
 To fix that, you should blindly press Esc in the bootloader. After that, still
 <i>blindly</i> enter command <code>vbe on</code> and press Enter. Now, bootloader switch the video
 mode and it's interface will be displayed on the screen.
 </p>
-
 <p>
 Boot to the system with the <code>boot</code> command and add next lines to
 <code>/boot/loader.conf</code>:
@@ -825,7 +519,6 @@ Add to <code>/boot/loader.conf</code>:
 <pre class="example">
 boot_mute="YES"
 </pre>
-
 <p>
 To <code>/etc/rc.conf</code>:
 </p>
@@ -869,7 +562,6 @@ Some system internals (nIDs) changed after installation of coreboot instead of
 BIOS. As a result: there is no sound in headphones, connected via 3.5mm
 jack. Instruction from <a href="#sound">Sound</a> section became unapplicable.
 </p>
-
 <p>
 To see, which nID I shoule use, there is the next command:
 </p>
@@ -877,7 +569,6 @@ To see, which nID I shoule use, there is the next command:
 <pre class="src src-bash">dmesg | grep pcm
 </pre>
 </div>
-
 <p>
 As a result, I got my headphones working after adding next lines to
 <code>/boot/device.hints</code>:
@@ -896,24 +587,19 @@ After some time of working, there are black squares and (rarely) lines appears
 on the screen. Maybe there are because of coreboot. When I switch from <code>intel</code>
 to <code>modesetting</code> driver — it won't help.
 </p>
-
-
 <div class="figure">
 <p><img src="/assets/static/freebsd_intel_glitches.jpg" alt="FreeBSD Intel glitches" align="center">
 </p>
 <p style="text-align: center"><i>Glitches on the laptop screen</i></p>
 </div>
-
 <p>
 But, thanks to <a href="https://forums.freebsd.org/threads/intel-video-and-screentearing.72085/">this FreeBSD forum message</a> and <code>picom</code> usage with <code>--no-vsync</code>
 option, I managed to noticeably decrease frequency of glithes appearance.
 </p>
-
 <p>
 As a result, my <code>/usr/local/etc/X11/xorg.conf.d/10-intel.conf</code> has the next
 contents:
 </p>
-
 <pre class="example">
 Section "Device"
     Identifier  "Card0"
@@ -925,7 +611,6 @@ Section "Device"
     Option      "TearFree"          "true"
 EndSection
 </pre>
-
 <p>
 And I add next option to <code>/boot/loader.conf</code>:
 </p>
@@ -944,7 +629,6 @@ To decrease desktop latency under the high load, add next lines to
 <pre class="example">
 kern.sched.preempt_thresh=224
 </pre>
-
 <p>
 Settings for network stack performance in <code>/boot/loader.conf</code>:
 </p>
@@ -952,7 +636,6 @@ Settings for network stack performance in <code>/boot/loader.conf</code>:
 net.link.ifqmaxlen="2048"
 cc_htcp_load="YES"
 </pre>
-
 <p>
 Dock-station support;
 </p>
@@ -1026,7 +709,6 @@ compat.linuxkpi.i915_enable_dc="2"
 <p>
 Taken from: <a href="https://www.sacredheartsc.com/blog/freebsd-14-on-the-desktop/">https://www.sacredheartsc.com/blog/freebsd-14-on-the-desktop/</a>
 </p>
-
 <p>
 <code>/etc/sysctl.conf</code>:
 </p>
@@ -1122,87 +804,79 @@ machdep.disable_rtc_set=0
 </div>
 </div>
 </div>
-
-  </div>
+</div>
 </article>
 </section>
 </div>
+</div>
+</div>
+</main><footer class="site-footer h-card">
+<div class="wrapper">
+<div class="site-footer-inner">
+<div>
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewbox="0 0 24 24" fill="none" stroke="#586e75" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-pen-tool"><path d="M12 19l7-7 3 3-7 7-3-3z"></path><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"></path><path d="M2 2l7.586 7.586"></path><circle cx="11" cy="11" r="2"></circle></svg>
+<a href="/en/changelog.html">ChangeLog</a> ┆
+<a href="/en/tags.html">Tags</a> ┆
+<a href="/en/categories.html">Categories</a> ┆
+<a href="/en/archives.html">Archives</a>
+</div>
+<br>
 
+<div xmlns:cc="http://creativecommons.org/ns#">
+<a rel="cc:attributionURL" href="https://eugene-andrienko.com/en/">This blog</a>
+© 2020-2025 by
+<a rel="cc:attributionURL dct:creator" property="cc:attributionName" href="https://eugene-andrienko.com/en/about">Eugene Andrienko</a>
+is licensed under
+<a href="https://creativecommons.org/licenses/by/4.0/?ref=chooser-v1" target="_blank" rel="license noopener noreferrer" style="display:inline-block;">
+CC BY 4.0
+</a>
+<img loading="lazy" width="16" height="16" class="copyleft" src="/assets/images/icons/cc.svg" alt="CC">
+<img loading="lazy" width="16" height="16" class="copyleft" src="/assets/images/icons/by.svg" alt="BY">
+</div>
+<div>
+Powered by: <a title="Jekyll is a simple, blog-aware, static site
+generator." href="https://jekyllrb.com/">Jekyll</a>.
+Icons: <a href="https://github.com/feathericons/feather">Feather</a>.
+Colors: <a href="https://ethanschoonover.com/solarized/">Solarized Light</a>.
 </div>
 
-      </div>
-    </main><footer class="site-footer h-card">
-  <div class="wrapper">
-    <div class="site-footer-inner">
-<div>
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewbox="0 0 24 24" fill="none" stroke="#586e75" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-pen-tool"><path d="M12 19l7-7 3 3-7 7-3-3z"></path><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"></path><path d="M2 2l7.586 7.586"></path><circle cx="11" cy="11" r="2"></circle></svg> 
-          <a href="/en/changelog.html">ChangeLog</a> ┆
-          <a href="/en/tags.html">Tags</a> ┆
-          <a href="/en/categories.html">Categories</a> ┆
-          <a href="/en/archives.html">Archives</a>
-        </div>
-
-        <br>
-
-        <!-- CC BY 4.0 -->
-        <div xmlns:cc="http://creativecommons.org/ns#">
-          <a rel="cc:attributionURL" href="https://eugene-andrienko.com/en/">This blog</a>
-          © 2020-2025 by
-          <a rel="cc:attributionURL dct:creator" property="cc:attributionName" href="https://eugene-andrienko.com/en/about">Eugene Andrienko</a>
-          is licensed under
-          <a href="https://creativecommons.org/licenses/by/4.0/?ref=chooser-v1" target="_blank" rel="license noopener noreferrer" style="display:inline-block;">
-            CC BY 4.0
-          </a>
-          <img loading="lazy" width="16" height="16" class="copyleft" src="/assets/images/icons/cc.svg" alt="CC">
-          <img loading="lazy" width="16" height="16" class="copyleft" src="/assets/images/icons/by.svg" alt="BY">
-        </div>
-
-        <div>
-          Powered by: <a title="Jekyll is a simple, blog-aware, static site
-          generator." href="https://jekyllrb.com/">Jekyll</a>.
-          Icons: <a href="https://github.com/feathericons/feather">Feather</a>.
-          Colors: <a href="https://ethanschoonover.com/solarized/">Solarized Light</a>.
-        </div>
-
-        <!-- Old but gold buttons -->
-        <div class="old-gold-buttons">
-          <a href="https://eugene-andrienko.com/en/it/2024/07/07/thinkpad-x220-second-life">
-            <img loading="lazy" alt="IBM Thinkpad button" width="80" height="15" src="/assets/images/buttons/80x15/thinkpad.png">
-          </a>
-          <a href="https://github.com/eugeneandrienko">
-            <img loading="lazy" alt="Night coder button" width="80" height="15" src="/assets/images/buttons/80x15/nightcoder.png">
-          </a>
-          <img loading="lazy" alt="Love dragons button" width="80" height="15" src="/assets/images/buttons/80x15/dragon.png">
-        </div>
-
-        <div class="old-gold-buttons">
-          <a href="https://cobaltblue.neocities.org/buttons/">
-            <img loading="lazy" alt="Made by dragon button" width="88" height="31" src="/assets/images/buttons/88x31/dragonmade-yellow.png">
-          </a>
-          <map name="fediring6">
-            <area href="https://fediring.net/previous?host=eugene-andrienko.com%2Fen%2F" shape="rect" coords="3,6,12,27" target="_top" alt="previous" title="previous">
-            <area href="https://fediring.net/" shape="rect" coords="15,3,72,27" target="_blank" alt="Fediring" title="Fediring">
-            <area href="https://fediring.net/next?host=eugene-andrienko.com%2Fen%2F" shape="rect" coords="75,6,84,27" target="_top" alt="next" title="next">
-          </map>
-          <img loading="lazy" usemap="#fediring6" alt="Fediring" width="88" height="31" src="/assets/images/buttons/88x31/fediring.png">
-          <map name="noaimini7">
-            <area href="https://baccyflap.com/noai" shape="rect" coords="15,3,72,27" target="_blank" alt="no ai webring" title="no ai webring">
-            <area href="https://baccyflap.com/noai/?prv&s=drg" target="_top" shape="rect" coords="3,6,12,27" alt="previous" title="previous">
-            <area href="https://baccyflap.com/noai/?nxt&s=drg" target="_top" shape="rect" coords="75,6,84,27" alt="next" title="next">
-          </map>
-          <img loading="lazy" usemap="#noaimini7" alt="No AI ring" width="88" height="31" src="/assets/images/buttons/88x31/noaiwidget.gif">
-          <a href="https://512kb.club/#100">
-            <img loading="lazy" alt="512KB club, green team" width="88" height="31" src="/assets/images/buttons/88x31/green-team.gif">
-          </a>
-          <a href="https://no-js.club/">
-            <img loading="lazy" alt="no-JS Club" width="88" height="31" src="/assets/images/buttons/88x31/javascript-zero.gif">
-          </a>
-          <a href="https://www.gnu.org/software/emacs/">
-            <img loading="lazy" alt="Created with Emacs" width="88" height="31" src="/assets/images/buttons/88x31/emacs.gif">
-          </a>
-        </div>
-    </div>
-  </div>
+<div class="old-gold-buttons">
+<a href="https://eugene-andrienko.com/en/it/2024/07/07/thinkpad-x220-second-life">
+<img loading="lazy" alt="IBM Thinkpad button" width="80" height="15" src="/assets/images/buttons/80x15/thinkpad.png">
+</a>
+<a href="https://github.com/eugeneandrienko">
+<img loading="lazy" alt="Night coder button" width="80" height="15" src="/assets/images/buttons/80x15/nightcoder.png">
+</a>
+<img loading="lazy" alt="Love dragons button" width="80" height="15" src="/assets/images/buttons/80x15/dragon.png">
+</div>
+<div class="old-gold-buttons">
+<a href="https://cobaltblue.neocities.org/buttons/">
+<img loading="lazy" alt="Made by dragon button" width="88" height="31" src="/assets/images/buttons/88x31/dragonmade-yellow.png">
+</a>
+<map name="fediring6">
+<area href="https://fediring.net/previous?host=eugene-andrienko.com%2Fen%2F" shape="rect" coords="3,6,12,27" target="_top" alt="previous" title="previous">
+<area href="https://fediring.net/" shape="rect" coords="15,3,72,27" target="_blank" alt="Fediring" title="Fediring">
+<area href="https://fediring.net/next?host=eugene-andrienko.com%2Fen%2F" shape="rect" coords="75,6,84,27" target="_top" alt="next" title="next">
+</map>
+<img loading="lazy" usemap="#fediring6" alt="Fediring" width="88" height="31" src="/assets/images/buttons/88x31/fediring.png">
+<map name="noaimini7">
+<area href="https://baccyflap.com/noai" shape="rect" coords="15,3,72,27" target="_blank" alt="no ai webring" title="no ai webring">
+<area href="https://baccyflap.com/noai/?prv&s=drg" target="_top" shape="rect" coords="3,6,12,27" alt="previous" title="previous">
+<area href="https://baccyflap.com/noai/?nxt&s=drg" target="_top" shape="rect" coords="75,6,84,27" alt="next" title="next">
+</map>
+<img loading="lazy" usemap="#noaimini7" alt="No AI ring" width="88" height="31" src="/assets/images/buttons/88x31/noaiwidget.gif">
+<a href="https://512kb.club/#100">
+<img loading="lazy" alt="512KB club, green team" width="88" height="31" src="/assets/images/buttons/88x31/green-team.gif">
+</a>
+<a href="https://no-js.club/">
+<img loading="lazy" alt="no-JS Club" width="88" height="31" src="/assets/images/buttons/88x31/javascript-zero.gif">
+</a>
+<a href="https://www.gnu.org/software/emacs/">
+<img loading="lazy" alt="Created with Emacs" width="88" height="31" src="/assets/images/buttons/88x31/emacs.gif">
+</a>
+</div>
+</div>
+</div>
 </footer>
 </body>
 </html>

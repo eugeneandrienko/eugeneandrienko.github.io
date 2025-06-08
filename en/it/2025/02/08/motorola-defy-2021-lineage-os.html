@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-<!-- Begin Jekyll SEO tag v2.8.0 -->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
 <title>LineageOS 21 on the Motorola Defy (2021) | Dragon’s notes</title>
 <meta name="generator" content="Jekyll v4.4.1">
 <meta property="og:title" content="LineageOS 21 on the Motorola Defy (2021)">
@@ -22,373 +22,86 @@
 <meta property="twitter:title" content="LineageOS 21 on the Motorola Defy (2021)">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Eugene Andrienko"},"dateModified":"2025-02-08T00:00:00+03:00","datePublished":"2025-02-08T00:00:00+03:00","description":"I have been using the Motorola Defy (2021) smartphone for almost 3 years. There is one of the rugged phones that has an IP68 and a decent thickness — it fits perfectly in my pocket. It looks like a normal phone in the case, but there is no case — there is a phone body.","headline":"LineageOS 21 on the Motorola Defy (2021)","image":"https://eugene-andrienko.com/assets/static/header-lineageos.jpg","mainEntityOfPage":{"@type":"WebPage","@id":"https://eugene-andrienko.com/it/2025/02/08/motorola-defy-2021-lineage-os.html"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://eugene-andrienko.com/assets/images/home.jpg"},"name":"Eugene Andrienko"},"url":"https://eugene-andrienko.com/it/2025/02/08/motorola-defy-2021-lineage-os.html"}</script>
-<!-- End Jekyll SEO tag -->
+
 <link rel="apple-touch-icon" sizes="180x180" href="/en/apple-touch-icon.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/en/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/en/favicon-16x16.png">
-  <link rel="mask-icon" href="/en/safari-pinned-tab.svg" color="#5bbad5">
-  <meta name="theme-color" content="#ffffff">
-  <link rel="me" href="https://mas.to/@evgandr">
-  <link rel="stylesheet" href="/assets/css/main.css">
-  <meta name="fediverse:creator" content="@evgandr@mas.to">
+<link rel="icon" type="image/png" sizes="32x32" href="/en/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/en/favicon-16x16.png">
+<link rel="mask-icon" href="/en/safari-pinned-tab.svg" color="#5bbad5">
+<meta name="theme-color" content="#ffffff">
+<link rel="me" href="https://mas.to/@evgandr">
+<link rel="stylesheet" href="/assets/css/main.css">
+<meta name="fediverse:creator" content="@evgandr@mas.to">
 <link type="application/atom+xml" rel="alternate" href="https://eugene-andrienko.com/en/feed.xml" title="Dragon's notes">
 </head>
 <body>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<style>
-    html .page-banner .page-banner-img > *:first-child {
-      opacity: 0.4;
-    }
-  </style>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+<style>html .page-banner .page-banner-img>*:first-child{opacity:.4}</style>
 <header class="site-header">
-  <div class="wrapper">
-    <div class="site-header-inner"><ul class="site-nav">
-        <li>
-          <a class="site-brand" rel="author" href="/en/">
-            Dragon's notes
-          </a>
-        </li>
+<div class="wrapper">
+<div class="site-header-inner"><ul class="site-nav">
 <li>
-          <a class="page-link" href="/en/now.html">NOW</a>
-        </li>
+<a class="site-brand" rel="author" href="/en/">
+Dragon's notes
+</a>
+</li>
 <li>
-          <a class="page-link" href="/en/about.html">ABOUT</a>
-        </li>
+<a class="page-link" href="/en/now.html">NOW</a>
+</li>
 <li>
-          <a class="page-link" href="/en/links.html">LINKS</a>
-        </li>
-<!-- RSS -->
-        <li>
-          
-          <a class="page-link" aria-label="RSS feed link" href="/en/feed.xml">
-            <span class="rss-text">RSS</span>
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg>
-          </a>
-          
-        </li>
-        <!-- Languages -->
-        <div class="lang-separator">
-          <hr>
-        </div>
-        
-        
-        <li class="nav-right"><a class="page-link active">EN</a></li>
-        
-        
-        
-        
-        <li class="nav-right">
-          <a class="page-link" href="/it/2025/02/08/motorola-defy-2021-lineage-os.html">RU</a>
-        </li>
-        
-        
-        
-      </ul></div>
-  </div>
+<a class="page-link" href="/en/about.html">ABOUT</a>
+</li>
+<li>
+<a class="page-link" href="/en/links.html">LINKS</a>
+</li>
+
+<li>
+<a class="page-link" aria-label="RSS feed link" href="/en/feed.xml">
+<span class="rss-text">RSS</span>
+<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg>
+</a>
+</li>
+
+<div class="lang-separator">
+<hr>
+</div>
+<li class="nav-right"><a class="page-link active">EN</a></li>
+<li class="nav-right">
+<a class="page-link" href="/it/2025/02/08/motorola-defy-2021-lineage-os.html">RU</a>
+</li>
+</ul></div>
+</div>
 </header>
 <section class="page-banner">
-    <div class="page-banner-img">
-      <div style="background-image: url(/assets/static/header-lineageos.jpg)"></div>
-    </div>
-    <div class="wrapper">
-      <div class="page-banner-inner">
-<header class="post-header">
-  <h1 class="post-title p-name" itemprop="name headline">LineageOS 21 on the Motorola Defy (2021)</h1>
-<p class="post-meta">
-      <time class="dt-published" datetime="2025-02-08T00:00:00+03:00" itemprop="datePublished"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
-        2025.02.08
-      </time>
-
-      
-      
-      <span class="left-vsplit">
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-folder"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>
-        it
-      </span>
-    </p></header>
+<div class="page-banner-img">
+<div style="background-image: url(/assets/static/header-lineageos.jpg)"></div>
 </div>
-    </div>
-  </section><main class="page-content" aria-label="Content">
-      <div class="wrapper">
-        <div class="framework main">
-  <div class="post">
-  <section>
-
-
-
-
-
-
-
-
-
+<div class="wrapper">
+<div class="page-banner-inner">
+<header class="post-header">
+<h1 class="post-title p-name" itemprop="name headline">LineageOS 21 on the Motorola Defy (2021)</h1>
+<p class="post-meta">
+<time class="dt-published" datetime="2025-02-08T00:00:00+03:00" itemprop="datePublished"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+2025.02.08
+</time>
+<span class="left-vsplit">
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-folder"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>
+it
+</span>
+</p></header>
+</div>
+</div>
+</section><main class="page-content" aria-label="Content">
+<div class="wrapper">
+<div class="framework main">
+<div class="post">
+<section>
 <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
-  <div class="post-content e-content" itemprop="articleBody">
-    <p>
+<div class="post-content e-content" itemprop="articleBody">
+<p>
 I have been using the <a href="https://www.gsmarena.com/motorola_defy_(2021)-10969.php">Motorola Defy (2021)</a> smartphone for almost 3
 years. There is one of the rugged phones that has an <a href="https://en.wikipedia.org/wiki/IP_code#Code_breakdown">IP68</a> and a decent
 thickness — it fits perfectly in my pocket. It looks like a normal phone in
 the case, but there is no case — there is a phone body.
 </p>
-
 <p>
 I've "tested" this rugged phone a lot:
 </p>
@@ -398,12 +111,10 @@ I've "tested" this rugged phone a lot:
 <li>Dropped it display side down on the tiled floor.</li>
 <li>Dropped it display side down onto a pond on the asphalt road.</li>
 </ul>
-
 <p>
 Nevertheless, the only injury of the phone — a small dent on the corner where
 I dropped it when I got out of the car.
 </p>
-
 <p>
 Unfortunately, I can't say the same for the phone's software. There are the
 unnecessary for me (and undeletable) weather forecast application from
@@ -412,7 +123,6 @@ applications are unsuitable for me, or I can't even use them — because the
 corresponding services aren't available in Russia (for example, Google Pay
 app).
 </p>
-
 <p>
 Also, after I signed in to my Google account, Google Play went crazy and
 started installing a lot of Russian applications that are unnecessary for me:
@@ -420,7 +130,6 @@ Gosuslugi, VK, Odnoklassniki, almost all Yandex apps, MirPay and something
 from the Sberbank. Fortunately, these applications were installed as usual
 applications and I was able to delete them.
 </p>
-
 <p>
 Most of the time I used FOSS applications from F-Droid and never felt a
 grief. But, as it usually happens, after another update from Google, I got
@@ -428,20 +137,16 @@ problems. Sometimes, when I'm was installing or updating the application from
 F-Droid, the OS shows me the next "warning" window for me (it comes from
 Google "Safety" Net):
 </p>
-
-
 <div class="figure">
 <p><img src="/assets/static/google_play_protect.png" alt="Google safety warning than installing applications from F-Droid" align="center" width="25%">
 </p>
 </div>
-
 <p>
 As a result, I get rid of such "caring" behavior from Google. In addition, I
 want to remove some pre-installed applications and take the ability to install
 applications from F-Droid with one button and no dialog: "Do you really want
 to install this application from unknown source?"
 </p>
-
 <p>
 I knew, what I can get all I want from the some opensource Android
 distribution. The most important thing for me — this distribution should
@@ -449,7 +154,6 @@ support the phones hardware and allow root access. Since my phone is not so
 popular among the hackers — there is no support from <a href="https://grapheneos.org/">GrapheneOS</a>, <a href="https://postmarketos.org/">postmarketOS</a>
 or the same operating systems.
 </p>
-
 <p>
 Fortunately, I found some posts on the XDA Developers forum, <a href="https://xdaforums.com/f/motorola-defy-2021.12369/">in the topic</a>
 about Motorola Defy (2021).
@@ -498,12 +202,10 @@ First, I made a list of all the necessary applications, installed on my
 phone. Then I made a backup of all the valuable data — fortunately, almost all
 FOSS applications allow me to backup user data and settings.
 </p>
-
 <p>
 Also, just in case, I wrote down my IMEI — I didn't need it afterwards, but
 this note saved me a lot of nerve cells.
 </p>
-
 <p>
 To flash the phone's flash memory I only needed two utilities:
 </p>
@@ -516,7 +218,6 @@ various service programs that are also stored in the phone's flash memory.</li>
 <a href="https://en.wikipedia.org/wiki/Fastboot">fastboot</a> (in the Gentoo it is installed with the same package) — it is
 necessary to write binary files to the phone's flash memory.</li>
 </ol>
-
 <p>
 To successfully complete the next steps, I've double-checked the phone model
 code and the localization code in the phone settings. <b>NB!</b> All actions were
@@ -536,13 +237,11 @@ because anyone with a physical access to your phone simply can't write
 anything into the corresponding flash regions. From another side, this thing
 forbids me to do whatever I want with the phone, as its full owner.
 </p>
-
 <p>
 To install Lineage OS I had to unlock the bootloader to be able to write the
 necessary files to the flash memory. The main steps are described here:
 <a href="https://source.android.com/docs/core/architecture/bootloader/locking_unlocking">https://source.android.com/docs/core/architecture/bootloader/locking_unlocking</a>.
 </p>
-
 <p>
 First, I need to get access to "Developer Options" in the Settings. Here the
 everything as usual — I just opened "System⇒About Phone" and after a few taps
@@ -550,7 +249,6 @@ on the Android version menu item — I've got the necessary access. After, I
 enabled "USB debugging" via "System⇒Advanced⇒Developer options" submenu. Then
 I rebooted the phone to the bootloader UI with the next steps:
 </p>
-
 <ol class="org-ol">
 <li>I connected the phone to the PC using USB cable with data lanes in it.</li>
 <li>I pressed "USB Preferences" in the notification bar and selected "Use USB
@@ -568,24 +266,19 @@ ZY32DG32K2      device
 </li>
 <li>Finally, I reboot the phone with the command: <code>adb reboot bootloader</code>.</li>
 </ol>
-
 <p>
 As a result, the phone screen shows the next interface:
 </p>
-
-
 <div class="figure">
 <p><img src="/assets/static/bootloader.jpg" alt="Motorola Defy (2021) in the bootloader mode" align="center">
 </p>
 <p style="text-align: center"><i>Motorola Defy (2021), booted in the bootloader</i></p>
 </div>
-
 <p>
 Then, it's time for the <code>fastboot</code>. In my case this utility didn't see the
 connected phone, but after I changed the permissions for <code>/dev/bus/usb/001/018</code>,
 the <code>fastboot</code> started to see the phone:
 </p>
-
 <pre class="example">
 % fastboot devices -l
 % lsusb
@@ -603,7 +296,6 @@ crw-rw---- 1 root android 189, 17 Dec 31 17:28 018
 % fastboot devices
 ZY32DG32K2       fastboot
 </pre>
-
 <p>
 To prevent inexperienced users from unlocking the bootloader out of ignorance
 and get a less secure phone. And to prevent experienced users from doing
@@ -611,7 +303,6 @@ anything what they want with their phones — different phone manufacturers
 require extra steps to unlock the bootloader. In my case, the <code>fastboot</code> asked
 me for an "unlock code":
 </p>
-
 <pre class="example">
 % fastboot flashing unlock
 (bootloader) usage: fastboot oem unlock &lt; unlock code &gt;
@@ -632,14 +323,12 @@ Finished. Total time: 0.001s
 OKAY [  0.017s]
 Finished. Total time: 0.017s
 </pre>
-
 <p>
 Fortunately, the Motorola has not invented some kind of Torment Nexus in this
 case and just use a special form on their site. This form accepts some kind of
 "unlock data" and sends an "unlock code" to the email. This unlock code is
 unique for each phone.
 </p>
-
 <p>
 Unfortunately, the link from <code>get_unlock_ability</code> returns 404 (as
 usual). However after some searching on the Internet, I managed to find the
@@ -647,11 +336,9 @@ necessary form on the American version of the Motorola site:
 <a href="https://en-us.support.motorola.com/app/standalone/bootloader/unlock-your-device-a">https://en-us.support.motorola.com/app/standalone/bootloader/unlock-your-device-a</a>. And
 through this form I was able to receive an email with the unlock code.
 </p>
-
 <p>
 After that I simply unlocked the bootloader with command:
 </p>
-
 <pre class="example">
 % fastboot oem unlock ███████████████████████████████
 (bootloader) Bootloader is unlocked!
@@ -668,19 +355,16 @@ First, I need to download an archive containing "factory" dumps of some flash
 memory regions for the phone — according to instruction on installing Lineage
 OS from the XDA forum. And then install them.
 </p>
-
 <p>
 As I think, this is necessary to have the same <code>boot.img</code> both on the hard disk
 and in the phone. This file is needed to get the root access on the phone.
 </p>
-
 <p>
 Based <a href="https://xdaforums.com/t/flash-stock-rom-via-fastboot.4524845/">on this post</a>, I found <a href="https://www.getdroidtips.com/motorola-defy-2021-stock-firmware/">a link</a> to the mirror, suitable for my phone model
 (XT2083-9, build number RZD31.31). Inside this server is the archive
 <code>XT2083-9_BATHENA_RETEU_11_RZD31.31_subsidy-DEFAULT_regulatory-XT2083-9-EUROPE-SAR_CFC.xml.zip</code>
 from the path <code>/firmware/lenomola/2021/bathena/official/RETEU/</code>:
 </p>
-
 <pre class="example">
 % unzip XT2083-9_BATHENA_RETEU_11_RZD31.31_subsidy-DEFAULT_regulatory-XT2083-9-EUROPE-SAR_CFC.xml.zip
 Archive:  XT2083-9_BATHENA_RETEU_11_RZD31.31_subsidy-DEFAULT_regulatory-XT2083-9-EUROPE-SAR_CFC.xml.zip
@@ -710,14 +394,12 @@ inflating: regulatory_info_xt2083_9_europe_sar.png
 inflating: signing-info.txt
 inflating: BATHENA_RETAIL_RZD31.31_subsidy-DEFAULT_regulatory-XT2083-9-EUROPE-SAR_CFC.info.txt
 </pre>
-
 <p>
 Phone's flash memory is divided into mutliple regions and some of them are
 unique for different phone models. At least on my Motorola Defy (2021) I can
 see the complete list of regions by rebooting the phone to the bootloader and
 running the command <code>fastboot oem partition</code>:
 </p>
-
 <pre class="example">
 ~ % fastboot oem partition
 (bootloader) xbl_a: offset=65536KB, size=5120KB
@@ -806,7 +488,6 @@ running the command <code>fastboot oem partition</code>:
 OKAY [  0.015s]
 Finished. Total time: 0.015s
 </pre>
-
 <p>
 Fortunately, I don't need to rewrite all of these partitions. First, because
 <a href="https://source.android.com/docs/core/ota/virtual_ab">A/B-partitions</a> is used on the device, there are a lot of partitions in the
@@ -814,21 +495,16 @@ output of the above command repeated two times: with <code>_a</code> suffix and 
 suffix. To install Lineage OS, I only need to use partitions with the <code>_a</code>
 suffix, according to the instructions.
 </p>
-
 <p>
 Second, I only need to use the following partitions, according to the list of
 files from the archive:
 </p>
-
 <table border="2" cellspacing="0" cellpadding="6" frame="void">
 <caption class="t-above">
 <span class="table-number">Table 1:</span> Description of partitions, there to write dumps to</caption>
-
 <colgroup>
 <col class="org-left">
-
 <col class="org-left">
-
 <col class="org-left">
 </colgroup>
 <thead>
@@ -914,49 +590,41 @@ files from the archive:
 <td class="org-left">super.img_sparsechunk.0</td>
 <td class="org-left">This and the next 8 files will be written to the area with dynamic partitions. I don’t found any information about contents of these partitions. Additional information is <a href="https://source.android.com/docs/core/ota/dynamic_partitions/implement">here</a>.</td>
 </tr>
-
 <tr>
 <td class="org-left">super</td>
 <td class="org-left">super.img_sparsechunk.1</td>
 <td class="org-left"> </td>
 </tr>
-
 <tr>
 <td class="org-left">super</td>
 <td class="org-left">super.img_sparsechunk.2</td>
 <td class="org-left"> </td>
 </tr>
-
 <tr>
 <td class="org-left">super</td>
 <td class="org-left">super.img_sparsechunk.3</td>
 <td class="org-left"> </td>
 </tr>
-
 <tr>
 <td class="org-left">super</td>
 <td class="org-left">super.img_sparsechunk.4</td>
 <td class="org-left"> </td>
 </tr>
-
 <tr>
 <td class="org-left">super</td>
 <td class="org-left">super.img_sparsechunk.5</td>
 <td class="org-left"> </td>
 </tr>
-
 <tr>
 <td class="org-left">super</td>
 <td class="org-left">super.img_sparsechunk.6</td>
 <td class="org-left"> </td>
 </tr>
-
 <tr>
 <td class="org-left">super</td>
 <td class="org-left">super.img_sparsechunk.7</td>
 <td class="org-left"> </td>
 </tr>
-
 <tr>
 <td class="org-left">super</td>
 <td class="org-left">super.img_sparsechunk.8</td>
@@ -978,16 +646,12 @@ files from the archive:
 </tr>
 </tbody>
 </table>
-
 <table border="2" cellspacing="0" cellpadding="6" frame="void">
 <caption class="t-above">
 <span class="table-number">Table 2:</span> bootloader.img files and corresponding partitions description</caption>
-
 <colgroup>
 <col class="org-left">
-
 <col class="org-left">
-
 <col class="org-left">
 </colgroup>
 <thead>
@@ -1084,16 +748,12 @@ files from the archive:
 </tr>
 </tbody>
 </table>
-
 <table border="2" cellspacing="0" cellpadding="6" frame="void">
 <caption class="t-above">
 <span class="table-number">Table 3:</span> radio.img files and corresponding partitions description</caption>
-
 <colgroup>
 <col class="org-left">
-
 <col class="org-left">
-
 <col class="org-left">
 </colgroup>
 <thead>
@@ -1132,7 +792,6 @@ files from the archive:
 </tr>
 </tbody>
 </table>
-
 <p>
 The next steps were simple:
 </p>
@@ -1171,11 +830,9 @@ fastboot reboot
 </pre>
 </li>
 </ol>
-
 <p>
 My log of this process <a href="/assets/static/bathena-flash.txt">is here</a>.
 </p>
-
 <p>
 After this operation, I got a stock Android from Motorola, without any user
 programs or settings.
@@ -1190,7 +847,6 @@ To install Lineage OS I used <a href="https://xdaforums.com/t/flash-gsi-rom-arm6
 HUN_Gyuszi wrote about the successful installation of LineageOS 20.0 with
 Google apps and without root on the Motorola Defy phone.
 </p>
-
 <p>
 I found the newer builds of LineageOS <a href="https://sourceforge.net/projects/andyyan-gsi/files/">in the repository</a> from that
 comment. There were LineageOS 21.0 builds that I obviously wanted to
@@ -1207,7 +863,6 @@ have root access, but I've "lost" the IMEI — the OS used the zero IMEI
 instead of the valid one. As a result, the phone couldn't connect to the
 cellular network.
 </p>
-
 <p>
 Luckily, I saved my original IMEI. Unfortunately, it wasn't so easy to
 forcibly set my IMEI in Android working on the Qualcomm Snapdragon
@@ -1215,12 +870,10 @@ chipset. And I wasn't able to set my IMEI back. After that, I've checked the
 "Barcodes" menu on the bootloader and found what my original IMEI still
 stored somewhere in the phone.
 </p>
-
 <p>
 Just to be sure, I reflashed the binaries from the <a href="#system-software-reflash">"Rewriting the system software"</a> section and found that in stock
 Android my original IMEI is still visible.
 </p>
-
 <p>
 Looks like there is a bug in the <code>bvS</code> build that prevents the IMEI from being
 read from the right place.
@@ -1229,7 +882,6 @@ read from the right place.
 <li>Finally, I've tested the build without Google apps and without root access
 (<code>bvN</code> code). There were no problems and I'm using this build.</li>
 </ul>
-
 <p>
 The installation process itself is simple:
 </p>
@@ -1242,7 +894,6 @@ again.</li>
 <p>
 After rebooting the phone screen looks like this:
 </p>
-
 <div class="figure">
 <p><img src="/assets/static/fastbootd.jpg" alt="Phone rebooted to fastbootd" align="center">
 </p>
@@ -1255,7 +906,6 @@ And now I could to flash the downloaded LineageOS image:
 <pre class="example">
 motorola_defy/LineageOS % fastboot flash system lineage-21.0-20241118-UNOFFICIAL-arm64_bvN.img
 </pre>
-
 <p>
 The successfull log of operation <a href="/assets/static/lineage-os-flash.txt">is here</a>.
 </p>
@@ -1269,7 +919,6 @@ motorola_defy/LineageOS % fastboot flash system lineage-21.0-20241118-UNOFFICIAL
 Resizing 'system_a'                                FAILED (remote: 'Not enough space to resize partition')
 fastboot: error: Command failed
 </pre>
-
 <p>
 The <code>system_a</code> partition with 2.3 Gb size is not enough for LineageOS. I
 found the solution on the XDA Forum — I should delete the <code>product_a</code>
@@ -1290,7 +939,6 @@ motorola_defy/LineageOS % fastboot create-logical-partition product_a 1
 Creating 'product_a'                               OKAY [  0.045s]
 Finished. Total time: 0.045s
 </pre>
-
 <p>
 The <code>product_a</code> partition <a href="https://source.android.com/docs/core/architecture/partitions/product-partitions">is used by the stock Android OS</a> to store various
 vendor specific things. The LineageOS doesn't use this partition, so I
@@ -1327,20 +975,16 @@ This was easy — I just use the well-known <a href="https://topjohnwu.github.i
 standard Linux <code>init</code> with it's own <code>magiskinit</code>. Users can get root-access on the
 phone by communicating with this <code>magiskinit</code>.
 </p>
-
 <p>
 Installing Magisk and getting the <code>root</code> access is extremely easy. I just follow
 <a href="https://topjohnwu.github.io/Magisk/install.html">the instructions</a> and use the previously saved <code>boot_a</code> partition dump (the
 <code>boot.img</code> file).
 </p>
-
 <p>
 After installation, I hide Magisk from the other applications on the
 system. Also, I forbid access to <code>root</code> privileges for <b>all applications</b> on the
 phone. Except for some favorite apps, which I write about below.
 </p>
-
-
 <div class="figure">
 <p><img src="/assets/static/magisk.png" alt="Magisk settings for hiding itself: Zygisk and DenyList" align="center" width="50%">
 </p>
@@ -1356,7 +1000,6 @@ After some time I noticed the strange behaviour of the phone. When I connect
 to the mobile network via 4G instead of 3G, the phone stops receiving any SMS
 and calls.
 </p>
-
 <p>
 As I found out, the next things are happened. Before 4G, the calls were made
 the "old-fashioned way" — the phone connects to the base station through the
@@ -1365,14 +1008,12 @@ phone. That is, with the same principle that were usual landline phones used �
 when two callers were connected via <a href="https://en.wikipedia.org/wiki/Circuit_switching">circuit switch network</a> — when the
 dedicated channel for phone call between two people was created<sup><a id="fnr.pstn" class="footref" href="#fn.pstn" role="doc-backlink">5</a></sup>.
 </p>
-
 <p>
 But after 4G, things changed. The telephony became the <a href="https://en.wikipedia.org/wiki/Voice_over_IP">IP-telephony</a> — there
 are no dedicated channels between different callers. The caller's voice is
 encoded and broken into packets, and these packets are sent to the other phone
 via the Internet. Like any other packets on the Internet.
 </p>
-
 <p>
 The standardized access to the such <a href="https://en.wikipedia.org/wiki/Packet_switching">packet-switching network</a> for mobile phones
 is through <a href="https://en.wikipedia.org/wiki/IP_Multimedia_Subsystem">IP Multimedia Subsystem</a> (IMS). There should be a special
@@ -1381,18 +1022,14 @@ on the stock Android from Motorola (as in other manufacturers phones, I
 think). But there is no such application in my version of LineageOS, possibly
 because of licensing issues.
 </p>
-
 <p>
 Fortunately, there is an option to download an IMS application from the vendor
 (Qualcomm in my case): "Settings⇒Phh Treble Settings⇒IMS features".
 </p>
-
-
 <div class="figure">
 <p><img src="/assets/static/ims.png" alt='IMS features in the LineageOS, "Force IMS" is enabled' align="center" width="50%">
 </p>
 </div>
-
 <p>
 After installing the necessary app via the "Install IMS APK for Qualcomm
 vendor" menu item and enabling the "Request IMS network" option — 4G calls and
@@ -1409,13 +1046,10 @@ to the clipboard, a nonsensical popup appears in the bottom left corner of the
 screen. It shows everything I copied as <b>plain-text</b>! Of course, when I copy
 password from <a href="https://www.passwordstore.org/">pass</a> — this password is shown as plain-text in this popup.
 </p>
-
-
 <div class="figure">
 <p><img src="/assets/static/clipboard_bubble.png" alt='Clipboard bubble with "Hello" string inside' align="center" width="25%">
 </p>
 </div>
-
 <p>
 This "feature" is sold under "user experience and convenience" — the user
 should be sure that something has been copied. But in my opinion, this feature
@@ -1424,7 +1058,6 @@ becomes easy to see the user's password just by looking at the bottom left
 corner of someone else's phone screen. Especially since this popup can't be
 disabled in the settings — there's no such item in the "Settings" menu.
 </p>
-
 <p>
 Luckily, I found that I can easily disable this popup on the phone with root
 access:
@@ -1434,7 +1067,6 @@ access:
 <li>Switch to the root with <code>su</code>.</li>
 <li>Execute the command <code>appops set com.android.systemui READ_CLIPBOARD ignore</code>.</li>
 </ol>
-
 <p>
 All done! This popup is now and <b>forever</b> disabled and won't re-enable itself
 even after reboot.
@@ -1451,7 +1083,6 @@ for any trickster with an USB cable. In the case of an unlocked bootloader,
 enabling USB debugging will allow anyone to write anything to the phone's
 flash memory after rebooting into the bootloader.
 </p>
-
 <p>
 I've found the fixes for this bug in the LineageOS bugtracker. But they were
 for LineageOS <a href="https://review.lineageos.org/c/LineageOS/android_device_xiaomi_sdm845-common/+/253967">version 16.0</a> and <a href="https://review.lineageos.org/c/LineageOS/android_device_oneplus_sdm845-common/+/330486">version 19.1</a> and only for Xiaomi phones. The
@@ -1459,7 +1090,6 @@ for LineageOS <a href="https://review.lineageos.org/c/LineageOS/android_device_x
 work for me — this option resets to <code>"adb"</code> after reboot. And USB debugging was
 still on.
 </p>
-
 <p>
 I looked for files, mentioned in the bugtracker records and found them in the
 <code>/vendor/</code> catalog:
@@ -1470,7 +1100,6 @@ I looked for files, mentioned in the bugtracker records and found them in the
 :/ # find / -type f -name default.prop
 /vendor/default.prop
 </pre>
-
 <p>
 The <code>/vendor</code> catalog is the mountpoint for the <code>/dev/block/dm-5</code> device. Of
 course, I first tried to remount it in RW mode (unsuccessfully):
@@ -1481,7 +1110,6 @@ course, I first tried to remount it in RW mode (unsuccessfully):
 :/ # mount -o remount,rw /vendor
 '/dev/block/dm-5' is read-only
 </pre>
-
 <p>
 After that, I go to the <code>/etc/init</code> catalog to look at the system initialization
 scripts. There I found something like <code>systemd</code> unit files🤮 and tried to add a
@@ -1493,12 +1121,10 @@ on property:persist.vendor.usb.config="adb"
     settings put global adb_enabled 0
     setprop persist.vendor.usb.config ""
 </pre>
-
 <p>
 Unfortunately, the root filesystem was mounted in read-only mode, and I
 couldn't remount it with <code>mount -o remount,rw /</code>.
 </p>
-
 <p>
 Fortunately, when I tried to run the above two commands<sup><a id="fnr.disable_usb" class="footref" href="#fn.disable_usb" role="doc-backlink">6</a></sup> in the
 terminal, just in case — the problem was solved! USB debugging was disabled
@@ -1520,19 +1146,15 @@ root access on my phone.
 <p>
 First, it's naturally <a href="https://f-droid.org/">F-Droid</a>.
 </p>
-
-
 <div class="figure">
 <p><img src="/assets/static/f-droid.png" alt="F-Droid main window" align="center">
 </p>
 </div>
-
 <p>
 The application doesn't need the <code>root</code> itself. But it is needed for the
 <a href="https://github.com/entr0pia/Fdroid-Priv">Fdroid-Priv</a> Magisk extension. This extension allows me to install and update
 applications with a single tap, without the "Install this application?" popup.
 </p>
-
 <p>
 Second, there is <a href="https://f-droid.org/en/packages/com.aurora.store/">Aurora Store</a> — the FOSS app to replace Google Play. Unlike
 Google Play this application doesn't show ads on every screen and is not
@@ -1544,13 +1166,10 @@ the main screen:
 <li>List of games from Google Play.</li>
 <li>List of installed apps to update.</li>
 </ol>
-
-
 <div class="figure">
 <p><img src="/assets/static/aurora-store.png" alt="Aurora Store main window" align="center" width="50%">
 </p>
 </div>
-
 <p>
 Installing and updating applications from the Aurora Store with a single tap
 is easy:
@@ -1565,26 +1184,20 @@ settings and allow <code>root</code> access <b>once</b>.</li>
 <p>
 On the next screen select "Shizuku" as the application installation method.
 </p>
-
-
 <div class="figure">
 <p><img src="/assets/static/aurora-store-shizuku.png" alt="Installation methods from Aurora Store. Shizuku method is selected" align="center" width="50%">
 </p>
 </div>
 </li>
 </ul>
-
 <p>
 Third there is <a href="https://f-droid.org/en/packages/dev.imranr.obtainium.fdroid/">Obtainium</a> — it can download and install APKs from GitHub,
 GitLab, etc.
 </p>
-
-
 <div class="figure">
 <p><img src="/assets/static/obtainium.png" alt="Obtainium main window with ForkGram, LawnIcons and Shattered Pixel Dungeon" align="center">
 </p>
 </div>
-
 <p>
 Some FOSS applications can only be installed through Google Play and don't
 exist in the F-Droid<sup><a id="fnr.no-in-fdroid" class="footref" href="#fn.no-in-fdroid" role="doc-backlink">7</a></sup>. I prefer to install such applications via
@@ -1601,13 +1214,10 @@ I am using <a href="https://f-droid.org/en/packages/dev.ukanth.ufirewall/">AFWal
 occupy the single VPN slot in the system, like the other Android firewalls
 (which operate without <code>root</code> access).
 </p>
-
-
 <div class="figure">
 <p><img src="/assets/static/afwall.png" alt="AFWall+ firewall main windows with two profiles: Default and special profile for some apps" align="center">
 </p>
 </div>
-
 <p>
 AFWall+ provides a flexible set of Internet access rules for both system and
 userland applications. I'm able to prohibit Internet access for some apps
@@ -1616,7 +1226,6 @@ cellular while roaming, VPN and so on. As you can see from the screenshot
 above, there is profile support exists, so I created a separate profile with
 Internet access allowed for <i>some apps</i> and enable it only when I need it.
 </p>
-
 <p>
 Sadly, there are also one drawback — AFWall+ (version 3.6.0) allows to export
 firewall rules to the file without any warning. But, when I want to import
@@ -1625,12 +1234,10 @@ money to the developer to unlock this feature. For now, I can't pay to the
 people in the outside world because MasterCard/Visa/PayPal/etc <a href="https://en.wikipedia.org/wiki/Discrimination_based_on_nationality">discriminate me
 based on my nationality and location</a>😒.
 </p>
-
 <p>
 IMHO, the export screen lacks the notification text to warn the user of the
 need to pay to re-import exported rules.
 </p>
-
 <p>
 One nuance (I can't call it a drawback) you should know about: if you
 configure the firewall properly — by denying Internet access to everything not
@@ -1652,13 +1259,10 @@ Here I used the same principle as above — the ad blocker shouldn't use my
 single VPN slot. So I found an <a href="https://f-droid.org/en/packages/org.adaway/">AdAway</a> that uses <code>root</code> access to modify the
 system <code>hosts</code> file with blacklists' data.
 </p>
-
-
 <div class="figure">
 <p><img src="/assets/static/adaway.png" alt="AdAway main window" align="center">
 </p>
 </div>
-
 <p>
 I import some of my favorite blacklists into the app, such as well known <a href="https://someonewhocares.org/hosts/hosts">Dan
 Pollocks hosts file</a> or <a href="https://raw.githubusercontent.com/mtxadmin/ublock/master/hosts.txt">the hosts file</a> to block Russian-language ads.
@@ -1676,7 +1280,6 @@ Android. And if it is enabled all the time — the battery is charged with
 higher current and overheats. Of course it charges faster but at the same time
 <a href="https://batteryuniversity.com/article/bu-808-how-to-prolong-lithium-based-batteries">the battery lifetime decreases</a>.
 </p>
-
 <p>
 And then I found an <a href="https://github.com/MatteCarra/AccA">AccA application</a> with an <a href="https://github.com/VR-25/acc">acc daemon</a>. The daemon can do all
 the necessary things:
@@ -1690,18 +1293,14 @@ phone will be switched off at 10% of the charge (the default value)</li>
 cool this thing down</li>
 <li>it completely disables the "turbo charge" feature.</li>
 </ul>
-
 <p>
 The AccA is just the daemon frontend, which simplifies the installation and
 initial setup of the daemon.
 </p>
-
-
 <div class="figure">
 <p><img src="/assets/static/acca.png" alt="AccA main window with battery realtime parameters" align="center">
 </p>
 </div>
-
 <p>
 I'm comfortable using the phone all day and charging it at night as usual,
 with the settings from the screenshot. If I need to quickly charge it to 100%
@@ -1717,13 +1316,10 @@ restrictions".
 This simple application can change colors for the currently used theme. After
 some setup I created something like my favorite Solarized Light theme:
 </p>
-
-
 <div class="figure">
 <p><img src="/assets/static/colorblendr.png" alt="ColorBlendr main window" align="center">
 </p>
 </div>
-
 <p>
 <a href="https://f-droid.org/en/packages/com.drdisagree.colorblendr/">Link to the ColorBlendr application</a>.
 </p>
@@ -1738,25 +1334,20 @@ and the SD card of some garbage that fills up over time: application logs,
 empty catalogs, file duplicates, various caches, "remnants" of already deleted
 applications, etc.
 </p>
-
-
 <div class="figure">
 <p><img src="/assets/static/sdmaid2se.png" alt="SD Maid 2/SE main window" align="center">
 </p>
 </div>
-
 <p>
 With the <code>root</code> access the SD Maid 2/SE capable to do the bigger things. It is
 able to delete the cached APKs of already installed apps, clear the system
 caches and logs, remove the old bug report files, etc.
 </p>
-
 <p>
 The SD Maid 2/SE has deleted nearly 10 Gb of garbage since the last few
 months. Otherwise, these garbage files just took up space on the flash
 memory.
 </p>
-
 <p>
 <a href="https://f-droid.org/en/packages/eu.darken.sdmse/">Link to the SD Maid 2/SE</a>.
 </p>
@@ -1779,13 +1370,10 @@ backups.
 <p>
 I use the FOSS <a href="https://f-droid.org/packages/com.machiav3lli.backup/">Neo Backup</a> application to backup the phone.
 </p>
-
-
 <div class="figure">
 <p><img src="/assets/static/neobackup.png" alt="Neo Backup application's backup tab with list of applications on it" align="center">
 </p>
 </div>
-
 <p>
 This application, of course, needs <code>root</code> access. And it can:
 </p>
@@ -1795,13 +1383,11 @@ This application, of course, needs <code>root</code> access. And it can:
 <li>Compress the resulting files with zstd or gzip.</li>
 <li>Encrypt the resulting backup.</li>
 </ol>
-
 <p>
 In return, it puts a heavy IO load on the media used for the backup. This is
 why it is recommended to backup to the SD card — it can be easily swapped to
 the new one after end of life (instead of the internal flash memory).
 </p>
-
 <p>
 Backup of the <a href="https://eugene-andrienko.com/en/uses">the mine</a> application takes nearly an hour with compression and
 encrypion enabled. The size of the resulting backup was nearly 3.6 Gb.
@@ -1816,13 +1402,11 @@ By the time, I thought about backup of the main partitions from
 flash. Ideally, this could be done with the <code>fastboot fetch</code> command. But
 suddenly I found out that this command is not supported on the phone side:
 </p>
-
 <pre class="example">
 phone_backup/fastboot % fastboot fetch partition gpt.bin
 (bootloader) max-fetch-size: not found
 fastboot: error: Unable to get max-fetch-size. Device does not support fetch command.
 </pre>
-
 <p>
 On the one hand, this prevents me from making a backup of the flash memory. On
 the other hand, this disallows <i>anyone</i> to read the flash memory contents of my
@@ -1837,7 +1421,6 @@ phone without disassembling it.
 <p>
 Of course there are bugs!
 </p>
-
 <ul class="org-ul">
 <li>
 <p>
@@ -1846,7 +1429,6 @@ Treble Settings⇒Misc features⇒Set forced/faked rounded corners diameter"
 settings don't work. After searching in the Internet, I found out that these
 settings don't work for everyone.
 </p>
-
 <p>
 Fortunately, this problem doesn't affect the usability of my phone. Only
 were the next things that bothered me:
@@ -1876,139 +1458,121 @@ terminals in 50% of cases — i.e. unusable).</li>
 </div>
 </div>
 <div id="footnotes">
-
 <div id="text-footnotes">
-
 <div class="footdef">
-<sup><a id="fn.device_tree" class="footnum" href="#fnr.device_tree" role="doc-backlink">1</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+<sup><a id="fn.device_tree" class="footnum" href="#fnr.device_tree" role="doc-backlink">1</a></sup><div class="footpara" role="doc-footnote"><p class="footpara">
 <a href="https://elinux.org/Device_Tree_Reference">https://elinux.org/Device_Tree_Reference</a>
 </p></div>
 </div>
-
 <div class="footdef">
-<sup><a id="fn.xbl" class="footnum" href="#fnr.xbl" role="doc-backlink">2</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+<sup><a id="fn.xbl" class="footnum" href="#fnr.xbl" role="doc-backlink">2</a></sup><div class="footpara" role="doc-footnote"><p class="footpara">
 <a href="https://xdaforums.com/t/location-and-function-of-xbl-elf-qupv3fw-elf-cmnlib-mbn-in-the-aosp-output-build.4351213/#post-88989497">https://xdaforums.com/t/location-and-function-of-xbl-elf-qupv3fw-elf-cmnlib-mbn-in-the-aosp-output-build.4351213/#post-88989497</a>
 </p></div>
 </div>
-
 <div class="footdef">
-<sup><a id="fn.fsg" class="footnum" href="#fnr.fsg" role="doc-backlink">3</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+<sup><a id="fn.fsg" class="footnum" href="#fnr.fsg" role="doc-backlink">3</a></sup><div class="footpara" role="doc-footnote"><p class="footpara">
 But netherless the <code>fastboot</code> clears this partition when flashing
 <code>radio.img</code>.
 </p></div>
 </div>
-
 <div class="footdef">
-<sup><a id="fn.gsi_naming_conventions" class="footnum" href="#fnr.gsi_naming_conventions" role="doc-backlink">4</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+<sup><a id="fn.gsi_naming_conventions" class="footnum" href="#fnr.gsi_naming_conventions" role="doc-backlink">4</a></sup><div class="footpara" role="doc-footnote"><p class="footpara">
 <a href="https://github.com/phhusson/treble_experimentations/wiki/Frequently-Asked-Questions-(FAQ)#naming-conventions-that-some-gsi-buildermaintainer-uses">Naming conventions that some GSI builder/maintainer
 uses</a>
 </p></div>
 </div>
-
 <div class="footdef">
-<sup><a id="fn.pstn" class="footnum" href="#fnr.pstn" role="doc-backlink">5</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+<sup><a id="fn.pstn" class="footnum" href="#fnr.pstn" role="doc-backlink">5</a></sup><div class="footpara" role="doc-footnote"><p class="footpara">
 See the <a href="https://en.wikipedia.org/wiki/Public_switched_telephone_network">PSTN</a> (Public switched telephone network) article.
 </p></div>
 </div>
-
 <div class="footdef">
-<sup><a id="fn.disable_usb" class="footnum" href="#fnr.disable_usb" role="doc-backlink">6</a></sup> <div class="footpara" role="doc-footnote"><pre class="example">
+<sup><a id="fn.disable_usb" class="footnum" href="#fnr.disable_usb" role="doc-backlink">6</a></sup><div class="footpara" role="doc-footnote"><pre class="example">
 :/ # settings put global adb_enabled 0
 :/ # setprop persist.vendor.usb.config ""
 </pre></div>
 </div>
-
 <div class="footdef">
-<sup><a id="fn.no-in-fdroid" class="footnum" href="#fnr.no-in-fdroid" role="doc-backlink">7</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+<sup><a id="fn.no-in-fdroid" class="footnum" href="#fnr.no-in-fdroid" role="doc-backlink">7</a></sup><div class="footpara" role="doc-footnote"><p class="footpara">
 Probably because F-Droid requires reproducible builds or has
 <a href="https://f-droid.org/en/docs/Inclusion_Policy/">clear requirements</a> for apps that can be published in it.
 </p></div>
 </div>
-
-
 </div>
 </div>
-
-  </div>
+</div>
 </article>
 </section>
 </div>
+</div>
+</div>
+</main><footer class="site-footer h-card">
+<div class="wrapper">
+<div class="site-footer-inner">
+<div>
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewbox="0 0 24 24" fill="none" stroke="#586e75" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-pen-tool"><path d="M12 19l7-7 3 3-7 7-3-3z"></path><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"></path><path d="M2 2l7.586 7.586"></path><circle cx="11" cy="11" r="2"></circle></svg>
+<a href="/en/changelog.html">ChangeLog</a> ┆
+<a href="/en/tags.html">Tags</a> ┆
+<a href="/en/categories.html">Categories</a> ┆
+<a href="/en/archives.html">Archives</a>
+</div>
+<br>
 
+<div xmlns:cc="http://creativecommons.org/ns#">
+<a rel="cc:attributionURL" href="https://eugene-andrienko.com/en/">This blog</a>
+© 2020-2025 by
+<a rel="cc:attributionURL dct:creator" property="cc:attributionName" href="https://eugene-andrienko.com/en/about">Eugene Andrienko</a>
+is licensed under
+<a href="https://creativecommons.org/licenses/by/4.0/?ref=chooser-v1" target="_blank" rel="license noopener noreferrer" style="display:inline-block;">
+CC BY 4.0
+</a>
+<img loading="lazy" width="16" height="16" class="copyleft" src="/assets/images/icons/cc.svg" alt="CC">
+<img loading="lazy" width="16" height="16" class="copyleft" src="/assets/images/icons/by.svg" alt="BY">
+</div>
+<div>
+Powered by: <a title="Jekyll is a simple, blog-aware, static site
+generator." href="https://jekyllrb.com/">Jekyll</a>.
+Icons: <a href="https://github.com/feathericons/feather">Feather</a>.
+Colors: <a href="https://ethanschoonover.com/solarized/">Solarized Light</a>.
 </div>
 
-      </div>
-    </main><footer class="site-footer h-card">
-  <div class="wrapper">
-    <div class="site-footer-inner">
-<div>
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewbox="0 0 24 24" fill="none" stroke="#586e75" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-pen-tool"><path d="M12 19l7-7 3 3-7 7-3-3z"></path><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"></path><path d="M2 2l7.586 7.586"></path><circle cx="11" cy="11" r="2"></circle></svg> 
-          <a href="/en/changelog.html">ChangeLog</a> ┆
-          <a href="/en/tags.html">Tags</a> ┆
-          <a href="/en/categories.html">Categories</a> ┆
-          <a href="/en/archives.html">Archives</a>
-        </div>
-
-        <br>
-
-        <!-- CC BY 4.0 -->
-        <div xmlns:cc="http://creativecommons.org/ns#">
-          <a rel="cc:attributionURL" href="https://eugene-andrienko.com/en/">This blog</a>
-          © 2020-2025 by
-          <a rel="cc:attributionURL dct:creator" property="cc:attributionName" href="https://eugene-andrienko.com/en/about">Eugene Andrienko</a>
-          is licensed under
-          <a href="https://creativecommons.org/licenses/by/4.0/?ref=chooser-v1" target="_blank" rel="license noopener noreferrer" style="display:inline-block;">
-            CC BY 4.0
-          </a>
-          <img loading="lazy" width="16" height="16" class="copyleft" src="/assets/images/icons/cc.svg" alt="CC">
-          <img loading="lazy" width="16" height="16" class="copyleft" src="/assets/images/icons/by.svg" alt="BY">
-        </div>
-
-        <div>
-          Powered by: <a title="Jekyll is a simple, blog-aware, static site
-          generator." href="https://jekyllrb.com/">Jekyll</a>.
-          Icons: <a href="https://github.com/feathericons/feather">Feather</a>.
-          Colors: <a href="https://ethanschoonover.com/solarized/">Solarized Light</a>.
-        </div>
-
-        <!-- Old but gold buttons -->
-        <div class="old-gold-buttons">
-          <a href="https://eugene-andrienko.com/en/it/2024/07/07/thinkpad-x220-second-life">
-            <img loading="lazy" alt="IBM Thinkpad button" width="80" height="15" src="/assets/images/buttons/80x15/thinkpad.png">
-          </a>
-          <a href="https://github.com/eugeneandrienko">
-            <img loading="lazy" alt="Night coder button" width="80" height="15" src="/assets/images/buttons/80x15/nightcoder.png">
-          </a>
-          <img loading="lazy" alt="Love dragons button" width="80" height="15" src="/assets/images/buttons/80x15/dragon.png">
-        </div>
-
-        <div class="old-gold-buttons">
-          <a href="https://cobaltblue.neocities.org/buttons/">
-            <img loading="lazy" alt="Made by dragon button" width="88" height="31" src="/assets/images/buttons/88x31/dragonmade-yellow.png">
-          </a>
-          <map name="fediring6">
-            <area href="https://fediring.net/previous?host=eugene-andrienko.com%2Fen%2F" shape="rect" coords="3,6,12,27" target="_top" alt="previous" title="previous">
-            <area href="https://fediring.net/" shape="rect" coords="15,3,72,27" target="_blank" alt="Fediring" title="Fediring">
-            <area href="https://fediring.net/next?host=eugene-andrienko.com%2Fen%2F" shape="rect" coords="75,6,84,27" target="_top" alt="next" title="next">
-          </map>
-          <img loading="lazy" usemap="#fediring6" alt="Fediring" width="88" height="31" src="/assets/images/buttons/88x31/fediring.png">
-          <map name="noaimini7">
-            <area href="https://baccyflap.com/noai" shape="rect" coords="15,3,72,27" target="_blank" alt="no ai webring" title="no ai webring">
-            <area href="https://baccyflap.com/noai/?prv&s=drg" target="_top" shape="rect" coords="3,6,12,27" alt="previous" title="previous">
-            <area href="https://baccyflap.com/noai/?nxt&s=drg" target="_top" shape="rect" coords="75,6,84,27" alt="next" title="next">
-          </map>
-          <img loading="lazy" usemap="#noaimini7" alt="No AI ring" width="88" height="31" src="/assets/images/buttons/88x31/noaiwidget.gif">
-          <a href="https://512kb.club/#100">
-            <img loading="lazy" alt="512KB club, green team" width="88" height="31" src="/assets/images/buttons/88x31/green-team.gif">
-          </a>
-          <a href="https://no-js.club/">
-            <img loading="lazy" alt="no-JS Club" width="88" height="31" src="/assets/images/buttons/88x31/javascript-zero.gif">
-          </a>
-          <a href="https://www.gnu.org/software/emacs/">
-            <img loading="lazy" alt="Created with Emacs" width="88" height="31" src="/assets/images/buttons/88x31/emacs.gif">
-          </a>
-        </div>
-    </div>
-  </div>
+<div class="old-gold-buttons">
+<a href="https://eugene-andrienko.com/en/it/2024/07/07/thinkpad-x220-second-life">
+<img loading="lazy" alt="IBM Thinkpad button" width="80" height="15" src="/assets/images/buttons/80x15/thinkpad.png">
+</a>
+<a href="https://github.com/eugeneandrienko">
+<img loading="lazy" alt="Night coder button" width="80" height="15" src="/assets/images/buttons/80x15/nightcoder.png">
+</a>
+<img loading="lazy" alt="Love dragons button" width="80" height="15" src="/assets/images/buttons/80x15/dragon.png">
+</div>
+<div class="old-gold-buttons">
+<a href="https://cobaltblue.neocities.org/buttons/">
+<img loading="lazy" alt="Made by dragon button" width="88" height="31" src="/assets/images/buttons/88x31/dragonmade-yellow.png">
+</a>
+<map name="fediring6">
+<area href="https://fediring.net/previous?host=eugene-andrienko.com%2Fen%2F" shape="rect" coords="3,6,12,27" target="_top" alt="previous" title="previous">
+<area href="https://fediring.net/" shape="rect" coords="15,3,72,27" target="_blank" alt="Fediring" title="Fediring">
+<area href="https://fediring.net/next?host=eugene-andrienko.com%2Fen%2F" shape="rect" coords="75,6,84,27" target="_top" alt="next" title="next">
+</map>
+<img loading="lazy" usemap="#fediring6" alt="Fediring" width="88" height="31" src="/assets/images/buttons/88x31/fediring.png">
+<map name="noaimini7">
+<area href="https://baccyflap.com/noai" shape="rect" coords="15,3,72,27" target="_blank" alt="no ai webring" title="no ai webring">
+<area href="https://baccyflap.com/noai/?prv&s=drg" target="_top" shape="rect" coords="3,6,12,27" alt="previous" title="previous">
+<area href="https://baccyflap.com/noai/?nxt&s=drg" target="_top" shape="rect" coords="75,6,84,27" alt="next" title="next">
+</map>
+<img loading="lazy" usemap="#noaimini7" alt="No AI ring" width="88" height="31" src="/assets/images/buttons/88x31/noaiwidget.gif">
+<a href="https://512kb.club/#100">
+<img loading="lazy" alt="512KB club, green team" width="88" height="31" src="/assets/images/buttons/88x31/green-team.gif">
+</a>
+<a href="https://no-js.club/">
+<img loading="lazy" alt="no-JS Club" width="88" height="31" src="/assets/images/buttons/88x31/javascript-zero.gif">
+</a>
+<a href="https://www.gnu.org/software/emacs/">
+<img loading="lazy" alt="Created with Emacs" width="88" height="31" src="/assets/images/buttons/88x31/emacs.gif">
+</a>
+</div>
+</div>
+</div>
 </footer>
 </body>
 </html>

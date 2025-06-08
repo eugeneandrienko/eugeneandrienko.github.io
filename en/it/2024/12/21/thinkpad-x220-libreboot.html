@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-<!-- Begin Jekyll SEO tag v2.8.0 -->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
 <title>How I installed opensource firmware instead of BIOS to Thinkpad X220 | Dragon’s notes</title>
 <meta name="generator" content="Jekyll v4.4.1">
 <meta property="og:title" content="How I installed opensource firmware instead of BIOS to Thinkpad X220">
@@ -22,368 +22,82 @@
 <meta property="twitter:title" content="How I installed opensource firmware instead of BIOS to Thinkpad X220">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Eugene Andrienko"},"dateModified":"2024-12-21T00:00:00+03:00","datePublished":"2024-12-21T00:00:00+03:00","description":"I think almost everyone who reads my blog knows that the BIOS is the first program that runs when the computer is turned on. Usually, the only actions user can do with this program — open the BIOS menu and change the boot order, change date/time, change peripheral settings and so on. Or, if the user is lucky, he can find and install the BIOS modified by hackers (but he can&#39;t look inside this BIOS without reverse engineering skills). Unfortunately, the BIOS source code is closed and initialization of your computer should rely on the forbearance of some companies that develop BIOS binaries (for example, AMI or Award Software International) and forbearance of computer hardware vendors.","headline":"How I installed opensource firmware instead of BIOS to Thinkpad X220","image":"https://eugene-andrienko.com/assets/static/header-libreboot.jpg","mainEntityOfPage":{"@type":"WebPage","@id":"https://eugene-andrienko.com/it/2024/12/21/thinkpad-x220-libreboot.html"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://eugene-andrienko.com/assets/images/home.jpg"},"name":"Eugene Andrienko"},"url":"https://eugene-andrienko.com/it/2024/12/21/thinkpad-x220-libreboot.html"}</script>
-<!-- End Jekyll SEO tag -->
+
 <link rel="apple-touch-icon" sizes="180x180" href="/en/apple-touch-icon.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/en/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/en/favicon-16x16.png">
-  <link rel="mask-icon" href="/en/safari-pinned-tab.svg" color="#5bbad5">
-  <meta name="theme-color" content="#ffffff">
-  <link rel="me" href="https://mas.to/@evgandr">
-  <link rel="stylesheet" href="/assets/css/main.css">
-  <meta name="fediverse:creator" content="@evgandr@mas.to">
+<link rel="icon" type="image/png" sizes="32x32" href="/en/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/en/favicon-16x16.png">
+<link rel="mask-icon" href="/en/safari-pinned-tab.svg" color="#5bbad5">
+<meta name="theme-color" content="#ffffff">
+<link rel="me" href="https://mas.to/@evgandr">
+<link rel="stylesheet" href="/assets/css/main.css">
+<meta name="fediverse:creator" content="@evgandr@mas.to">
 <link type="application/atom+xml" rel="alternate" href="https://eugene-andrienko.com/en/feed.xml" title="Dragon's notes">
 </head>
 <body>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<style>
-    html .page-banner .page-banner-img > *:first-child {
-      opacity: 0.6;
-    }
-  </style>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+<style>html .page-banner .page-banner-img>*:first-child{opacity:.6}</style>
 <header class="site-header">
-  <div class="wrapper">
-    <div class="site-header-inner"><ul class="site-nav">
-        <li>
-          <a class="site-brand" rel="author" href="/en/">
-            Dragon's notes
-          </a>
-        </li>
+<div class="wrapper">
+<div class="site-header-inner"><ul class="site-nav">
 <li>
-          <a class="page-link" href="/en/now.html">NOW</a>
-        </li>
+<a class="site-brand" rel="author" href="/en/">
+Dragon's notes
+</a>
+</li>
 <li>
-          <a class="page-link" href="/en/about.html">ABOUT</a>
-        </li>
+<a class="page-link" href="/en/now.html">NOW</a>
+</li>
 <li>
-          <a class="page-link" href="/en/links.html">LINKS</a>
-        </li>
-<!-- RSS -->
-        <li>
-          
-          <a class="page-link" aria-label="RSS feed link" href="/en/feed.xml">
-            <span class="rss-text">RSS</span>
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg>
-          </a>
-          
-        </li>
-        <!-- Languages -->
-        <div class="lang-separator">
-          <hr>
-        </div>
-        
-        
-        <li class="nav-right"><a class="page-link active">EN</a></li>
-        
-        
-        
-        
-        <li class="nav-right">
-          <a class="page-link" href="/it/2024/12/21/thinkpad-x220-libreboot.html">RU</a>
-        </li>
-        
-        
-        
-      </ul></div>
-  </div>
+<a class="page-link" href="/en/about.html">ABOUT</a>
+</li>
+<li>
+<a class="page-link" href="/en/links.html">LINKS</a>
+</li>
+
+<li>
+<a class="page-link" aria-label="RSS feed link" href="/en/feed.xml">
+<span class="rss-text">RSS</span>
+<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg>
+</a>
+</li>
+
+<div class="lang-separator">
+<hr>
+</div>
+<li class="nav-right"><a class="page-link active">EN</a></li>
+<li class="nav-right">
+<a class="page-link" href="/it/2024/12/21/thinkpad-x220-libreboot.html">RU</a>
+</li>
+</ul></div>
+</div>
 </header>
 <section class="page-banner">
-    <div class="page-banner-img">
-      <div style="background-image: url(/assets/static/header-libreboot.jpg)"></div>
-    </div>
-    <div class="wrapper">
-      <div class="page-banner-inner">
+<div class="page-banner-img">
+<div style="background-image: url(/assets/static/header-libreboot.jpg)"></div>
+</div>
+<div class="wrapper">
+<div class="page-banner-inner">
 <header class="post-header">
-  <h1 class="post-title p-name" itemprop="name headline">How I installed opensource firmware instead of BIOS to Thinkpad X220</h1>
+<h1 class="post-title p-name" itemprop="name headline">How I installed opensource firmware instead of BIOS to Thinkpad X220</h1>
 <p class="post-meta">
-      <time class="dt-published" datetime="2024-12-21T00:00:00+03:00" itemprop="datePublished"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
-        2024.12.21
-      </time>
-
-      
-      
-      <span class="left-vsplit">
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-folder"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>
-        it
-      </span>
-    </p>
+<time class="dt-published" datetime="2024-12-21T00:00:00+03:00" itemprop="datePublished"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+2024.12.21
+</time>
+<span class="left-vsplit">
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-folder"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>
+it
+</span>
+</p>
 <div class="post-tags"><a class="post-tag" href="/en/tags.html#thinkpad">#thinkpad</a></div></header>
 </div>
-    </div>
-  </section><main class="page-content" aria-label="Content">
-      <div class="wrapper">
-        <div class="framework main">
-  <div class="post">
-  <section>
-
-
-
-
-
-
-
-
-
+</div>
+</section><main class="page-content" aria-label="Content">
+<div class="wrapper">
+<div class="framework main">
+<div class="post">
+<section>
 <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
-  <div class="post-content e-content" itemprop="articleBody">
-    <p>
+<div class="post-content e-content" itemprop="articleBody">
+<p>
 I think almost everyone who reads my blog knows that the BIOS is the first
 program that runs when the computer is turned on. Usually, the only actions
 user can do with this program — open the BIOS menu and change the boot order,
@@ -394,13 +108,11 @@ source code is closed and initialization of <i>your</i> computer should rely on 
 forbearance of some companies that develop BIOS binaries (for example, <a href="https://en.wikipedia.org/wiki/American_Megatrends">AMI</a> or
 <a href="https://en.wikipedia.org/wiki/Award_Software">Award Software International</a>) and forbearance of computer hardware vendors.
 </p>
-
 <p>
 As long as the computer is used "as is", there are no problems. But, as is
 usually the case with proprietary software, any unusual change leads to such
 extreme tricks that building the Linux kernel looks like a child's prank.
 </p>
-
 <p>
 In my case, I upgraded my Thinkpad X220 with an extension board for a new
 2K screen and added some new peripherals — then the BIOS became the
@@ -413,7 +125,6 @@ Display Port (or via an extension board soldered to the DP-3 line). An
 unfortunate omission, made in the hope that the user doesn't want to modify
 his own computer and will be happy just to change the hard drive or RAM!
 </p>
-
 <p>
 Fortunately, the open source community comes to the rescue! There is the
 <a href="https://www.coreboot.org/">coreboot</a> project — an open source realization of the BIOS for some
@@ -452,13 +163,11 @@ speed up BIOS loading and remove user interaction as much as
 possible<sup><a id="fnr.linuxbios" class="footref" href="#fn.linuxbios" role="doc-backlink">2</a></sup>. Later, support for many <a href="https://doc.coreboot.org/mainboard/index.html">motherboards</a> and <a href="https://doc.coreboot.org/soc/index.html">SoCs</a> was added
 to the project. Including the Thinkpad X220 motherboard.
 </p>
-
 <p>
 I started using coreboot after I found out that the original BIOS only works
 with the original laptop display. If I connect an additinal 2K screen via the
 soldered expansion board, then the BIOS won't display on that screen.
 </p>
-
 <p>
 I remembered, that people, who modified Thinkpads, also changed the original
 BIOS to coreboot. And on the photos of their laptops after the modification,
@@ -468,13 +177,11 @@ documentation. This library is used inside coreboot to initialize video when
 the computer is turned on. And I hope that this library will work with my new
 display on the DP-3 bus. Especially after reading it's source code…
 </p>
-
 <p>
 Of course, nothing works the first time. First, the coreboot doesn't show up
 on the 2K screen, no configuration options matter. Second, I accidentally
 burned the motherboard, when I incorrectly disconnected it from the battery.
 </p>
-
 <p>
 With the new motherboard, I did the broken BIOS dump first. Both binaries have
 the same MD5-hash, but the same wrong data inside. How did I notice this?
@@ -483,7 +190,6 @@ would work? When that program didn't work (as expected), I flashed the
 "original" BIOS back. And the laptop <b>suddenly</b> won't turn on. Alas, when I
 found this out, the original BIOS was lost.
 </p>
-
 <p>
 However, I was able to use a corrupted BIOS dump to retrieve binary blobs
 needed for coreboot on a Thinkpad X220:
@@ -502,7 +208,6 @@ motherboard); with access to DMA controller, with access to network card
 (and with its own MAC address), with reserved memory in RAM and embedded JVM
 with cryptography classes<sup><a id="fnr.intel_me" class="footref" href="#fn.intel_me" role="doc-backlink">3</a></sup>.
 </p>
-
 <p>
 Unfortunately, without this blob in the BIOS chip — the laptop won't start
 or will power itself off after some time, for the user's "safety".
@@ -510,21 +215,18 @@ or will power itself off after some time, for the user's "safety".
 </li>
 <li>GbE blob — Ethernet controller configuration, including it's MAC address.</li>
 </ul>
-
 <p>
 The coreboot I built booted successfully on my laptop and even displays itself
 on the new 2K screen. As I now understand, everything works because at that
 moment the original display module was disconnected from the LVDS bus and the
 new display was the one connected to the video core via the DP-3 bus.
 </p>
-
 <p>
 As I can see without the knowledge of Ada language, the coreboot (if the
 motherboard is in good working order) checks each port connected to the video
 core and outputs framebuffer to the first display found (if there is no
 <code>Primary</code> display, connected to the motherboard):
 </p>
-
 <div class="org-src-container">
 <label class="org-src-name">List of video outputs for X220 from src/mainboard/lenovo/x220/gma-mainboard.ads</label><pre class="src src-ada">private package GMA.Mainboard is
 
@@ -542,7 +244,6 @@ core and outputs framebuffer to the first display found (if there is no
 end GMA.Mainboard;
 </pre>
 </div>
-
 <div class="org-src-container">
 <label class="org-src-name">Video core initialization from src/drivers/intel/gma/hires_fb/gma-gfx_init.adb</label><pre class="src src-ada">HW.GFX.GMA.Display_Probing.Scan_Ports (configs, ports);
 
@@ -567,7 +268,6 @@ if configs (Primary).Port /= Disabled then
    end loop;
 </pre>
 </div>
-
 <p>
 Therefore, while the original display (<code>Primary</code> display in coreboot
 configuration) was connected to LVDS — the coreboot worked with it and ignored
@@ -588,26 +288,21 @@ backlight are blinking and that's all. These are the symptoms described in the
 <a href="https://doc.coreboot.org/northbridge/intel/sandybridge/me_cleaner.html">coreboot documentation</a> and in various guides about "why is it impossible to
 completely remove Intel ME from Thinkpad X220?"
 </p>
-
 <p>
 Also, when configuring coreboot, I set framebuffer resolution to 1366x768 for
 my 2K screen. As a result, framebuffer did not use the whole screen (but
 X-server did):
 </p>
-
-
 <div class="figure">
 <p><img src="/assets/static/broken_framebuffer.jpg" alt="Broken framebuffer due to wrong configuration" align="center">
 </p>
 <p style="text-align: center"><i>Framebuffer used the part of the screen inside the green frame</i></p>
 </div>
-
 <p>
 As a result, I pissed them all off and it was time for coreboot tinkering. My
 main problem was a completely lost BIOS dump — and I didn't know from where to
 get the "right" binary blobs with the necessasry binary code inside.
 </p>
-
 <p>
 So I start reading about <a href="https://libreboot.org/">libreboot</a>. This is something like a coreboot
 distribution with the urge to minimise proprietary blobs usage. If there is an
@@ -621,7 +316,6 @@ Descriptor format is well known.</li>
 <li>Intel ME downloaded from vendor and immediately disabled with <a href="https://github.com/corna/me_cleaner">me_cleaner</a>.</li>
 <li>GbE — also generated by special script.</li>
 </ul>
-
 <p>
 In other words, the original BIOS dump is not required to set up Libreboot on
 the Thinkpad X220! All I need is the right serial memory programmer that
@@ -629,28 +323,22 @@ doesn't burn the BIOS memory chip and the southern bridge. Fortunately, I have
 the Chinese CH341 programmer with a jumper to select the necessary logic level
 (5V TTL or 3.3V CMOS):
 </p>
-
-
 <div class="figure">
 <p><img src="/assets/static/ch341-1.jpg" alt="CH341 programmer with jumper to select logical level (at the bottom)" align="center">
 </p>
 <p style="text-align: center"><i>CH341 serial programmer with jumper to select logic level (yellow, at the bottom)</i></p>
 </div>
-
-
 <div class="figure">
 <p><img src="/assets/static/ch341-2.jpg" alt="1-2 jumper position enables CMOS logical level, 2-3 enables TTL level" align="center">
 </p>
 <p style="text-align: center"><i>Silkscreen printing with Chinese hierogrlyphs on the CH341 PCB (position 1-2 enables CMOS logical level, 2-3: TTL level)</i></p>
 </div>
-
 <p>
 <b>Disclaimer!</b> All actions, described below, have been tested on my Thinkpad
 only. Some actions were performed due to "historical background" of the laptop
 modification process. Anyway, you should read the official documentation
 first!
 </p>
-
 <p>
 So, I started to bring my laptop to unattainable perfection, armed with
 screwdriver, serial memory programmer and some free time.
@@ -704,13 +392,11 @@ Backup of currently running firmware — may be the one that helps to keep the
 laptop from bricking if something goes wrong. In my case, the backup of the
 coreboot firmware is necessary.
 </p>
-
 <p>
 This is why the serial memory programmer is necessary. As I found out, reading
 the coreboot dump with the laptop turned on returns different dumps on each
 read<sup><a id="fnr.coreboot_readings" class="footref" href="#fn.coreboot_readings" role="doc-backlink">4</a></sup>.
 </p>
-
 <p>
 Required steps:
 </p>
@@ -724,25 +410,20 @@ palm rest.</li>
 <li>Peel off the corner of the protective waterproof film from the left bottom
 corner of the motherboard. The desired chip will be underneath it.</li>
 </ol>
-
 <p>
 After these steps, the clip from the programmer is connected to the laptop:
 </p>
-
-
 <div class="figure">
 <p><img src="/assets/static/ch341_on_winbond.jpg" alt="CH341 programmer connected to Winbond W23Q64CV" align="center">
 </p>
 <p style="text-align: center"><i>CH341 programmer, connected to the Winbond W25Q64CV chip</i></p>
 </div>
-
 <p>
 Command to read chip contents:
 </p>
 <pre class="example">
 sudo flashrom -p ch341a_spi -c "W25Q64BV/W25Q64CV/W25Q64FV" -r coreboot_original1.rom -V
 </pre>
-
 <p>
 It should print something like the following lines, not the error messages:
 </p>
@@ -767,7 +448,6 @@ and may never be able to write it, hence it may not be able to completely
 clone the contents of this chip (see man page for details).
 Reading flash... done.
 </pre>
-
 <p>
 I read the chip three times and then compare the resulting files, because I've
 already lost a BIOS during a simultaneous process. But the MD5 sums of the
@@ -780,7 +460,6 @@ thinkpad/libreboot % md5sum *
 840cc3456aa5b0b3ba96353165f2ee3e  coreboot_original2.rom
 ee978f3ed5fb4aab34b1d0a79cef455c  coreboot_original3.rom
 </pre>
-
 <p>
 All errors are gone after I plug the programmer directly into the USB port on
 the motherboard:
@@ -791,20 +470,16 @@ ee978f3ed5fb4aab34b1d0a79cef455c  coreboot_original1.rom
 ee978f3ed5fb4aab34b1d0a79cef455c  coreboot_original2.rom
 ee978f3ed5fb4aab34b1d0a79cef455c  coreboot_original3.rom
 </pre>
-
 <p>
 This is enough to make a backup. But I go a lot further because of sentimental
 considerations. I want the serial memory chip from the old (broken)
 motherboard — Macronix MX25L6406E:
 </p>
-
-
 <div class="figure">
 <p><img src="/assets/static/macronix.jpg" alt="Macronix MX25L6406E" align="center">
 </p>
 <p style="text-align: center"><i>Macronix MX25L6406E</i></p>
 </div>
-
 <p>
 First, I desoldered the chip from the old motherboard in two steps:
 </p>
@@ -816,47 +491,37 @@ temperature of the lead-free solder.</li>
 °C", so the temperature was determined by eye, by the speed of melting the
 solder rod from the spool).</li>
 </ol>
-
 <p>
 Place on the motherboard for the chip looks like this:
 </p>
-
-
 <div class="figure">
 <p><img src="/assets/static/chip_footprint.jpg" alt="BIOS chip footprint" align="center">
 </p>
 </div>
-
 <p>
 Four contacts in the middle are obviously not used — because the BIOS memory
 chip is on a SOIC 8 package.
 </p>
-
 <p>
 With the same two steps, I desoldered the Winbond memory chip from the working
 motherboard and put it in an antistatic bag. After that I had the reliable
 hardware backup for the bad times 🙃.
 </p>
-
 <p>
 After that, I checked my backup, just in case. I soldered the Macronix chip to
 the working motherboard:
 </p>
-
-
 <div class="figure">
 <p><img src="/assets/static/soldered_macronix.jpg" alt="Macronix chip on the working motherboard" align="center">
 </p>
 <p style="text-align: center"><i>Macronix chip on the working motherboard</i></p>
 </div>
-
 <p>
 And flashed my backup of the coreboot to it using the command:
 </p>
 <pre class="example">
 sudo flashrom -p ch341a_spi -c "MX25L6406E/MX25L6408E" -w coreboot_original1.rom -V
 </pre>
-
 <p>
 Which successfully writes all necessary bits to the chip:
 </p>
@@ -864,7 +529,6 @@ Which successfully writes all necessary bits to the chip:
 Erase/write done.
 Verifying flash... VERIFIED.
 </pre>
-
 <p>
 As a result, the laptop booted — so the new chip has been successfully
 soldered and the backup copy of the coreboot has been properly read.
@@ -884,7 +548,6 @@ Easy way:
 <li>Download archive with binary from the path
 <code>/pub/libreboot/stable/20240612/roms</code> (for now it is the latest release).</li>
 </ol>
-
 <p>
 The <del>not so easy</del> way for crypto-paranoics:
 </p>
@@ -927,13 +590,11 @@ gpg: key 5C654067D383B1FF: public key "Leah Rowe &lt;info@minifree.org&gt;" impo
 gpg: Total number processed: 1
 gpg:               imported: 1
 </pre>
-
 <p>
 After running the first command, I compared the printed key fingerprint
 with the fingerprint provided on the <a href="https://libreboot.org/download.html">download page</a>. Both fingerprints
 should match. Otherwise, <i>someone</i> gave you a wrong key.
 </p>
-
 <p>
 If all is OK, it is time to check the sign:
 </p>
@@ -958,7 +619,6 @@ Obviously, it is impossible to remove all blobs from the Libreboot for X220
 motherboard. For example, Intel ME has a cryptographic sign that checked every
 CPU startup. And if this sign is wrong, the CPU won't start.
 </p>
-
 <p>
 At the same time, distributing this proprietary blob within the Libreboot
 distribution is impossible because of licensing issues. Developers got around
@@ -969,7 +629,6 @@ process is described on the Libreboot page:
 scripts are included in lbmk — the build system for coreboot. The lbmk can be
 cloned from this repository: <a href="https://codeberg.org/libreboot/lbmk">https://codeberg.org/libreboot/lbmk</a>.
 </p>
-
 <p>
 After installing the necessary dependencies, the downloaded tarball can be fed
 to the script — it will unpack it and insert the necessary blobs to each
@@ -978,7 +637,6 @@ binary:
 <pre class="example">
 ./vendor inject libreboot-20240612_x220_8mb.tar.xz
 </pre>
-
 <p>
 The process will not be so fast — lbmk will clone necessary repositories,
 build necessary utilitie, and so on. Successful completion will look like
@@ -991,7 +649,6 @@ Adding vendorfiles/xx20/me.bin as the Intel ME section of tmp/romdir/bin/x220_8m
 Writing new image to tmp/romdir/bin/x220_8mb/seabios_withgrub_x220_8mb_libgfxinit_txtmode_usqwerty_grubfirst.rom
 ROM image successfully patched: tmp/romdir/bin/x220_8mb/seabios_withgrub_x220_8mb_libgfxinit_txtmode_usqwerty_grubfirst.rom
 </pre>
-
 <p>
 Prepared binaries will be inside the lbmk catalog, in this path:
 <code>./bin/release/x220_8mb/</code>.
@@ -1005,14 +662,11 @@ Prepared binaries will be inside the lbmk catalog, in this path:
 Of all the prepared binaries in the archive, the necessary binaries should
 match the keyboard type on the laptop:
 </p>
-
-
 <div class="figure">
 <p><img src="/assets/static/list-of-binaries.png" alt="List of binaries with added blobs" align="center">
 </p>
 <p style="text-align: center"><i>List of binaries with added blobs</i></p>
 </div>
-
 <p>
 In my case there is a keyboard with US keymap was installed in the laptop. So,
 I need these two files:
@@ -1021,37 +675,29 @@ I need these two files:
 <li>seabios_withgrub_x220_8mb_libgfxinit_txtmode_usqwerty.rom</li>
 <li>seabios_withgrub_x220_8mb_libgfxinit_corebootfb_usqwerty.rom</li>
 </ul>
-
 <p>
 Libreboot in the first file will use text mode to display information on the
 screen. Highly likely that libreboot will not display on the display from DP-3
 bus. And in the second file uses the necessary libgfxinit.
 </p>
-
 <p>
 It can be flashed to memory chip with command:
 </p>
 <pre class="example">
 sudo flashrom -p ch341a_spi -c "MX25L6406E/MX25L6408E" -w seabios_withgrub_x220_8mb_libgfxinit_corebootfb_usqwerty.rom -V
 </pre>
-
-
 <div class="figure">
 <p><img src="/assets/static/libreboot-flashing.jpg" alt="Flashing Libreboot" align="center">
 </p>
 </div>
-
 <p>
 After this action my laptop finally works without freezing. And the system
 loads in fullscreen mode:
 </p>
-
-
 <div class="figure">
 <p><img src="/assets/static/framebuffer.jpg" alt="Laptop booting at fullscreen" align="center">
 </p>
 </div>
-
 <p>
 All other notebook systems worked as before because I had previously
 configured everything for coreboot:
@@ -1067,20 +713,16 @@ Those, who read the Libreboot documentation, can see that I didn't add my MAC
 address to the binary before flashing. As a result, I has a funny default
 address:
 </p>
-
-
 <div class="figure">
 <p><img src="/assets/static/default-mac.png" alt="Default Libreboot MAC address" align="center">
 </p>
 </div>
-
 <p>
 I changed it by patching the binary with script from lbmk:
 </p>
 <pre class="example">
 libreboot/lbmk % ./vendor inject -r bin/release/x220_8mb/seabios_withgrub_x220_8mb_libgfxinit_corebootfb_usqwerty.rom -b x220_8mb -m ██:██:██:██:██:██
 </pre>
-
 <p>
 After that, I just flashed the modified libreboot to the motherboard again.
 </p>
@@ -1096,7 +738,6 @@ libreboot binaries for the Thinkpad X220 with the Ctrl and Fn keys swapped. I
 tried for a while to get used to the standard key layout, but didn't
 succeeded.
 </p>
-
 <p>
 First, I tried to rebuild Libreboot with the necessary option to swap the
 keys:
@@ -1105,7 +746,6 @@ keys:
 Chipset:
   Swap Fn and Ctrl keys=y
 </pre>
-
 <p>
 It would seem that since I have already built coreboot and have all the
 necessary documentation, there should be no problems. Just set the necessary
@@ -1115,20 +755,17 @@ settings via the <code>./mk -m coreboot x220_8mb</code> and build the binary:
 export XBMK_THREADS=3
 ./mk -b coreboot x220_8mb
 </pre>
-
 <p>
 But <b>suddenly</b>, libreboot became the first opensource program in 16 years that I
 couldn't build properly. Although the configuration and build process worked,
 the binaries were always built with the default configuration (from the
 Libreboot developers).
 </p>
-
 <p>
 Fortunately, <i>some</i> options can be changed with the <code>nvramtool</code> utility. It comes
 with coreboot. And in the list of those options there was an option to swap
 the Ctrl and Fn keys:
 </p>
-
 <pre class="example">
 % ../../coreboot/build/util/nvramtool/nvramtool -C seabios_withgrub_x220_8mb_libgfxinit_corebootfb_usqwerty.rom -a
 boot_option = Fallback
@@ -1152,7 +789,6 @@ me_state_prev = 0x0
 gfx_uma_size = 224M
 volume = 0x3
 </pre>
-
 <p>
 The next steps were the same as for setting the MAC address:
 </p>
@@ -1167,7 +803,6 @@ Binary file with Libreboot should be changed with command:
 </li>
 <li>And the modified file should be flashed to the laptop.</li>
 </ol>
-
 <p>
 As a result, keys are swapped and the laptop works as intended without
 freezing.
@@ -1180,17 +815,14 @@ freezing.
 </div>
 </div>
 <div id="footnotes">
-
 <div id="text-footnotes">
-
 <div class="footdef">
-<sup><a id="fn.manufacturer_approve" class="footnum" href="#fnr.manufacturer_approve" role="doc-backlink">1</a></sup> <div class="footpara" role="doc-footnote">
+<sup><a id="fn.manufacturer_approve" class="footnum" href="#fnr.manufacturer_approve" role="doc-backlink">1</a></sup><div class="footpara" role="doc-footnote">
 <p class="footpara">
 Since IBM sold its own laptop business to the Lenovo,
 the soul of the old Thinkpads is slowly but inexorably dissapearing from the
 new Lenovo laptops.
 </p>
-
 <p class="footpara">
 There is nothing surprising in this process — just a usual corporate
 <a href="https://web.archive.org/web/20240208152542/https://www.ft.com/content/6fb1602d-a08b-4a8c-bac0-047b7d64aba5">enshittification</a>. One of it's manifestations — whitelist in Lenovo X220
@@ -1202,7 +834,6 @@ not a software — during system startup, BIOS checks what ID of devices on the
 bus are not listed in whitelist and refuse to start with system and refuse to
 work with "not allowed" devices.
 </p>
-
 <p class="footpara">
 This is usually justified by the fact that the user is supposedly "protected"
 from "low-quality" components. It turns out that even I bought a laptop, I
@@ -1214,7 +845,6 @@ you don't fully own the computing power of the device you bought and the
 manufacturer can dictate its terms to you. For example, forcing you to use
 hardware only from an approved list.
 </p>
-
 <p class="footpara">
 Obviously, from the <del>financial point of view</del> point of view of increasing the
 profits of some corporations for the sake of a nice report to the board of
@@ -1227,7 +857,6 @@ market, then … again, he'll have to buy a new laptop instead of using a
 suitable replacement. No one is thinking about usability, reducing e-waste,
 etc. at this point (except maybe <a href="https://frame.work">Framework</a>).
 </p>
-
 <p class="footpara">
 That's why the battery whitelist was added to the ThinkPad X230
 (<a href="http://zmatt.net/unlocking-my-lenovo-laptop-part-1/">http://zmatt.net/unlocking-my-lenovo-laptop-part-1/</a>), the display whitelist
@@ -1266,12 +895,10 @@ finger wouldn't hit the touchpad. With the buttons underneath the flat
 surface of the touchpad, there's <i>nothing to stop your finger</i> from sliding
 further onto the touchpad.
 </p>
-
 <p>
 Plus, with gloved hands, it was more comfortable to press just the
 individual, <b>physical</b> buttons.
 </p>
-
 <p>
 Fortunately, users outrage brought these buttons back, but Lenovo tried to
 remove them again in the <a href="https://en.wikipedia.org/wiki/ThinkPad_X1_series#/media/File:Gladstone_ready_for_2017_Budget.jpg">Thinkpad X1 Carbon gen 2</a>. However, there were so
@@ -1292,7 +919,6 @@ indicator disappeared (by it you can understand that rf killswitch is
 switched to the off position), and in X240 they removed all status LEDs from
 the display side (but brought back the glowing red dot in the logo).
 </p>
-
 <p>
 In the end, the latest notebook in the X-series — ThinkPad X13 Gen 4 —
 doesn't have a single status LED on either the front or back side🤷‍♂️ (except
@@ -1306,7 +932,6 @@ degraded battery to a new one by yourself. You have to take the laptop to a
 service center to do it. Also, you will not be able to buy a more capacious
 battery and connect it by yourself.
 </p>
-
 <p>
 The unobvious advantage of using a high-capacity battery is also gone — the
 X220 can be carried with the open lid around the office, simply by placing
@@ -1318,7 +943,6 @@ the laptop doesn't fall over.
 <p>
 Replaced Display Port with HDMI.
 </p>
-
 <div class="figure">
 <p><img src="/assets/static/display-port.png" alt="Fun fact. Display port is objectively better than HDMI. Royalty-free, baby" align="center">
 </p>
@@ -1334,7 +958,6 @@ retractable construction. Or remove it altogether and put the keyboard
 backlight "like in everyone else's laptop". While the LED in the lid had an
 undeniable advantage: it could be used to light up the desk if necessary.
 </p>
-
 <p>
 A similar disaster happened with the ability to strap a docking station or
 an extra battery to the bottom of the laptop, with separate buttons for
@@ -1343,7 +966,6 @@ are on mute and so on…
 </p>
 </li>
 </ul>
-
 <p class="footpara">
 As long as it is possible to increase profits by worsening usability of
 laptops originally designed by the "engineers for engineers", by simply
@@ -1357,19 +979,16 @@ typing" and hasn't worked with gloves, so it seems to him that TrackPoint is
 </p>
 </div>
 </div>
-
 <div class="footdef">
-<sup><a id="fn.linuxbios" class="footnum" href="#fnr.linuxbios" role="doc-backlink">2</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+<sup><a id="fn.linuxbios" class="footnum" href="#fnr.linuxbios" role="doc-backlink">2</a></sup><div class="footpara" role="doc-footnote"><p class="footpara">
 <a href="https://web.archive.org/web/20120916212555/http://www.h-online.com/open/features/The-Open-Source-BIOS-is-Ten-An-interview-with-the-coreboot-developers-746525.html?view=print">https://web.archive.org/web/20120916212555/http://www.h-online.com/open/features/The-Open-Source-BIOS-is-Ten-An-interview-with-the-coreboot-developers-746525.html?view=print</a>
 </p></div>
 </div>
-
 <div class="footdef">
-<sup><a id="fn.intel_me" class="footnum" href="#fnr.intel_me" role="doc-backlink">3</a></sup> <div class="footpara" role="doc-footnote">
+<sup><a id="fn.intel_me" class="footnum" href="#fnr.intel_me" role="doc-backlink">3</a></sup><div class="footpara" role="doc-footnote">
 <p class="footpara">
 Quote from <a href="https://libreboot.org/faq.html">https://libreboot.org/faq.html</a>:
 </p>
-
 <blockquote>
 <p>
 The ME consists of an ARC processor core (replaced with other processor cores
@@ -1386,7 +1005,6 @@ between versions of the ME firmware. If the manifest isn’t signed by a
 specific Intel key, the boot ROM won’t load and execute the firmware and the
 ME processor core will be halted.
 </p>
-
 <p>
 The ME firmware is compressed and consists of modules that are listed in the
 manifest along with secure cryptographic hashes of their contents. One module
@@ -1405,100 +1023,89 @@ Management Technology (AMT), an implementation of a Trusted Platform Module
 </blockquote>
 </div>
 </div>
-
 <div class="footdef">
-<sup><a id="fn.coreboot_readings" class="footnum" href="#fnr.coreboot_readings" role="doc-backlink">4</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+<sup><a id="fn.coreboot_readings" class="footnum" href="#fnr.coreboot_readings" role="doc-backlink">4</a></sup><div class="footpara" role="doc-footnote"><p class="footpara">
 Once, I found an explanation of this on Reddit, but now I
 can't find the link. The fact that flashrom returns different coreboot dumps
 every time when using <code>-p internal</code> on Thinkpad X220 is completely normal and to
 get a <i>correct</i> backup you <b>need</b> to use a programmer.
 </p></div>
 </div>
-
-
 </div>
 </div>
-
-  </div>
+</div>
 </article>
 </section>
 </div>
+</div>
+</div>
+</main><footer class="site-footer h-card">
+<div class="wrapper">
+<div class="site-footer-inner">
+<div>
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewbox="0 0 24 24" fill="none" stroke="#586e75" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-pen-tool"><path d="M12 19l7-7 3 3-7 7-3-3z"></path><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"></path><path d="M2 2l7.586 7.586"></path><circle cx="11" cy="11" r="2"></circle></svg>
+<a href="/en/changelog.html">ChangeLog</a> ┆
+<a href="/en/tags.html">Tags</a> ┆
+<a href="/en/categories.html">Categories</a> ┆
+<a href="/en/archives.html">Archives</a>
+</div>
+<br>
 
+<div xmlns:cc="http://creativecommons.org/ns#">
+<a rel="cc:attributionURL" href="https://eugene-andrienko.com/en/">This blog</a>
+© 2020-2025 by
+<a rel="cc:attributionURL dct:creator" property="cc:attributionName" href="https://eugene-andrienko.com/en/about">Eugene Andrienko</a>
+is licensed under
+<a href="https://creativecommons.org/licenses/by/4.0/?ref=chooser-v1" target="_blank" rel="license noopener noreferrer" style="display:inline-block;">
+CC BY 4.0
+</a>
+<img loading="lazy" width="16" height="16" class="copyleft" src="/assets/images/icons/cc.svg" alt="CC">
+<img loading="lazy" width="16" height="16" class="copyleft" src="/assets/images/icons/by.svg" alt="BY">
+</div>
+<div>
+Powered by: <a title="Jekyll is a simple, blog-aware, static site
+generator." href="https://jekyllrb.com/">Jekyll</a>.
+Icons: <a href="https://github.com/feathericons/feather">Feather</a>.
+Colors: <a href="https://ethanschoonover.com/solarized/">Solarized Light</a>.
 </div>
 
-      </div>
-    </main><footer class="site-footer h-card">
-  <div class="wrapper">
-    <div class="site-footer-inner">
-<div>
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewbox="0 0 24 24" fill="none" stroke="#586e75" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-pen-tool"><path d="M12 19l7-7 3 3-7 7-3-3z"></path><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"></path><path d="M2 2l7.586 7.586"></path><circle cx="11" cy="11" r="2"></circle></svg> 
-          <a href="/en/changelog.html">ChangeLog</a> ┆
-          <a href="/en/tags.html">Tags</a> ┆
-          <a href="/en/categories.html">Categories</a> ┆
-          <a href="/en/archives.html">Archives</a>
-        </div>
-
-        <br>
-
-        <!-- CC BY 4.0 -->
-        <div xmlns:cc="http://creativecommons.org/ns#">
-          <a rel="cc:attributionURL" href="https://eugene-andrienko.com/en/">This blog</a>
-          © 2020-2025 by
-          <a rel="cc:attributionURL dct:creator" property="cc:attributionName" href="https://eugene-andrienko.com/en/about">Eugene Andrienko</a>
-          is licensed under
-          <a href="https://creativecommons.org/licenses/by/4.0/?ref=chooser-v1" target="_blank" rel="license noopener noreferrer" style="display:inline-block;">
-            CC BY 4.0
-          </a>
-          <img loading="lazy" width="16" height="16" class="copyleft" src="/assets/images/icons/cc.svg" alt="CC">
-          <img loading="lazy" width="16" height="16" class="copyleft" src="/assets/images/icons/by.svg" alt="BY">
-        </div>
-
-        <div>
-          Powered by: <a title="Jekyll is a simple, blog-aware, static site
-          generator." href="https://jekyllrb.com/">Jekyll</a>.
-          Icons: <a href="https://github.com/feathericons/feather">Feather</a>.
-          Colors: <a href="https://ethanschoonover.com/solarized/">Solarized Light</a>.
-        </div>
-
-        <!-- Old but gold buttons -->
-        <div class="old-gold-buttons">
-          <a href="https://eugene-andrienko.com/en/it/2024/07/07/thinkpad-x220-second-life">
-            <img loading="lazy" alt="IBM Thinkpad button" width="80" height="15" src="/assets/images/buttons/80x15/thinkpad.png">
-          </a>
-          <a href="https://github.com/eugeneandrienko">
-            <img loading="lazy" alt="Night coder button" width="80" height="15" src="/assets/images/buttons/80x15/nightcoder.png">
-          </a>
-          <img loading="lazy" alt="Love dragons button" width="80" height="15" src="/assets/images/buttons/80x15/dragon.png">
-        </div>
-
-        <div class="old-gold-buttons">
-          <a href="https://cobaltblue.neocities.org/buttons/">
-            <img loading="lazy" alt="Made by dragon button" width="88" height="31" src="/assets/images/buttons/88x31/dragonmade-yellow.png">
-          </a>
-          <map name="fediring6">
-            <area href="https://fediring.net/previous?host=eugene-andrienko.com%2Fen%2F" shape="rect" coords="3,6,12,27" target="_top" alt="previous" title="previous">
-            <area href="https://fediring.net/" shape="rect" coords="15,3,72,27" target="_blank" alt="Fediring" title="Fediring">
-            <area href="https://fediring.net/next?host=eugene-andrienko.com%2Fen%2F" shape="rect" coords="75,6,84,27" target="_top" alt="next" title="next">
-          </map>
-          <img loading="lazy" usemap="#fediring6" alt="Fediring" width="88" height="31" src="/assets/images/buttons/88x31/fediring.png">
-          <map name="noaimini7">
-            <area href="https://baccyflap.com/noai" shape="rect" coords="15,3,72,27" target="_blank" alt="no ai webring" title="no ai webring">
-            <area href="https://baccyflap.com/noai/?prv&s=drg" target="_top" shape="rect" coords="3,6,12,27" alt="previous" title="previous">
-            <area href="https://baccyflap.com/noai/?nxt&s=drg" target="_top" shape="rect" coords="75,6,84,27" alt="next" title="next">
-          </map>
-          <img loading="lazy" usemap="#noaimini7" alt="No AI ring" width="88" height="31" src="/assets/images/buttons/88x31/noaiwidget.gif">
-          <a href="https://512kb.club/#100">
-            <img loading="lazy" alt="512KB club, green team" width="88" height="31" src="/assets/images/buttons/88x31/green-team.gif">
-          </a>
-          <a href="https://no-js.club/">
-            <img loading="lazy" alt="no-JS Club" width="88" height="31" src="/assets/images/buttons/88x31/javascript-zero.gif">
-          </a>
-          <a href="https://www.gnu.org/software/emacs/">
-            <img loading="lazy" alt="Created with Emacs" width="88" height="31" src="/assets/images/buttons/88x31/emacs.gif">
-          </a>
-        </div>
-    </div>
-  </div>
+<div class="old-gold-buttons">
+<a href="https://eugene-andrienko.com/en/it/2024/07/07/thinkpad-x220-second-life">
+<img loading="lazy" alt="IBM Thinkpad button" width="80" height="15" src="/assets/images/buttons/80x15/thinkpad.png">
+</a>
+<a href="https://github.com/eugeneandrienko">
+<img loading="lazy" alt="Night coder button" width="80" height="15" src="/assets/images/buttons/80x15/nightcoder.png">
+</a>
+<img loading="lazy" alt="Love dragons button" width="80" height="15" src="/assets/images/buttons/80x15/dragon.png">
+</div>
+<div class="old-gold-buttons">
+<a href="https://cobaltblue.neocities.org/buttons/">
+<img loading="lazy" alt="Made by dragon button" width="88" height="31" src="/assets/images/buttons/88x31/dragonmade-yellow.png">
+</a>
+<map name="fediring6">
+<area href="https://fediring.net/previous?host=eugene-andrienko.com%2Fen%2F" shape="rect" coords="3,6,12,27" target="_top" alt="previous" title="previous">
+<area href="https://fediring.net/" shape="rect" coords="15,3,72,27" target="_blank" alt="Fediring" title="Fediring">
+<area href="https://fediring.net/next?host=eugene-andrienko.com%2Fen%2F" shape="rect" coords="75,6,84,27" target="_top" alt="next" title="next">
+</map>
+<img loading="lazy" usemap="#fediring6" alt="Fediring" width="88" height="31" src="/assets/images/buttons/88x31/fediring.png">
+<map name="noaimini7">
+<area href="https://baccyflap.com/noai" shape="rect" coords="15,3,72,27" target="_blank" alt="no ai webring" title="no ai webring">
+<area href="https://baccyflap.com/noai/?prv&s=drg" target="_top" shape="rect" coords="3,6,12,27" alt="previous" title="previous">
+<area href="https://baccyflap.com/noai/?nxt&s=drg" target="_top" shape="rect" coords="75,6,84,27" alt="next" title="next">
+</map>
+<img loading="lazy" usemap="#noaimini7" alt="No AI ring" width="88" height="31" src="/assets/images/buttons/88x31/noaiwidget.gif">
+<a href="https://512kb.club/#100">
+<img loading="lazy" alt="512KB club, green team" width="88" height="31" src="/assets/images/buttons/88x31/green-team.gif">
+</a>
+<a href="https://no-js.club/">
+<img loading="lazy" alt="no-JS Club" width="88" height="31" src="/assets/images/buttons/88x31/javascript-zero.gif">
+</a>
+<a href="https://www.gnu.org/software/emacs/">
+<img loading="lazy" alt="Created with Emacs" width="88" height="31" src="/assets/images/buttons/88x31/emacs.gif">
+</a>
+</div>
+</div>
+</div>
 </footer>
 </body>
 </html>

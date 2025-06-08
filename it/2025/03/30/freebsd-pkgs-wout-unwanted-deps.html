@@ -2,8 +2,8 @@
 <html lang="ru">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-<!-- Begin Jekyll SEO tag v2.8.0 -->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
 <title>My way to remove “Linuxisms” from FreeBSD | Dragon’s notes</title>
 <meta name="generator" content="Jekyll v4.4.1">
 <meta property="og:title" content="My way to remove “Linuxisms” from FreeBSD">
@@ -22,368 +22,82 @@
 <meta property="twitter:title" content="My way to remove “Linuxisms” from FreeBSD">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Eugene Andrienko"},"dateModified":"2025-03-30T00:00:00+03:00","datePublished":"2025-03-30T00:00:00+03:00","description":"TOC&amp;#xa0;&amp;#xa0;&amp;#xa0; Preamble Poudriere installation Removing unwanted dependencies More complex examples of deWaylandization Ports flavors Patching Makefile Results and thoughts Notes Preamble My everyday FreeBSD system has two good old components for graphics and sound — the X Server and the OSS. There are simple reasons to use these components — they are mature, they have tons of user documentation, use case examples, etc. I also like the way these things have been used in the FreeBSD world. Let me quote vermaden, who wrote well (about the OSS) in the Quare FreeBSD? blogpost:","headline":"My way to remove “Linuxisms” from FreeBSD","image":"https://eugene-andrienko.com/assets/static/poudriere-header.png","mainEntityOfPage":{"@type":"WebPage","@id":"https://eugene-andrienko.com/it/2025/03/30/freebsd-pkgs-wout-unwanted-deps.html"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://eugene-andrienko.com/assets/images/home.jpg"},"name":"Eugene Andrienko"},"url":"https://eugene-andrienko.com/it/2025/03/30/freebsd-pkgs-wout-unwanted-deps.html"}</script>
-<!-- End Jekyll SEO tag -->
+
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-  <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
-  <meta name="theme-color" content="#ffffff">
-  <link rel="me" href="https://mas.to/@evgandr">
-  <link rel="stylesheet" href="/assets/css/main.css">
-  <meta name="fediverse:creator" content="@evgandr@mas.to">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+<meta name="theme-color" content="#ffffff">
+<link rel="me" href="https://mas.to/@evgandr">
+<link rel="stylesheet" href="/assets/css/main.css">
+<meta name="fediverse:creator" content="@evgandr@mas.to">
 <link type="application/atom+xml" rel="alternate" href="https://eugene-andrienko.com/feed.xml" title="Dragon's notes">
 </head>
 <body>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<style>
-    html .page-banner .page-banner-img > *:first-child {
-      opacity: 0.6;
-    }
-  </style>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+<style>html .page-banner .page-banner-img>*:first-child{opacity:.6}</style>
 <header class="site-header">
-  <div class="wrapper">
-    <div class="site-header-inner"><ul class="site-nav">
-        <li>
-          <a class="site-brand" rel="author" href="/">
-            Dragon's notes
-          </a>
-        </li>
+<div class="wrapper">
+<div class="site-header-inner"><ul class="site-nav">
 <li>
-          <a class="page-link" href="/now.html">NOW</a>
-        </li>
+<a class="site-brand" rel="author" href="/">
+Dragon's notes
+</a>
+</li>
 <li>
-          <a class="page-link" href="/about.html">ABOUT</a>
-        </li>
+<a class="page-link" href="/now.html">NOW</a>
+</li>
 <li>
-          <a class="page-link" href="/links.html">LINKS</a>
-        </li>
-<!-- RSS -->
-        <li>
-          
-          <a class="page-link" aria-label="RSS feed link" href="/feed.xml">
-            <span class="rss-text">RSS</span>
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg>
-          </a>
-          
-        </li>
-        <!-- Languages -->
-        <div class="lang-separator">
-          <hr>
-        </div>
-        
-        
-        
-        <li class="nav-right">
-          <a class="page-link" href="/en/it/2025/03/30/freebsd-pkgs-wout-unwanted-deps.html">EN</a>
-        </li>
-        
-        
-        
-        
-        <li class="nav-right"><a class="page-link active">RU</a></li>
-        
-        
-      </ul></div>
-  </div>
+<a class="page-link" href="/about.html">ABOUT</a>
+</li>
+<li>
+<a class="page-link" href="/links.html">LINKS</a>
+</li>
+
+<li>
+<a class="page-link" aria-label="RSS feed link" href="/feed.xml">
+<span class="rss-text">RSS</span>
+<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg>
+</a>
+</li>
+
+<div class="lang-separator">
+<hr>
+</div>
+<li class="nav-right">
+<a class="page-link" href="/en/it/2025/03/30/freebsd-pkgs-wout-unwanted-deps.html">EN</a>
+</li>
+<li class="nav-right"><a class="page-link active">RU</a></li>
+</ul></div>
+</div>
 </header>
 <section class="page-banner">
-    <div class="page-banner-img">
-      <div style="background-image: url(/assets/static/poudriere-header.png)"></div>
-    </div>
-    <div class="wrapper">
-      <div class="page-banner-inner">
+<div class="page-banner-img">
+<div style="background-image: url(/assets/static/poudriere-header.png)"></div>
+</div>
+<div class="wrapper">
+<div class="page-banner-inner">
 <header class="post-header">
-  <h1 class="post-title p-name" itemprop="name headline">My way to remove "Linuxisms" from FreeBSD</h1>
+<h1 class="post-title p-name" itemprop="name headline">My way to remove "Linuxisms" from FreeBSD</h1>
 <p class="post-meta">
-      <time class="dt-published" datetime="2025-03-30T00:00:00+03:00" itemprop="datePublished"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
-        2025.03.30
-      </time>
-
-      
-      
-      <span class="left-vsplit">
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-folder"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>
-        it
-      </span>
-    </p>
+<time class="dt-published" datetime="2025-03-30T00:00:00+03:00" itemprop="datePublished"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+2025.03.30
+</time>
+<span class="left-vsplit">
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-folder"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>
+it
+</span>
+</p>
 <div class="post-tags"><a class="post-tag" href="/tags.html#freebsd">#freebsd</a></div></header>
 </div>
-    </div>
-  </section><main class="page-content" aria-label="Content">
-      <div class="wrapper">
-        <div class="framework main">
-  <div class="post">
-  <section>
-
-
-
-
-
-
-
-
-
+</div>
+</section><main class="page-content" aria-label="Content">
+<div class="wrapper">
+<div class="framework main">
+<div class="post">
+<section>
 <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
-  <div class="post-content e-content" itemprop="articleBody">
-    <div class="outline-2">
+<div class="post-content e-content" itemprop="articleBody">
+<div class="outline-2">
 <h2>TOC   <span class="tag"></span>
 </h2>
 <div class="outline-text-2">
@@ -414,7 +128,6 @@ examples, etc. I also like the way these things have been used in the FreeBSD
 world. Let me quote <a href="https://vermaden.wordpress.com/">vermaden</a>, who wrote well (about the OSS) in the <a href="https://vermaden.wordpress.com/2020/09/07/quare-freebsd/">Quare
 FreeBSD?</a> blogpost:
 </p>
-
 <blockquote>
 <p>
 Not many people expect from FreeBSD to shine in that department but it shines
@@ -424,18 +137,15 @@ write ALSA? I remember because I used Linux back then. Disaster is very polite
 word to describe Linux audio stack back then … and then PulseAudio came and
 whole Linux audio system got much worse.
 </p>
-
 <p>
 …
 </p>
-
 <p>
 Lets get back to FreeBSD audio then. What FreeBSD offered? A whooping 256 OSS
 channels mixed live in kernel for low latency. Everything audio related just
 worked out of the box – and still works today.
 </p>
 </blockquote>
-
 <p>
 This is where I see the pattern. If in the Linux world there are many examples
 of throwing away software that has served people for years or decades and can
@@ -443,7 +153,6 @@ of throwing away software that has served people for years or decades and can
 <code>ifconfig</code>). Then in the FreeBSD world such software just … gets the necessary
 updates and continues to be used.
 </p>
-
 <p>
 In my journey to install and use the simple system with the good old software
 I encountered some problems. Sometimes, when I install a simple program, like
@@ -452,19 +161,15 @@ PulseAudio (thankfully, there is no SystemD in the FreeBSD world). Of course,
 I <b>do not want</b> these things in my simple system based on the X server, OSS and
 good old initialization scripts.
 </p>
-
 <p>
 As stated <a href="https://mastodon.bsd.cafe/@TomAoki">@TomAoki@bsd.cafe</a> — some binary packages for FreeBSD have been built
 with the same dependencies that came from upstream — to minimize maintainer's
 work, which is obviously hard<sup><a id="fnr.tomaoki" class="footref" href="#fn.tomaoki" role="doc-backlink">1</a></sup>.
 </p>
-
-
 <div class="figure">
 <p><img src="/assets/static/tomaoki.png" alt="Screenshot of TomAoki reply in Mastodon" align="center">
 </p>
 </div>
-
 <p>
 As a result, some packages came to my machine with unwanted dependencies or
 compile-time options that were not ideal for me. For example, the native for
@@ -472,41 +177,34 @@ BSD <code>sndio</code> sound server is disabled by default in the
 <code>mutlimedia/audacious-plugins</code> port. But those "linuxisms" — like PulseAudio and
 PipeWire — are enabled🤷‍♂️.
 </p>
-
-
 <div class="figure">
 <p><img src="/assets/static/audacious-plugins.png" alt="Compile time configuration for audacious-plugins with pulseaudio and pipewire options enabled" align="center">
 </p>
 </div>
-
 <p>
 I was very surprised to see the <code>pulseaudio</code> process in the top 5 CPU consuming
 processes while listening to my music. My sound system using OSS and sndio,
 why is PulseAudio here?!🤔 After that I started to think about removing
 unwanted dependencies from my packages completely…
 </p>
-
 <p>
 Or another example — when I install some graphical application based on the
 QT6 or GTK3/GTK4 — not only the necessary graphical libraries are installed as
 dependencies but also a lot of Wayland stuff. Even if my system doesn't use
 Wayland, I have packages of <i>these things</i> installed:
 </p>
-
 <pre class="example">
 % pkg info -a | /usr/bin/grep wayland
 qt6-wayland-6.8.2              Qt6 wrapper for Wayland
 wayland-1.23.1                 Core Wayland window system code and protocol
 wayland-protocols-1.39         Wayland protocols
 </pre>
-
 <p>
 At some point, I decided to override this and get my versions of packages
 without unwanted dependencies. A naive approach — just build some packages
 without unwanted compile-time options via the Ports infrastructure — almost
 works for me.
 </p>
-
 <p>
 Almost. When the corresponding package from the FreeBSD repository was
 updated — it overwrites my custom package, built with ports. A solution I
@@ -515,7 +213,6 @@ not be updated with the same binary package from the repository. And
 temporarily unlock it when I want to update the <i>my</i> package via the ports
 infrastructure.
 </p>
-
 <p>
 In the FreeBSD Handbook, section 4.6 <a href="https://docs.freebsd.org/en/books/handbook/ports/#ports-poudriere">"Building Packages with poudriere"</a>, there
 was another way to accomplish my task without such update problems. I can
@@ -524,7 +221,6 @@ dependencies removed. And this is not a some hacky thing — as far as I can
 see, the poudriere used by the FreeBSD maintainers to build the binary
 packages:
 </p>
-
 <pre class="example">
 % pkg info emacs
 ...
@@ -533,7 +229,6 @@ Annotations    :
         build_timestamp: 2025-02-27T01:04:32+0000
         built_by       : poudriere-git-3.4.2
 </pre>
-
 <p>
 And it works pretty simple — poudriere just reuses existing FreeBSD
 infrastructure to build packages. Package sources taken from <a href="https://docs.freebsd.org/en/books/handbook/ports/#ports-using">ports</a> (via
@@ -543,13 +238,11 @@ can be stored in the separate <a href="https://docs.freebsd.org/en/books/handboo
 filesystem will not be polluted by the build-time dependencies or building
 artifacts, like object files or logs.
 </p>
-
 <p>
 At the end, poudriere will create the local repository with packages. The same
 repository as the main FreeBSD repository, but <i>local</i> and with only necesary
 packages. Poudriere doesn't force me to build the whole system on my machine.
 </p>
-
 <p>
 The main selling point is that all packages installed from this repository
 will be updated through <b>this</b> repository. They will not be overwritten by
@@ -557,7 +250,6 @@ updates from the main FreeBSD repository. This is because the <code>pkg</code> a
 annotation with repository name to the installed package and uses it when
 updating:
 </p>
-
 <pre class="example">
 % pkg info -A conky
 conky-1.22.1:
@@ -572,7 +264,6 @@ conky-1.22.1:
         repo_type      : binary
         repository     : LocalRepo
 </pre>
-
 <p>
 The second selling point: I can setup all these machinery on a separate disk,
 which I mainly use for QEMU/bhyve VMs and other <i>big things</i>. This way, my build
@@ -587,12 +278,10 @@ infrastructure doesn't take up space on the root filesystem.
 Before I welcomed poudriere to my laptop, I created a separate dataset for
 poudriere-related files:
 </p>
-
 <pre class="example">
 # zfs create hdd/poudriere
 # zfs set compression=gzip hdd/poudriere
 </pre>
-
 <p>
 The only files, which are stored in the root filesystem are configuration
 files:
@@ -605,14 +294,12 @@ files:
 <code>make.conf</code> for poudriere jails: <code>/usr/local/etc/poudriere.d/make.conf</code>.</li>
 <li>And the poudriere configuration itself, of course.</li>
 </ul>
-
 <p>
 Then, after installing the poudriere package, I slightly changed the default
 configuration file and added the following options to use <code>/hdd/poudriere/</code>
 dataset as the main path for both the jail and the local repository, not my
 main dataset with the root filesystem:
 </p>
-
 <div class="org-src-container">
 <pre class="src src-shell"><span style="color: #268bd2;">ZPOOL</span>=hdd
 <span style="color: #93a1a1;">#</span><span style="color: #93a1a1;">NO_ZFS=yes</span>
@@ -623,20 +310,17 @@ main dataset with the root filesystem:
 <span style="color: #268bd2;">MAX_EXECUTION_TIME</span>=259200
 </pre>
 </div>
-
 <p>
 Also, I increased max time of build process to 3 days — because 1 day may not
 be enough to build <i>big things</i>. And because it is very sad to spend 24 hours
 for building and receive nothing as a result😟.
 </p>
-
 <p>
 By the way, I don't want to build LLVM, or Rust, or other build-time
 dependencies from sources — I'm fine with the packaged versions. So to don't
 spend a time for it, I instruct poudriere to download and use binary packages
 for these dependencies:
 </p>
-
 <div class="org-src-container">
 <pre class="src src-shell"><span style="color: #268bd2;">PACKAGE_FETCH_BRANCH</span>=quarterly
 <span style="color: #268bd2;">PACKAGE_FETCH_BLACKLIST</span>=<span style="color: #2aa198;">"pipewire* pulseaudio* wayland*"</span>
@@ -681,50 +365,41 @@ for these dependencies:
 <span style="color: #2aa198;">                         libproxy"</span>
 </pre>
 </div>
-
 <p>
 Also, I put the next lines to the <code>/usr/local/etc/poudriere.d/make.conf</code>, to
 prevent enabling the unwanted options when configuring the port(s):
 </p>
-
 <div class="org-src-container">
 <pre class="src src-shell"><span style="color: #268bd2;">DISABLE_LICENSES</span>=yes
 OPTIONS_UNSET+=JACK PIPEWIRE PULSEAUDIO WAYLAND
 OPTIONS_SET+=OSS SNDIO X11
 </pre>
 </div>
-
 <p>
 To the <code>/usr/local/etc/poudriere.d/blacklist</code> I've added the next lines:
 </p>
-
 <pre class="example">
 audio/pulseaudio
 graphics/wayland
 multimedia/pipewire
 </pre>
-
 <p>
 With this configuration poudriere will neither install unwanted packages from
 repository, nor build it from ports.
 </p>
-
 <p>
 The next steps, including initializing the jail and ports, are well described
 in the corresponding chapter of the FreeBSD Handbook. With one <b>valuable</b>
 exception! When I create the poudriere ports, the proper quarterly branch
 should be specified! Like this:
 </p>
-
 <pre class="example">
 # poudriere ports -c -p local -m git+https -B 2025Q1
 </pre>
-
 <p>
 Without the proper branch I'll faced the obscure dependency problems when
 downloading the build-time depenedencies as packages:
 </p>
-
 <pre class="example">
 [00:00:48] [Dry Run] Package fetch: Skipping cmake-core-3.31.6: remote version mismatch: cmake-core-3.31.3
 [00:00:48] [Dry Run] Package fetch: Skipping gettext-runtime-0.23.1: remote version mismatch: gettext-runtime-0.23
@@ -735,7 +410,6 @@ downloading the build-time depenedencies as packages:
 [00:00:48] [Dry Run] Package fetch: Skipping lua53-5.3.6_1: deps remote: libedit-3.1.20240808,1
 [00:00:48] [Dry Run] Package fetch: Will fetch hs-cabal-install-3.12.1.0_1
 </pre>
-
 <p>
 At the end I have an initialized<sup><a id="fnr.pkg" class="footref" href="#fn.pkg" role="doc-backlink">2</a></sup> and working jail with ports and the
 necessary build environment inside. Now it's time to remove unwanted
@@ -750,7 +424,6 @@ dependencies from the system!
 For example, let's work with Wayland. First, I got a list of <code>wayland</code>-dependent
 packages via <code>pkg required-depends</code>:
 </p>
-
 <pre class="example">
 % pkg required-depends wayland
 mesa-dri-24.1.7_1
@@ -767,47 +440,38 @@ libxkbcommon-1.7.0_1
 redshift-1.12_2
 webkit2-gtk3-2.34.6_10
 </pre>
-
 <p>
 Let's take <code>conky</code> and rebuild it without Wayland dependencies! First, I need an
 <i>origin</i> of this package (it's name in the ports) to build it with
 poudriere. The <code>pkg</code> gave me the answer and I wrote it to the text file — the
 list of packages to rebuild:
 </p>
-
 <pre class="example">
 % pkg info -o conky
 conky-1.22.0                   sysutils/conky
 # echo 'sysutils/conky' &gt;&gt; /hdd/poudriere/14amd64-local-workstation-pkglist
 </pre>
-
 <p>
 Then I configured all the necessary ports with help of the next <a href="https://zsh.sourceforge.io/Doc/Release/Functions.html">zsh function</a>:
 </p>
-
 <div class="org-src-container">
 <pre class="src src-shell"><span style="color: #268bd2;">SHELL</span>=<span style="color: #2aa198;">"/usr/bin/env zsh"</span> xterm -fa Hack-14 -e <span style="color: #b58900; font-weight: bold;">\</span>
     <span style="color: #2aa198;">"sudo poudriere options -j 14amd64 -p local -z workstation -c $1"</span>
 </pre>
 </div>
-
 <p>
 This function takes string with origin as a single argument. It may look a bit
 tricky — but I'm using it because ncurses interface to configure build options
 is not displaying correctly inside my <a href="https://codeberg.org/akib/emacs-eat">EAT</a>. So I start a separate shell in
 XTerm and configure conky and all it's dependencies inside this shell:
 </p>
-
-
 <div class="figure">
 <p><img src="/assets/static/conky-port-options.png" alt="conky package configuration options" align="center">
 </p>
 </div>
-
 <p>
 After that I start the necessary machinery with the next zsh function:
 </p>
-
 <div class="org-src-container">
 <pre class="src src-shell"><span style="color: #268bd2;">DUNST_OPTS</span>=(-I ~/.config/dunst/icons/update.svg)
 <span style="color: #268bd2;">PKGLIST</span>=<span style="color: #2aa198;">"/hdd/poudriere/14amd64-local-workstation-pkglist"</span>
@@ -837,7 +501,6 @@ sudo poudriere bulk $<span style="color: #268bd2;">POUDRIERE_OPTS</span> -b quar
 dunstify <span style="color: #2aa198;">"Poudriere"</span> <span style="color: #2aa198;">"Ports build end"</span> $<span style="color: #268bd2;">DUNST_OPTS</span>
 </pre>
 </div>
-
 <p>
 There are the next things happen:
 </p>
@@ -859,39 +522,33 @@ stage.</li>
 <p>
 Start build packages in multiple processes, each on it's own CPU core:
 </p>
-
 <div class="figure">
 <p><img src="/assets/static/poudriere-building.png" alt="poudriere build process screenshot" align="center">
 </p>
 </div>
 </li>
 </ol>
-
 <p>
 The "dry-run" stage is necessary to avoid special sort of problems — when the
 build-time dependency will not be installed with <code>pkg</code> because it depends from
 another build-time dependency, not listed in <code>PACKAGE_FETCH_WHITELIST</code>.
 </p>
-
 <pre class="example">
 [00:01:23] [Dry Run] Checking packages for missing dependencies
 [00:01:23] [Dry Run] Deleting cmake-core-3.31.3.pkg: missing dependency: expat-2.6.4
 [00:01:23] [Dry Run] Deleting gettext-tools-0.23.pkg: missing dependency: libtextstyle-0.23
 [00:01:23] [Dry Run] Deleting py311-libxml2-2.11.9_1.pkg: missing dependency: libxml2-2.11.9
 </pre>
-
 <p>
 The solution is simple — just add necessary package(s) to the
 <code>PACKAGE_FETCH_WHITELIST</code> or decide to build it from ports.
 </p>
-
 <p>
 Ideally, here should be an <a href="https://github.com/freebsd/poudriere/issues/1129">option to stop the build process</a> if packages listed
 in the <code>PACKAGE_FETCH_WHITELIST</code> will not be fetched. But it is not added yet to
 the recent version of poudriere, so I'm using an infinite cycle as a
 workaround.
 </p>
-
 <p>
 The build process is fast enough, even on my Intel(R) Core(TM) i7-2620M CPU @
 2.70GHz. Obviously, the big software, like Qt or GTK, will build for
@@ -899,24 +556,20 @@ hours. Fortunately, the packages that depend on it were waiting while they
 were building, so other CPU cores were free<sup><a id="fnr.cpu-cores" class="footref" href="#fn.cpu-cores" role="doc-backlink">3</a></sup> and I could use my
 system as usual, without any drawbacks😎.
 </p>
-
 <p>
 After successfull completion, poudriere will create a local FreeBSD repository
 that I can use to install <b>my</b> versions of packages without unwanted
 dependencies. To use this repo, I simply created the
 <code>/usr/local/etc/pkg/repos/LocalRepo.conf</code> file with the next contents:
 </p>
-
 <pre class="example">
 LocalRepo: {
     url: "//hdd/poudriere/data/packages/14amd64-local-workstation"
 }
 </pre>
-
 <p>
 Then I launched <code>pkg update</code> as usual:
 </p>
-
 <pre class="example">
 # pkg update
 Updating FreeBSD repository catalogue...
@@ -929,24 +582,20 @@ Updating LocalRepo repository catalogue...
 LocalRepo repository is up to date.
 All repositories are up to date.
 </pre>
-
 <p>
 And now I'm able to reinstall the conky and get rid of a wayland
 dependency. To simplify things, I've just added the next alias to
 <code>/etc/pkg.conf</code>:
 </p>
-
 <pre class="example">
 ALIAS {
     ...
     poudriere-install = "install -r LocalRepo -f"
 }
 </pre>
-
 <p>
 And called the next command:
 </p>
-
 <pre class="example">
 # pkg poudriere-install conky
 Updating LocalRepo repository catalogue...
@@ -967,18 +616,15 @@ Proceed with this action? [y/N]: y
 [1/1] Upgrading conky from 1.22.0 to 1.22.1...
 [1/1] Extracting conky-1.22.1: 100%
 </pre>
-
 <p>
 Note, that only the necessary package(s) have been reinstalled. The pkg will
 not install all the packages from the <code>LocalRepo</code>, only the bare minimum to
 provide the working program in the existing system.
 </p>
-
 <p>
 As a result, conky has disappeared from the list of wayland-dependent packages
 and receive the proper <code>repository</code> annotation:
 </p>
-
 <pre class="example">
 % pkg required-depends wayland
 mesa-dri-24.1.7_1
@@ -1007,7 +653,6 @@ already built package. In my case there was a <code>libva</code>. I already buil
 dependency when rebuilding VLC, but I want to recheck the selected options
 before reinstalling the package.
 </p>
-
 <p>
 This is where the <code>poudriere options</code> comes to the rescue. I can use the <code>-s</code>
 option to view the package options and the <code>-c</code> option to reconfigure
@@ -1016,7 +661,6 @@ just specify the one necessary origin. Note the <code>-n</code> option — with
 poudriere will print configuration for the all packages required by the
 specified origin.
 </p>
-
 <pre class="example">
 # poudriere options -j 14amd64 -p local -z workstation -ns multimedia/libva
 [00:00:01] Ports supports: FLAVORS SUBPACKAGES SELECTED_OPTIONS
@@ -1028,37 +672,29 @@ specified origin.
 ===&gt; Use 'make config' to modify these settings
 [00:00:01] Re-run 'poudriere options' with the -c flag to modify the options.
 </pre>
-
 <p>
 Looks like the <code>libva</code> was configured correctly and I can just install it from
 my local repo without any problems.
 </p>
-
 <p>
 Much more complex example comes with a <code>graphics/mesa-dri</code>. Unfortunately, I
 built it with Wayland support, so I will have to reconfigure and rebuild it.
 </p>
-
 <p>
 This is where the custom zsh function <code>bsd-poudriere-reconfigure</code> comes in to
 save me a tons of typing:
 </p>
-
-
 <div class="figure">
 <p><img src="/assets/static/mesa-dri-reconfiguration.png" alt="mesa-dri options configuration window, opened with bsd-poudriere-reconfigure function" align="center">
 </p>
 </div>
-
 <p>
 Finally, to rebuild the <code>mesa-dri</code> and it's dependencies I used the next
 command:
 </p>
-
 <pre class="example">
 # poudriere bulk -j 14amd64 -p local -z workstation -b quarterly -C graphics/mesa-dri
 </pre>
-
 <p>
 And install it from <code>LocalRepo</code> the same way as I used for <code>conky</code> package.
 </p>
@@ -1072,7 +708,6 @@ the package <code>audacious-gtk3</code> can be installed, but there is only
 <code>multimedia/audactious</code> port and there are no "Qt/GTK/whatever" options to
 configure:
 </p>
-
 <pre class="example">
 /usr/ports % pkg info -o audacious-gtk3
 audacious-gtk3-4.4.2_1         multimedia/audacious
@@ -1083,28 +718,22 @@ audacious-gtk3: EXECINFO
 audacious-gtk3: LIBARCHIVE
 audacious-gtk3: NLS
 </pre>
-
 <p>
 When I built this port as usual, I got the Qt-based package. But I want a GTK
 based package because it can display my favourite skin as I want to:
 </p>
-
-
 <div class="figure">
 <p><img src="/assets/static/audacious.png" alt="Audacious plugin with old school Winamp skin" align="center" width="80%">
 </p>
 </div>
-
 <p>
 It's time to meet the <a href="https://docs.freebsd.org/en/books/porters-handbook/flavors/">flavors</a>! Some ports can be built in multiple
 variants. And the variants itself can be observed with the simple <code>fgrep</code>:
 </p>
-
 <pre class="example">
 /usr/ports % fgrep 'FLAVORS=' multimedia/audacious/Makefile
 FLAVORS=        qt6 qt5 gtk3 gtk2
 </pre>
-
 <p>
 So, according to the link above, I can build my <code>audacious-gtk3</code> package just by
 adding line <code>multimedia/audacious@gtk3</code> instead of simple <code>multimedia/audacious</code>
@@ -1121,13 +750,11 @@ One of the biggest problems I met, during the recompiling some packages — is
 the Qt 6 dependent packages. There were two of them: Telegram Desktop and the
 <a href="https://wiki.openstreetmap.org/wiki/QMapShack">Qmapshack</a>.
 </p>
-
 <p>
 Telegram Desktop is directly depends from Qt 6 and the Qmapshack depends on
 the <code>bsdisks</code> package, which depends from the Qt 6 itself (despite the Qmapshack
 depends on the Qt 5):
 </p>
-
 <pre class="example">
 ~ % pkg rquery '%n: %dn %dv : %do' telegram-desktop | /usr/bin/grep qt
 telegram-desktop: qt6-shadertools 6.8.2 : x11-toolkits/qt6-shadertools
@@ -1144,12 +771,10 @@ qmapshack: bsdisks 0.36 : sysutils/bsdisks
 bsdisks: polkit-qt-1-qt6 0.200.0 : sysutils/polkit-qt-1
 bsdisks: qt6-base 6.8.2_1 : devel/qt6-base
 </pre>
-
 <p>
 And the problem is in <code>devel/qt6-base</code> — it depends from the Wayland directly
 and there is no knob to build it without Wayland support:
 </p>
-
 <div class="org-src-container">
 <pre class="src src-makefile"><span style="color: #268bd2;">LIB_DEPENDS</span>=    libatk-1.0.so:accessibility/at-spi2-core \
         libatk-bridge-2.0.so:accessibility/at-spi2-core \
@@ -1163,24 +788,20 @@ and there is no knob to build it without Wayland support:
 <span style="color: #268bd2;">OPTIONS_SUB</span>=    yes
 </pre>
 </div>
-
 <p>
 I tried to remove this line with <code>graphics/wayland</code> dependency from the Makefile
 but <code>qt6-base</code> failed to compile in this case.
 </p>
-
 <p>
 I hope the option to compile <code>devel/qt6-base</code> without Wayland dependency will be
 added in the future. But for now I can just stick with Qt 5.
 </p>
-
 <p>
 First package, dependent from Qt 6 — the Telegram Desktop — was simply removed
 from my machine. I always encountered problems with this app — it likes to
 overload my CPU in random times. So I switched to web version and have no
 problems since.
 </p>
-
 <p>
 Second package — Qmapshack, dependent from <code>sysutils/bsdisks</code>, require more work
 on it. Bsdisks itself was pulled to my system directly by Qmapshack and wasn't
@@ -1188,7 +809,6 @@ necessary for other programs. So, the necessity of bsdisks was questionable —
 why is it needed for the mapping program, when I don't use Garmin or other GPS
 devices for mapping?
 </p>
-
 <pre class="example">
 % pkg rquery '%e' bsdisks
 UDisks2 service provides interfaces to enumerate
@@ -1196,31 +816,26 @@ and perform operations on disks and storage devices
 via D-Bus API. Bsdisks is an implementation of UDisks2
 service for FreeBSD.
 </pre>
-
 <p>
 Of course, there is no configuration option to build the <code>astro/qmapshack</code>
 without <code>sysutils/bsdisks</code>. But … it was marked as a runtime dependency in the
 Makefile, not a compile time dependency:
 </p>
-
 <div class="org-src-container">
 <pre class="src src-makefile"><span style="color: #268bd2;">RUN_DEPENDS</span>=    ${<span style="color: #268bd2;">LOCALBASE</span>}/bin/bsdisks:sysutils/bsdisks
 </pre>
 </div>
-
 <p>
 So, it's time to slightly patch the necessary port and try to build Qmapshack
 without bsdisks. First, I opened the
 <code>/hdd/poudriere/ports/local/astro/qmapshack/Makefile</code> and commented this line.
 </p>
-
 <p>
 Then, I add <code>astro/qmapshack</code> to the
 <code>/hdd/poudriere/14amd64-local-workstation-pkglist</code> and initiated the build
 without updating the ports, so my change will not clash with the updates from
 the main repository (if any):
 </p>
-
 <pre class="example">
 # poudriere bulk -j 14amd64 -p local -z workstation -b quarterly -nv -C astro/qmapshack
 ...
@@ -1230,11 +845,9 @@ the main repository (if any):
 ...
 # poudriere bulk -j 14amd64 -p local -z workstation -b quarterly -C astro/qmapshack
 </pre>
-
 <p>
 And it successfully builds and running correctly without <code>bsdisks</code>!
 </p>
-
 <pre class="example">
 [14:00:58] [01] [14:00:02] Finished www/qt5-webengine | qt5-webengine-5.15.18p5_1: Success
 [14:01:01] [01] [00:00:00] Building astro/qmapshack | qmapshack-1.17.1_5
@@ -1247,14 +860,11 @@ Packing files for repository: 100%
 [15:09:05] Removing old packages
 [15:09:05] Built ports: graphics/gdal www/qt5-webengine astro/qmapshack
 </pre>
-
-
 <div class="figure">
 <p><img src="/assets/static/qmapshack-wout-bsdisks.png" alt="Qmapshack main interface" align="center">
 </p>
 <p style="text-align: center"><i>Main window of Qmapshack GIS software</i></p>
 </div>
-
 <p>
 Last step: after successfull compilation I reverted my changes in
 <code>astro/qmapshack/Makefile</code> to avoid unnecessary problems with ports updates.
@@ -1270,7 +880,6 @@ Before, I was using a Gentoo (and compiling the whole system, of course) which
 <code>emerge</code> system was inspired by FreeBSD ports. Comparing these two system, I can
 say that ports infrastructure looks like simplier for me.
 </p>
-
 <p>
 When I recompiled the program in the Gentoo with the new options I usually did
 the next:
@@ -1284,7 +893,6 @@ flag, I call <code>equery uses program-name</code>. Then I open a text file some
 settings.</li>
 <li>After that I could start compilation with necessary options.</li>
 </ol>
-
 <p>
 Looks like for me, the same process in the FreeBSD is simpler. I can configure
 build-time options for program and it's dependencies with a single call of
@@ -1292,12 +900,10 @@ build-time options for program and it's dependencies with a single call of
 all of the options. And I don't need to copy it to the some configuration
 file — all of them will be inserted in the right place themselves.
 </p>
-
 <p>
 Also, all ports infrastructure looks like simplier — it is just a Makefile and
 a bunch of human-readable text files with package descriptions and so on!
 </p>
-
 <p>
 Of course there are drawbacks:
 </p>
@@ -1316,19 +922,15 @@ the right version of OS.</li>
 a synchronization between the binary packages from the FreeBSD repository
 and the ports.</li>
 </ul>
-
 <p>
 BTW, I got one sudden and major result of un-waylanding of my system. Before,
 I was constantly struggling from strange glitches on my display, that looks
 like this:
 </p>
-
-
 <div class="figure">
 <p><img src="/assets/static/freebsd_intel_glitches.jpg" alt="strange black glitches on the screen" align="center">
 </p>
 </div>
-
 <p>
 I thought what this is because:
 </p>
@@ -1344,13 +946,11 @@ framebuffer resolution when the machine is booting. I switched to
 precompiled libreboot and properly configure it. Aaand … nothing changed.</li>
 <li>I started to suspect my video card. Maybe my hardware is dying?…🤔</li>
 </ol>
-
 <p>
 But after I removed Qt6 and Wayland related stuff from my machine, I'm not
 seeing these glitches anymore. Before, I was seeing it almost every day. But
 for now, two days already passed and all is OK.
 </p>
-
 <hr>
 </div>
 </div>
@@ -1360,32 +960,27 @@ for now, two days already passed and all is OK.
 </div>
 </div>
 <div id="footnotes">
-
 <div id="text-footnotes">
-
 <div class="footdef">
-<sup><a id="fn.tomaoki" class="footnum" href="#fnr.tomaoki" role="doc-backlink">1</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+<sup><a id="fn.tomaoki" class="footnum" href="#fnr.tomaoki" role="doc-backlink">1</a></sup><div class="footpara" role="doc-footnote"><p class="footpara">
 <a href="https://mastodon.bsd.cafe/@TomAoki/114209804382234562">https://mastodon.bsd.cafe/@TomAoki/114209804382234562</a>
 </p></div>
 </div>
-
 <div class="footdef">
-<sup><a id="fn.pkg" class="footnum" href="#fnr.pkg" role="doc-backlink">2</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+<sup><a id="fn.pkg" class="footnum" href="#fnr.pkg" role="doc-backlink">2</a></sup><div class="footpara" role="doc-footnote"><p class="footpara">
 It may be necessary to build a <code>ports-mgmt/pkg</code> before building anything
 in the jail. In my case poudriere won't install <code>cmake-core</code> because it has
 unsatisfied dependency — the <code>pkg</code>. Despite the <code>pkg</code> of necessary version was
 previously bootstrapped to install binary packages in the jail.
 </p></div>
 </div>
-
 <div class="footdef">
-<sup><a id="fn.cpu-cores" class="footnum" href="#fnr.cpu-cores" role="doc-backlink">3</a></sup> <div class="footpara" role="doc-footnote">
+<sup><a id="fn.cpu-cores" class="footnum" href="#fnr.cpu-cores" role="doc-backlink">3</a></sup><div class="footpara" role="doc-footnote">
 <p class="footpara">
 Except the Qt building process. There is a line in
 <code>/usr/local/etc/poudriere.conf</code>, which instructs to build some packages on the
 all accessible CPU cores:
 </p>
-
 <div class="org-src-container">
 <pre class="src src-shell"><span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">List of packages that will always be allowed to use MAKE_JOBS</span>
 <span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">regardless of ALLOW_MAKE_JOBS. This is useful for allowing ports</span>
@@ -1393,97 +988,86 @@ all accessible CPU cores:
 <span style="color: #268bd2;">ALLOW_MAKE_JOBS_PACKAGES</span>=<span style="color: #2aa198;">"pkg ccache py* vlc qt*"</span>
 </pre>
 </div>
-
 <p class="footpara">
 I added the Qt to it, because it builds so slooow on the one CPU core…
 </p>
 </div>
 </div>
-
-
 </div>
 </div>
-
-  </div>
+</div>
 </article>
 </section>
 </div>
+</div>
+</div>
+</main><footer class="site-footer h-card">
+<div class="wrapper">
+<div class="site-footer-inner">
+<div>
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewbox="0 0 24 24" fill="none" stroke="#586e75" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-pen-tool"><path d="M12 19l7-7 3 3-7 7-3-3z"></path><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"></path><path d="M2 2l7.586 7.586"></path><circle cx="11" cy="11" r="2"></circle></svg>
+<a href="/changelog.html">ChangeLog</a> ┆
+<a href="/tags.html">Tags</a> ┆
+<a href="/categories.html">Categories</a> ┆
+<a href="/archives.html">Archives</a>
+</div>
+<br>
 
+<div xmlns:cc="http://creativecommons.org/ns#">
+<a rel="cc:attributionURL" href="https://eugene-andrienko.com/">This blog</a>
+© 2020-2025 by
+<a rel="cc:attributionURL dct:creator" property="cc:attributionName" href="https://eugene-andrienko.com/about">Eugene Andrienko</a>
+is licensed under
+<a href="https://creativecommons.org/licenses/by/4.0/?ref=chooser-v1" target="_blank" rel="license noopener noreferrer" style="display:inline-block;">
+CC BY 4.0
+</a>
+<img loading="lazy" width="16" height="16" class="copyleft" src="/assets/images/icons/cc.svg" alt="CC">
+<img loading="lazy" width="16" height="16" class="copyleft" src="/assets/images/icons/by.svg" alt="BY">
+</div>
+<div>
+Powered by: <a title="Jekyll is a simple, blog-aware, static site
+generator." href="https://jekyllrb.com/">Jekyll</a>.
+Icons: <a href="https://github.com/feathericons/feather">Feather</a>.
+Colors: <a href="https://ethanschoonover.com/solarized/">Solarized Light</a>.
 </div>
 
-      </div>
-    </main><footer class="site-footer h-card">
-  <div class="wrapper">
-    <div class="site-footer-inner">
-<div>
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewbox="0 0 24 24" fill="none" stroke="#586e75" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-pen-tool"><path d="M12 19l7-7 3 3-7 7-3-3z"></path><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"></path><path d="M2 2l7.586 7.586"></path><circle cx="11" cy="11" r="2"></circle></svg> 
-          <a href="/changelog.html">ChangeLog</a> ┆
-          <a href="/tags.html">Tags</a> ┆
-          <a href="/categories.html">Categories</a> ┆
-          <a href="/archives.html">Archives</a>
-        </div>
-
-        <br>
-
-        <!-- CC BY 4.0 -->
-        <div xmlns:cc="http://creativecommons.org/ns#">
-          <a rel="cc:attributionURL" href="https://eugene-andrienko.com/">This blog</a>
-          © 2020-2025 by
-          <a rel="cc:attributionURL dct:creator" property="cc:attributionName" href="https://eugene-andrienko.com/about">Eugene Andrienko</a>
-          is licensed under
-          <a href="https://creativecommons.org/licenses/by/4.0/?ref=chooser-v1" target="_blank" rel="license noopener noreferrer" style="display:inline-block;">
-            CC BY 4.0
-          </a>
-          <img loading="lazy" width="16" height="16" class="copyleft" src="/assets/images/icons/cc.svg" alt="CC">
-          <img loading="lazy" width="16" height="16" class="copyleft" src="/assets/images/icons/by.svg" alt="BY">
-        </div>
-
-        <div>
-          Powered by: <a title="Jekyll is a simple, blog-aware, static site
-          generator." href="https://jekyllrb.com/">Jekyll</a>.
-          Icons: <a href="https://github.com/feathericons/feather">Feather</a>.
-          Colors: <a href="https://ethanschoonover.com/solarized/">Solarized Light</a>.
-        </div>
-
-        <!-- Old but gold buttons -->
-        <div class="old-gold-buttons">
-          <a href="https://eugene-andrienko.com/en/it/2024/07/07/thinkpad-x220-second-life">
-            <img loading="lazy" alt="IBM Thinkpad button" width="80" height="15" src="/assets/images/buttons/80x15/thinkpad.png">
-          </a>
-          <a href="https://github.com/eugeneandrienko">
-            <img loading="lazy" alt="Night coder button" width="80" height="15" src="/assets/images/buttons/80x15/nightcoder.png">
-          </a>
-          <img loading="lazy" alt="Love dragons button" width="80" height="15" src="/assets/images/buttons/80x15/dragon.png">
-        </div>
-
-        <div class="old-gold-buttons">
-          <a href="https://cobaltblue.neocities.org/buttons/">
-            <img loading="lazy" alt="Made by dragon button" width="88" height="31" src="/assets/images/buttons/88x31/dragonmade-yellow.png">
-          </a>
-          <map name="fediring6">
-            <area href="https://fediring.net/previous?host=eugene-andrienko.com%2Fen%2F" shape="rect" coords="3,6,12,27" target="_top" alt="previous" title="previous">
-            <area href="https://fediring.net/" shape="rect" coords="15,3,72,27" target="_blank" alt="Fediring" title="Fediring">
-            <area href="https://fediring.net/next?host=eugene-andrienko.com%2Fen%2F" shape="rect" coords="75,6,84,27" target="_top" alt="next" title="next">
-          </map>
-          <img loading="lazy" usemap="#fediring6" alt="Fediring" width="88" height="31" src="/assets/images/buttons/88x31/fediring.png">
-          <map name="noaimini7">
-            <area href="https://baccyflap.com/noai" shape="rect" coords="15,3,72,27" target="_blank" alt="no ai webring" title="no ai webring">
-            <area href="https://baccyflap.com/noai/?prv&s=drg" target="_top" shape="rect" coords="3,6,12,27" alt="previous" title="previous">
-            <area href="https://baccyflap.com/noai/?nxt&s=drg" target="_top" shape="rect" coords="75,6,84,27" alt="next" title="next">
-          </map>
-          <img loading="lazy" usemap="#noaimini7" alt="No AI ring" width="88" height="31" src="/assets/images/buttons/88x31/noaiwidget.gif">
-          <a href="https://512kb.club/#100">
-            <img loading="lazy" alt="512KB club, green team" width="88" height="31" src="/assets/images/buttons/88x31/green-team.gif">
-          </a>
-          <a href="https://no-js.club/">
-            <img loading="lazy" alt="no-JS Club" width="88" height="31" src="/assets/images/buttons/88x31/javascript-zero.gif">
-          </a>
-          <a href="https://www.gnu.org/software/emacs/">
-            <img loading="lazy" alt="Created with Emacs" width="88" height="31" src="/assets/images/buttons/88x31/emacs.gif">
-          </a>
-        </div>
-    </div>
-  </div>
+<div class="old-gold-buttons">
+<a href="https://eugene-andrienko.com/en/it/2024/07/07/thinkpad-x220-second-life">
+<img loading="lazy" alt="IBM Thinkpad button" width="80" height="15" src="/assets/images/buttons/80x15/thinkpad.png">
+</a>
+<a href="https://github.com/eugeneandrienko">
+<img loading="lazy" alt="Night coder button" width="80" height="15" src="/assets/images/buttons/80x15/nightcoder.png">
+</a>
+<img loading="lazy" alt="Love dragons button" width="80" height="15" src="/assets/images/buttons/80x15/dragon.png">
+</div>
+<div class="old-gold-buttons">
+<a href="https://cobaltblue.neocities.org/buttons/">
+<img loading="lazy" alt="Made by dragon button" width="88" height="31" src="/assets/images/buttons/88x31/dragonmade-yellow.png">
+</a>
+<map name="fediring6">
+<area href="https://fediring.net/previous?host=eugene-andrienko.com%2Fen%2F" shape="rect" coords="3,6,12,27" target="_top" alt="previous" title="previous">
+<area href="https://fediring.net/" shape="rect" coords="15,3,72,27" target="_blank" alt="Fediring" title="Fediring">
+<area href="https://fediring.net/next?host=eugene-andrienko.com%2Fen%2F" shape="rect" coords="75,6,84,27" target="_top" alt="next" title="next">
+</map>
+<img loading="lazy" usemap="#fediring6" alt="Fediring" width="88" height="31" src="/assets/images/buttons/88x31/fediring.png">
+<map name="noaimini7">
+<area href="https://baccyflap.com/noai" shape="rect" coords="15,3,72,27" target="_blank" alt="no ai webring" title="no ai webring">
+<area href="https://baccyflap.com/noai/?prv&s=drg" target="_top" shape="rect" coords="3,6,12,27" alt="previous" title="previous">
+<area href="https://baccyflap.com/noai/?nxt&s=drg" target="_top" shape="rect" coords="75,6,84,27" alt="next" title="next">
+</map>
+<img loading="lazy" usemap="#noaimini7" alt="No AI ring" width="88" height="31" src="/assets/images/buttons/88x31/noaiwidget.gif">
+<a href="https://512kb.club/#100">
+<img loading="lazy" alt="512KB club, green team" width="88" height="31" src="/assets/images/buttons/88x31/green-team.gif">
+</a>
+<a href="https://no-js.club/">
+<img loading="lazy" alt="no-JS Club" width="88" height="31" src="/assets/images/buttons/88x31/javascript-zero.gif">
+</a>
+<a href="https://www.gnu.org/software/emacs/">
+<img loading="lazy" alt="Created with Emacs" width="88" height="31" src="/assets/images/buttons/88x31/emacs.gif">
+</a>
+</div>
+</div>
+</div>
 </footer>
 </body>
 </html>

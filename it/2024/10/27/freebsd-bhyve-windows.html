@@ -2,8 +2,8 @@
 <html lang="ru">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-<!-- Begin Jekyll SEO tag v2.8.0 -->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
 <title>Запуск Windows в bhyve на FreeBSD | Dragon’s notes</title>
 <meta name="generator" content="Jekyll v4.4.1">
 <meta property="og:title" content="Запуск Windows в bhyve на FreeBSD">
@@ -22,380 +22,92 @@
 <meta property="twitter:title" content="Запуск Windows в bhyve на FreeBSD">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Eugene Andrienko"},"dateModified":"2024-10-27T00:00:00+03:00","datePublished":"2024-10-27T00:00:00+03:00","description":"В этой заметке собраны все шаги, необходимые для запуска гостевой Windows 7 с помощью FreeBSD-шного гипервизора bhybe. И подводные камни, с которыми я столкнулся.","headline":"Запуск Windows в bhyve на FreeBSD","image":"https://eugene-andrienko.com/assets/static/freebsd_win.jpg","mainEntityOfPage":{"@type":"WebPage","@id":"https://eugene-andrienko.com/it/2024/10/27/freebsd-bhyve-windows.html"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://eugene-andrienko.com/assets/images/home.jpg"},"name":"Eugene Andrienko"},"url":"https://eugene-andrienko.com/it/2024/10/27/freebsd-bhyve-windows.html"}</script>
-<!-- End Jekyll SEO tag -->
+
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-  <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
-  <meta name="theme-color" content="#ffffff">
-  <link rel="me" href="https://mas.to/@evgandr">
-  <link rel="stylesheet" href="/assets/css/main.css">
-  <meta name="fediverse:creator" content="@evgandr@mas.to">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+<meta name="theme-color" content="#ffffff">
+<link rel="me" href="https://mas.to/@evgandr">
+<link rel="stylesheet" href="/assets/css/main.css">
+<meta name="fediverse:creator" content="@evgandr@mas.to">
 <link type="application/atom+xml" rel="alternate" href="https://eugene-andrienko.com/feed.xml" title="Dragon's notes">
 </head>
 <body>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<style>
-    html .page-banner .page-banner-img > *:first-child {
-      opacity: 0.6;
-    }
-  </style>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+<style>html .page-banner .page-banner-img>*:first-child{opacity:.6}</style>
 <header class="site-header">
-  <div class="wrapper">
-    <div class="site-header-inner"><ul class="site-nav">
-        <li>
-          <a class="site-brand" rel="author" href="/">
-            Dragon's notes
-          </a>
-        </li>
+<div class="wrapper">
+<div class="site-header-inner"><ul class="site-nav">
 <li>
-          <a class="page-link" href="/now.html">NOW</a>
-        </li>
+<a class="site-brand" rel="author" href="/">
+Dragon's notes
+</a>
+</li>
 <li>
-          <a class="page-link" href="/about.html">ABOUT</a>
-        </li>
+<a class="page-link" href="/now.html">NOW</a>
+</li>
 <li>
-          <a class="page-link" href="/links.html">LINKS</a>
-        </li>
-<!-- RSS -->
-        <li>
-          
-          <a class="page-link" aria-label="RSS feed link" href="/feed.xml">
-            <span class="rss-text">RSS</span>
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg>
-          </a>
-          
-        </li>
-        <!-- Languages -->
-        <div class="lang-separator">
-          <hr>
-        </div>
-        
-        
-        
-        <li class="nav-right">
-          <a class="page-link" href="/en/it/2024/10/27/freebsd-bhyve-windows.html">EN</a>
-        </li>
-        
-        
-        
-        
-        <li class="nav-right"><a class="page-link active">RU</a></li>
-        
-        
-      </ul></div>
-  </div>
+<a class="page-link" href="/about.html">ABOUT</a>
+</li>
+<li>
+<a class="page-link" href="/links.html">LINKS</a>
+</li>
+
+<li>
+<a class="page-link" aria-label="RSS feed link" href="/feed.xml">
+<span class="rss-text">RSS</span>
+<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg>
+</a>
+</li>
+
+<div class="lang-separator">
+<hr>
+</div>
+<li class="nav-right">
+<a class="page-link" href="/en/it/2024/10/27/freebsd-bhyve-windows.html">EN</a>
+</li>
+<li class="nav-right"><a class="page-link active">RU</a></li>
+</ul></div>
+</div>
 </header>
 <section class="page-banner">
-    <div class="page-banner-img">
-      <div style="background-image: url(/assets/static/freebsd_win.jpg)"></div>
-    </div>
-    <div class="wrapper">
-      <div class="page-banner-inner">
+<div class="page-banner-img">
+<div style="background-image: url(/assets/static/freebsd_win.jpg)"></div>
+</div>
+<div class="wrapper">
+<div class="page-banner-inner">
 <header class="post-header">
-  <h1 class="post-title p-name" itemprop="name headline">Запуск Windows в bhyve на FreeBSD</h1>
+<h1 class="post-title p-name" itemprop="name headline">Запуск Windows в bhyve на FreeBSD</h1>
 <p class="post-meta">
-      <time class="dt-published" datetime="2024-10-27T00:00:00+03:00" itemprop="datePublished"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
-        2024.10.27
-      </time>
-
-      
-      
-      <span class="left-vsplit">
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-folder"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>
-        it
-      </span>
-    </p>
+<time class="dt-published" datetime="2024-10-27T00:00:00+03:00" itemprop="datePublished"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+2024.10.27
+</time>
+<span class="left-vsplit">
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-folder"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>
+it
+</span>
+</p>
 <div class="post-tags"><a class="post-tag" href="/tags.html#freebsd">#freebsd</a></div></header>
 </div>
-    </div>
-  </section><main class="page-content" aria-label="Content">
-      <div class="wrapper">
-        <div class="framework main">
-  <div class="post">
-  <section>
-
-
-
-
-
-
-
-
-
+</div>
+</section><main class="page-content" aria-label="Content">
+<div class="wrapper">
+<div class="framework main">
+<div class="post">
+<section>
 <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
-  <div class="post-content e-content" itemprop="articleBody">
-    <p>
+<div class="post-content e-content" itemprop="articleBody">
+<p>
 В этой заметке собраны все шаги, необходимые для запуска гостевой Windows 7 с
 помощью FreeBSD-шного гипервизора bhybe. И подводные камни, с которыми я
 столкнулся.
 </p>
-
 <p>
 Заметка основана на статье Vermaden: <a href="https://vermaden.wordpress.com/2023/08/18/freebsd-bhyve-virtualization/">FreeBSD Bhyve Virtualization</a>. Прямое
 следование инструкциям оттуда дало мне зависающую при старте Windows, без
 доступа к сети и без удалённого доступа — поэтому я написал свою инструкцию, с
 парой дополнительных шагов.
 </p>
-
 <p>
 Всё началось с того, что мне понадобилась одна старая Windows программа —
 раньше для такого я бы просто использовал Wine. Но тут внезапно выяснилось,
@@ -405,7 +117,6 @@
 <code>pkg32.sh</code> от мейнтейнеров пакета, но даже с 32-битной версией всё равно ничего
 не работает.
 </p>
-
 <p>
 И тут в дело пошли старые «трюки». Раньше я просто устанавливал Windows в
 VirtualBox, который вполне сносно и быстро работал при использовании
@@ -440,7 +151,6 @@ FreeBSD же работать с виртуальными машинами ещ�
 машины. Винчестер немедленно был подключен третьим диском к моему <a href="https://eugene-andrienko.com/it/2024/07/07/thinkpad-x220-second-life">Thinkpad
 X220</a> через OptiBay.
 </p>
-
 <p>
 Дальше всё было стандартно. Был создан отдельный zfs pool на этом диске и
 отдельный dataset, специально под VM:
@@ -465,7 +175,6 @@ NAME                                           USED  AVAIL  REFER  MOUNTPOINT
 hdd                                           14.2G   435G    96K  /hdd
 hdd/vms                                       14.2G   435G  8.07G  /hdd/vms
 </pre>
-
 <p>
 Dataset <code>hdd/vms</code> нужен будет для vm-bhyve, чтобы он хранил все свои файлы на
 этом жёстком диске, а не где-то на двух основных системных дисках.
@@ -512,7 +221,6 @@ vm_dir="zfs:hdd/vms"
 <pre class="example">
 # vm init
 </pre>
-
 <p>
 После этого по пути <code>/hdd/vms/</code> должны быть созданы служебные каталоги vm-bhyve:
 </p>
@@ -538,7 +246,6 @@ drwxr-xr-x  2 root wheel    4B Oct 27 10:53 .templates/
 виртуальной машины с Windows не будет ни графики, ни звука, ни достаточной
 памяти.
 </p>
-
 <p>
 Здесь мне очень помогла статья Vermaden'а: <a href="https://vermaden.wordpress.com/2023/08/18/freebsd-bhyve-virtualization/">FreeBSD Bhyve
 Virtualization</a>. Профиль был взят оттуда с небольшими доработками:
@@ -550,7 +257,6 @@ Virtualization</a>. Профиль был взят оттуда с неболь�
 <p>
 Добавлена дополнительная память.
 </p>
-
 <pre class="example">
 loader="uefi"
 graphics="yes"
@@ -565,7 +271,6 @@ disk0_opts="sectorsize=512"
 utctime="no"
 bhyve_options="-s 8,hda,play=/dev/dsp,rec=/dev/dsp"
 </pre>
-
 <p>
 Этот профиль был сохранён по пути <code>/hdd/vms/.templates/windows.conf</code>.
 </p>
@@ -580,21 +285,18 @@ bhyve_options="-s 8,hda,play=/dev/dsp,rec=/dev/dsp"
 Почему-то этот пункт пропускается во многих руководствах — в итоге из хоста
 нет доступа к установленной гостевой системе по сети.
 </p>
-
 <p>
 Для начала создаётся switch <code>public</code> (он же указан выше в профиле <code>windows</code>):
 </p>
 <pre class="example">
 # vm switch create public
 </pre>
-
 <p>
 Потом ему надо указать адрес:
 </p>
 <pre class="example">
 # vm switch address public 169.254.0.1/16
 </pre>
-
 <p>
 Адрес я указывал уже после того, как установил Windows — посмотрел через
 <code>ipconfig</code>, что система получила по DHCP:
@@ -603,11 +305,9 @@ bhyve_options="-s 8,hda,play=/dev/dsp,rec=/dev/dsp"
 <li>IP address: 169.254.122.106</li>
 <li>Netmask: 255.255.0.0</li>
 </ul>
-
 <p>
 И соответственно установил адрес для свитча.
 </p>
-
 <pre class="example">
 s vm switch list
 NAME    TYPE      IFACE      ADDRESS         PRIVATE  MTU  VLAN  PORTS
@@ -624,13 +324,11 @@ public  standard  vm-public  169.254.0.1/16  no       -    -     -
 драйвера virtio. К счастью, в имевшейся у меня «сборке от Васяна» то ли уже
 были нужные драйвера, то ли они не нужны при установке.
 </p>
-
 <p>
 Что интересно, не каждый установочный ISO работает — некоторые просто не
 загружаются. От чего это зависит я так и не выяснил. Поэтому на поиск
 загружающегося дистрибутива придётся потратить немного времени…
 </p>
-
 <p>
 ISO файл нужно поместить по пути <code>/hdd/vms/.iso/</code>, после чего он должен
 появиться в выводе команды <code>vm iso</code>:
@@ -640,14 +338,12 @@ ISO файл нужно поместить по пути <code>/hdd/vms/.iso/</c
 DATASTORE           FILENAME
 default             windows_eagle.iso
 </pre>
-
 <p>
 Перед установкой надо иметь на машине какой-нибудь VNC-клиент — через него
 можно будет подключиться к графическому интерфейсу гостевой системы и
 произвести установку. Я использовал <a href="https://wiki.gnome.org/Apps/Vinagre">Vinagre</a> из-за его умения правильно
 scal'ить рабочую область.
 </p>
-
 <p>
 Установка состоит из ряда простых шагов:
 </p>
@@ -686,7 +382,6 @@ windows  default    uefi    2    6G      0.0.0.0:5900  No    Locked (freebsd)
 <p>
 Ну а дальше всё, как обычно :-)
 </p>
-
 <div class="figure">
 <p><img src="/assets/static/windows7_setup.jpg" alt="windows 7 setup" align="center">
 </p>
@@ -704,7 +399,6 @@ windows  default    uefi    2    6G      0.0.0.0:5900  No    Locked (freebsd)
 RDP. Слишком уж ценна возможность одновременно пробросить каталоги с хоста в
 <b>уже запущенную</b> гостевую систему.
 </p>
-
 <p>
 Для RDP в Windows надо:
 </p>
@@ -714,7 +408,6 @@ RDP. Слишком уж ценна возможность одновремен�
 <p>
 Включить удалённый доступ к системе:
 </p>
-
 <div class="figure">
 <p><img src="/assets/static/windows7_remote_control.jpg" alt="windows 7 remote control settings" align="center">
 </p>
@@ -725,12 +418,10 @@ RDP. Слишком уж ценна возможность одновремен�
 <p>
 Посмотреть IP адрес гостевой системы через <code>ipconfig</code>:
 </p>
-
 <div class="figure">
 <p><img src="/assets/static/windows7_ipconfig.jpg" alt="windows cmd and ipconfig output" align="center">
 </p>
 </div>
-
 <p>
 Теперь можно подключиться к гостевой Windows с FreeBSD-хоста при помощи
 следующей команды:
@@ -738,7 +429,6 @@ RDP. Слишком уж ценна возможность одновремен�
 <pre class="example">
 $ rdesktop -u user -p 1234 -P -N -z -g 1600x900 -a 24 -r sound:local -r disk:DWNL=/home/drag0n/downloads/ -r clipboard:PRIMARYCLIPBOARD 169.254.122.106
 </pre>
-
 <p>
 Вместо <code>user/1234</code> следует подставить свою пару логин/пароль. Опция <code>-r disk</code>
 пробрасывает каталог <code>/home/drag0n/downloads/</code> с хоста в гостевую Windows как
@@ -746,14 +436,11 @@ $ rdesktop -u user -p 1234 -P -N -z -g 1600x900 -a 24 -r sound:local -r disk:DWN
 убрать эту опцию. Опция <code>-r clipboard</code> пробрасывает один из clipboard'ов
 X-сервера в гостевую систему и обратно.
 </p>
-
-
 <div class="figure">
 <p><img src="/assets/static/windows7_dwnl.jpg" alt="Catalog from FreeBSD host as DWNL network storage" align="center">
 </p>
 <p style="text-align: center"><i>Проброшенный каталог с FreeBSD-хоста</i></p>
 </div>
-
 <p>
 Опция <code>-g 1600x900</code> в принципе устанавливает желаемое разрешение в окне с
 гостевой VM. Но при использовании tiling wm, окно rdesktop будет растянуто
@@ -812,87 +499,79 @@ Are you sure you want to forcefully poweroff this virtual machine (y/n)?
 </ol>
 </div>
 </div>
-
-  </div>
+</div>
 </article>
 </section>
 </div>
+</div>
+</div>
+</main><footer class="site-footer h-card">
+<div class="wrapper">
+<div class="site-footer-inner">
+<div>
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewbox="0 0 24 24" fill="none" stroke="#586e75" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-pen-tool"><path d="M12 19l7-7 3 3-7 7-3-3z"></path><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"></path><path d="M2 2l7.586 7.586"></path><circle cx="11" cy="11" r="2"></circle></svg>
+<a href="/changelog.html">ChangeLog</a> ┆
+<a href="/tags.html">Tags</a> ┆
+<a href="/categories.html">Categories</a> ┆
+<a href="/archives.html">Archives</a>
+</div>
+<br>
 
+<div xmlns:cc="http://creativecommons.org/ns#">
+<a rel="cc:attributionURL" href="https://eugene-andrienko.com/">This blog</a>
+© 2020-2025 by
+<a rel="cc:attributionURL dct:creator" property="cc:attributionName" href="https://eugene-andrienko.com/about">Eugene Andrienko</a>
+is licensed under
+<a href="https://creativecommons.org/licenses/by/4.0/?ref=chooser-v1" target="_blank" rel="license noopener noreferrer" style="display:inline-block;">
+CC BY 4.0
+</a>
+<img loading="lazy" width="16" height="16" class="copyleft" src="/assets/images/icons/cc.svg" alt="CC">
+<img loading="lazy" width="16" height="16" class="copyleft" src="/assets/images/icons/by.svg" alt="BY">
+</div>
+<div>
+Powered by: <a title="Jekyll is a simple, blog-aware, static site
+generator." href="https://jekyllrb.com/">Jekyll</a>.
+Icons: <a href="https://github.com/feathericons/feather">Feather</a>.
+Colors: <a href="https://ethanschoonover.com/solarized/">Solarized Light</a>.
 </div>
 
-      </div>
-    </main><footer class="site-footer h-card">
-  <div class="wrapper">
-    <div class="site-footer-inner">
-<div>
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewbox="0 0 24 24" fill="none" stroke="#586e75" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-pen-tool"><path d="M12 19l7-7 3 3-7 7-3-3z"></path><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"></path><path d="M2 2l7.586 7.586"></path><circle cx="11" cy="11" r="2"></circle></svg> 
-          <a href="/changelog.html">ChangeLog</a> ┆
-          <a href="/tags.html">Tags</a> ┆
-          <a href="/categories.html">Categories</a> ┆
-          <a href="/archives.html">Archives</a>
-        </div>
-
-        <br>
-
-        <!-- CC BY 4.0 -->
-        <div xmlns:cc="http://creativecommons.org/ns#">
-          <a rel="cc:attributionURL" href="https://eugene-andrienko.com/">This blog</a>
-          © 2020-2025 by
-          <a rel="cc:attributionURL dct:creator" property="cc:attributionName" href="https://eugene-andrienko.com/about">Eugene Andrienko</a>
-          is licensed under
-          <a href="https://creativecommons.org/licenses/by/4.0/?ref=chooser-v1" target="_blank" rel="license noopener noreferrer" style="display:inline-block;">
-            CC BY 4.0
-          </a>
-          <img loading="lazy" width="16" height="16" class="copyleft" src="/assets/images/icons/cc.svg" alt="CC">
-          <img loading="lazy" width="16" height="16" class="copyleft" src="/assets/images/icons/by.svg" alt="BY">
-        </div>
-
-        <div>
-          Powered by: <a title="Jekyll is a simple, blog-aware, static site
-          generator." href="https://jekyllrb.com/">Jekyll</a>.
-          Icons: <a href="https://github.com/feathericons/feather">Feather</a>.
-          Colors: <a href="https://ethanschoonover.com/solarized/">Solarized Light</a>.
-        </div>
-
-        <!-- Old but gold buttons -->
-        <div class="old-gold-buttons">
-          <a href="https://eugene-andrienko.com/en/it/2024/07/07/thinkpad-x220-second-life">
-            <img loading="lazy" alt="IBM Thinkpad button" width="80" height="15" src="/assets/images/buttons/80x15/thinkpad.png">
-          </a>
-          <a href="https://github.com/eugeneandrienko">
-            <img loading="lazy" alt="Night coder button" width="80" height="15" src="/assets/images/buttons/80x15/nightcoder.png">
-          </a>
-          <img loading="lazy" alt="Love dragons button" width="80" height="15" src="/assets/images/buttons/80x15/dragon.png">
-        </div>
-
-        <div class="old-gold-buttons">
-          <a href="https://cobaltblue.neocities.org/buttons/">
-            <img loading="lazy" alt="Made by dragon button" width="88" height="31" src="/assets/images/buttons/88x31/dragonmade-yellow.png">
-          </a>
-          <map name="fediring6">
-            <area href="https://fediring.net/previous?host=eugene-andrienko.com%2Fen%2F" shape="rect" coords="3,6,12,27" target="_top" alt="previous" title="previous">
-            <area href="https://fediring.net/" shape="rect" coords="15,3,72,27" target="_blank" alt="Fediring" title="Fediring">
-            <area href="https://fediring.net/next?host=eugene-andrienko.com%2Fen%2F" shape="rect" coords="75,6,84,27" target="_top" alt="next" title="next">
-          </map>
-          <img loading="lazy" usemap="#fediring6" alt="Fediring" width="88" height="31" src="/assets/images/buttons/88x31/fediring.png">
-          <map name="noaimini7">
-            <area href="https://baccyflap.com/noai" shape="rect" coords="15,3,72,27" target="_blank" alt="no ai webring" title="no ai webring">
-            <area href="https://baccyflap.com/noai/?prv&s=drg" target="_top" shape="rect" coords="3,6,12,27" alt="previous" title="previous">
-            <area href="https://baccyflap.com/noai/?nxt&s=drg" target="_top" shape="rect" coords="75,6,84,27" alt="next" title="next">
-          </map>
-          <img loading="lazy" usemap="#noaimini7" alt="No AI ring" width="88" height="31" src="/assets/images/buttons/88x31/noaiwidget.gif">
-          <a href="https://512kb.club/#100">
-            <img loading="lazy" alt="512KB club, green team" width="88" height="31" src="/assets/images/buttons/88x31/green-team.gif">
-          </a>
-          <a href="https://no-js.club/">
-            <img loading="lazy" alt="no-JS Club" width="88" height="31" src="/assets/images/buttons/88x31/javascript-zero.gif">
-          </a>
-          <a href="https://www.gnu.org/software/emacs/">
-            <img loading="lazy" alt="Created with Emacs" width="88" height="31" src="/assets/images/buttons/88x31/emacs.gif">
-          </a>
-        </div>
-    </div>
-  </div>
+<div class="old-gold-buttons">
+<a href="https://eugene-andrienko.com/en/it/2024/07/07/thinkpad-x220-second-life">
+<img loading="lazy" alt="IBM Thinkpad button" width="80" height="15" src="/assets/images/buttons/80x15/thinkpad.png">
+</a>
+<a href="https://github.com/eugeneandrienko">
+<img loading="lazy" alt="Night coder button" width="80" height="15" src="/assets/images/buttons/80x15/nightcoder.png">
+</a>
+<img loading="lazy" alt="Love dragons button" width="80" height="15" src="/assets/images/buttons/80x15/dragon.png">
+</div>
+<div class="old-gold-buttons">
+<a href="https://cobaltblue.neocities.org/buttons/">
+<img loading="lazy" alt="Made by dragon button" width="88" height="31" src="/assets/images/buttons/88x31/dragonmade-yellow.png">
+</a>
+<map name="fediring6">
+<area href="https://fediring.net/previous?host=eugene-andrienko.com%2Fen%2F" shape="rect" coords="3,6,12,27" target="_top" alt="previous" title="previous">
+<area href="https://fediring.net/" shape="rect" coords="15,3,72,27" target="_blank" alt="Fediring" title="Fediring">
+<area href="https://fediring.net/next?host=eugene-andrienko.com%2Fen%2F" shape="rect" coords="75,6,84,27" target="_top" alt="next" title="next">
+</map>
+<img loading="lazy" usemap="#fediring6" alt="Fediring" width="88" height="31" src="/assets/images/buttons/88x31/fediring.png">
+<map name="noaimini7">
+<area href="https://baccyflap.com/noai" shape="rect" coords="15,3,72,27" target="_blank" alt="no ai webring" title="no ai webring">
+<area href="https://baccyflap.com/noai/?prv&s=drg" target="_top" shape="rect" coords="3,6,12,27" alt="previous" title="previous">
+<area href="https://baccyflap.com/noai/?nxt&s=drg" target="_top" shape="rect" coords="75,6,84,27" alt="next" title="next">
+</map>
+<img loading="lazy" usemap="#noaimini7" alt="No AI ring" width="88" height="31" src="/assets/images/buttons/88x31/noaiwidget.gif">
+<a href="https://512kb.club/#100">
+<img loading="lazy" alt="512KB club, green team" width="88" height="31" src="/assets/images/buttons/88x31/green-team.gif">
+</a>
+<a href="https://no-js.club/">
+<img loading="lazy" alt="no-JS Club" width="88" height="31" src="/assets/images/buttons/88x31/javascript-zero.gif">
+</a>
+<a href="https://www.gnu.org/software/emacs/">
+<img loading="lazy" alt="Created with Emacs" width="88" height="31" src="/assets/images/buttons/88x31/emacs.gif">
+</a>
+</div>
+</div>
+</div>
 </footer>
 </body>
 </html>

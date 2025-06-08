@@ -1,6 +1,5 @@
 User-agent: *
 Sitemap: https://eugene-andrienko.com/sitemap.xml
-
 #
 # Block AI bots and bad bots:
 # Main source: https://github.com/mitchellkrogza/nginx-ultimate-bad-bot-blocker

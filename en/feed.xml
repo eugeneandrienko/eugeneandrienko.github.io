@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="ru"><generator uri="https://jekyllrb.com/" version="4.4.1">Jekyll</generator><link href="https://eugene-andrienko.com/en/feed.xml" rel="self" type="application/atom+xml" /><link href="https://eugene-andrienko.com/en/" rel="alternate" type="text/html" hreflang="ru" /><updated>2025-06-08T16:10:06+03:00</updated><id>https://eugene-andrienko.com/feed.xml</id><title type="html">Dragon’s notes</title><subtitle>Dragon&apos;s cave with posts about IT, photography, bicycles and different DIY.</subtitle><author><name>Eugene Andrienko</name></author><entry xml:lang="en"><title type="html">Network provincialism and balkanization</title><link href="https://eugene-andrienko.com/en/it/2025/05/25/internet-slow-death.html" rel="alternate" type="text/html" title="Network provincialism and balkanization" /><published>2025-05-25T00:00:00+03:00</published><updated>2025-05-25T00:00:00+03:00</updated><id>https://eugene-andrienko.com/it/2025/05/25/internet-slow-death</id><content type="html" xml:base="https://eugene-andrienko.com/it/2025/05/25/internet-slow-death.html"><![CDATA[<pre class="example">
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="ru"><generator uri="https://jekyllrb.com/" version="4.4.1">Jekyll</generator><link href="https://eugene-andrienko.com/en/feed.xml" rel="self" type="application/atom+xml" /><link href="https://eugene-andrienko.com/en/" rel="alternate" type="text/html" hreflang="ru" /><updated>2025-06-08T18:02:35+03:00</updated><id>https://eugene-andrienko.com/feed.xml</id><title type="html">Dragon’s notes</title><subtitle>Dragon&apos;s cave with posts about IT, photography, bicycles and different DIY.</subtitle><author><name>Eugene Andrienko</name></author><entry xml:lang="en"><title type="html">Network provincialism and balkanization</title><link href="https://eugene-andrienko.com/en/it/2025/05/25/internet-slow-death.html" rel="alternate" type="text/html" title="Network provincialism and balkanization" /><published>2025-05-25T00:00:00+03:00</published><updated>2025-05-25T00:00:00+03:00</updated><id>https://eugene-andrienko.com/it/2025/05/25/internet-slow-death</id><content type="html" xml:base="https://eugene-andrienko.com/it/2025/05/25/internet-slow-death.html"><![CDATA[<pre class="example">
  ____                                   __       ___
 /\  _`\                                /\ \     /\_ \
 \ \ \L\ \_ __    __     __      ___ ___\ \ \____\//\ \      __
@@ -5766,7 +5766,7 @@ For example, to convert org files from <code>~/test</code> to HTML files for Jek
 </p>
 
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #2aa198;">(</span><span style="color: #859900; font-weight: bold;">let</span> <span style="color: #b58900;">(</span><span style="color: #268bd2;">(</span>org-publish-project-alist `<span style="color: #6c71c4;">(</span><span style="color: #859900;">(</span><span style="color: #2aa198;">"org-jekyll-org"</span>
+<pre class="src src-emacs-lisp">(<span style="color: #859900; font-weight: bold;">let</span> ((org-publish-project-alist `((<span style="color: #2aa198;">"org-jekyll-org"</span>
                                     <span style="color: #657b83; font-weight: bold;">:base-directory</span> <span style="color: #2aa198;">"~/test"</span>
                                     <span style="color: #657b83; font-weight: bold;">:base-extension</span> <span style="color: #2aa198;">"org"</span>
                                     <span style="color: #657b83; font-weight: bold;">:publishing-directory</span> <span style="color: #2aa198;">"~/results"</span>
@@ -5775,15 +5775,15 @@ For example, to convert org files from <code>~/test</code> to HTML files for Jek
                                     <span style="color: #657b83; font-weight: bold;">:headline-levels</span> 5
                                     <span style="color: #657b83; font-weight: bold;">:html-toplevel-hlevel</span> 2
                                     <span style="color: #657b83; font-weight: bold;">:html-html5-fancy</span> t
-                                    <span style="color: #657b83; font-weight: bold;">:html-table-attributes</span> <span style="color: #b58900;">(</span><span style="color: #657b83; font-weight: bold;">:border</span> <span style="color: #2aa198;">"2"</span> <span style="color: #657b83; font-weight: bold;">:cellspacing</span> <span style="color: #2aa198;">"0"</span> <span style="color: #657b83; font-weight: bold;">:cellpadding</span> <span style="color: #2aa198;">"6"</span> <span style="color: #657b83; font-weight: bold;">:frame</span> <span style="color: #2aa198;">"void"</span><span style="color: #b58900;">)</span>
+                                    <span style="color: #657b83; font-weight: bold;">:html-table-attributes</span> (<span style="color: #657b83; font-weight: bold;">:border</span> <span style="color: #2aa198;">"2"</span> <span style="color: #657b83; font-weight: bold;">:cellspacing</span> <span style="color: #2aa198;">"0"</span> <span style="color: #657b83; font-weight: bold;">:cellpadding</span> <span style="color: #2aa198;">"6"</span> <span style="color: #657b83; font-weight: bold;">:frame</span> <span style="color: #2aa198;">"void"</span>)
                                     <span style="color: #657b83; font-weight: bold;">:section-numbers</span> nil
                                     <span style="color: #657b83; font-weight: bold;">:html-inline-images</span> t
                                     <span style="color: #657b83; font-weight: bold;">:htmlized-source</span> t
                                     <span style="color: #657b83; font-weight: bold;">:with-toc</span> nil
                                     <span style="color: #657b83; font-weight: bold;">:with-sub-superscript</span> nil
                                     <span style="color: #657b83; font-weight: bold;">:body-only</span> t
-                                    <span style="color: #657b83; font-weight: bold;">:recursive</span> t<span style="color: #859900;">)</span><span style="color: #6c71c4;">)</span><span style="color: #268bd2;">)</span><span style="color: #b58900;">)</span>
-  <span style="color: #b58900;">(</span>org-publish-project <span style="color: #2aa198;">"org-jekyll-org"</span> t nil<span style="color: #b58900;">)</span><span style="color: #2aa198;">)</span>
+                                    <span style="color: #657b83; font-weight: bold;">:recursive</span> t))))
+  (org-publish-project <span style="color: #2aa198;">"org-jekyll-org"</span> t nil))
 </pre>
 </div>
 
@@ -5822,28 +5822,28 @@ blog's articles in the next way:
 </p>
 
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #2aa198;">(</span><span style="color: #859900; font-weight: bold;">defgroup</span> <span style="color: #b58900;">org-jekyll</span> <span style="color: #b58900;">()</span>
+<pre class="src src-emacs-lisp">(<span style="color: #859900; font-weight: bold;">defgroup</span> <span style="color: #b58900;">org-jekyll</span> ()
   <span style="color: #2aa198;">"Emacs mode to write on OrgMode for Jekyll blog."</span>
   <span style="color: #657b83; font-weight: bold;">:group</span> 'local
   <span style="color: #657b83; font-weight: bold;">:prefix</span> <span style="color: #2aa198;">"org-jekyll-"</span>
-  <span style="color: #657b83; font-weight: bold;">:link</span> '<span style="color: #b58900;">(</span>url-link <span style="color: #657b83; font-weight: bold;">:tag</span> <span style="color: #2aa198;">"Source code"</span> <span style="color: #2aa198;">"https://github.com/eugeneandrienko/eugeneandrienko.github.io"</span><span style="color: #b58900;">)</span><span style="color: #2aa198;">)</span>
+  <span style="color: #657b83; font-weight: bold;">:link</span> '(url-link <span style="color: #657b83; font-weight: bold;">:tag</span> <span style="color: #2aa198;">"Source code"</span> <span style="color: #2aa198;">"https://github.com/eugeneandrienko/eugeneandrienko.github.io"</span>))
 
-<span style="color: #2aa198;">(</span><span style="color: #859900; font-weight: bold;">defgroup</span> <span style="color: #b58900;">org-jekyll-paths</span> nil
+(<span style="color: #859900; font-weight: bold;">defgroup</span> <span style="color: #b58900;">org-jekyll-paths</span> nil
   <span style="color: #2aa198;">"Paths for emacs mode to write on OrgMode for Jekyll blog."</span>
   <span style="color: #657b83; font-weight: bold;">:group</span> 'org-jekyll
-  <span style="color: #657b83; font-weight: bold;">:prefix</span> <span style="color: #2aa198;">"org-jekyll-paths-"</span><span style="color: #2aa198;">)</span>
+  <span style="color: #657b83; font-weight: bold;">:prefix</span> <span style="color: #2aa198;">"org-jekyll-paths-"</span>)
 
-<span style="color: #2aa198;">(</span><span style="color: #859900; font-weight: bold;">defcustom</span> <span style="color: #268bd2;">org-jekyll-paths-base-path</span>
+(<span style="color: #859900; font-weight: bold;">defcustom</span> <span style="color: #268bd2;">org-jekyll-paths-base-path</span>
   <span style="color: #2aa198;">"~/rsync/blog"</span>
   <span style="color: #2aa198;">"Path to the base directory of my blog."</span>
   <span style="color: #657b83; font-weight: bold;">:type</span> 'directory
-  <span style="color: #657b83; font-weight: bold;">:group</span> 'org-jekyll-paths<span style="color: #2aa198;">)</span>
+  <span style="color: #657b83; font-weight: bold;">:group</span> 'org-jekyll-paths)
 
-<span style="color: #2aa198;">(</span><span style="color: #859900; font-weight: bold;">defcustom</span> <span style="color: #268bd2;">org-jekyll-paths-articles-path</span>
-  <span style="color: #b58900;">(</span>concat org-jekyll-paths-base-path <span style="color: #2aa198;">"/articles"</span><span style="color: #b58900;">)</span>
+(<span style="color: #859900; font-weight: bold;">defcustom</span> <span style="color: #268bd2;">org-jekyll-paths-articles-path</span>
+  (concat org-jekyll-paths-base-path <span style="color: #2aa198;">"/articles"</span>)
   <span style="color: #2aa198;">"Path to directory with original articles in Org format."</span>
   <span style="color: #657b83; font-weight: bold;">:type</span> 'directory
-  <span style="color: #657b83; font-weight: bold;">:group</span> 'org-jekyll-paths<span style="color: #2aa198;">)</span>
+  <span style="color: #657b83; font-weight: bold;">:group</span> 'org-jekyll-paths)
 </pre>
 </div>
 
@@ -5860,10 +5860,10 @@ next way:
 </p>
 
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #2aa198;">(</span><span style="color: #859900; font-weight: bold;">let</span> <span style="color: #b58900;">(</span><span style="color: #268bd2;">(</span>org-publish-project-alist `<span style="color: #6c71c4;">(</span><span style="color: #859900;">(</span><span style="color: #2aa198;">"org-jekyll-org"</span>
+<pre class="src src-emacs-lisp">(<span style="color: #859900; font-weight: bold;">let</span> ((org-publish-project-alist `((<span style="color: #2aa198;">"org-jekyll-org"</span>
                                     <span style="color: #657b83; font-weight: bold;">:base-directory</span> ,org-jekyll-paths-articles-path
                                     <span style="color: #657b83; font-weight: bold;">:base-extension</span> <span style="color: #2aa198;">"org"</span>
-                                    <span style="color: #657b83; font-weight: bold;">:publishing-directory</span> ,<span style="color: #b58900;">(</span>concat org-jekyll-paths-base-path <span style="color: #2aa198;">"/_posts"</span><span style="color: #b58900;">)</span>
+                                    <span style="color: #657b83; font-weight: bold;">:publishing-directory</span> ,(concat org-jekyll-paths-base-path <span style="color: #2aa198;">"/_posts"</span>)
                                     <span style="color: #657b83; font-weight: bold;">:publishing-function</span> org-html-publish-to-html
 </pre>
 </div>
@@ -5909,10 +5909,10 @@ To call this <i>custom function</i> before calling <code>org-publish-project</co
 </p>
 
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #2aa198;">(</span><span style="color: #859900; font-weight: bold;">let</span> <span style="color: #b58900;">(</span><span style="color: #268bd2;">(</span>org-publish-project-alist `<span style="color: #6c71c4;">(</span><span style="color: #859900;">(</span><span style="color: #2aa198;">"org-jekyll-org"</span>
-                                    <span style="color: #657b83; font-weight: bold;">:base-directory</span> ,<span style="color: #b58900;">(</span>concat org-jekyll-paths-base-path <span style="color: #2aa198;">"/_articles"</span><span style="color: #b58900;">)</span>
+<pre class="src src-emacs-lisp">(<span style="color: #859900; font-weight: bold;">let</span> ((org-publish-project-alist `((<span style="color: #2aa198;">"org-jekyll-org"</span>
+                                    <span style="color: #657b83; font-weight: bold;">:base-directory</span> ,(concat org-jekyll-paths-base-path <span style="color: #2aa198;">"/_articles"</span>)
                                     <span style="color: #657b83; font-weight: bold;">:base-extension</span> <span style="color: #2aa198;">"org"</span>
-                                    <span style="color: #657b83; font-weight: bold;">:publishing-directory</span> ,<span style="color: #b58900;">(</span>concat org-jekyll-paths-base-path <span style="color: #2aa198;">"/_posts"</span><span style="color: #b58900;">)</span>
+                                    <span style="color: #657b83; font-weight: bold;">:publishing-directory</span> ,(concat org-jekyll-paths-base-path <span style="color: #2aa198;">"/_posts"</span>)
                                     <span style="color: #657b83; font-weight: bold;">:preparation-function</span> org-jekyll--prepare-articles
 </pre>
 </div>
@@ -5933,16 +5933,16 @@ catalog. This list can be returned with the
 </p>
 
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #2aa198;">(</span>directory-files-recursively org-jekyll-paths-articles-path <span style="color: #2aa198;">"\\.org$"</span> nil nil nil<span style="color: #2aa198;">)</span>
+<pre class="src src-emacs-lisp">(directory-files-recursively org-jekyll-paths-articles-path <span style="color: #2aa198;">"\\.org$"</span> nil nil nil)
 
-<span style="color: #2aa198;">(</span><span style="color: #2aa198;">"~/rsync/blog/articles/cycling/2020-05-17-thanks-for-living/article-ru.org"</span>
+(<span style="color: #2aa198;">"~/rsync/blog/articles/cycling/2020-05-17-thanks-for-living/article-ru.org"</span>
  <span style="color: #2aa198;">"~/rsync/blog/articles/cycling/2021-04-08-vk-cyclist-types/article-ru.org"</span>
  <span style="color: #2aa198;">"~/rsync/blog/articles/cycling/2021-04-12-balticstar-north-open-2021/article-ru.org"</span>
  <span style="color: #2aa198;">"~/rsync/blog/articles/cycling/2021-05-17-insled-open/article-ru.org"</span>
  <span style="color: #2aa198;">"~/rsync/blog/articles/cycling/draft-osmand-howto/article-ru.org"</span>
  <span style="color: #2aa198;">"~/rsync/blog/articles/cycling/draft-qmapshack-howto/article-ru.org"</span>
  ...
- <span style="color: #2aa198;">"~/rsync/blog/articles/_post_template.org"</span><span style="color: #2aa198;">)</span>
+ <span style="color: #2aa198;">"~/rsync/blog/articles/_post_template.org"</span>)
 </pre>
 </div>
 
@@ -5953,11 +5953,11 @@ drafts, hidden posts and template. It can be filtered using
 </p>
 
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #2aa198;">(</span>seq-filter <span style="color: #b58900;">(</span><span style="color: #859900; font-weight: bold;">lambda</span> <span style="color: #268bd2;">(</span>path<span style="color: #268bd2;">)</span>
-              <span style="color: #268bd2;">(</span><span style="color: #859900; font-weight: bold;">and</span>
-               <span style="color: #6c71c4;">(</span>not <span style="color: #859900;">(</span>string-match org-jekyll-exclude-regex path<span style="color: #859900;">)</span><span style="color: #6c71c4;">)</span>
-               <span style="color: #6c71c4;">(</span>not <span style="color: #859900;">(</span>string-match <span style="color: #2aa198;">"</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">(</span><span style="color: #2aa198;">draft-</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">)</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">|</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">(</span><span style="color: #2aa198;">hidden-</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">)</span><span style="color: #2aa198;">"</span> path<span style="color: #859900;">)</span><span style="color: #6c71c4;">)</span><span style="color: #268bd2;">)</span><span style="color: #b58900;">)</span>
-            <span style="color: #b58900;">(</span>directory-files-recursively org-jekyll-paths-articles-path <span style="color: #2aa198;">"\\.org$"</span> nil nil nil<span style="color: #b58900;">)</span><span style="color: #2aa198;">)</span>
+<pre class="src src-emacs-lisp">(seq-filter (<span style="color: #859900; font-weight: bold;">lambda</span> (path)
+              (<span style="color: #859900; font-weight: bold;">and</span>
+               (not (string-match org-jekyll-exclude-regex path))
+               (not (string-match <span style="color: #2aa198;">"</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">(</span><span style="color: #2aa198;">draft-</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">)</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">|</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">(</span><span style="color: #2aa198;">hidden-</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">)</span><span style="color: #2aa198;">"</span> path))))
+            (directory-files-recursively org-jekyll-paths-articles-path <span style="color: #2aa198;">"\\.org$"</span> nil nil nil))
 </pre>
 </div>
 
@@ -5974,11 +5974,11 @@ away inappropriate paths:
 </p>
 
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #2aa198;">(</span><span style="color: #859900; font-weight: bold;">defcustom</span> <span style="color: #268bd2;">org-jekyll-exclude-regex</span>
+<pre class="src src-emacs-lisp">(<span style="color: #859900; font-weight: bold;">defcustom</span> <span style="color: #268bd2;">org-jekyll-exclude-regex</span>
   <span style="color: #2aa198;">"</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">(</span><span style="color: #2aa198;">_post_template\\.org</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">)</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">|</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">(</span><span style="color: #2aa198;">\\.project</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">)</span><span style="color: #2aa198;">"</span>
   <span style="color: #2aa198;">"Regex to exclude unwanted files."</span>
   <span style="color: #657b83; font-weight: bold;">:type</span> 'regexp
-  <span style="color: #657b83; font-weight: bold;">:group</span> 'org-jekyll<span style="color: #2aa198;">)</span>
+  <span style="color: #657b83; font-weight: bold;">:group</span> 'org-jekyll)
 </pre>
 </div>
 
@@ -5990,15 +5990,15 @@ list that is passed as the seccond argument:
 </p>
 
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #2aa198;">(</span>mapc <span style="color: #b58900;">(</span><span style="color: #859900; font-weight: bold;">lambda</span> <span style="color: #268bd2;">(</span>article<span style="color: #268bd2;">)</span>
-        <span style="color: #268bd2;">(</span>
+<pre class="src src-emacs-lisp">(mapc (<span style="color: #859900; font-weight: bold;">lambda</span> (article)
+        (
          <span style="color: #93a1a1;">;; </span><span style="color: #93a1a1;">copy file in `</span><span style="color: #268bd2; font-weight: bold;">article</span><span style="color: #93a1a1;">' path here</span>
-         <span style="color: #268bd2;">)</span>
-        <span style="color: #268bd2;">(</span>seq-filter <span style="color: #6c71c4;">(</span><span style="color: #859900; font-weight: bold;">lambda</span> <span style="color: #859900;">(</span>path<span style="color: #859900;">)</span>
-              <span style="color: #859900;">(</span><span style="color: #859900; font-weight: bold;">and</span>
-               <span style="color: #b58900;">(</span>not <span style="color: #268bd2;">(</span>string-match org-jekyll-exclude-regex path<span style="color: #268bd2;">)</span><span style="color: #b58900;">)</span>
-               <span style="color: #b58900;">(</span>not <span style="color: #268bd2;">(</span>string-match <span style="color: #2aa198;">"</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">(</span><span style="color: #2aa198;">draft-</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">)</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">|</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">(</span><span style="color: #2aa198;">hidden-</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">)</span><span style="color: #2aa198;">"</span> path<span style="color: #268bd2;">)</span><span style="color: #b58900;">)</span><span style="color: #859900;">)</span><span style="color: #6c71c4;">)</span>
-                    <span style="color: #6c71c4;">(</span>directory-files-recursively org-jekyll-paths-articles-path <span style="color: #2aa198;">"\\.org$"</span> nil nil nil<span style="color: #6c71c4;">)</span><span style="color: #268bd2;">)</span>
+         )
+        (seq-filter (<span style="color: #859900; font-weight: bold;">lambda</span> (path)
+              (<span style="color: #859900; font-weight: bold;">and</span>
+               (not (string-match org-jekyll-exclude-regex path))
+               (not (string-match <span style="color: #2aa198;">"</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">(</span><span style="color: #2aa198;">draft-</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">)</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">|</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">(</span><span style="color: #2aa198;">hidden-</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">)</span><span style="color: #2aa198;">"</span> path))))
+                    (directory-files-recursively org-jekyll-paths-articles-path <span style="color: #2aa198;">"\\.org$"</span> nil nil nil))
 </pre>
 </div>
 
@@ -6011,22 +6011,22 @@ are used. For this purpose there are functions <code>string-match</code> and
 </p>
 
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #2aa198;">(</span>string-match
- <span style="color: #b58900;">(</span>concat org-jekyll-paths-articles-path
-         <span style="color: #2aa198;">"/</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">(</span><span style="color: #2aa198;">\\w+</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">)</span><span style="color: #2aa198;">/</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">(</span><span style="color: #2aa198;">[0-9-]+</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">)</span><span style="color: #2aa198;">-</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">(</span><span style="color: #2aa198;">[[:alnum:]-]+</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">)</span><span style="color: #2aa198;">/article-</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">(</span><span style="color: #2aa198;">[[:lower:]]\\{</span><span style="color: #268bd2;">2\\</span><span style="color: #2aa198;">}</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">)</span><span style="color: #2aa198;">\\.org$"</span><span style="color: #b58900;">)</span>
- <span style="color: #2aa198;">"~/rsync/blog/articles/photo/2024-09-01-summer-photos-2024/article-en.org"</span><span style="color: #2aa198;">)</span>
-0 <span style="color: #2aa198;">(</span>#o0, #x0, ?\C-@<span style="color: #2aa198;">)</span>
+<pre class="src src-emacs-lisp">(string-match
+ (concat org-jekyll-paths-articles-path
+         <span style="color: #2aa198;">"/</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">(</span><span style="color: #2aa198;">\\w+</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">)</span><span style="color: #2aa198;">/</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">(</span><span style="color: #2aa198;">[0-9-]+</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">)</span><span style="color: #2aa198;">-</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">(</span><span style="color: #2aa198;">[[:alnum:]-]+</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">)</span><span style="color: #2aa198;">/article-</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">(</span><span style="color: #2aa198;">[[:lower:]]\\{</span><span style="color: #268bd2;">2\\</span><span style="color: #2aa198;">}</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">)</span><span style="color: #2aa198;">\\.org$"</span>)
+ <span style="color: #2aa198;">"~/rsync/blog/articles/photo/2024-09-01-summer-photos-2024/article-en.org"</span>)
+0 (#o0, #x0, ?\C-@)
 
-<span style="color: #2aa198;">(</span>match-string 1 <span style="color: #2aa198;">"~/rsync/blog/articles/photo/2024-09-01-summer-photos-2024/article-en.org"</span><span style="color: #2aa198;">)</span>
+(match-string 1 <span style="color: #2aa198;">"~/rsync/blog/articles/photo/2024-09-01-summer-photos-2024/article-en.org"</span>)
 <span style="color: #2aa198;">"photo"</span>
 
-<span style="color: #2aa198;">(</span>match-string 2 <span style="color: #2aa198;">"~/rsync/blog/articles/photo/2024-09-01-summer-photos-2024/article-en.org"</span><span style="color: #2aa198;">)</span>
+(match-string 2 <span style="color: #2aa198;">"~/rsync/blog/articles/photo/2024-09-01-summer-photos-2024/article-en.org"</span>)
 <span style="color: #2aa198;">"2024-09-01"</span>
 
-<span style="color: #2aa198;">(</span>match-string 3 <span style="color: #2aa198;">"~/rsync/blog/articles/photo/2024-09-01-summer-photos-2024/article-en.org"</span><span style="color: #2aa198;">)</span>
+(match-string 3 <span style="color: #2aa198;">"~/rsync/blog/articles/photo/2024-09-01-summer-photos-2024/article-en.org"</span>)
 <span style="color: #2aa198;">"summer-photos-2024"</span>
 
-<span style="color: #2aa198;">(</span>match-string 4 <span style="color: #2aa198;">"~/rsync/blog/articles/photo/2024-09-01-summer-photos-2024/article-en.org"</span><span style="color: #2aa198;">)</span>
+(match-string 4 <span style="color: #2aa198;">"~/rsync/blog/articles/photo/2024-09-01-summer-photos-2024/article-en.org"</span>)
 <span style="color: #2aa198;">"en"</span>
 </pre>
 </div>
@@ -6037,20 +6037,20 @@ simplicity:
 </p>
 
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #2aa198;">(</span><span style="color: #859900; font-weight: bold;">lambda</span> <span style="color: #b58900;">(</span>article<span style="color: #b58900;">)</span>
-          <span style="color: #b58900;">(</span><span style="color: #859900; font-weight: bold;">progn</span>
-            <span style="color: #268bd2;">(</span>string-match
-             <span style="color: #6c71c4;">(</span>concat org-jekyll-paths-articles-path
-                     <span style="color: #2aa198;">"/</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">(</span><span style="color: #2aa198;">\\w+</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">)</span><span style="color: #2aa198;">/</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">(</span><span style="color: #2aa198;">[0-9-]+</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">)</span><span style="color: #2aa198;">-</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">(</span><span style="color: #2aa198;">[[:alnum:]-]+</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">)</span><span style="color: #2aa198;">/article-</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">(</span><span style="color: #2aa198;">[[:lower:]]\\{</span><span style="color: #268bd2;">2\\</span><span style="color: #2aa198;">}</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">)</span><span style="color: #2aa198;">\\.org$"</span><span style="color: #6c71c4;">)</span>
-             article<span style="color: #268bd2;">)</span>
-            <span style="color: #268bd2;">(</span><span style="color: #859900; font-weight: bold;">let*</span>
-                <span style="color: #6c71c4;">(</span><span style="color: #859900;">(</span>article-category <span style="color: #b58900;">(</span>match-string 1 article<span style="color: #b58900;">)</span><span style="color: #859900;">)</span>
-                 <span style="color: #859900;">(</span>article-date <span style="color: #b58900;">(</span>match-string 2 article<span style="color: #b58900;">)</span><span style="color: #859900;">)</span>
-                 <span style="color: #859900;">(</span>article-slug <span style="color: #b58900;">(</span>match-string 3 article<span style="color: #b58900;">)</span><span style="color: #859900;">)</span>
-                 <span style="color: #859900;">(</span>article-lang <span style="color: #b58900;">(</span>match-string 4 article<span style="color: #b58900;">)</span><span style="color: #859900;">)</span><span style="color: #6c71c4;">)</span>
-              <span style="color: #6c71c4;">(</span>
+<pre class="src src-emacs-lisp">(<span style="color: #859900; font-weight: bold;">lambda</span> (article)
+          (<span style="color: #859900; font-weight: bold;">progn</span>
+            (string-match
+             (concat org-jekyll-paths-articles-path
+                     <span style="color: #2aa198;">"/</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">(</span><span style="color: #2aa198;">\\w+</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">)</span><span style="color: #2aa198;">/</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">(</span><span style="color: #2aa198;">[0-9-]+</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">)</span><span style="color: #2aa198;">-</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">(</span><span style="color: #2aa198;">[[:alnum:]-]+</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">)</span><span style="color: #2aa198;">/article-</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">(</span><span style="color: #2aa198;">[[:lower:]]\\{</span><span style="color: #268bd2;">2\\</span><span style="color: #2aa198;">}</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">)</span><span style="color: #2aa198;">\\.org$"</span>)
+             article)
+            (<span style="color: #859900; font-weight: bold;">let*</span>
+                ((article-category (match-string 1 article))
+                 (article-date (match-string 2 article))
+                 (article-slug (match-string 3 article))
+                 (article-lang (match-string 4 article)))
+              (
                                         <span style="color: #93a1a1;">;</span><span style="color: #93a1a1;">copy-file-here</span>
-               <span style="color: #6c71c4;">)</span><span style="color: #268bd2;">)</span><span style="color: #b58900;">)</span>
+               )))
 </pre>
 </div>
 
@@ -6066,10 +6066,10 @@ to <code>org-jekyll--prepare-articles</code> function. By the name of parameter
 (<code>:base-directory</code>) the necessary value can be taken<sup><a id="fnr.plist-get" class="footref" href="#fn.plist-get" role="doc-backlink">15</a></sup>:
 </p>
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #2aa198;">(</span>article-new-catalog <span style="color: #b58900;">(</span>concat
-                      <span style="color: #268bd2;">(</span>plist-get property-list '<span style="color: #657b83; font-weight: bold;">:base-directory</span><span style="color: #268bd2;">)</span>
+<pre class="src src-emacs-lisp">(article-new-catalog (concat
+                      (plist-get property-list '<span style="color: #657b83; font-weight: bold;">:base-directory</span>)
                       <span style="color: #2aa198;">"/"</span>
-                      article-lang<span style="color: #b58900;">)</span><span style="color: #2aa198;">)</span>
+                      article-lang))
 </pre>
 </div></li>
 <li><p>
@@ -6077,7 +6077,7 @@ Variable with unique path to file containing blogpost in intermediate
 catalog:
 </p>
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #2aa198;">(</span>article-processed <span style="color: #b58900;">(</span>concat article-new-catalog <span style="color: #2aa198;">"/"</span> article-date <span style="color: #2aa198;">"-"</span> article-slug <span style="color: #2aa198;">".org"</span><span style="color: #b58900;">)</span><span style="color: #2aa198;">)</span>
+<pre class="src src-emacs-lisp">(article-processed (concat article-new-catalog <span style="color: #2aa198;">"/"</span> article-date <span style="color: #2aa198;">"-"</span> article-slug <span style="color: #2aa198;">".org"</span>))
 </pre>
 </div></li>
 </ol>
@@ -6095,8 +6095,8 @@ the files can be done with the next two functions inside the <code>let*</code> b
 </p>
 
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #2aa198;">(</span>make-directory article-new-catalog t<span style="color: #2aa198;">)</span>
-<span style="color: #2aa198;">(</span>copy-file article article-processed t t t t<span style="color: #2aa198;">)</span>
+<pre class="src src-emacs-lisp">(make-directory article-new-catalog t)
+(copy-file article article-processed t t t t)
 </pre>
 </div>
 
@@ -6105,36 +6105,36 @@ The resulting code of <code>org-jekyll--prepare-articles</code> function:
 </p>
 
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #2aa198;">(</span><span style="color: #859900; font-weight: bold;">defun</span> <span style="color: #268bd2;">org-jekyll--prepare-articles</span> <span style="color: #b58900;">(</span>property-list<span style="color: #b58900;">)</span>
+<pre class="src src-emacs-lisp">(<span style="color: #859900; font-weight: bold;">defun</span> <span style="color: #268bd2;">org-jekyll--prepare-articles</span> (property-list)
   <span style="color: #2aa198;">"Copy articles to `</span><span style="color: #268bd2; font-weight: bold;">_articles/</span><span style="color: #2aa198;">' catalog before publishing. Rename</span>
 <span style="color: #2aa198;">article file from `</span><span style="color: #268bd2; font-weight: bold;">article-LANG.org</span><span style="color: #2aa198;">' to</span>
 <span style="color: #2aa198;">`</span><span style="color: #268bd2; font-weight: bold;">YYYY-MM-DD-short-url.org</span><span style="color: #2aa198;">'.</span>
 
 <span style="color: #2aa198;">PROPERTY-LIST is a list of properties from</span>
 <span style="color: #2aa198;">`</span><span style="color: #268bd2; font-weight: bold;">org-publish-project-alist</span><span style="color: #2aa198;">'."</span>
-  <span style="color: #b58900;">(</span>mapc <span style="color: #268bd2;">(</span><span style="color: #859900; font-weight: bold;">lambda</span> <span style="color: #6c71c4;">(</span>article<span style="color: #6c71c4;">)</span>
-          <span style="color: #6c71c4;">(</span><span style="color: #859900; font-weight: bold;">progn</span>
-            <span style="color: #859900;">(</span>string-match
-             <span style="color: #b58900;">(</span>concat org-jekyll-paths-articles-path
-                     <span style="color: #2aa198;">"/</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">(</span><span style="color: #2aa198;">\\w+</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">)</span><span style="color: #2aa198;">/</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">(</span><span style="color: #2aa198;">[0-9-]+</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">)</span><span style="color: #2aa198;">-</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">(</span><span style="color: #2aa198;">[[:alnum:]-]+</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">)</span><span style="color: #2aa198;">/article-</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">(</span><span style="color: #2aa198;">[[:lower:]]\\{</span><span style="color: #268bd2;">2\\</span><span style="color: #2aa198;">}</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">)</span><span style="color: #2aa198;">\\.org$"</span><span style="color: #b58900;">)</span>
-             article<span style="color: #859900;">)</span>
-            <span style="color: #859900;">(</span><span style="color: #859900; font-weight: bold;">let*</span>
-                <span style="color: #b58900;">(</span><span style="color: #268bd2;">(</span>article-category <span style="color: #6c71c4;">(</span>match-string 1 article<span style="color: #6c71c4;">)</span><span style="color: #268bd2;">)</span>
-                 <span style="color: #268bd2;">(</span>article-date <span style="color: #6c71c4;">(</span>match-string 2 article<span style="color: #6c71c4;">)</span><span style="color: #268bd2;">)</span>
-                 <span style="color: #268bd2;">(</span>article-slug <span style="color: #6c71c4;">(</span>match-string 3 article<span style="color: #6c71c4;">)</span><span style="color: #268bd2;">)</span>
-                 <span style="color: #268bd2;">(</span>article-lang <span style="color: #6c71c4;">(</span>match-string 4 article<span style="color: #6c71c4;">)</span><span style="color: #268bd2;">)</span>
-                 <span style="color: #268bd2;">(</span>article-new-catalog <span style="color: #6c71c4;">(</span>concat
-                                       <span style="color: #859900;">(</span>plist-get property-list '<span style="color: #657b83; font-weight: bold;">:base-directory</span><span style="color: #859900;">)</span>
+  (mapc (<span style="color: #859900; font-weight: bold;">lambda</span> (article)
+          (<span style="color: #859900; font-weight: bold;">progn</span>
+            (string-match
+             (concat org-jekyll-paths-articles-path
+                     <span style="color: #2aa198;">"/</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">(</span><span style="color: #2aa198;">\\w+</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">)</span><span style="color: #2aa198;">/</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">(</span><span style="color: #2aa198;">[0-9-]+</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">)</span><span style="color: #2aa198;">-</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">(</span><span style="color: #2aa198;">[[:alnum:]-]+</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">)</span><span style="color: #2aa198;">/article-</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">(</span><span style="color: #2aa198;">[[:lower:]]\\{</span><span style="color: #268bd2;">2\\</span><span style="color: #2aa198;">}</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">)</span><span style="color: #2aa198;">\\.org$"</span>)
+             article)
+            (<span style="color: #859900; font-weight: bold;">let*</span>
+                ((article-category (match-string 1 article))
+                 (article-date (match-string 2 article))
+                 (article-slug (match-string 3 article))
+                 (article-lang (match-string 4 article))
+                 (article-new-catalog (concat
+                                       (plist-get property-list '<span style="color: #657b83; font-weight: bold;">:base-directory</span>)
                                        <span style="color: #2aa198;">"/"</span>
-                                       article-lang<span style="color: #6c71c4;">)</span><span style="color: #268bd2;">)</span>
-                 <span style="color: #268bd2;">(</span>article-processed <span style="color: #6c71c4;">(</span>concat article-new-catalog <span style="color: #2aa198;">"/"</span> article-date <span style="color: #2aa198;">"-"</span> article-slug <span style="color: #2aa198;">".org"</span><span style="color: #6c71c4;">)</span><span style="color: #268bd2;">)</span><span style="color: #b58900;">)</span>
-              <span style="color: #b58900;">(</span>make-directory article-new-catalog t<span style="color: #b58900;">)</span>
-              <span style="color: #b58900;">(</span>copy-file article article-processed t t t t<span style="color: #b58900;">)</span><span style="color: #859900;">)</span><span style="color: #6c71c4;">)</span><span style="color: #268bd2;">)</span>
-        <span style="color: #268bd2;">(</span>seq-filter <span style="color: #6c71c4;">(</span><span style="color: #859900; font-weight: bold;">lambda</span> <span style="color: #859900;">(</span>path<span style="color: #859900;">)</span>
-                      <span style="color: #859900;">(</span><span style="color: #859900; font-weight: bold;">and</span>
-                       <span style="color: #b58900;">(</span>not <span style="color: #268bd2;">(</span>string-match org-jekyll-exclude-regex path<span style="color: #268bd2;">)</span><span style="color: #b58900;">)</span>
-                       <span style="color: #b58900;">(</span>not <span style="color: #268bd2;">(</span>string-match <span style="color: #2aa198;">"</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">(</span><span style="color: #2aa198;">draft-</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">)</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">|</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">(</span><span style="color: #2aa198;">hidden-</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">)</span><span style="color: #2aa198;">"</span> path<span style="color: #268bd2;">)</span><span style="color: #b58900;">)</span><span style="color: #859900;">)</span><span style="color: #6c71c4;">)</span>
-                    <span style="color: #6c71c4;">(</span>directory-files-recursively org-jekyll-paths-articles-path <span style="color: #2aa198;">"\\.org$"</span> nil nil nil<span style="color: #6c71c4;">)</span><span style="color: #268bd2;">)</span><span style="color: #b58900;">)</span><span style="color: #2aa198;">)</span>
+                                       article-lang))
+                 (article-processed (concat article-new-catalog <span style="color: #2aa198;">"/"</span> article-date <span style="color: #2aa198;">"-"</span> article-slug <span style="color: #2aa198;">".org"</span>)))
+              (make-directory article-new-catalog t)
+              (copy-file article article-processed t t t t))))
+        (seq-filter (<span style="color: #859900; font-weight: bold;">lambda</span> (path)
+                      (<span style="color: #859900; font-weight: bold;">and</span>
+                       (not (string-match org-jekyll-exclude-regex path))
+                       (not (string-match <span style="color: #2aa198;">"</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">(</span><span style="color: #2aa198;">draft-</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">)</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">|</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">(</span><span style="color: #2aa198;">hidden-</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">)</span><span style="color: #2aa198;">"</span> path))))
+                    (directory-files-recursively org-jekyll-paths-articles-path <span style="color: #2aa198;">"\\.org$"</span> nil nil nil))))
 </pre>
 </div>
 
@@ -6153,7 +6153,7 @@ wrote a new function for this:
 </p>
 
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #2aa198;">(</span><span style="color: #859900; font-weight: bold;">defun</span> <span style="color: #268bd2;">org-jekyll--prepare-article</span> <span style="color: #b58900;">(</span>article<span style="color: #b58900;">)</span>
+<pre class="src src-emacs-lisp">(<span style="color: #859900; font-weight: bold;">defun</span> <span style="color: #268bd2;">org-jekyll--prepare-article</span> (article)
   <span style="color: #2aa198;">"Prepare article's text for Jekyll.</span>
 
 <span style="color: #2aa198;">Modify OrgMode file before publish it. ARTICLE is a path to</span>
@@ -6162,12 +6162,12 @@ wrote a new function for this:
 <span style="color: #2aa198;">path.</span>
 
 <span style="color: #2aa198;">ARTICLE is a path to intermediate org-file with article text"</span>
-  <span style="color: #b58900;">(</span><span style="color: #859900; font-weight: bold;">with-temp-buffer</span>
-    <span style="color: #268bd2;">(</span>insert-file-contents article<span style="color: #268bd2;">)</span>
-    <span style="color: #268bd2;">(</span>goto-char <span style="color: #6c71c4;">(</span>point-min<span style="color: #6c71c4;">)</span><span style="color: #268bd2;">)</span>
-    <span style="color: #268bd2;">(</span><span style="color: #859900; font-weight: bold;">while</span> <span style="color: #6c71c4;">(</span>search-forward <span style="color: #2aa198;">"[&#8206;file:"</span> nil t<span style="color: #6c71c4;">)</span>
-      <span style="color: #6c71c4;">(</span>replace-match <span style="color: #2aa198;">"[&#8207;/assets/static/"</span> t t<span style="color: #6c71c4;">)</span><span style="color: #268bd2;">)</span>
-    <span style="color: #268bd2;">(</span>write-file article<span style="color: #268bd2;">)</span><span style="color: #b58900;">)</span><span style="color: #2aa198;">)</span>
+  (<span style="color: #859900; font-weight: bold;">with-temp-buffer</span>
+    (insert-file-contents article)
+    (goto-char (point-min))
+    (<span style="color: #859900; font-weight: bold;">while</span> (search-forward <span style="color: #2aa198;">"[&#8206;file:"</span> nil t)
+      (replace-match <span style="color: #2aa198;">"[&#8207;/assets/static/"</span> t t))
+    (write-file article)))
 </pre>
 </div>
 
@@ -6207,7 +6207,7 @@ get a list of paths to HTML files, which we pass to the lambda function:
 </p>
 
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #2aa198;">(</span><span style="color: #859900; font-weight: bold;">defun</span> <span style="color: #268bd2;">org-jekyll--complete-articles</span> <span style="color: #b58900;">(</span>property-list<span style="color: #b58900;">)</span>
+<pre class="src src-emacs-lisp">(<span style="color: #859900; font-weight: bold;">defun</span> <span style="color: #268bd2;">org-jekyll--complete-articles</span> (property-list)
   <span style="color: #2aa198;">"Change published html-files via regular expressions.</span>
 
 <span style="color: #2aa198;">Fix links to attached files. Remove \"Footnotes:\" section from</span>
@@ -6215,12 +6215,12 @@ get a list of paths to HTML files, which we pass to the lambda function:
 
 <span style="color: #2aa198;">PROPERTY-LIST is a list of properties from</span>
 <span style="color: #2aa198;">`</span><span style="color: #268bd2; font-weight: bold;">org-publish-project-alist</span><span style="color: #2aa198;">'."</span>
-  <span style="color: #b58900;">(</span><span style="color: #859900; font-weight: bold;">let*</span>
-      <span style="color: #268bd2;">(</span><span style="color: #6c71c4;">(</span>publishing-directory <span style="color: #859900;">(</span>plist-get property-list '<span style="color: #657b83; font-weight: bold;">:publishing-directory</span><span style="color: #859900;">)</span><span style="color: #6c71c4;">)</span><span style="color: #268bd2;">)</span>
-    <span style="color: #268bd2;">(</span>mapc <span style="color: #6c71c4;">(</span><span style="color: #859900; font-weight: bold;">lambda</span> <span style="color: #859900;">(</span>html<span style="color: #859900;">)</span>
+  (<span style="color: #859900; font-weight: bold;">let*</span>
+      ((publishing-directory (plist-get property-list '<span style="color: #657b83; font-weight: bold;">:publishing-directory</span>)))
+    (mapc (<span style="color: #859900; font-weight: bold;">lambda</span> (html)
             <span style="color: #93a1a1;">; </span><span style="color: #93a1a1;">process `</span><span style="color: #268bd2; font-weight: bold;">html</span><span style="color: #93a1a1;">' file</span>
-            <span style="color: #6c71c4;">)</span>
-          <span style="color: #6c71c4;">(</span>directory-files-recursively publishing-directory <span style="color: #2aa198;">"\\.html$"</span> nil nil nil<span style="color: #6c71c4;">)</span><span style="color: #268bd2;">)</span><span style="color: #b58900;">)</span><span style="color: #2aa198;">)</span>
+            )
+          (directory-files-recursively publishing-directory <span style="color: #2aa198;">"\\.html$"</span> nil nil nil))))
 </pre>
 </div>
 
@@ -6230,18 +6230,18 @@ expression list:
 </p>
 
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #2aa198;">(</span>mapc <span style="color: #b58900;">(</span><span style="color: #859900; font-weight: bold;">lambda</span> <span style="color: #268bd2;">(</span>x<span style="color: #268bd2;">)</span>
-        <span style="color: #268bd2;">(</span><span style="color: #859900; font-weight: bold;">progn</span>
-          <span style="color: #6c71c4;">(</span>goto-char <span style="color: #859900;">(</span>point-min<span style="color: #859900;">)</span><span style="color: #6c71c4;">)</span>
-          <span style="color: #6c71c4;">(</span><span style="color: #859900; font-weight: bold;">while</span> <span style="color: #859900;">(</span>re-search-forward <span style="color: #b58900;">(</span>car x<span style="color: #b58900;">)</span> nil t<span style="color: #859900;">)</span>
-            <span style="color: #859900;">(</span>replace-match <span style="color: #b58900;">(</span>cdr x<span style="color: #b58900;">)</span> t nil<span style="color: #859900;">)</span><span style="color: #6c71c4;">)</span><span style="color: #268bd2;">)</span><span style="color: #b58900;">)</span>
-      '<span style="color: #b58900;">(</span><span style="color: #268bd2;">(</span><span style="color: #2aa198;">"/"</span> . <span style="color: #2aa198;">"/"</span><span style="color: #268bd2;">)</span>
-        <span style="color: #268bd2;">(</span><span style="color: #2aa198;">"&lt;p&gt;&lt;span class=\"figure-number\"&gt;[[:alnum:] :]+&lt;/span&gt;</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">(</span><span style="color: #2aa198;">.+</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">)</span><span style="color: #2aa198;">&lt;/p&gt;"</span> . <span style="color: #2aa198;">"&lt;p style=\"text-align: center\"&gt;&lt;i&gt;\\1&lt;/i&gt;&lt;/p&gt;"</span><span style="color: #268bd2;">)</span>
-        <span style="color: #268bd2;">(</span><span style="color: #2aa198;">"&lt;h2 class=\"footnotes\"&gt;Footnotes: &lt;/h2&gt;"</span> . <span style="color: #2aa198;">""</span><span style="color: #268bd2;">)</span>
-        <span style="color: #268bd2;">(</span><span style="color: #2aa198;">" id=\"org[[:xdigit:]]\\{</span><span style="color: #268bd2;">7\\</span><span style="color: #2aa198;">}\""</span> . <span style="color: #2aa198;">""</span><span style="color: #268bd2;">)</span>
-        <span style="color: #268bd2;">(</span><span style="color: #2aa198;">" id=\"outline-container-org[[:xdigit:]]\\{</span><span style="color: #268bd2;">7\\</span><span style="color: #2aa198;">}\""</span> . <span style="color: #2aa198;">""</span><span style="color: #268bd2;">)</span>
-        <span style="color: #268bd2;">(</span><span style="color: #2aa198;">" id=\"text-org[[:xdigit:]]\\{</span><span style="color: #268bd2;">7\\</span><span style="color: #2aa198;">}\""</span> . <span style="color: #2aa198;">""</span><span style="color: #268bd2;">)</span>
-        <span style="color: #268bd2;">(</span><span style="color: #2aa198;">"&lt;span class=\"TOC_2_blog\"&gt;TOC_2_blog&lt;/span&gt;"</span> . <span style="color: #2aa198;">""</span><span style="color: #268bd2;">)</span><span style="color: #b58900;">)</span><span style="color: #2aa198;">)</span>
+<pre class="src src-emacs-lisp">(mapc (<span style="color: #859900; font-weight: bold;">lambda</span> (x)
+        (<span style="color: #859900; font-weight: bold;">progn</span>
+          (goto-char (point-min))
+          (<span style="color: #859900; font-weight: bold;">while</span> (re-search-forward (car x) nil t)
+            (replace-match (cdr x) t nil))))
+      '((<span style="color: #2aa198;">"/"</span> . <span style="color: #2aa198;">"/"</span>)
+        (<span style="color: #2aa198;">"&lt;p&gt;&lt;span class=\"figure-number\"&gt;[[:alnum:] :]+&lt;/span&gt;</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">(</span><span style="color: #2aa198;">.+</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">)</span><span style="color: #2aa198;">&lt;/p&gt;"</span> . <span style="color: #2aa198;">"&lt;p style=\"text-align: center\"&gt;&lt;i&gt;\\1&lt;/i&gt;&lt;/p&gt;"</span>)
+        (<span style="color: #2aa198;">"&lt;h2 class=\"footnotes\"&gt;Footnotes: &lt;/h2&gt;"</span> . <span style="color: #2aa198;">""</span>)
+        (<span style="color: #2aa198;">" id=\"org[[:xdigit:]]\\{</span><span style="color: #268bd2;">7\\</span><span style="color: #2aa198;">}\""</span> . <span style="color: #2aa198;">""</span>)
+        (<span style="color: #2aa198;">" id=\"outline-container-org[[:xdigit:]]\\{</span><span style="color: #268bd2;">7\\</span><span style="color: #2aa198;">}\""</span> . <span style="color: #2aa198;">""</span>)
+        (<span style="color: #2aa198;">" id=\"text-org[[:xdigit:]]\\{</span><span style="color: #268bd2;">7\\</span><span style="color: #2aa198;">}\""</span> . <span style="color: #2aa198;">""</span>)
+        (<span style="color: #2aa198;">"&lt;span class=\"TOC_2_blog\"&gt;TOC_2_blog&lt;/span&gt;"</span> . <span style="color: #2aa198;">""</span>)))
 </pre>
 </div>
 
@@ -6258,7 +6258,7 @@ Resulting code of <code>org-jekyll--complete-articles</code>:
 </p>
 
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #2aa198;">(</span><span style="color: #859900; font-weight: bold;">defun</span> <span style="color: #268bd2;">org-jekyll--complete-articles</span> <span style="color: #b58900;">(</span>property-list<span style="color: #b58900;">)</span>
+<pre class="src src-emacs-lisp">(<span style="color: #859900; font-weight: bold;">defun</span> <span style="color: #268bd2;">org-jekyll--complete-articles</span> (property-list)
   <span style="color: #2aa198;">"Change published html-files via regular expressions.</span>
 
 <span style="color: #2aa198;">Fix links to attached files. Remove \"Footnotes:\" section from</span>
@@ -6266,25 +6266,25 @@ Resulting code of <code>org-jekyll--complete-articles</code>:
 
 <span style="color: #2aa198;">PROPERTY-LIST is a list of properties from</span>
 <span style="color: #2aa198;">`</span><span style="color: #268bd2; font-weight: bold;">org-publish-project-alist</span><span style="color: #2aa198;">'."</span>
-  <span style="color: #b58900;">(</span><span style="color: #859900; font-weight: bold;">let*</span>
-      <span style="color: #268bd2;">(</span><span style="color: #6c71c4;">(</span>publishing-directory <span style="color: #859900;">(</span>plist-get property-list '<span style="color: #657b83; font-weight: bold;">:publishing-directory</span><span style="color: #859900;">)</span><span style="color: #6c71c4;">)</span><span style="color: #268bd2;">)</span>
-    <span style="color: #268bd2;">(</span>mapc <span style="color: #6c71c4;">(</span><span style="color: #859900; font-weight: bold;">lambda</span> <span style="color: #859900;">(</span>html<span style="color: #859900;">)</span>
-            <span style="color: #859900;">(</span><span style="color: #859900; font-weight: bold;">with-temp-buffer</span>
-              <span style="color: #b58900;">(</span>insert-file-contents html<span style="color: #b58900;">)</span>
-              <span style="color: #b58900;">(</span>mapc <span style="color: #268bd2;">(</span><span style="color: #859900; font-weight: bold;">lambda</span> <span style="color: #6c71c4;">(</span>x<span style="color: #6c71c4;">)</span>
-                      <span style="color: #6c71c4;">(</span><span style="color: #859900; font-weight: bold;">progn</span>
-                        <span style="color: #859900;">(</span>goto-char <span style="color: #2aa198;">(</span>point-min<span style="color: #2aa198;">)</span><span style="color: #859900;">)</span>
-                        <span style="color: #859900;">(</span><span style="color: #859900; font-weight: bold;">while</span> <span style="color: #2aa198;">(</span>re-search-forward <span style="color: #b58900;">(</span>car x<span style="color: #b58900;">)</span> nil t<span style="color: #2aa198;">)</span>
-                          <span style="color: #2aa198;">(</span>replace-match <span style="color: #b58900;">(</span>cdr x<span style="color: #b58900;">)</span> t nil<span style="color: #2aa198;">)</span><span style="color: #859900;">)</span><span style="color: #6c71c4;">)</span><span style="color: #268bd2;">)</span>
-                    '<span style="color: #268bd2;">(</span><span style="color: #6c71c4;">(</span><span style="color: #2aa198;">"/"</span> . <span style="color: #2aa198;">"/"</span><span style="color: #6c71c4;">)</span>
-                      <span style="color: #6c71c4;">(</span><span style="color: #2aa198;">"&lt;p&gt;&lt;span class=\"figure-number\"&gt;[[:alnum:] :]+&lt;/span&gt;</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">(</span><span style="color: #2aa198;">.+</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">)</span><span style="color: #2aa198;">&lt;/p&gt;"</span> . <span style="color: #2aa198;">"&lt;p style=\"text-align: center\"&gt;&lt;i&gt;\\1&lt;/i&gt;&lt;/p&gt;"</span><span style="color: #6c71c4;">)</span>
-                      <span style="color: #6c71c4;">(</span><span style="color: #2aa198;">"&lt;h2 class=\"footnotes\"&gt;Footnotes: &lt;/h2&gt;"</span> . <span style="color: #2aa198;">""</span><span style="color: #6c71c4;">)</span>
-                      <span style="color: #6c71c4;">(</span><span style="color: #2aa198;">" id=\"org[[:xdigit:]]\\{</span><span style="color: #268bd2;">7\\</span><span style="color: #2aa198;">}\""</span> . <span style="color: #2aa198;">""</span><span style="color: #6c71c4;">)</span>
-                      <span style="color: #6c71c4;">(</span><span style="color: #2aa198;">" id=\"outline-container-org[[:xdigit:]]\\{</span><span style="color: #268bd2;">7\\</span><span style="color: #2aa198;">}\""</span> . <span style="color: #2aa198;">""</span><span style="color: #6c71c4;">)</span>
-                      <span style="color: #6c71c4;">(</span><span style="color: #2aa198;">" id=\"text-org[[:xdigit:]]\\{</span><span style="color: #268bd2;">7\\</span><span style="color: #2aa198;">}\""</span> . <span style="color: #2aa198;">""</span><span style="color: #6c71c4;">)</span>
-                      <span style="color: #6c71c4;">(</span><span style="color: #2aa198;">"&lt;span class=\"TOC_2_blog\"&gt;TOC_2_blog&lt;/span&gt;"</span> . <span style="color: #2aa198;">""</span><span style="color: #6c71c4;">)</span><span style="color: #268bd2;">)</span><span style="color: #b58900;">)</span>
-              <span style="color: #b58900;">(</span>write-file html<span style="color: #b58900;">)</span><span style="color: #859900;">)</span><span style="color: #6c71c4;">)</span>
-          <span style="color: #6c71c4;">(</span>directory-files-recursively publishing-directory <span style="color: #2aa198;">"\\.html$"</span> nil nil nil<span style="color: #6c71c4;">)</span><span style="color: #268bd2;">)</span><span style="color: #b58900;">)</span><span style="color: #2aa198;">)</span>
+  (<span style="color: #859900; font-weight: bold;">let*</span>
+      ((publishing-directory (plist-get property-list '<span style="color: #657b83; font-weight: bold;">:publishing-directory</span>)))
+    (mapc (<span style="color: #859900; font-weight: bold;">lambda</span> (html)
+            (<span style="color: #859900; font-weight: bold;">with-temp-buffer</span>
+              (insert-file-contents html)
+              (mapc (<span style="color: #859900; font-weight: bold;">lambda</span> (x)
+                      (<span style="color: #859900; font-weight: bold;">progn</span>
+                        (goto-char (point-min))
+                        (<span style="color: #859900; font-weight: bold;">while</span> (re-search-forward (car x) nil t)
+                          (replace-match (cdr x) t nil))))
+                    '((<span style="color: #2aa198;">"/"</span> . <span style="color: #2aa198;">"/"</span>)
+                      (<span style="color: #2aa198;">"&lt;p&gt;&lt;span class=\"figure-number\"&gt;[[:alnum:] :]+&lt;/span&gt;</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">(</span><span style="color: #2aa198;">.+</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">)</span><span style="color: #2aa198;">&lt;/p&gt;"</span> . <span style="color: #2aa198;">"&lt;p style=\"text-align: center\"&gt;&lt;i&gt;\\1&lt;/i&gt;&lt;/p&gt;"</span>)
+                      (<span style="color: #2aa198;">"&lt;h2 class=\"footnotes\"&gt;Footnotes: &lt;/h2&gt;"</span> . <span style="color: #2aa198;">""</span>)
+                      (<span style="color: #2aa198;">" id=\"org[[:xdigit:]]\\{</span><span style="color: #268bd2;">7\\</span><span style="color: #2aa198;">}\""</span> . <span style="color: #2aa198;">""</span>)
+                      (<span style="color: #2aa198;">" id=\"outline-container-org[[:xdigit:]]\\{</span><span style="color: #268bd2;">7\\</span><span style="color: #2aa198;">}\""</span> . <span style="color: #2aa198;">""</span>)
+                      (<span style="color: #2aa198;">" id=\"text-org[[:xdigit:]]\\{</span><span style="color: #268bd2;">7\\</span><span style="color: #2aa198;">}\""</span> . <span style="color: #2aa198;">""</span>)
+                      (<span style="color: #2aa198;">"&lt;span class=\"TOC_2_blog\"&gt;TOC_2_blog&lt;/span&gt;"</span> . <span style="color: #2aa198;">""</span>)))
+              (write-file html)))
+          (directory-files-recursively publishing-directory <span style="color: #2aa198;">"\\.html$"</span> nil nil nil))))
 </pre>
 </div>
 </div>
@@ -6303,14 +6303,14 @@ are much easier in this case:
 </p>
 
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #2aa198;">(</span><span style="color: #859900; font-weight: bold;">let</span> <span style="color: #b58900;">(</span><span style="color: #268bd2;">(</span>org-publish-project-alist `<span style="color: #6c71c4;">(</span><span style="color: #859900;">(</span><span style="color: #2aa198;">"org-jekyll-static"</span>
-                                    <span style="color: #657b83; font-weight: bold;">:base-directory</span> ,<span style="color: #b58900;">(</span>concat org-jekyll-paths-base-path <span style="color: #2aa198;">"/_static"</span><span style="color: #b58900;">)</span>
+<pre class="src src-emacs-lisp">(<span style="color: #859900; font-weight: bold;">let</span> ((org-publish-project-alist `((<span style="color: #2aa198;">"org-jekyll-static"</span>
+                                    <span style="color: #657b83; font-weight: bold;">:base-directory</span> ,(concat org-jekyll-paths-base-path <span style="color: #2aa198;">"/_static"</span>)
                                     <span style="color: #657b83; font-weight: bold;">:base-extension</span> <span style="color: #2aa198;">"jpg</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">|</span><span style="color: #2aa198;">JPG</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">|</span><span style="color: #2aa198;">jpeg</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">|</span><span style="color: #2aa198;">png</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">|</span><span style="color: #2aa198;">gif</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">|</span><span style="color: #2aa198;">webm</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">|</span><span style="color: #2aa198;">webp</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">|</span><span style="color: #2aa198;">gpx</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">|</span><span style="color: #2aa198;">tar.bz2</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">|</span><span style="color: #2aa198;">uxf"</span>
-                                    <span style="color: #657b83; font-weight: bold;">:publishing-directory</span> ,<span style="color: #b58900;">(</span>concat org-jekyll-paths-base-path <span style="color: #2aa198;">"/assets/static"</span><span style="color: #b58900;">)</span>
+                                    <span style="color: #657b83; font-weight: bold;">:publishing-directory</span> ,(concat org-jekyll-paths-base-path <span style="color: #2aa198;">"/assets/static"</span>)
                                     <span style="color: #657b83; font-weight: bold;">:publishing-function</span> org-publish-attachment
                                     <span style="color: #657b83; font-weight: bold;">:preparation-function</span> org-jekyll--prepare-static
                                     <span style="color: #657b83; font-weight: bold;">:exclude</span> ,org-jekyll-exclude-regex
-                                    <span style="color: #657b83; font-weight: bold;">:recursive</span> t<span style="color: #859900;">)</span><span style="color: #6c71c4;">)</span><span style="color: #268bd2;">)</span><span style="color: #b58900;">)</span><span style="color: #2aa198;">)</span>
+                                    <span style="color: #657b83; font-weight: bold;">:recursive</span> t)))))
 </pre>
 </div>
 
@@ -6325,12 +6325,12 @@ Exporting HTML files and exporting static files can be combined under one
 </p>
 
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #2aa198;">(</span><span style="color: #859900; font-weight: bold;">let</span> <span style="color: #b58900;">(</span><span style="color: #268bd2;">(</span>org-publish-project-alist `<span style="color: #6c71c4;">(</span><span style="color: #859900;">(</span><span style="color: #2aa198;">"org-jekyll-org"</span>
-                                    ...<span style="color: #859900;">)</span>
-                                   <span style="color: #859900;">(</span><span style="color: #2aa198;">"org-jekyll-static"</span>
-                                    ...<span style="color: #859900;">)</span>
-                                   <span style="color: #859900;">(</span><span style="color: #2aa198;">"org-jekyll"</span> <span style="color: #657b83; font-weight: bold;">:components</span> <span style="color: #b58900;">(</span><span style="color: #2aa198;">"org-jekyll-org"</span> <span style="color: #2aa198;">"org-jekyll-static"</span><span style="color: #b58900;">)</span><span style="color: #859900;">)</span><span style="color: #6c71c4;">)</span><span style="color: #268bd2;">)</span><span style="color: #b58900;">)</span>
-  <span style="color: #b58900;">(</span>org-publish-project <span style="color: #2aa198;">"org-jekyll"</span> t nil<span style="color: #b58900;">)</span><span style="color: #2aa198;">)</span>
+<pre class="src src-emacs-lisp">(<span style="color: #859900; font-weight: bold;">let</span> ((org-publish-project-alist `((<span style="color: #2aa198;">"org-jekyll-org"</span>
+                                    ...)
+                                   (<span style="color: #2aa198;">"org-jekyll-static"</span>
+                                    ...)
+                                   (<span style="color: #2aa198;">"org-jekyll"</span> <span style="color: #657b83; font-weight: bold;">:components</span> (<span style="color: #2aa198;">"org-jekyll-org"</span> <span style="color: #2aa198;">"org-jekyll-static"</span>)))))
+  (org-publish-project <span style="color: #2aa198;">"org-jekyll"</span> t nil))
 </pre>
 </div>
 
@@ -6343,25 +6343,25 @@ subdirectories to a temporary directory for the <code>org-jekyll-project</code> 
 </p>
 
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #2aa198;">(</span><span style="color: #859900; font-weight: bold;">defun</span> <span style="color: #268bd2;">org-jekyll--prepare-static</span> <span style="color: #b58900;">(</span>property-list<span style="color: #b58900;">)</span>
+<pre class="src src-emacs-lisp">(<span style="color: #859900; font-weight: bold;">defun</span> <span style="color: #268bd2;">org-jekyll--prepare-static</span> (property-list)
   <span style="color: #2aa198;">"Copy static files to `</span><span style="color: #268bd2; font-weight: bold;">/_static</span><span style="color: #2aa198;">' directory.</span>
 
 <span style="color: #2aa198;">PROPERTY-LIST is a list of properties from</span>
 <span style="color: #2aa198;">`</span><span style="color: #268bd2; font-weight: bold;">org-publish-project-alist</span><span style="color: #2aa198;">'."</span>
-  <span style="color: #b58900;">(</span><span style="color: #859900; font-weight: bold;">let</span>
-      <span style="color: #268bd2;">(</span><span style="color: #6c71c4;">(</span>static-directory <span style="color: #859900;">(</span>plist-get property-list `<span style="color: #657b83; font-weight: bold;">:base-directory</span><span style="color: #859900;">)</span><span style="color: #6c71c4;">)</span><span style="color: #268bd2;">)</span>
-    <span style="color: #268bd2;">(</span>make-directory static-directory t<span style="color: #268bd2;">)</span>
-    <span style="color: #268bd2;">(</span>mapc <span style="color: #6c71c4;">(</span><span style="color: #859900; font-weight: bold;">lambda</span> <span style="color: #859900;">(</span>filename<span style="color: #859900;">)</span>
-            <span style="color: #859900;">(</span><span style="color: #859900; font-weight: bold;">progn</span>
-              <span style="color: #b58900;">(</span>string-match <span style="color: #268bd2;">(</span>concat org-jekyll-paths-articles-path <span style="color: #2aa198;">"/[[:alnum:]-/]+/</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">(</span><span style="color: #2aa198;">[[:alnum:][:blank:]-_.]+</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">)</span><span style="color: #2aa198;">$"</span><span style="color: #268bd2;">)</span> filename<span style="color: #b58900;">)</span>
-              <span style="color: #b58900;">(</span><span style="color: #859900; font-weight: bold;">let</span>
-                  <span style="color: #268bd2;">(</span><span style="color: #6c71c4;">(</span>static-filename <span style="color: #859900;">(</span>match-string 1 filename<span style="color: #859900;">)</span><span style="color: #6c71c4;">)</span><span style="color: #268bd2;">)</span>
-                <span style="color: #268bd2;">(</span>copy-file filename <span style="color: #6c71c4;">(</span>concat static-directory <span style="color: #2aa198;">"/"</span> static-filename<span style="color: #6c71c4;">)</span> t t t t<span style="color: #268bd2;">)</span><span style="color: #b58900;">)</span><span style="color: #859900;">)</span><span style="color: #6c71c4;">)</span>
-          <span style="color: #6c71c4;">(</span>seq-filter <span style="color: #859900;">(</span><span style="color: #859900; font-weight: bold;">lambda</span> <span style="color: #b58900;">(</span>path<span style="color: #b58900;">)</span>
-                        <span style="color: #b58900;">(</span>not <span style="color: #268bd2;">(</span>string-match
-                              <span style="color: #6c71c4;">(</span>concat org-jekyll-exclude-regex <span style="color: #2aa198;">"</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">|</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">(</span><span style="color: #2aa198;">article-[[:lower:]]+\\.org</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">)</span><span style="color: #2aa198;">"</span><span style="color: #6c71c4;">)</span>
-                              path<span style="color: #268bd2;">)</span><span style="color: #b58900;">)</span><span style="color: #859900;">)</span>
-                      <span style="color: #859900;">(</span>directory-files-recursively org-jekyll-paths-articles-path <span style="color: #2aa198;">"."</span> nil nil nil<span style="color: #859900;">)</span><span style="color: #6c71c4;">)</span><span style="color: #268bd2;">)</span><span style="color: #b58900;">)</span><span style="color: #2aa198;">)</span>
+  (<span style="color: #859900; font-weight: bold;">let</span>
+      ((static-directory (plist-get property-list `<span style="color: #657b83; font-weight: bold;">:base-directory</span>)))
+    (make-directory static-directory t)
+    (mapc (<span style="color: #859900; font-weight: bold;">lambda</span> (filename)
+            (<span style="color: #859900; font-weight: bold;">progn</span>
+              (string-match (concat org-jekyll-paths-articles-path <span style="color: #2aa198;">"/[[:alnum:]-/]+/</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">(</span><span style="color: #2aa198;">[[:alnum:][:blank:]-_.]+</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">)</span><span style="color: #2aa198;">$"</span>) filename)
+              (<span style="color: #859900; font-weight: bold;">let</span>
+                  ((static-filename (match-string 1 filename)))
+                (copy-file filename (concat static-directory <span style="color: #2aa198;">"/"</span> static-filename) t t t t))))
+          (seq-filter (<span style="color: #859900; font-weight: bold;">lambda</span> (path)
+                        (not (string-match
+                              (concat org-jekyll-exclude-regex <span style="color: #2aa198;">"</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">|</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">(</span><span style="color: #2aa198;">article-[[:lower:]]+\\.org</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">)</span><span style="color: #2aa198;">"</span>)
+                              path)))
+                      (directory-files-recursively org-jekyll-paths-articles-path <span style="color: #2aa198;">"."</span> nil nil nil)))))
 </pre>
 </div>
 </div>
@@ -6382,19 +6382,19 @@ using the <code>make-process</code><sup><a id="fnr.make-process" class="footref"
 </p>
 
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #2aa198;">(</span>make-process
+<pre class="src src-emacs-lisp">(make-process
  <span style="color: #657b83; font-weight: bold;">:name</span> <span style="color: #2aa198;">"jekyll-build"</span>
  <span style="color: #657b83; font-weight: bold;">:buffer</span> <span style="color: #2aa198;">"jekyll-build"</span>
- <span style="color: #657b83; font-weight: bold;">:command</span> '<span style="color: #b58900;">(</span><span style="color: #2aa198;">"bundle"</span> <span style="color: #2aa198;">"exec"</span> <span style="color: #2aa198;">"jekyll"</span> <span style="color: #2aa198;">"build"</span><span style="color: #b58900;">)</span>
+ <span style="color: #657b83; font-weight: bold;">:command</span> '(<span style="color: #2aa198;">"bundle"</span> <span style="color: #2aa198;">"exec"</span> <span style="color: #2aa198;">"jekyll"</span> <span style="color: #2aa198;">"build"</span>)
  <span style="color: #657b83; font-weight: bold;">:delete-exited-processes</span> t
- <span style="color: #657b83; font-weight: bold;">:sentinel</span> <span style="color: #b58900;">(</span><span style="color: #859900; font-weight: bold;">lambda</span> <span style="color: #268bd2;">(</span>process state<span style="color: #268bd2;">)</span>
-             <span style="color: #268bd2;">(</span><span style="color: #859900; font-weight: bold;">cond</span>
-              <span style="color: #6c71c4;">(</span><span style="color: #859900;">(</span><span style="color: #859900; font-weight: bold;">and</span> <span style="color: #b58900;">(</span>eq <span style="color: #268bd2;">(</span>process-status process<span style="color: #268bd2;">)</span> 'exit<span style="color: #b58900;">)</span>
-                    <span style="color: #b58900;">(</span>zerop <span style="color: #268bd2;">(</span>process-exit-status process<span style="color: #268bd2;">)</span><span style="color: #b58900;">)</span><span style="color: #859900;">)</span>
-               <span style="color: #859900;">(</span>message <span style="color: #2aa198;">"%s"</span> <span style="color: #b58900;">(</span>propertize <span style="color: #2aa198;">"Blog built"</span> 'face '<span style="color: #268bd2;">(</span><span style="color: #657b83; font-weight: bold;">:foreground</span> <span style="color: #2aa198;">"blue"</span><span style="color: #268bd2;">)</span><span style="color: #b58900;">)</span><span style="color: #859900;">)</span><span style="color: #6c71c4;">)</span>
-              <span style="color: #6c71c4;">(</span><span style="color: #859900;">(</span>eq <span style="color: #b58900;">(</span>process-status process<span style="color: #b58900;">)</span> 'run<span style="color: #859900;">)</span>
-               <span style="color: #859900;">(</span>accept-process-output process<span style="color: #859900;">)</span><span style="color: #6c71c4;">)</span>
-              <span style="color: #6c71c4;">(</span>t <span style="color: #859900;">(</span><span style="color: #cb4b16; font-weight: bold;">error</span> <span style="color: #b58900;">(</span>concat <span style="color: #2aa198;">"Jekyll Build: "</span> state<span style="color: #b58900;">)</span><span style="color: #859900;">)</span><span style="color: #6c71c4;">)</span><span style="color: #268bd2;">)</span><span style="color: #b58900;">)</span><span style="color: #2aa198;">)</span>
+ <span style="color: #657b83; font-weight: bold;">:sentinel</span> (<span style="color: #859900; font-weight: bold;">lambda</span> (process state)
+             (<span style="color: #859900; font-weight: bold;">cond</span>
+              ((<span style="color: #859900; font-weight: bold;">and</span> (eq (process-status process) 'exit)
+                    (zerop (process-exit-status process)))
+               (message <span style="color: #2aa198;">"%s"</span> (propertize <span style="color: #2aa198;">"Blog built"</span> 'face '(<span style="color: #657b83; font-weight: bold;">:foreground</span> <span style="color: #2aa198;">"blue"</span>))))
+              ((eq (process-status process) 'run)
+               (accept-process-output process))
+              (t (<span style="color: #cb4b16; font-weight: bold;">error</span> (concat <span style="color: #2aa198;">"Jekyll Build: "</span> state))))))
 </pre>
 </div>
 
@@ -6430,26 +6430,26 @@ continue editing the post.
 </p>
 
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #2aa198;">(</span><span style="color: #859900; font-weight: bold;">defun</span> <span style="color: #268bd2;">org-jekyll--suffix-build</span> <span style="color: #b58900;">()</span>
+<pre class="src src-emacs-lisp">(<span style="color: #859900; font-weight: bold;">defun</span> <span style="color: #268bd2;">org-jekyll--suffix-build</span> ()
   <span style="color: #2aa198;">"Build the blog."</span>
-  <span style="color: #b58900;">(</span><span style="color: #859900; font-weight: bold;">interactive</span><span style="color: #b58900;">)</span>
-  <span style="color: #b58900;">(</span>cd <span style="color: #268bd2;">(</span>expand-file-name org-jekyll-paths-base-path<span style="color: #268bd2;">)</span><span style="color: #b58900;">)</span>
-  <span style="color: #b58900;">(</span><span style="color: #859900; font-weight: bold;">let</span> <span style="color: #268bd2;">(</span><span style="color: #6c71c4;">(</span>org-publish-project-alist `<span style="color: #859900;">(</span><span style="color: #b58900;">(</span><span style="color: #2aa198;">"org-jekyll-org"</span>
-                                      ...<span style="color: #b58900;">)</span>
-                                     <span style="color: #b58900;">(</span><span style="color: #2aa198;">"org-jekyll-static"</span>
-                                      ...<span style="color: #b58900;">)</span>
-                                     <span style="color: #b58900;">(</span><span style="color: #2aa198;">"org-jekyll"</span> <span style="color: #657b83; font-weight: bold;">:components</span> <span style="color: #268bd2;">(</span><span style="color: #2aa198;">"org-jekyll-org"</span> <span style="color: #2aa198;">"org-jekyll-static"</span><span style="color: #268bd2;">)</span><span style="color: #b58900;">)</span><span style="color: #859900;">)</span><span style="color: #6c71c4;">)</span>
-        <span style="color: #6c71c4;">(</span>current-path <span style="color: #859900;">(</span>file-name-directory buffer-file-name<span style="color: #859900;">)</span><span style="color: #6c71c4;">)</span><span style="color: #268bd2;">)</span>
-    <span style="color: #268bd2;">(</span>cd <span style="color: #6c71c4;">(</span>expand-file-name org-jekyll-paths-base-path<span style="color: #6c71c4;">)</span><span style="color: #268bd2;">)</span>
-    <span style="color: #268bd2;">(</span>org-publish-project <span style="color: #2aa198;">"org-jekyll"</span> t nil<span style="color: #268bd2;">)</span><span style="color: #b58900;">)</span>
-  <span style="color: #b58900;">(</span>make-process
+  (<span style="color: #859900; font-weight: bold;">interactive</span>)
+  (cd (expand-file-name org-jekyll-paths-base-path))
+  (<span style="color: #859900; font-weight: bold;">let</span> ((org-publish-project-alist `((<span style="color: #2aa198;">"org-jekyll-org"</span>
+                                      ...)
+                                     (<span style="color: #2aa198;">"org-jekyll-static"</span>
+                                      ...)
+                                     (<span style="color: #2aa198;">"org-jekyll"</span> <span style="color: #657b83; font-weight: bold;">:components</span> (<span style="color: #2aa198;">"org-jekyll-org"</span> <span style="color: #2aa198;">"org-jekyll-static"</span>))))
+        (current-path (file-name-directory buffer-file-name)))
+    (cd (expand-file-name org-jekyll-paths-base-path))
+    (org-publish-project <span style="color: #2aa198;">"org-jekyll"</span> t nil))
+  (make-process
    <span style="color: #657b83; font-weight: bold;">:name</span> <span style="color: #2aa198;">"jekyll-build"</span>
    <span style="color: #657b83; font-weight: bold;">:buffer</span> <span style="color: #2aa198;">"jekyll-build"</span>
-   <span style="color: #657b83; font-weight: bold;">:command</span> '<span style="color: #268bd2;">(</span><span style="color: #2aa198;">"bundle"</span> <span style="color: #2aa198;">"exec"</span> <span style="color: #2aa198;">"jekyll"</span> <span style="color: #2aa198;">"build"</span><span style="color: #268bd2;">)</span>
+   <span style="color: #657b83; font-weight: bold;">:command</span> '(<span style="color: #2aa198;">"bundle"</span> <span style="color: #2aa198;">"exec"</span> <span style="color: #2aa198;">"jekyll"</span> <span style="color: #2aa198;">"build"</span>)
    <span style="color: #657b83; font-weight: bold;">:delete-exited-processes</span> t
-   <span style="color: #657b83; font-weight: bold;">:sentinel</span> <span style="color: #268bd2;">(</span><span style="color: #859900; font-weight: bold;">lambda</span> <span style="color: #6c71c4;">(</span>process state<span style="color: #6c71c4;">)</span>
-               ...<span style="color: #268bd2;">)</span><span style="color: #b58900;">)</span>
-  <span style="color: #b58900;">(</span>cd current-path<span style="color: #b58900;">)</span><span style="color: #2aa198;">)</span>
+   <span style="color: #657b83; font-weight: bold;">:sentinel</span> (<span style="color: #859900; font-weight: bold;">lambda</span> (process state)
+               ...))
+  (cd current-path))
 </pre>
 </div>
 </div>
@@ -6485,22 +6485,22 @@ everything necessary and store the results in separate variables:
 </p>
 
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #2aa198;">(</span><span style="color: #859900; font-weight: bold;">let*</span> <span style="color: #b58900;">(</span><span style="color: #268bd2;">(</span>category <span style="color: #6c71c4;">(</span>completing-read <span style="color: #2aa198;">"Enter category: "</span>
-                                  <span style="color: #859900;">(</span>seq-filter
-                                   <span style="color: #b58900;">(</span><span style="color: #859900; font-weight: bold;">lambda</span> <span style="color: #268bd2;">(</span>category<span style="color: #268bd2;">)</span> <span style="color: #268bd2;">(</span>string-match <span style="color: #2aa198;">"^[[:lower:]]+$"</span> category<span style="color: #268bd2;">)</span><span style="color: #b58900;">)</span>
-                                   <span style="color: #b58900;">(</span>directory-files org-jekyll-paths-articles-path nil
+<pre class="src src-emacs-lisp">(<span style="color: #859900; font-weight: bold;">let*</span> ((category (completing-read <span style="color: #2aa198;">"Enter category: "</span>
+                                  (seq-filter
+                                   (<span style="color: #859900; font-weight: bold;">lambda</span> (category) (string-match <span style="color: #2aa198;">"^[[:lower:]]+$"</span> category))
+                                   (directory-files org-jekyll-paths-articles-path nil
                                                     directory-files-no-dot-files-regexp
-                                                    nil nil<span style="color: #b58900;">)</span><span style="color: #859900;">)</span>
-                                  nil t<span style="color: #6c71c4;">)</span><span style="color: #268bd2;">)</span>
-       <span style="color: #268bd2;">(</span>name <span style="color: #6c71c4;">(</span>read-string <span style="color: #2aa198;">"Enter title: "</span><span style="color: #6c71c4;">)</span><span style="color: #268bd2;">)</span>
-       <span style="color: #268bd2;">(</span>summary <span style="color: #6c71c4;">(</span>read-string <span style="color: #2aa198;">"Enter summary: "</span><span style="color: #6c71c4;">)</span><span style="color: #268bd2;">)</span>
-       <span style="color: #268bd2;">(</span>tags <span style="color: #6c71c4;">(</span>read-string <span style="color: #2aa198;">"Enter tags (space separated): "</span><span style="color: #6c71c4;">)</span><span style="color: #268bd2;">)</span>
-       <span style="color: #268bd2;">(</span>permalink <span style="color: #6c71c4;">(</span>read-string <span style="color: #2aa198;">"Enter permalink: "</span><span style="color: #6c71c4;">)</span><span style="color: #268bd2;">)</span>
-       <span style="color: #268bd2;">(</span>language <span style="color: #6c71c4;">(</span>completing-read <span style="color: #2aa198;">"Enter post language: "</span> org-jekyll-languages nil t<span style="color: #6c71c4;">)</span><span style="color: #268bd2;">)</span>
-       <span style="color: #268bd2;">(</span>use-banner <span style="color: #6c71c4;">(</span>y-or-n-p <span style="color: #2aa198;">"Use banner?"</span><span style="color: #6c71c4;">)</span><span style="color: #268bd2;">)</span>
-       <span style="color: #268bd2;">(</span>banner <span style="color: #6c71c4;">(</span><span style="color: #859900; font-weight: bold;">if</span> use-banner
-                   <span style="color: #859900;">(</span>read-file-name <span style="color: #2aa198;">"Path to banner image: "</span> nil nil t nil nil<span style="color: #859900;">)</span>
-                 nil<span style="color: #6c71c4;">)</span><span style="color: #268bd2;">)</span><span style="color: #b58900;">)</span><span style="color: #2aa198;">)</span>
+                                                    nil nil))
+                                  nil t))
+       (name (read-string <span style="color: #2aa198;">"Enter title: "</span>))
+       (summary (read-string <span style="color: #2aa198;">"Enter summary: "</span>))
+       (tags (read-string <span style="color: #2aa198;">"Enter tags (space separated): "</span>))
+       (permalink (read-string <span style="color: #2aa198;">"Enter permalink: "</span>))
+       (language (completing-read <span style="color: #2aa198;">"Enter post language: "</span> org-jekyll-languages nil t))
+       (use-banner (y-or-n-p <span style="color: #2aa198;">"Use banner?"</span>))
+       (banner (<span style="color: #859900; font-weight: bold;">if</span> use-banner
+                   (read-file-name <span style="color: #2aa198;">"Path to banner image: "</span> nil nil t nil nil)
+                 nil))))
 </pre>
 </div>
 
@@ -6519,28 +6519,28 @@ Within the same <code>let*</code> I compute:
 Part of the front matter with Jekyll's banner insertion code:
 </p>
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #2aa198;">(</span>additional <span style="color: #b58900;">(</span>concat <span style="color: #268bd2;">(</span><span style="color: #859900; font-weight: bold;">if</span> use-banner
-                        <span style="color: #6c71c4;">(</span>concat <span style="color: #2aa198;">"image: /assets/static/"</span> <span style="color: #859900;">(</span>file-name-nondirectory banner<span style="color: #859900;">)</span> <span style="color: #2aa198;">"\n"</span>
+<pre class="src src-emacs-lisp">(additional (concat (<span style="color: #859900; font-weight: bold;">if</span> use-banner
+                        (concat <span style="color: #2aa198;">"image: /assets/static/"</span> (file-name-nondirectory banner) <span style="color: #2aa198;">"\n"</span>
                                 <span style="color: #2aa198;">"banner:\n"</span>
-                                <span style="color: #2aa198;">"  image: /assets/static/"</span> <span style="color: #859900;">(</span>file-name-nondirectory banner<span style="color: #859900;">)</span> <span style="color: #2aa198;">"\n"</span>
-                                <span style="color: #2aa198;">"  opacity: 0.6\n"</span><span style="color: #6c71c4;">)</span>
-                      <span style="color: #2aa198;">""</span><span style="color: #268bd2;">)</span>
-                    <span style="color: #268bd2;">(</span>concat <span style="color: #2aa198;">"summary: "</span> summary <span style="color: #2aa198;">"\n"</span><span style="color: #268bd2;">)</span>
-                    <span style="color: #268bd2;">(</span>concat <span style="color: #2aa198;">"tags: "</span> tags<span style="color: #268bd2;">)</span><span style="color: #b58900;">)</span><span style="color: #2aa198;">)</span>
+                                <span style="color: #2aa198;">"  image: /assets/static/"</span> (file-name-nondirectory banner) <span style="color: #2aa198;">"\n"</span>
+                                <span style="color: #2aa198;">"  opacity: 0.6\n"</span>)
+                      <span style="color: #2aa198;">""</span>)
+                    (concat <span style="color: #2aa198;">"summary: "</span> summary <span style="color: #2aa198;">"\n"</span>)
+                    (concat <span style="color: #2aa198;">"tags: "</span> tags)))
 </pre>
 </div></li>
 <li><p>
 Path to new post:
 </p>
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #2aa198;">(</span>dirname <span style="color: #b58900;">(</span>concat path <span style="color: #2aa198;">"/"</span> category <span style="color: #2aa198;">"/"</span> date <span style="color: #2aa198;">"-"</span> permalink<span style="color: #b58900;">)</span><span style="color: #2aa198;">)</span>
+<pre class="src src-emacs-lisp">(dirname (concat path <span style="color: #2aa198;">"/"</span> category <span style="color: #2aa198;">"/"</span> date <span style="color: #2aa198;">"-"</span> permalink))
 </pre>
 </div></li>
 <li><p>
 Post's filename — concatenate <code>article</code> with entered language code:
 </p>
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #2aa198;">(</span>filename <span style="color: #b58900;">(</span>concat dirname <span style="color: #2aa198;">"/"</span> <span style="color: #2aa198;">"article-"</span> language <span style="color: #2aa198;">".org"</span><span style="color: #b58900;">)</span><span style="color: #2aa198;">)</span>
+<pre class="src src-emacs-lisp">(filename (concat dirname <span style="color: #2aa198;">"/"</span> <span style="color: #2aa198;">"article-"</span> language <span style="color: #2aa198;">".org"</span>))
 </pre>
 </div></li>
 </ul>
@@ -6553,7 +6553,7 @@ After evaluating all variables, there are inside <code>let*</code> body:
 Create subdirectory with files for new post:
 </p>
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #2aa198;">(</span>make-directory dirname t<span style="color: #2aa198;">)</span>
+<pre class="src src-emacs-lisp">(make-directory dirname t)
 </pre>
 </div></li>
 <li><p>
@@ -6561,8 +6561,8 @@ If we chose to use banner image for post, then copy appropriate image to
 previously created directory:
 </p>
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #2aa198;">(</span><span style="color: #859900; font-weight: bold;">if</span> use-banner
-    <span style="color: #b58900;">(</span>copy-file banner <span style="color: #268bd2;">(</span>concat dirname <span style="color: #2aa198;">"/"</span> <span style="color: #6c71c4;">(</span>file-name-nondirectory banner<span style="color: #6c71c4;">)</span><span style="color: #268bd2;">)</span><span style="color: #b58900;">)</span><span style="color: #2aa198;">)</span>
+<pre class="src src-emacs-lisp">(<span style="color: #859900; font-weight: bold;">if</span> use-banner
+    (copy-file banner (concat dirname <span style="color: #2aa198;">"/"</span> (file-name-nondirectory banner))))
 </pre>
 </div></li>
 <li><p>
@@ -6570,19 +6570,19 @@ Replace template placeholders in <code>org-jekyll-paths-template-path</code> pat
 save new file with <code>filename</code> name: 
 </p>
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #2aa198;">(</span><span style="color: #859900; font-weight: bold;">with-temp-buffer</span>
-  <span style="color: #b58900;">(</span>insert-file-contents template<span style="color: #b58900;">)</span>
-  <span style="color: #b58900;">(</span>mapc
-   <span style="color: #268bd2;">(</span><span style="color: #859900; font-weight: bold;">lambda</span> <span style="color: #6c71c4;">(</span>x<span style="color: #6c71c4;">)</span> <span style="color: #6c71c4;">(</span><span style="color: #859900; font-weight: bold;">progn</span>
-                 <span style="color: #859900;">(</span>goto-char <span style="color: #b58900;">(</span>point-min<span style="color: #b58900;">)</span><span style="color: #859900;">)</span>
-                 <span style="color: #859900;">(</span><span style="color: #859900; font-weight: bold;">while</span> <span style="color: #b58900;">(</span>search-forward <span style="color: #268bd2;">(</span>car x<span style="color: #268bd2;">)</span> nil t<span style="color: #b58900;">)</span>
-                   <span style="color: #b58900;">(</span>replace-match <span style="color: #268bd2;">(</span>cdr x<span style="color: #268bd2;">)</span> t t<span style="color: #b58900;">)</span><span style="color: #859900;">)</span><span style="color: #6c71c4;">)</span><span style="color: #268bd2;">)</span>
-   `<span style="color: #268bd2;">(</span><span style="color: #6c71c4;">(</span><span style="color: #2aa198;">"{%NAME%}"</span> . ,name<span style="color: #6c71c4;">)</span>
-     <span style="color: #6c71c4;">(</span><span style="color: #2aa198;">"{%CATEGORY%}"</span> . ,category<span style="color: #6c71c4;">)</span>
-     <span style="color: #6c71c4;">(</span><span style="color: #2aa198;">"{%DATE%}"</span> . ,date<span style="color: #6c71c4;">)</span>
-     <span style="color: #6c71c4;">(</span><span style="color: #2aa198;">"{%LANG%}"</span> . ,language<span style="color: #6c71c4;">)</span>
-     <span style="color: #6c71c4;">(</span><span style="color: #2aa198;">"{%ADDITIONAL%}"</span> . ,additional<span style="color: #6c71c4;">)</span><span style="color: #268bd2;">)</span><span style="color: #b58900;">)</span>
-  <span style="color: #b58900;">(</span>write-file filename<span style="color: #b58900;">)</span><span style="color: #2aa198;">)</span>
+<pre class="src src-emacs-lisp">(<span style="color: #859900; font-weight: bold;">with-temp-buffer</span>
+  (insert-file-contents template)
+  (mapc
+   (<span style="color: #859900; font-weight: bold;">lambda</span> (x) (<span style="color: #859900; font-weight: bold;">progn</span>
+                 (goto-char (point-min))
+                 (<span style="color: #859900; font-weight: bold;">while</span> (search-forward (car x) nil t)
+                   (replace-match (cdr x) t t))))
+   `((<span style="color: #2aa198;">"{%NAME%}"</span> . ,name)
+     (<span style="color: #2aa198;">"{%CATEGORY%}"</span> . ,category)
+     (<span style="color: #2aa198;">"{%DATE%}"</span> . ,date)
+     (<span style="color: #2aa198;">"{%LANG%}"</span> . ,language)
+     (<span style="color: #2aa198;">"{%ADDITIONAL%}"</span> . ,additional)))
+  (write-file filename))
 </pre>
 </div>
 <p>
@@ -6593,8 +6593,8 @@ Previously created file is opened in current buffer and cursor is moved to
 the end of file:
 </p>
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #2aa198;">(</span><span style="color: #859900; font-weight: bold;">with-current-buffer</span> <span style="color: #b58900;">(</span>find-file filename<span style="color: #b58900;">)</span>
-  <span style="color: #b58900;">(</span>goto-char <span style="color: #268bd2;">(</span>point-max<span style="color: #268bd2;">)</span><span style="color: #b58900;">)</span><span style="color: #2aa198;">)</span>
+<pre class="src src-emacs-lisp">(<span style="color: #859900; font-weight: bold;">with-current-buffer</span> (find-file filename)
+  (goto-char (point-max)))
 </pre>
 </div></li>
 </ol>
@@ -6605,11 +6605,11 @@ Path to template stored in <code>org-jekyll-paths-template-path</code> variable 
 </p>
 
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #2aa198;">(</span><span style="color: #859900; font-weight: bold;">defcustom</span> <span style="color: #268bd2;">org-jekyll-paths-template-path</span>
-  <span style="color: #b58900;">(</span>concat org-jekyll-paths-articles-path <span style="color: #2aa198;">"/_post_template.org"</span><span style="color: #b58900;">)</span>
+<pre class="src src-emacs-lisp">(<span style="color: #859900; font-weight: bold;">defcustom</span> <span style="color: #268bd2;">org-jekyll-paths-template-path</span>
+  (concat org-jekyll-paths-articles-path <span style="color: #2aa198;">"/_post_template.org"</span>)
   <span style="color: #2aa198;">"Path to post template."</span>
-  <span style="color: #657b83; font-weight: bold;">:type</span> '<span style="color: #b58900;">(</span>file <span style="color: #657b83; font-weight: bold;">:must-match</span> t<span style="color: #b58900;">)</span>
-  <span style="color: #657b83; font-weight: bold;">:group</span> 'org-jekyll-paths<span style="color: #2aa198;">)</span>
+  <span style="color: #657b83; font-weight: bold;">:type</span> '(file <span style="color: #657b83; font-weight: bold;">:must-match</span> t)
+  <span style="color: #657b83; font-weight: bold;">:group</span> 'org-jekyll-paths)
 </pre>
 </div>
 
@@ -6662,23 +6662,23 @@ necessary arguments:
 </p>
 
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #2aa198;">(</span>make-process
+<pre class="src src-emacs-lisp">(make-process
  <span style="color: #657b83; font-weight: bold;">:name</span> <span style="color: #2aa198;">"jekyll-serve"</span>
  <span style="color: #657b83; font-weight: bold;">:buffer</span> <span style="color: #2aa198;">"jekyll-serve"</span>
- <span style="color: #657b83; font-weight: bold;">:command</span> '<span style="color: #b58900;">(</span><span style="color: #2aa198;">"bundle"</span> <span style="color: #2aa198;">"exec"</span> <span style="color: #2aa198;">"jekyll"</span> <span style="color: #2aa198;">"serve"</span><span style="color: #b58900;">)</span>
+ <span style="color: #657b83; font-weight: bold;">:command</span> '(<span style="color: #2aa198;">"bundle"</span> <span style="color: #2aa198;">"exec"</span> <span style="color: #2aa198;">"jekyll"</span> <span style="color: #2aa198;">"serve"</span>)
  <span style="color: #657b83; font-weight: bold;">:delete-exited-processes</span> t
- <span style="color: #657b83; font-weight: bold;">:filter</span> <span style="color: #b58900;">(</span><span style="color: #859900; font-weight: bold;">lambda</span> <span style="color: #268bd2;">(</span>process text<span style="color: #268bd2;">)</span>
-           <span style="color: #268bd2;">(</span><span style="color: #859900; font-weight: bold;">if</span> <span style="color: #6c71c4;">(</span>string-match <span style="color: #2aa198;">".*done in [0-9.]+ seconds.*"</span> text<span style="color: #6c71c4;">)</span>
-               <span style="color: #6c71c4;">(</span>message <span style="color: #2aa198;">"%s"</span> <span style="color: #859900;">(</span>propertize <span style="color: #2aa198;">"Blog serve: running"</span> 'face '<span style="color: #b58900;">(</span><span style="color: #657b83; font-weight: bold;">:foreground</span> <span style="color: #2aa198;">"blue"</span><span style="color: #b58900;">)</span><span style="color: #859900;">)</span><span style="color: #6c71c4;">)</span><span style="color: #268bd2;">)</span>
-           <span style="color: #268bd2;">(</span>internal-default-process-filter process text<span style="color: #268bd2;">)</span><span style="color: #b58900;">)</span>
- <span style="color: #657b83; font-weight: bold;">:sentinel</span> <span style="color: #b58900;">(</span><span style="color: #859900; font-weight: bold;">lambda</span> <span style="color: #268bd2;">(</span>process state<span style="color: #268bd2;">)</span>
-             <span style="color: #268bd2;">(</span><span style="color: #859900; font-weight: bold;">cond</span>
-              <span style="color: #6c71c4;">(</span><span style="color: #859900;">(</span><span style="color: #859900; font-weight: bold;">and</span> <span style="color: #b58900;">(</span>eq <span style="color: #268bd2;">(</span>process-status process<span style="color: #268bd2;">)</span> 'exit<span style="color: #b58900;">)</span>
-                    <span style="color: #b58900;">(</span>zerop <span style="color: #268bd2;">(</span>process-exit-status process<span style="color: #268bd2;">)</span><span style="color: #b58900;">)</span><span style="color: #859900;">)</span>
-               <span style="color: #859900;">(</span>message <span style="color: #2aa198;">"%s"</span> <span style="color: #b58900;">(</span>propertize <span style="color: #2aa198;">"Blog serve: stopped"</span> 'face '<span style="color: #268bd2;">(</span><span style="color: #657b83; font-weight: bold;">:foreground</span> <span style="color: #2aa198;">"blue"</span><span style="color: #268bd2;">)</span><span style="color: #b58900;">)</span><span style="color: #859900;">)</span><span style="color: #6c71c4;">)</span>
-              <span style="color: #6c71c4;">(</span><span style="color: #859900;">(</span>eq <span style="color: #b58900;">(</span>process-status process<span style="color: #b58900;">)</span> 'run<span style="color: #859900;">)</span>
-               <span style="color: #859900;">(</span>accept-process-output process<span style="color: #859900;">)</span><span style="color: #6c71c4;">)</span>
-              <span style="color: #6c71c4;">(</span>t <span style="color: #859900;">(</span><span style="color: #cb4b16; font-weight: bold;">error</span> <span style="color: #b58900;">(</span>concat <span style="color: #2aa198;">"Jekyll Serve: "</span> state<span style="color: #b58900;">)</span><span style="color: #859900;">)</span><span style="color: #6c71c4;">)</span><span style="color: #268bd2;">)</span><span style="color: #b58900;">)</span><span style="color: #2aa198;">)</span>
+ <span style="color: #657b83; font-weight: bold;">:filter</span> (<span style="color: #859900; font-weight: bold;">lambda</span> (process text)
+           (<span style="color: #859900; font-weight: bold;">if</span> (string-match <span style="color: #2aa198;">".*done in [0-9.]+ seconds.*"</span> text)
+               (message <span style="color: #2aa198;">"%s"</span> (propertize <span style="color: #2aa198;">"Blog serve: running"</span> 'face '(<span style="color: #657b83; font-weight: bold;">:foreground</span> <span style="color: #2aa198;">"blue"</span>))))
+           (internal-default-process-filter process text))
+ <span style="color: #657b83; font-weight: bold;">:sentinel</span> (<span style="color: #859900; font-weight: bold;">lambda</span> (process state)
+             (<span style="color: #859900; font-weight: bold;">cond</span>
+              ((<span style="color: #859900; font-weight: bold;">and</span> (eq (process-status process) 'exit)
+                    (zerop (process-exit-status process)))
+               (message <span style="color: #2aa198;">"%s"</span> (propertize <span style="color: #2aa198;">"Blog serve: stopped"</span> 'face '(<span style="color: #657b83; font-weight: bold;">:foreground</span> <span style="color: #2aa198;">"blue"</span>))))
+              ((eq (process-status process) 'run)
+               (accept-process-output process))
+              (t (<span style="color: #cb4b16; font-weight: bold;">error</span> (concat <span style="color: #2aa198;">"Jekyll Serve: "</span> state))))))
 </pre>
 </div>
 
@@ -6692,15 +6692,15 @@ server. The logic to achieve this is simple:
 </ul>
 
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #2aa198;">(</span><span style="color: #859900; font-weight: bold;">defun</span> <span style="color: #268bd2;">org-jekyll--suffix-serve-toggle</span> <span style="color: #b58900;">()</span>
+<pre class="src src-emacs-lisp">(<span style="color: #859900; font-weight: bold;">defun</span> <span style="color: #268bd2;">org-jekyll--suffix-serve-toggle</span> ()
   <span style="color: #2aa198;">"Serve blog or stop serving the blog."</span>
-  <span style="color: #b58900;">(</span><span style="color: #859900; font-weight: bold;">interactive</span><span style="color: #b58900;">)</span>
-  <span style="color: #b58900;">(</span><span style="color: #859900; font-weight: bold;">let</span> <span style="color: #268bd2;">(</span><span style="color: #6c71c4;">(</span>current-path <span style="color: #859900;">(</span>file-name-directory buffer-file-name<span style="color: #859900;">)</span><span style="color: #6c71c4;">)</span><span style="color: #268bd2;">)</span>
-    <span style="color: #268bd2;">(</span><span style="color: #859900; font-weight: bold;">if</span> <span style="color: #6c71c4;">(</span>eq <span style="color: #859900;">(</span>process-status <span style="color: #2aa198;">"jekyll-serve"</span><span style="color: #859900;">)</span> ' run<span style="color: #6c71c4;">)</span>
-        <span style="color: #6c71c4;">(</span>interrupt-process <span style="color: #2aa198;">"jekyll-serve"</span><span style="color: #6c71c4;">)</span>
-      <span style="color: #6c71c4;">(</span>cd <span style="color: #859900;">(</span>expand-file-name org-jekyll-paths-base-path<span style="color: #859900;">)</span><span style="color: #6c71c4;">)</span>
-      <span style="color: #6c71c4;">(</span>make-process ...<span style="color: #6c71c4;">)</span>
-      <span style="color: #6c71c4;">(</span>cd current-path<span style="color: #6c71c4;">)</span><span style="color: #268bd2;">)</span><span style="color: #b58900;">)</span><span style="color: #2aa198;">)</span>
+  (<span style="color: #859900; font-weight: bold;">interactive</span>)
+  (<span style="color: #859900; font-weight: bold;">let</span> ((current-path (file-name-directory buffer-file-name)))
+    (<span style="color: #859900; font-weight: bold;">if</span> (eq (process-status <span style="color: #2aa198;">"jekyll-serve"</span>) ' run)
+        (interrupt-process <span style="color: #2aa198;">"jekyll-serve"</span>)
+      (cd (expand-file-name org-jekyll-paths-base-path))
+      (make-process ...)
+      (cd current-path))))
 </pre>
 </div>
 </div>
@@ -6714,19 +6714,19 @@ clean</code>, a new call to <code>make-process</code> is enough:
 </p>
 
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #2aa198;">(</span>make-process
+<pre class="src src-emacs-lisp">(make-process
  <span style="color: #657b83; font-weight: bold;">:name</span> <span style="color: #2aa198;">"jekyll-clean"</span>
  <span style="color: #657b83; font-weight: bold;">:buffer</span> <span style="color: #2aa198;">"jekyll-clean"</span>
- <span style="color: #657b83; font-weight: bold;">:command</span> '<span style="color: #b58900;">(</span><span style="color: #2aa198;">"bundle"</span> <span style="color: #2aa198;">"exec"</span> <span style="color: #2aa198;">"jekyll"</span> <span style="color: #2aa198;">"clean"</span><span style="color: #b58900;">)</span>
+ <span style="color: #657b83; font-weight: bold;">:command</span> '(<span style="color: #2aa198;">"bundle"</span> <span style="color: #2aa198;">"exec"</span> <span style="color: #2aa198;">"jekyll"</span> <span style="color: #2aa198;">"clean"</span>)
  <span style="color: #657b83; font-weight: bold;">:delete-exited-processes</span> t
- <span style="color: #657b83; font-weight: bold;">:sentinel</span> <span style="color: #b58900;">(</span><span style="color: #859900; font-weight: bold;">lambda</span> <span style="color: #268bd2;">(</span>process state<span style="color: #268bd2;">)</span>
-             <span style="color: #268bd2;">(</span><span style="color: #859900; font-weight: bold;">cond</span>
-              <span style="color: #6c71c4;">(</span><span style="color: #859900;">(</span><span style="color: #859900; font-weight: bold;">and</span> <span style="color: #b58900;">(</span>eq <span style="color: #268bd2;">(</span>process-status process<span style="color: #268bd2;">)</span> 'exit<span style="color: #b58900;">)</span>
-                    <span style="color: #b58900;">(</span>zerop <span style="color: #268bd2;">(</span>process-exit-status process<span style="color: #268bd2;">)</span><span style="color: #b58900;">)</span><span style="color: #859900;">)</span>
-               <span style="color: #859900;">(</span>message <span style="color: #2aa198;">"%s"</span> <span style="color: #b58900;">(</span>propertize <span style="color: #2aa198;">"Blog cleaned"</span> 'face '<span style="color: #268bd2;">(</span><span style="color: #657b83; font-weight: bold;">:foreground</span> <span style="color: #2aa198;">"blue"</span><span style="color: #268bd2;">)</span><span style="color: #b58900;">)</span><span style="color: #859900;">)</span><span style="color: #6c71c4;">)</span>
-              <span style="color: #6c71c4;">(</span><span style="color: #859900;">(</span>eq <span style="color: #b58900;">(</span>process-status process<span style="color: #b58900;">)</span> 'run<span style="color: #859900;">)</span>
-               <span style="color: #859900;">(</span>accept-process-output process<span style="color: #859900;">)</span><span style="color: #6c71c4;">)</span>
-              <span style="color: #6c71c4;">(</span>t <span style="color: #859900;">(</span><span style="color: #cb4b16; font-weight: bold;">error</span> <span style="color: #b58900;">(</span>concat <span style="color: #2aa198;">"Jekyll Clean: "</span> state<span style="color: #b58900;">)</span><span style="color: #859900;">)</span><span style="color: #6c71c4;">)</span><span style="color: #268bd2;">)</span><span style="color: #b58900;">)</span><span style="color: #2aa198;">)</span>
+ <span style="color: #657b83; font-weight: bold;">:sentinel</span> (<span style="color: #859900; font-weight: bold;">lambda</span> (process state)
+             (<span style="color: #859900; font-weight: bold;">cond</span>
+              ((<span style="color: #859900; font-weight: bold;">and</span> (eq (process-status process) 'exit)
+                    (zerop (process-exit-status process)))
+               (message <span style="color: #2aa198;">"%s"</span> (propertize <span style="color: #2aa198;">"Blog cleaned"</span> 'face '(<span style="color: #657b83; font-weight: bold;">:foreground</span> <span style="color: #2aa198;">"blue"</span>))))
+              ((eq (process-status process) 'run)
+               (accept-process-output process))
+              (t (<span style="color: #cb4b16; font-weight: bold;">error</span> (concat <span style="color: #2aa198;">"Jekyll Clean: "</span> state))))))
 </pre>
 </div>
 
@@ -6737,14 +6737,14 @@ cleaned up. I did this using the next S-expression:
 </p>
 
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #2aa198;">(</span>mapc <span style="color: #b58900;">(</span><span style="color: #859900; font-weight: bold;">lambda</span> <span style="color: #268bd2;">(</span>x<span style="color: #268bd2;">)</span>
-        <span style="color: #268bd2;">(</span>mapc <span style="color: #6c71c4;">(</span><span style="color: #859900; font-weight: bold;">lambda</span> <span style="color: #859900;">(</span>file<span style="color: #859900;">)</span>
-                <span style="color: #859900;">(</span>delete-file file nil<span style="color: #859900;">)</span><span style="color: #6c71c4;">)</span>
-              <span style="color: #6c71c4;">(</span>mapcan <span style="color: #859900;">(</span><span style="color: #859900; font-weight: bold;">lambda</span> <span style="color: #b58900;">(</span>directory<span style="color: #b58900;">)</span>
-                        <span style="color: #b58900;">(</span>directory-files-recursively <span style="color: #268bd2;">(</span>concat org-jekyll-paths-base-path directory<span style="color: #268bd2;">)</span> <span style="color: #268bd2;">(</span>cdr x<span style="color: #268bd2;">)</span> nil nil nil<span style="color: #b58900;">)</span><span style="color: #859900;">)</span>
-                        <span style="color: #859900;">(</span>car x<span style="color: #859900;">)</span><span style="color: #6c71c4;">)</span><span style="color: #268bd2;">)</span><span style="color: #b58900;">)</span>
-      `<span style="color: #b58900;">(</span><span style="color: #268bd2;">(</span><span style="color: #6c71c4;">(</span><span style="color: #2aa198;">"/_posts/en"</span> <span style="color: #2aa198;">"/_posts/ru"</span><span style="color: #6c71c4;">)</span> . <span style="color: #2aa198;">"\\.html$"</span><span style="color: #268bd2;">)</span>
-        <span style="color: #268bd2;">(</span><span style="color: #6c71c4;">(</span><span style="color: #2aa198;">"/assets/static"</span> <span style="color: #2aa198;">"/_static"</span><span style="color: #6c71c4;">)</span> . ,<span style="color: #6c71c4;">(</span>concat <span style="color: #2aa198;">"\\.png</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">|</span><span style="color: #2aa198;">\\.jpg$</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">|</span><span style="color: #2aa198;">\\.jpeg$"</span>
+<pre class="src src-emacs-lisp">(mapc (<span style="color: #859900; font-weight: bold;">lambda</span> (x)
+        (mapc (<span style="color: #859900; font-weight: bold;">lambda</span> (file)
+                (delete-file file nil))
+              (mapcan (<span style="color: #859900; font-weight: bold;">lambda</span> (directory)
+                        (directory-files-recursively (concat org-jekyll-paths-base-path directory) (cdr x) nil nil nil))
+                        (car x))))
+      `(((<span style="color: #2aa198;">"/_posts/en"</span> <span style="color: #2aa198;">"/_posts/ru"</span>) . <span style="color: #2aa198;">"\\.html$"</span>)
+        ((<span style="color: #2aa198;">"/assets/static"</span> <span style="color: #2aa198;">"/_static"</span>) . ,(concat <span style="color: #2aa198;">"\\.png</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">|</span><span style="color: #2aa198;">\\.jpg$</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">|</span><span style="color: #2aa198;">\\.jpeg$"</span>
                                                   <span style="color: #2aa198;">"</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">|</span><span style="color: #2aa198;">"</span>
                                                   <span style="color: #2aa198;">"\\.JPG$</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">|</span><span style="color: #2aa198;">\\.svg$</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">|</span><span style="color: #2aa198;">\\.webm$"</span>
                                                   <span style="color: #2aa198;">"</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">|</span><span style="color: #2aa198;">"</span>
@@ -6752,8 +6752,8 @@ cleaned up. I did this using the next S-expression:
                                                   <span style="color: #2aa198;">"</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">|</span><span style="color: #2aa198;">"</span>
                                                   <span style="color: #2aa198;">"\\.org$</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">|</span><span style="color: #2aa198;">\\.gif$</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">|</span><span style="color: #2aa198;">\\.gpx$"</span>
                                                   <span style="color: #2aa198;">"</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">|</span><span style="color: #2aa198;">"</span>
-                                                  <span style="color: #2aa198;">"\\.uxf$"</span><span style="color: #6c71c4;">)</span><span style="color: #268bd2;">)</span>
-        <span style="color: #268bd2;">(</span><span style="color: #6c71c4;">(</span><span style="color: #2aa198;">"/_articles"</span><span style="color: #6c71c4;">)</span> . <span style="color: #2aa198;">"\\.org$"</span><span style="color: #268bd2;">)</span><span style="color: #b58900;">)</span><span style="color: #2aa198;">)</span>
+                                                  <span style="color: #2aa198;">"\\.uxf$"</span>))
+        ((<span style="color: #2aa198;">"/_articles"</span>) . <span style="color: #2aa198;">"\\.org$"</span>)))
 </pre>
 </div>
 
@@ -6770,11 +6770,11 @@ main list (for example, the first element is: <code>(("/_posts/en" "/_posts/ru")
 </p>
 
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #2aa198;">(</span>mapc <span style="color: #b58900;">(</span><span style="color: #859900; font-weight: bold;">lambda</span> <span style="color: #268bd2;">(</span>file<span style="color: #268bd2;">)</span>
-        <span style="color: #268bd2;">(</span>delete-file file nil<span style="color: #268bd2;">)</span><span style="color: #b58900;">)</span>
-      <span style="color: #b58900;">(</span>mapcan <span style="color: #268bd2;">(</span><span style="color: #859900; font-weight: bold;">lambda</span> <span style="color: #6c71c4;">(</span>directory<span style="color: #6c71c4;">)</span>
-                <span style="color: #6c71c4;">(</span>directory-files-recursively <span style="color: #859900;">(</span>concat org-jekyll-paths-base-path directory<span style="color: #859900;">)</span> <span style="color: #859900;">(</span>cdr x<span style="color: #859900;">)</span> nil nil nil<span style="color: #6c71c4;">)</span><span style="color: #268bd2;">)</span>
-              <span style="color: #268bd2;">(</span>car x<span style="color: #268bd2;">)</span><span style="color: #b58900;">)</span><span style="color: #2aa198;">)</span>
+<pre class="src src-emacs-lisp">(mapc (<span style="color: #859900; font-weight: bold;">lambda</span> (file)
+        (delete-file file nil))
+      (mapcan (<span style="color: #859900; font-weight: bold;">lambda</span> (directory)
+                (directory-files-recursively (concat org-jekyll-paths-base-path directory) (cdr x) nil nil nil))
+              (car x)))
 </pre>
 </div>
 
@@ -6786,8 +6786,8 @@ processed with a lambda function that simply deletes the file:
 </p>
 
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #2aa198;">(</span><span style="color: #859900; font-weight: bold;">lambda</span> <span style="color: #b58900;">(</span>file<span style="color: #b58900;">)</span>
-  <span style="color: #b58900;">(</span>delete-file file nil<span style="color: #b58900;">)</span><span style="color: #2aa198;">)</span>
+<pre class="src src-emacs-lisp">(<span style="color: #859900; font-weight: bold;">lambda</span> (file)
+  (delete-file file nil))
 </pre>
 </div>
 
@@ -6815,14 +6815,14 @@ For example, the following code prints <code>file</code> variable contents in ca
 using <code>mapc</code>:
 </p>
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #2aa198;">(</span>mapc <span style="color: #b58900;">(</span><span style="color: #859900; font-weight: bold;">lambda</span> <span style="color: #268bd2;">(</span>file<span style="color: #268bd2;">)</span>
-        <span style="color: #268bd2;">(</span>print file<span style="color: #268bd2;">)</span><span style="color: #b58900;">)</span>
-      <span style="color: #b58900;">(</span>mapc <span style="color: #268bd2;">(</span><span style="color: #859900; font-weight: bold;">lambda</span> <span style="color: #6c71c4;">(</span>directory<span style="color: #6c71c4;">)</span>
-              directory<span style="color: #268bd2;">)</span>
-            '<span style="color: #268bd2;">(</span><span style="color: #6c71c4;">(</span><span style="color: #2aa198;">"a"</span> <span style="color: #2aa198;">"b"</span><span style="color: #6c71c4;">)</span> <span style="color: #6c71c4;">(</span><span style="color: #2aa198;">"c"</span> <span style="color: #2aa198;">"d"</span><span style="color: #6c71c4;">)</span><span style="color: #268bd2;">)</span><span style="color: #b58900;">)</span><span style="color: #2aa198;">)</span>
+<pre class="src src-emacs-lisp">(mapc (<span style="color: #859900; font-weight: bold;">lambda</span> (file)
+        (print file))
+      (mapc (<span style="color: #859900; font-weight: bold;">lambda</span> (directory)
+              directory)
+            '((<span style="color: #2aa198;">"a"</span> <span style="color: #2aa198;">"b"</span>) (<span style="color: #2aa198;">"c"</span> <span style="color: #2aa198;">"d"</span>))))
 
-<span style="color: #2aa198;">(</span><span style="color: #2aa198;">"a"</span> <span style="color: #2aa198;">"b"</span><span style="color: #2aa198;">)</span>
-<span style="color: #2aa198;">(</span><span style="color: #2aa198;">"c"</span> <span style="color: #2aa198;">"d"</span><span style="color: #2aa198;">)</span>
+(<span style="color: #2aa198;">"a"</span> <span style="color: #2aa198;">"b"</span>)
+(<span style="color: #2aa198;">"c"</span> <span style="color: #2aa198;">"d"</span>)
 </pre>
 </div></li>
 <li><p>
@@ -6838,11 +6838,11 @@ when we use <code>mapcan</code>:
 </p>
 
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #2aa198;">(</span>mapc <span style="color: #b58900;">(</span><span style="color: #859900; font-weight: bold;">lambda</span> <span style="color: #268bd2;">(</span>file<span style="color: #268bd2;">)</span>
-        <span style="color: #268bd2;">(</span>print file<span style="color: #268bd2;">)</span><span style="color: #b58900;">)</span>
-      <span style="color: #b58900;">(</span>mapcan <span style="color: #268bd2;">(</span><span style="color: #859900; font-weight: bold;">lambda</span> <span style="color: #6c71c4;">(</span>directory<span style="color: #6c71c4;">)</span>
-                directory<span style="color: #268bd2;">)</span>
-              '<span style="color: #268bd2;">(</span><span style="color: #6c71c4;">(</span><span style="color: #2aa198;">"a"</span> <span style="color: #2aa198;">"b"</span><span style="color: #6c71c4;">)</span> <span style="color: #6c71c4;">(</span><span style="color: #2aa198;">"c"</span> <span style="color: #2aa198;">"d"</span><span style="color: #6c71c4;">)</span><span style="color: #268bd2;">)</span><span style="color: #b58900;">)</span><span style="color: #2aa198;">)</span>
+<pre class="src src-emacs-lisp">(mapc (<span style="color: #859900; font-weight: bold;">lambda</span> (file)
+        (print file))
+      (mapcan (<span style="color: #859900; font-weight: bold;">lambda</span> (directory)
+                directory)
+              '((<span style="color: #2aa198;">"a"</span> <span style="color: #2aa198;">"b"</span>) (<span style="color: #2aa198;">"c"</span> <span style="color: #2aa198;">"d"</span>))))
 
 <span style="color: #2aa198;">"a"</span>
 <span style="color: #2aa198;">"b"</span>
@@ -6857,19 +6857,19 @@ The resulting code of the function to clean up Jekyll's working directory:
 </p>
 
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #2aa198;">(</span><span style="color: #859900; font-weight: bold;">defun</span> <span style="color: #268bd2;">org-jekyll--suffix-clear</span> <span style="color: #b58900;">()</span>
+<pre class="src src-emacs-lisp">(<span style="color: #859900; font-weight: bold;">defun</span> <span style="color: #268bd2;">org-jekyll--suffix-clear</span> ()
   <span style="color: #2aa198;">"Clear blog files."</span>
-  <span style="color: #b58900;">(</span><span style="color: #859900; font-weight: bold;">interactive</span><span style="color: #b58900;">)</span>
-  <span style="color: #b58900;">(</span><span style="color: #859900; font-weight: bold;">let</span> <span style="color: #268bd2;">(</span><span style="color: #6c71c4;">(</span>current-path <span style="color: #859900;">(</span>file-name-directory buffer-file-name<span style="color: #859900;">)</span><span style="color: #6c71c4;">)</span><span style="color: #268bd2;">)</span>
-    <span style="color: #268bd2;">(</span>cd <span style="color: #6c71c4;">(</span>expand-file-name org-jekyll-paths-base-path<span style="color: #6c71c4;">)</span><span style="color: #268bd2;">)</span>
-    <span style="color: #268bd2;">(</span>mapc <span style="color: #6c71c4;">(</span><span style="color: #859900; font-weight: bold;">lambda</span> <span style="color: #859900;">(</span>x<span style="color: #859900;">)</span>
-            <span style="color: #859900;">(</span>mapc <span style="color: #b58900;">(</span><span style="color: #859900; font-weight: bold;">lambda</span> <span style="color: #268bd2;">(</span>file<span style="color: #268bd2;">)</span>
-                    <span style="color: #268bd2;">(</span>delete-file file nil<span style="color: #268bd2;">)</span><span style="color: #b58900;">)</span>
-                  <span style="color: #b58900;">(</span>mapcan <span style="color: #268bd2;">(</span><span style="color: #859900; font-weight: bold;">lambda</span> <span style="color: #6c71c4;">(</span>directory<span style="color: #6c71c4;">)</span>
-                            <span style="color: #6c71c4;">(</span>directory-files-recursively <span style="color: #859900;">(</span>concat org-jekyll-paths-base-path directory<span style="color: #859900;">)</span> <span style="color: #859900;">(</span>cdr x<span style="color: #859900;">)</span> nil nil nil<span style="color: #6c71c4;">)</span><span style="color: #268bd2;">)</span>
-                          <span style="color: #268bd2;">(</span>car x<span style="color: #268bd2;">)</span><span style="color: #b58900;">)</span><span style="color: #859900;">)</span><span style="color: #6c71c4;">)</span>
-          `<span style="color: #6c71c4;">(</span><span style="color: #859900;">(</span><span style="color: #b58900;">(</span><span style="color: #2aa198;">"/_posts/en"</span> <span style="color: #2aa198;">"/_posts/ru"</span><span style="color: #b58900;">)</span> . <span style="color: #2aa198;">"\\.html$"</span><span style="color: #859900;">)</span>
-            <span style="color: #859900;">(</span><span style="color: #b58900;">(</span><span style="color: #2aa198;">"/assets/static"</span> <span style="color: #2aa198;">"/_static"</span><span style="color: #b58900;">)</span> . ,<span style="color: #b58900;">(</span>concat <span style="color: #2aa198;">"\\.png$</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">|</span><span style="color: #2aa198;">\\.jpg$</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">|</span><span style="color: #2aa198;">\\.jpeg$"</span>
+  (<span style="color: #859900; font-weight: bold;">interactive</span>)
+  (<span style="color: #859900; font-weight: bold;">let</span> ((current-path (file-name-directory buffer-file-name)))
+    (cd (expand-file-name org-jekyll-paths-base-path))
+    (mapc (<span style="color: #859900; font-weight: bold;">lambda</span> (x)
+            (mapc (<span style="color: #859900; font-weight: bold;">lambda</span> (file)
+                    (delete-file file nil))
+                  (mapcan (<span style="color: #859900; font-weight: bold;">lambda</span> (directory)
+                            (directory-files-recursively (concat org-jekyll-paths-base-path directory) (cdr x) nil nil nil))
+                          (car x))))
+          `(((<span style="color: #2aa198;">"/_posts/en"</span> <span style="color: #2aa198;">"/_posts/ru"</span>) . <span style="color: #2aa198;">"\\.html$"</span>)
+            ((<span style="color: #2aa198;">"/assets/static"</span> <span style="color: #2aa198;">"/_static"</span>) . ,(concat <span style="color: #2aa198;">"\\.png$</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">|</span><span style="color: #2aa198;">\\.jpg$</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">|</span><span style="color: #2aa198;">\\.jpeg$"</span>
                                                       <span style="color: #2aa198;">"</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">|</span><span style="color: #2aa198;">"</span>
                                                       <span style="color: #2aa198;">"\\.JPG$</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">|</span><span style="color: #2aa198;">\\.svg$</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">|</span><span style="color: #2aa198;">\\.webm$"</span>
                                                       <span style="color: #2aa198;">"</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">|</span><span style="color: #2aa198;">"</span>
@@ -6877,21 +6877,21 @@ The resulting code of the function to clean up Jekyll's working directory:
                                                       <span style="color: #2aa198;">"</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">|</span><span style="color: #2aa198;">"</span>
                                                       <span style="color: #2aa198;">"\\.org$</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">|</span><span style="color: #2aa198;">\\.gif$</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">|</span><span style="color: #2aa198;">\\.gpx$"</span>
                                                       <span style="color: #2aa198;">"</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">|</span><span style="color: #2aa198;">"</span>
-                                                      <span style="color: #2aa198;">"\\.svg$"</span><span style="color: #b58900;">)</span><span style="color: #859900;">)</span>
-            <span style="color: #859900;">(</span><span style="color: #b58900;">(</span><span style="color: #2aa198;">"/_articles"</span><span style="color: #b58900;">)</span> . <span style="color: #2aa198;">"\\.org$</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">|</span><span style="color: #2aa198;">\\.png$"</span><span style="color: #859900;">)</span><span style="color: #6c71c4;">)</span><span style="color: #268bd2;">)</span>
-    <span style="color: #268bd2;">(</span>make-process
+                                                      <span style="color: #2aa198;">"\\.svg$"</span>))
+            ((<span style="color: #2aa198;">"/_articles"</span>) . <span style="color: #2aa198;">"\\.org$</span><span style="color: #859900; font-weight: bold;">\\</span><span style="color: #b58900; font-weight: bold;">|</span><span style="color: #2aa198;">\\.png$"</span>)))
+    (make-process
      <span style="color: #657b83; font-weight: bold;">:name</span> <span style="color: #2aa198;">"jekyll-clean"</span>
      <span style="color: #657b83; font-weight: bold;">:buffer</span> <span style="color: #2aa198;">"jekyll-clean"</span>
-     <span style="color: #657b83; font-weight: bold;">:command</span> '<span style="color: #6c71c4;">(</span><span style="color: #2aa198;">"bundle"</span> <span style="color: #2aa198;">"exec"</span> <span style="color: #2aa198;">"jekyll"</span> <span style="color: #2aa198;">"clean"</span><span style="color: #6c71c4;">)</span>
+     <span style="color: #657b83; font-weight: bold;">:command</span> '(<span style="color: #2aa198;">"bundle"</span> <span style="color: #2aa198;">"exec"</span> <span style="color: #2aa198;">"jekyll"</span> <span style="color: #2aa198;">"clean"</span>)
      <span style="color: #657b83; font-weight: bold;">:delete-exited-processes</span> t
-     <span style="color: #657b83; font-weight: bold;">:sentinel</span> <span style="color: #6c71c4;">(</span><span style="color: #859900; font-weight: bold;">lambda</span> <span style="color: #859900;">(</span>process state<span style="color: #859900;">)</span>
-                 <span style="color: #859900;">(</span><span style="color: #859900; font-weight: bold;">cond</span>
-                  <span style="color: #b58900;">(</span><span style="color: #268bd2;">(</span><span style="color: #859900; font-weight: bold;">and</span> <span style="color: #6c71c4;">(</span>eq <span style="color: #859900;">(</span>process-status process<span style="color: #859900;">)</span> 'exit<span style="color: #6c71c4;">)</span>
-                        <span style="color: #6c71c4;">(</span>zerop <span style="color: #859900;">(</span>process-exit-status process<span style="color: #859900;">)</span><span style="color: #6c71c4;">)</span><span style="color: #268bd2;">)</span>
-                   <span style="color: #268bd2;">(</span>message <span style="color: #2aa198;">"%s"</span> <span style="color: #6c71c4;">(</span>propertize <span style="color: #2aa198;">"Blog cleaned"</span> 'face '<span style="color: #859900;">(</span><span style="color: #657b83; font-weight: bold;">:foreground</span> <span style="color: #2aa198;">"blue"</span><span style="color: #859900;">)</span><span style="color: #6c71c4;">)</span><span style="color: #268bd2;">)</span><span style="color: #b58900;">)</span>
-                  <span style="color: #b58900;">(</span><span style="color: #268bd2;">(</span>eq <span style="color: #6c71c4;">(</span>process-status process<span style="color: #6c71c4;">)</span> 'run<span style="color: #268bd2;">)</span>
-                   <span style="color: #268bd2;">(</span>accept-process-output process<span style="color: #268bd2;">)</span><span style="color: #b58900;">)</span>
-                  <span style="color: #b58900;">(</span>t <span style="color: #268bd2;">(</span><span style="color: #cb4b16; font-weight: bold;">error</span> <span style="color: #6c71c4;">(</span>concat <span style="color: #2aa198;">"Jekyll Clean: "</span> state<span style="color: #6c71c4;">)</span><span style="color: #268bd2;">)</span><span style="color: #b58900;">)</span><span style="color: #859900;">)</span><span style="color: #6c71c4;">)</span><span style="color: #268bd2;">)</span><span style="color: #b58900;">)</span><span style="color: #2aa198;">)</span>
+     <span style="color: #657b83; font-weight: bold;">:sentinel</span> (<span style="color: #859900; font-weight: bold;">lambda</span> (process state)
+                 (<span style="color: #859900; font-weight: bold;">cond</span>
+                  ((<span style="color: #859900; font-weight: bold;">and</span> (eq (process-status process) 'exit)
+                        (zerop (process-exit-status process)))
+                   (message <span style="color: #2aa198;">"%s"</span> (propertize <span style="color: #2aa198;">"Blog cleaned"</span> 'face '(<span style="color: #657b83; font-weight: bold;">:foreground</span> <span style="color: #2aa198;">"blue"</span>))))
+                  ((eq (process-status process) 'run)
+                   (accept-process-output process))
+                  (t (<span style="color: #cb4b16; font-weight: bold;">error</span> (concat <span style="color: #2aa198;">"Jekyll Clean: "</span> state))))))))
 </pre>
 </div>
 </div>
@@ -6921,29 +6921,29 @@ panel) looks like this:
 <div class="org-src-container">
 <pre class="src src-emacs-lisp"><span style="color: #93a1a1;">;; </span><span style="color: #93a1a1;">Transient keys description:</span>
 
-<span style="color: #2aa198;">(</span><span style="color: #859900; font-weight: bold;">transient-define-prefix</span> <span style="color: #268bd2;">org-jekyll-layout-descriptions</span> <span style="color: #b58900;">()</span>
+(<span style="color: #859900; font-weight: bold;">transient-define-prefix</span> <span style="color: #268bd2;">org-jekyll-layout-descriptions</span> ()
   <span style="color: #2aa198;">"Transient layout with blog commands."</span>
-  <span style="color: #b58900;">[</span><span style="color: #657b83; font-weight: bold;">:description</span> <span style="color: #268bd2;">(</span><span style="color: #859900; font-weight: bold;">lambda</span> <span style="color: #6c71c4;">()</span> <span style="color: #6c71c4;">(</span>concat org-jekyll-url <span style="color: #2aa198;">" control panel"</span> <span style="color: #2aa198;">"\n"</span><span style="color: #6c71c4;">)</span><span style="color: #268bd2;">)</span>
-                <span style="color: #268bd2;">[</span><span style="color: #2aa198;">"Development"</span>
-                 <span style="color: #6c71c4;">(</span><span style="color: #2aa198;">"b"</span> <span style="color: #2aa198;">"Build blog"</span> org-jekyll--suffix-build<span style="color: #6c71c4;">)</span>
-                 <span style="color: #6c71c4;">(</span><span style="color: #2aa198;">"s"</span> org-jekyll--suffix-serve-toggle
-                  <span style="color: #657b83; font-weight: bold;">:description</span> <span style="color: #859900;">(</span><span style="color: #859900; font-weight: bold;">lambda</span> <span style="color: #b58900;">()</span> <span style="color: #b58900;">(</span><span style="color: #859900; font-weight: bold;">if</span> <span style="color: #268bd2;">(</span>eq <span style="color: #6c71c4;">(</span>process-status <span style="color: #2aa198;">"jekyll-serve"</span><span style="color: #6c71c4;">)</span> 'run<span style="color: #268bd2;">)</span>
+  [<span style="color: #657b83; font-weight: bold;">:description</span> (<span style="color: #859900; font-weight: bold;">lambda</span> () (concat org-jekyll-url <span style="color: #2aa198;">" control panel"</span> <span style="color: #2aa198;">"\n"</span>))
+                [<span style="color: #2aa198;">"Development"</span>
+                 (<span style="color: #2aa198;">"b"</span> <span style="color: #2aa198;">"Build blog"</span> org-jekyll--suffix-build)
+                 (<span style="color: #2aa198;">"s"</span> org-jekyll--suffix-serve-toggle
+                  <span style="color: #657b83; font-weight: bold;">:description</span> (<span style="color: #859900; font-weight: bold;">lambda</span> () (<span style="color: #859900; font-weight: bold;">if</span> (eq (process-status <span style="color: #2aa198;">"jekyll-serve"</span>) 'run)
                                               <span style="color: #2aa198;">"Stop serving local blog"</span>
-                                            <span style="color: #2aa198;">"Serve local blog"</span><span style="color: #b58900;">)</span><span style="color: #859900;">)</span><span style="color: #6c71c4;">)</span>
-                 <span style="color: #6c71c4;">(</span><span style="color: #2aa198;">"o"</span> <span style="color: #2aa198;">"Open served blog"</span> org-jekyll--suffix-open-blog<span style="color: #6c71c4;">)</span>
-                 <span style="color: #6c71c4;">(</span><span style="color: #2aa198;">"O"</span> <span style="color: #2aa198;">"Open blog in Web"</span> org-jekyll--suffix-open-remote-blog<span style="color: #6c71c4;">)</span>
-                 <span style="color: #6c71c4;">(</span><span style="color: #2aa198;">"B"</span> <span style="color: #2aa198;">"Open build log"</span> org-jekyll--suffix-open-build-log<span style="color: #6c71c4;">)</span>
-                 <span style="color: #6c71c4;">(</span><span style="color: #2aa198;">"l"</span> <span style="color: #2aa198;">"Open serve log"</span> org-jekyll--suffix-open-serve-log<span style="color: #6c71c4;">)</span>
-                 <span style="color: #6c71c4;">(</span><span style="color: #2aa198;">"C"</span> <span style="color: #2aa198;">"Clear blog directory"</span> org-jekyll--suffix-clear<span style="color: #6c71c4;">)</span><span style="color: #268bd2;">]</span>
-                <span style="color: #268bd2;">[</span><span style="color: #2aa198;">"Actions"</span>
-                 <span style="color: #6c71c4;">(</span><span style="color: #2aa198;">"n"</span> <span style="color: #2aa198;">"New blog post"</span> org-jekyll--suffix-create-post<span style="color: #6c71c4;">)</span><span style="color: #268bd2;">]</span><span style="color: #b58900;">]</span><span style="color: #2aa198;">)</span>
+                                            <span style="color: #2aa198;">"Serve local blog"</span>)))
+                 (<span style="color: #2aa198;">"o"</span> <span style="color: #2aa198;">"Open served blog"</span> org-jekyll--suffix-open-blog)
+                 (<span style="color: #2aa198;">"O"</span> <span style="color: #2aa198;">"Open blog in Web"</span> org-jekyll--suffix-open-remote-blog)
+                 (<span style="color: #2aa198;">"B"</span> <span style="color: #2aa198;">"Open build log"</span> org-jekyll--suffix-open-build-log)
+                 (<span style="color: #2aa198;">"l"</span> <span style="color: #2aa198;">"Open serve log"</span> org-jekyll--suffix-open-serve-log)
+                 (<span style="color: #2aa198;">"C"</span> <span style="color: #2aa198;">"Clear blog directory"</span> org-jekyll--suffix-clear)]
+                [<span style="color: #2aa198;">"Actions"</span>
+                 (<span style="color: #2aa198;">"n"</span> <span style="color: #2aa198;">"New blog post"</span> org-jekyll--suffix-create-post)]])
 
 <span style="color: #93a1a1;">;; </span><span style="color: #93a1a1;">Function to call main menu:</span>
 
-<span style="color: #2aa198;">(</span><span style="color: #859900; font-weight: bold;">defun</span> <span style="color: #268bd2;">org-jekyll-menu</span> <span style="color: #b58900;">()</span>
+(<span style="color: #859900; font-weight: bold;">defun</span> <span style="color: #268bd2;">org-jekyll-menu</span> ()
   <span style="color: #2aa198;">"Open blog control center."</span>
-  <span style="color: #b58900;">(</span><span style="color: #859900; font-weight: bold;">interactive</span><span style="color: #b58900;">)</span>
-  <span style="color: #b58900;">(</span>org-jekyll-layout-descriptions<span style="color: #b58900;">)</span><span style="color: #2aa198;">)</span>
+  (<span style="color: #859900; font-weight: bold;">interactive</span>)
+  (org-jekyll-layout-descriptions))
 </pre>
 </div>
 
@@ -6952,21 +6952,21 @@ Functions-suffixes is just a usual functions without parameters, for example:
 </p>
 
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #2aa198;">(</span><span style="color: #859900; font-weight: bold;">defun</span> <span style="color: #268bd2;">org-jekyll--suffix-open-blog</span> <span style="color: #b58900;">()</span>
+<pre class="src src-emacs-lisp">(<span style="color: #859900; font-weight: bold;">defun</span> <span style="color: #268bd2;">org-jekyll--suffix-open-blog</span> ()
   <span style="color: #2aa198;">"Open locally served blog."</span>
-  <span style="color: #b58900;">(</span><span style="color: #859900; font-weight: bold;">interactive</span><span style="color: #b58900;">)</span>
-  <span style="color: #b58900;">(</span>browse-url <span style="color: #2aa198;">"http://127.0.0.1:8000/"</span><span style="color: #b58900;">)</span><span style="color: #2aa198;">)</span>
+  (<span style="color: #859900; font-weight: bold;">interactive</span>)
+  (browse-url <span style="color: #2aa198;">"http://127.0.0.1:8000/"</span>))
 
-<span style="color: #2aa198;">(</span><span style="color: #859900; font-weight: bold;">defun</span> <span style="color: #268bd2;">org-jekyll--suffix-open-remote-blog</span> <span style="color: #b58900;">()</span>
+(<span style="color: #859900; font-weight: bold;">defun</span> <span style="color: #268bd2;">org-jekyll--suffix-open-remote-blog</span> ()
   <span style="color: #2aa198;">"Open remote blog."</span>
-  <span style="color: #b58900;">(</span><span style="color: #859900; font-weight: bold;">interactive</span><span style="color: #b58900;">)</span>
-  <span style="color: #b58900;">(</span>browse-url org-jekyll-url<span style="color: #b58900;">)</span><span style="color: #2aa198;">)</span>
+  (<span style="color: #859900; font-weight: bold;">interactive</span>)
+  (browse-url org-jekyll-url))
 
-<span style="color: #2aa198;">(</span><span style="color: #859900; font-weight: bold;">defun</span> <span style="color: #268bd2;">org-jekyll--suffix-create-post</span> <span style="color: #b58900;">()</span>
+(<span style="color: #859900; font-weight: bold;">defun</span> <span style="color: #268bd2;">org-jekyll--suffix-create-post</span> ()
   <span style="color: #2aa198;">"Create new blog post."</span>
-  <span style="color: #b58900;">(</span><span style="color: #859900; font-weight: bold;">interactive</span><span style="color: #b58900;">)</span>
-  <span style="color: #b58900;">(</span>cd <span style="color: #268bd2;">(</span>expand-file-name org-jekyll-paths-base-path<span style="color: #268bd2;">)</span><span style="color: #b58900;">)</span>
-  <span style="color: #b58900;">(</span>org-jekyll--create-new-post<span style="color: #b58900;">)</span><span style="color: #2aa198;">)</span>
+  (<span style="color: #859900; font-weight: bold;">interactive</span>)
+  (cd (expand-file-name org-jekyll-paths-base-path))
+  (org-jekyll--create-new-post))
 </pre>
 </div>
 
@@ -6996,9 +6996,9 @@ comments. Then, I added the necessary dependencies to the header:
 </p>
 
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #2aa198;">(</span><span style="color: #859900; font-weight: bold;">require</span> '<span style="color: #268bd2; font-weight: bold;">htmlize</span><span style="color: #2aa198;">)</span>
-<span style="color: #2aa198;">(</span><span style="color: #859900; font-weight: bold;">require</span> '<span style="color: #268bd2; font-weight: bold;">ox-publish</span><span style="color: #2aa198;">)</span>
-<span style="color: #2aa198;">(</span><span style="color: #859900; font-weight: bold;">require</span> '<span style="color: #268bd2; font-weight: bold;">transient</span><span style="color: #2aa198;">)</span>
+<pre class="src src-emacs-lisp">(<span style="color: #859900; font-weight: bold;">require</span> '<span style="color: #268bd2; font-weight: bold;">htmlize</span>)
+(<span style="color: #859900; font-weight: bold;">require</span> '<span style="color: #268bd2; font-weight: bold;">ox-publish</span>)
+(<span style="color: #859900; font-weight: bold;">require</span> '<span style="color: #268bd2; font-weight: bold;">transient</span>)
 </pre>
 </div>
 
@@ -7013,7 +7013,7 @@ I've also added necessary <code>provide</code> to the end of the file:
 </p>
 
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #2aa198;">(</span><span style="color: #859900; font-weight: bold;">provide</span> '<span style="color: #268bd2; font-weight: bold;">org-jekyll</span><span style="color: #2aa198;">)</span>
+<pre class="src src-emacs-lisp">(<span style="color: #859900; font-weight: bold;">provide</span> '<span style="color: #268bd2; font-weight: bold;">org-jekyll</span>)
 </pre>
 </div>
 
@@ -7026,12 +7026,12 @@ b</code> hotkey:
 <pre class="src src-emacs-lisp"><span style="color: #93a1a1;">;; </span><span style="color: #93a1a1;">Minor mode:</span>
 
 <span style="color: #93a1a1;">;;;</span><span style="color: #93a1a1;">###</span><span style="color: #cb4b16; font-weight: bold;">autoload</span>
-<span style="color: #2aa198;">(</span><span style="color: #859900; font-weight: bold;">define-minor-mode</span> <span style="color: #268bd2;">org-jekyll-mode</span>
+(<span style="color: #859900; font-weight: bold;">define-minor-mode</span> <span style="color: #268bd2;">org-jekyll-mode</span>
   <span style="color: #2aa198;">"Enable transient menu to operate with blog-related OrgMode files."</span>
   <span style="color: #657b83; font-weight: bold;">:lighter</span> <span style="color: #2aa198;">" oj"</span>
   <span style="color: #657b83; font-weight: bold;">:global</span> nil
   <span style="color: #657b83; font-weight: bold;">:init-value</span> nil
-  <span style="color: #657b83; font-weight: bold;">:keymap</span> <span style="color: #b58900;">(</span>list <span style="color: #268bd2;">(</span>cons <span style="color: #6c71c4;">(</span>kbd <span style="color: #2aa198;">"C-c b"</span><span style="color: #6c71c4;">)</span> #'org-jekyll-menu<span style="color: #268bd2;">)</span><span style="color: #b58900;">)</span><span style="color: #2aa198;">)</span>
+  <span style="color: #657b83; font-weight: bold;">:keymap</span> (list (cons (kbd <span style="color: #2aa198;">"C-c b"</span>) #'org-jekyll-menu)))
 </pre>
 </div>
 
@@ -7057,10 +7057,10 @@ This can be achieved with the next function:
 
 <div class="org-src-container">
 <pre class="src src-emacs-lisp"><span style="color: #93a1a1;">;;;</span><span style="color: #93a1a1;">###</span><span style="color: #cb4b16; font-weight: bold;">autoload</span>
-<span style="color: #2aa198;">(</span><span style="color: #859900; font-weight: bold;">defun</span> <span style="color: #268bd2;">org-jekyll-init</span> <span style="color: #b58900;">()</span>
-  <span style="color: #b58900;">(</span><span style="color: #859900; font-weight: bold;">if</span> <span style="color: #268bd2;">(</span><span style="color: #859900; font-weight: bold;">and</span> buffer-file-name
-           <span style="color: #6c71c4;">(</span>string-match <span style="color: #2aa198;">"^/.+/article-[[:lower:]]\\{</span><span style="color: #268bd2;">2\\</span><span style="color: #2aa198;">}\\.org"</span> <span style="color: #859900;">(</span>buffer-file-name<span style="color: #859900;">)</span><span style="color: #6c71c4;">)</span><span style="color: #268bd2;">)</span>
-      <span style="color: #268bd2;">(</span>org-jekyll-mode 1<span style="color: #268bd2;">)</span><span style="color: #b58900;">)</span><span style="color: #2aa198;">)</span>
+(<span style="color: #859900; font-weight: bold;">defun</span> <span style="color: #268bd2;">org-jekyll-init</span> ()
+  (<span style="color: #859900; font-weight: bold;">if</span> (<span style="color: #859900; font-weight: bold;">and</span> buffer-file-name
+           (string-match <span style="color: #2aa198;">"^/.+/article-[[:lower:]]\\{</span><span style="color: #268bd2;">2\\</span><span style="color: #2aa198;">}\\.org"</span> (buffer-file-name)))
+      (org-jekyll-mode 1)))
 </pre>
 </div>
 
@@ -7069,11 +7069,11 @@ And with the next <code>use-package</code> configuration:
 </p>
 
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #2aa198;">(</span><span style="color: #859900; font-weight: bold;">use-package</span> org-jekyll
+<pre class="src src-emacs-lisp">(<span style="color: #859900; font-weight: bold;">use-package</span> org-jekyll
   <span style="color: #657b83; font-weight: bold;">:load-path</span> <span style="color: #2aa198;">"~/rsync/blog/"</span>
   <span style="color: #657b83; font-weight: bold;">:ensure</span> nil
   <span style="color: #657b83; font-weight: bold;">:commands</span> org-jekyll-init
-  <span style="color: #657b83; font-weight: bold;">:hook</span> <span style="color: #b58900;">(</span>org-mode . org-jekyll-init<span style="color: #b58900;">)</span><span style="color: #2aa198;">)</span>
+  <span style="color: #657b83; font-weight: bold;">:hook</span> (org-mode . org-jekyll-init))
 </pre>
 </div>
 
@@ -7290,12 +7290,12 @@ when exported to HTML:
 </p>
 
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #2aa198;">(</span><span style="color: #859900; font-weight: bold;">use-package</span> toc-org
+<pre class="src src-emacs-lisp">(<span style="color: #859900; font-weight: bold;">use-package</span> toc-org
   <span style="color: #657b83; font-weight: bold;">:pin</span> melpa
-  <span style="color: #657b83; font-weight: bold;">:hook</span> <span style="color: #b58900;">(</span>org-mode . toc-org-mode<span style="color: #b58900;">)</span>
+  <span style="color: #657b83; font-weight: bold;">:hook</span> (org-mode . toc-org-mode)
   <span style="color: #657b83; font-weight: bold;">:config</span>
-  <span style="color: #b58900;">(</span><span style="color: #859900; font-weight: bold;">defun</span> <span style="color: #268bd2;">toc-org-hrefify-blog</span> <span style="color: #268bd2;">(</span>str <span style="color: #b58900;">&amp;optional</span> hash<span style="color: #268bd2;">)</span>
-    <span style="color: #268bd2;">(</span>concat <span style="color: #2aa198;">"* "</span> <span style="color: #6c71c4;">(</span>toc-org-format-visible-link str<span style="color: #6c71c4;">)</span><span style="color: #268bd2;">)</span><span style="color: #b58900;">)</span><span style="color: #2aa198;">)</span>
+  (<span style="color: #859900; font-weight: bold;">defun</span> <span style="color: #268bd2;">toc-org-hrefify-blog</span> (str <span style="color: #b58900;">&amp;optional</span> hash)
+    (concat <span style="color: #2aa198;">"* "</span> (toc-org-format-visible-link str))))
 </pre>
 </div></div></div>
 

@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-<!-- Begin Jekyll SEO tag v2.8.0 -->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
 <title>FreeBSD 14.2 and Thinkpad X220 | Dragon’s notes</title>
 <meta name="generator" content="Jekyll v4.4.1">
 <meta property="og:title" content="FreeBSD 14.2 and Thinkpad X220">
@@ -22,383 +22,95 @@
 <meta property="twitter:title" content="FreeBSD 14.2 and Thinkpad X220">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Eugene Andrienko"},"dateModified":"2025-03-10T00:00:00+03:00","datePublished":"2025-03-10T00:00:00+03:00","description":"Since I&#39;ve wrote post about my specific FreeBSD settings for Thinkpad X220 near 5 years have passed. That post has a lot of additions and become a bit messy. So, after I updated FreeBSD on my laptop up to 14.2 version and finally found some time to carefully read a &quot;FreeBSD handbook&quot;, I decided to write a new article about my configuration and about few useful utilities and tricks.","headline":"FreeBSD 14.2 and Thinkpad X220","image":"https://eugene-andrienko.com/assets/static/freebsd14-2-thinkpad.jpg","mainEntityOfPage":{"@type":"WebPage","@id":"https://eugene-andrienko.com/it/2025/03/10/freebsd14-2-thinkpad-x220.html"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://eugene-andrienko.com/assets/images/home.jpg"},"name":"Eugene Andrienko"},"url":"https://eugene-andrienko.com/it/2025/03/10/freebsd14-2-thinkpad-x220.html"}</script>
-<!-- End Jekyll SEO tag -->
+
 <link rel="apple-touch-icon" sizes="180x180" href="/en/apple-touch-icon.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/en/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/en/favicon-16x16.png">
-  <link rel="mask-icon" href="/en/safari-pinned-tab.svg" color="#5bbad5">
-  <meta name="theme-color" content="#ffffff">
-  <link rel="me" href="https://mas.to/@evgandr">
-  <link rel="stylesheet" href="/assets/css/main.css">
-  <meta name="fediverse:creator" content="@evgandr@mas.to">
+<link rel="icon" type="image/png" sizes="32x32" href="/en/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/en/favicon-16x16.png">
+<link rel="mask-icon" href="/en/safari-pinned-tab.svg" color="#5bbad5">
+<meta name="theme-color" content="#ffffff">
+<link rel="me" href="https://mas.to/@evgandr">
+<link rel="stylesheet" href="/assets/css/main.css">
+<meta name="fediverse:creator" content="@evgandr@mas.to">
 <link type="application/atom+xml" rel="alternate" href="https://eugene-andrienko.com/en/feed.xml" title="Dragon's notes">
 </head>
 <body>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<style>
-    html .page-banner .page-banner-img > *:first-child {
-      opacity: 0.6;
-    }
-  </style>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+<style>html .page-banner .page-banner-img>*:first-child{opacity:.6}</style>
 <header class="site-header">
-  <div class="wrapper">
-    <div class="site-header-inner"><ul class="site-nav">
-        <li>
-          <a class="site-brand" rel="author" href="/en/">
-            Dragon's notes
-          </a>
-        </li>
+<div class="wrapper">
+<div class="site-header-inner"><ul class="site-nav">
 <li>
-          <a class="page-link" href="/en/now.html">NOW</a>
-        </li>
+<a class="site-brand" rel="author" href="/en/">
+Dragon's notes
+</a>
+</li>
 <li>
-          <a class="page-link" href="/en/about.html">ABOUT</a>
-        </li>
+<a class="page-link" href="/en/now.html">NOW</a>
+</li>
 <li>
-          <a class="page-link" href="/en/links.html">LINKS</a>
-        </li>
-<!-- RSS -->
-        <li>
-          
-          <a class="page-link" aria-label="RSS feed link" href="/en/feed.xml">
-            <span class="rss-text">RSS</span>
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg>
-          </a>
-          
-        </li>
-        <!-- Languages -->
-        <div class="lang-separator">
-          <hr>
-        </div>
-        
-        
-        <li class="nav-right"><a class="page-link active">EN</a></li>
-        
-        
-        
-        
-        <li class="nav-right">
-          <a class="page-link" href="/it/2025/03/10/freebsd14-2-thinkpad-x220.html">RU</a>
-        </li>
-        
-        
-        
-      </ul></div>
-  </div>
+<a class="page-link" href="/en/about.html">ABOUT</a>
+</li>
+<li>
+<a class="page-link" href="/en/links.html">LINKS</a>
+</li>
+
+<li>
+<a class="page-link" aria-label="RSS feed link" href="/en/feed.xml">
+<span class="rss-text">RSS</span>
+<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg>
+</a>
+</li>
+
+<div class="lang-separator">
+<hr>
+</div>
+<li class="nav-right"><a class="page-link active">EN</a></li>
+<li class="nav-right">
+<a class="page-link" href="/it/2025/03/10/freebsd14-2-thinkpad-x220.html">RU</a>
+</li>
+</ul></div>
+</div>
 </header>
 <section class="page-banner">
-    <div class="page-banner-img">
-      <div style="background-image: url(/assets/static/freebsd14-2-thinkpad.jpg)"></div>
-    </div>
-    <div class="wrapper">
-      <div class="page-banner-inner">
+<div class="page-banner-img">
+<div style="background-image: url(/assets/static/freebsd14-2-thinkpad.jpg)"></div>
+</div>
+<div class="wrapper">
+<div class="page-banner-inner">
 <header class="post-header">
-  <h1 class="post-title p-name" itemprop="name headline">FreeBSD 14.2 and Thinkpad X220</h1>
+<h1 class="post-title p-name" itemprop="name headline">FreeBSD 14.2 and Thinkpad X220</h1>
 <p class="post-meta">
-      <time class="dt-published" datetime="2025-03-10T00:00:00+03:00" itemprop="datePublished"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
-        2025.03.10
-      </time>
-
-      
-      
-      <span class="left-vsplit">
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-folder"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>
-        it
-      </span>
-    </p>
+<time class="dt-published" datetime="2025-03-10T00:00:00+03:00" itemprop="datePublished"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+2025.03.10
+</time>
+<span class="left-vsplit">
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-folder"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>
+it
+</span>
+</p>
 <div class="post-tags">
 <a class="post-tag" href="/en/tags.html#freebsd">#freebsd</a><a class="post-tag" href="/en/tags.html#thinkpad">#thinkpad</a>
 </div></header>
 </div>
-    </div>
-  </section><main class="page-content" aria-label="Content">
-      <div class="wrapper">
-        <div class="framework main">
-  <div class="post">
-  <section>
-
-
-
-
-
-
-
-
-
+</div>
+</section><main class="page-content" aria-label="Content">
+<div class="wrapper">
+<div class="framework main">
+<div class="post">
+<section>
 <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
-  <div class="post-content e-content" itemprop="articleBody">
-    <p>
+<div class="post-content e-content" itemprop="articleBody">
+<p>
 Since I've wrote <a href="https://eugene-andrienko.com/en/it/2020/09/26/thinkpad-x220-freebsd">post about my specific FreeBSD settings for Thinkpad X220</a>
 near 5 years have passed. That post has a lot of additions and become a bit
 messy. So, after I updated FreeBSD on my laptop up to 14.2 version and finally
 found some time to carefully read a <a href="https://docs.freebsd.org/en/books/handbook/">"FreeBSD handbook"</a>, I decided to write a
 new article about my configuration and about few useful utilities and tricks.
 </p>
-
 <p>
 Few words about my setup. I use ZFS as a filesystem. The root filesystem
 installed in the ZFS pool <code>zroot</code> which has two disks: first near a 500 GB SSD
 and second a 160 Gb SSD:
 </p>
-
 <pre class="example">
  ~ % zpool status zroot
   pool: zroot
@@ -416,16 +128,13 @@ errors: No known data errors
 NAME    SIZE  ALLOC   FREE  CKPOINT  EXPANDSZ   FRAG    CAP  DEDUP    HEALTH  ALTROOT
 zroot   579G   123G   456G        -         -     6%    21%  1.00x    ONLINE  -
 </pre>
-
 <p>
 As you can see, I bravely traded reliability for read speed🫠. I hope that
 snapshots and backups will save me.
 </p>
-
 <p>
 And there is a third disk is in separate pool with a datasets for VMs (bhyve):
 </p>
-
 <pre class="example">
  ~ % zpool status hdd
   pool: hdd
@@ -444,18 +153,15 @@ hdd              10.2G   439G    96K  /hdd
 hdd/vms          10.2G   439G  3.86G  /hdd/vms
 hdd/vms/windows  6.39G   439G  6.39G  /hdd/vms/windows
 </pre>
-
 <p>
 There is a <a href="https://eugene-andrienko.com/en/it/2024/12/21/thinkpad-x220-libreboot">Libreboot installed in the laptop</a> instead of BIOS. So my <code>loader</code>
 starts in graphics mode, instead I've get problems with Libreboot built with
 corebootfb.
 </p>
-
 <p>
 As a WiFi card I use an Intel 8260 card with integrated WiFi and Bluetooth
 (TL-8260D2W).
 </p>
-
 <p>
 More information about my hardware you can read in <a href="https://eugene-andrienko.com/en/it/2024/07/07/thinkpad-x220-second-life">this post</a>.
 </p>
@@ -494,14 +200,11 @@ As <a href="https://libreboot.org/docs/bsd/#freebsd-and-corebootfb">stated in th
 top of the screen instead of bootloader graphics and boot log of the FreeBSD
 kernel and <code>init</code>. It looks like this:
 </p>
-
-
 <div class="figure">
 <p><img src="/assets/static/freebsd_n_corebootfb.jpg" alt="Slim blue line on the top of the screen instead of the bsdinstall interface fullscreen" align="center">
 </p>
 <p style="text-align: center"><i>Slim blue line instead of bsdinstall interface</i></p>
 </div>
-
 <p>
 Fortunately, I found a workaround for this problem. If you booting the FreeBSD
 installation media and the <code>loader</code> interface should appears on the screen —
@@ -509,7 +212,6 @@ blindly press <code>Esc</code> and type <code>vbe on</code> and press <code>Ente
 <code>loader</code> interface should appear and installation process should display on the
 screen as usual.
 </p>
-
 <p>
 If you already installed FreeBSD, then just add the next lines to the
 <code>/boot/loader.conf</code>:
@@ -519,12 +221,10 @@ If you already installed FreeBSD, then just add the next lines to the
 <span id="coderef-loader-conf-resolution" class="coderef-off"><span class="linenr">2: </span><span style="color: #268bd2;">vbe_max_resolution</span>=2560x1440</span>
 </pre>
 </div>
-
 <p>
 Don't forget to insert the actual resolution to the line
 <a href="#coderef-loader-conf-resolution" class="coderef" onmouseover="CodeHighlightOn(this, 'coderef-loader-conf-resolution');" onmouseout="CodeHighlightOff(this, 'coderef-loader-conf-resolution');">2</a>!
 </p>
-
 <p>
 After switch to FreeBSD 14.2 the things became more complicated. Because of
 Netflix, the graphics mode from MBR bootloader <a href="https://www.freebsd.org/releases/14.2R/relnotes/#:~:text=removed%20support%20for%20graphics%20mode">was removed</a> and GZIP/BZIP2
@@ -532,7 +232,6 @@ compression takes its place. But this graphics mode was necessary for me to
 see anything on the screen while system is booting. The previously described
 trick doesn't work if bootloader lacks of graphics mode!
 </p>
-
 <p>
 I found <a href="https://forums.freebsd.org/threads/freebsd-14-2-bootsplash-gone.96142/#post-684187">a solution</a> in the FreeBSD forum: just rebuild a loader with reverted
 <a href="https://cgit.freebsd.org/src/commit/?id=4d3b05a8530e">4d3b05a8530e</a> commit and image on the display will be back. To achieve this I
@@ -552,13 +251,11 @@ make clean
 make
 make install
 </pre>
-
 <p>
 I should note that <code>make clean install</code> command, suggested at the mentioned
 forum's message, didn't completed successfully on my machine. That's why
 there are three consequtive <code>make</code> calls on the code block above.
 </p>
-
 <p>
 These calls should be completed without an errors.
 </p>
@@ -576,7 +273,6 @@ bootloader and the boot log of the kernel should appear on the screen.</li>
 <i>This section is applicable till 31 March 2025. After the FreeBSD 14.1 EoL it
 will be no longer neccessary.</i>
 </p>
-
 <p>
 For now (February 2025) the drm-kmod kernel module is still building for
 FreeBSD 14.1. So when I updated to 14.2 release, I've got a drm-kmod for 14.1
@@ -584,7 +280,6 @@ kernel with 14.2 kernel. Of course it didn't work properly and I've got nor
 text consoles neither boot log (after <code>init</code> start). Only the X-server works,
 which is starting automatically on boot on my laptop.
 </p>
-
 <p>
 There are two "default" options I've found in the Internet:
 </p>
@@ -593,13 +288,11 @@ There are two "default" options I've found in the Internet:
 for FreeBSD 14.2 and it will be safe to update the system.</li>
 <li>Update the system now and build proper DRM kernel module for 14.2 manually.</li>
 </ol>
-
 <p>
 Fortunately, the <a href="https://mas.to/@patrizia@hachyderm.io">@patrizia@hachyderm.io</a> showed me the third option. There is
 exists a special FreeBSD-kmods repository with drm-kmod, built for newly
 released FreeBSD version.
 </p>
-
 <p>
 Based on <a href="https://hachyderm.io/@patrizia/113897441053997542">this</a> and <a href="https://forums.freebsd.org/threads/new-install-of-14-2.96276/#post-684792">this</a>, the solution is simple:
 </p>
@@ -658,7 +351,6 @@ And install drm-61-kmod from a proper repository:
 </pre>
 </li>
 </ol>
-
 <p>
 After reboot the boot log and the text consoles are back!
 </p>
@@ -672,13 +364,11 @@ There were two sections about FreeBSD 14.2 specific things, which I've added
 to the system after upgrading from 14.1. Now I'll write about the real😎
 system configuration.
 </p>
-
 <p>
 Let's start with <code>/boot/loader.conf</code> — there is a configuration file for
 <a href="https://man.freebsd.org/cgi/man.cgi?query=loader&sektion=8&format=html">loader(8)</a> — the 3rd stage bootloader, which loads the kernel. Most of
 variables in this file are well described in <a href="https://man.freebsd.org/cgi/man.cgi?loader.conf">loader.conf(5)</a>.
 </p>
-
 <p>
 The first section of my file describes <code>loader</code>-related configuration:
 </p>
@@ -693,32 +383,26 @@ The first section of my file describes <code>loader</code>-related configuration
 <span class="linenr">8: </span><span style="color: #268bd2;">cpu_microcode_name</span>=<span style="color: #2aa198;">"/boot/firmware/intel-ucode.bin"</span>
 </pre>
 </div>
-
 <p>
 Lines <a href="#coderef-loader-conf-boot-delay" class="coderef" onmouseover="CodeHighlightOn(this, 'coderef-loader-conf-boot-delay');" onmouseout="CodeHighlightOff(this, 'coderef-loader-conf-boot-delay');">4</a> and <a href="#coderef-loader-conf-beastie" class="coderef" onmouseover="CodeHighlightOn(this, 'coderef-loader-conf-beastie');" onmouseout="CodeHighlightOff(this, 'coderef-loader-conf-beastie');">5</a> are used to skip the
 <code>loader</code>'s interactive menu and boot the kernel right after the computer is
 turned on. I can still jump to the <code>loader</code> console by pressing any key while
 the <code>loader</code> is loading modules and preparing to load the kernel.
 </p>
-
 <p>
 Line <a href="#coderef-loader-conf-boot-mute" class="coderef" onmouseover="CodeHighlightOn(this, 'coderef-loader-conf-boot-mute');" onmouseout="CodeHighlightOff(this, 'coderef-loader-conf-boot-mute');">6</a> used to hide the kernel log during
 loading. Instead, the nice white FreeBSD logo is displayed, just like in other
 consumer OSes:
 </p>
-
-
 <div class="figure">
 <p><img src="/assets/static/bootlogo.png" alt="black and white FreeBSD boot logo" align="center">
 </p>
 <p style="text-align: center"><i>FreeBSD logo during the boot if boot_mute="YES"</i></p>
 </div>
-
 <p>
 The last two lines allow loading <a href="https://en.wikipedia.org/wiki/Microcode">Intel CPU microcode</a> during kernel
 loading. The <code>sysutils/cpu-microcode-intel</code> package should be installed first!
 </p>
-
 <p>
 In the next section, there are lines with kernel modules that the <code>loader</code> will
 load:
@@ -748,7 +432,6 @@ load:
 <span class="linenr">30: </span><span style="color: #268bd2;">sysctlbyname_improved_load</span>=<span style="color: #2aa198;">"YES"</span>
 </pre>
 </div>
-
 <p>
 Although these lines may look a bit cryptic — they aren't. Most of these lines
 were added by the <code>bsdinstaller</code> during the installation process. The
@@ -759,7 +442,6 @@ disks using <a href="https://man.freebsd.org/cgi/man.cgi?rc(8)">rc(8)</a> script
 disks and initialize the other hardware properly. That's why modules should be
 loaded by the <code>loader</code> before initialization scripts loading.
 </p>
-
 <ul class="org-ul">
 <li>Line <a href="#coderef-loader-conf-i915kms" class="coderef" onmouseover="CodeHighlightOn(this, 'coderef-loader-conf-i915kms');" onmouseout="CodeHighlightOff(this, 'coderef-loader-conf-i915kms');">12</a> was added by myself — it instructs to load kernel
 mode setting<sup><a id="fnr.modesetting-wiki" class="footref" href="#fn.modesetting-wiki" role="doc-backlink">1</a></sup> module for the Intel integrated video
@@ -772,7 +454,6 @@ storage-related kernel modules. Some modules (<code>aesni</code>, <code>cryptode
 the encrypted disk partitions, to decrypt them fast enough, and for ZFS
 support.
 </p>
-
 <p>
 The <code>libiconv</code>, <code>libmchain</code>, <code>cd9660_iconv</code> and <code>msdosfs_iconv</code> modules were added
 by myself. They are needed for codeset conversion when the path on the
@@ -805,7 +486,6 @@ to perform CPU firmware updates.</li>
 The last two lines, starting at <a href="#coderef-loader-conf-sysctlinfo" class="coderef" onmouseover="CodeHighlightOn(this, 'coderef-loader-conf-sysctlinfo');" onmouseout="CodeHighlightOff(this, 'coderef-loader-conf-sysctlinfo');">29</a>, are added for
 <a href="https://man.freebsd.org/cgi/man.cgi?query=mixertui&sektion=8&n=1">mixertui(8)</a> — an ncurses-like interface mixer for OSS:
 </p>
-
 <div class="figure">
 <p><img src="/assets/static/mixertui.png" alt="Console interface for mixertui, with gauge controls for different sound inputs/outputs" align="center">
 </p>
@@ -813,13 +493,11 @@ The last two lines, starting at <a href="#coderef-loader-conf-sysctlinfo" class=
 </div>
 </li>
 </ul>
-
 <p>
 The last section contains some system settings. All of these settings are just
 some <a href="https://man.freebsd.org/cgi/man.cgi?query=sysctl&apropos=0&sektion=8&manpath=FreeBSD+14.2-RELEASE&amp;arch=default&amp;format=html">sysctl(8)</a> variables that are read-only on FreeBSD and can only be changed
 by the <code>loader</code>.
 </p>
-
 <div class="org-src-container">
 <pre class="src src-shell"><span class="linenr">31: </span><span style="color: #93a1a1;">##################</span>
 <span class="linenr">32: </span><span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">System settings:</span>
@@ -846,7 +524,6 @@ by the <code>loader</code>.
 <span class="linenr">53: </span>net.link.ifqmaxlen=<span style="color: #2aa198;">"2048"</span>
 </pre>
 </div>
-
 <ul class="org-ul">
 <li>The <a href="#coderef-loader-conf-allow-destructive-dtrace" class="coderef" onmouseover="CodeHighlightOn(this, 'coderef-loader-conf-allow-destructive-dtrace');" onmouseout="CodeHighlightOff(this, 'coderef-loader-conf-allow-destructive-dtrace');">34</a>th line has been added by
 <code>bsdinstall</code>. It removes DTrace's ability to work with system
@@ -876,7 +553,6 @@ stated in <a href="https://man.freebsd.org/cgi/man.cgi?rc.conf(5)">rc.conf(5)</a
 <li>List services to run at system startup.</li>
 <li>Sometimes, it includes configuration for <b>system</b> services.</li>
 </ul>
-
 <p>
 List of services already populated by <code>bsdinstaller</code>, but I've added a lot more:
 </p>
@@ -901,31 +577,25 @@ List of services already populated by <code>bsdinstaller</code>, but I've added 
 <span id="coderef-rc-conf-microcode-update" class="coderef-off"><span class="linenr">18: </span><span style="color: #268bd2;">microcode_update_enable</span>=<span style="color: #2aa198;">"YES"</span></span>
 </pre>
 </div>
-
 <p>
 My custom settings starting from line <a href="#coderef-rc-conf-custom-lines" class="coderef" onmouseover="CodeHighlightOn(this, 'coderef-rc-conf-custom-lines');" onmouseout="CodeHighlightOff(this, 'coderef-rc-conf-custom-lines');">10</a>. First, I enable
 D-Bus — sadly, it is necessary for some programs even if I use i3wm, despite
 it was created for KDE or Gnome — for example for <del>Firefox</del> Librewolf and
 <a href="https://fprint.freedesktop.org/">fprintd</a> utilities.
 </p>
-
 <p>
 Then (<a href="#coderef-rc-conf-lightdm" class="coderef" onmouseover="CodeHighlightOn(this, 'coderef-rc-conf-lightdm');" onmouseout="CodeHighlightOff(this, 'coderef-rc-conf-lightdm');">11</a>), I enable LightDM service — the nice and lightweight
 login screen for X server:
 </p>
-
-
 <div class="figure">
 <p><img src="/assets/static/lightdm.jpg" alt="LightDM login window" align="center">
 </p>
 <p style="text-align: center"><i>LightDM login screen</i></p>
 </div>
-
 <p>
 LightDM configuration for i3 was a bit tricky. But after some experiments I
 added these lines to <code>/usr/local/etc/lightdm/lightdm.conf</code>:
 </p>
-
 <div class="org-src-container">
 <pre class="src src-nil"><span class="linenr">1: </span>[Seat:*]
 <span class="linenr">2: </span>xserver-share=true
@@ -934,12 +604,10 @@ added these lines to <code>/usr/local/etc/lightdm/lightdm.conf</code>:
 <span id="coderef-lightdm-conf-2k" class="coderef-off"><span class="linenr">5: </span>display-setup-script=xrandr --output DP-3 --primary --dpi 130</span>
 </pre>
 </div>
-
 <p>
 On the line <a href="#coderef-lightdm-conf-2k" class="coderef" onmouseover="CodeHighlightOn(this, 'coderef-lightdm-conf-2k');" onmouseout="CodeHighlightOff(this, 'coderef-lightdm-conf-2k');">5</a> there is a special command to properly setup X
 server to display login screen on the right display with a right DPI.
 </p>
-
 <p>
 Lets return to the <code>/etc/rc.conf</code>. Line <a href="#coderef-rc-conf-devmatch" class="coderef" onmouseover="CodeHighlightOn(this, 'coderef-rc-conf-devmatch');" onmouseout="CodeHighlightOff(this, 'coderef-rc-conf-devmatch');">15</a> enables auto-loading
 of kernel modules with <a href="https://man.freebsd.org/cgi/man.cgi?query=devmatch&sektion=8&apropos=0&manpath=FreeBSD+14.2-RELEASE+and+Ports">devmatch(8)</a> — I need it to blacklist some modules,
@@ -947,7 +615,6 @@ which is unnecessary in my configuration but load by default. And the line
 <a href="#coderef-rc-conf-microcode-update" class="coderef" onmouseover="CodeHighlightOn(this, 'coderef-rc-conf-microcode-update');" onmouseout="CodeHighlightOff(this, 'coderef-rc-conf-microcode-update');">18</a> enables service to update CPU microcode on the
 start (if package <code>sysutils/cpu-microcode-intel</code> is installed).
 </p>
-
 <p>
 Then, I enable the <code>vm</code> service for <a href="https://github.com/churchers/vm-bhyve">bhyve-vm management console</a> (line
 <a href="#coderef-rc-conf-vm" class="coderef" onmouseover="CodeHighlightOn(this, 'coderef-rc-conf-vm');" onmouseout="CodeHighlightOff(this, 'coderef-rc-conf-vm');">16</a>). And a <a href="https://docs.freebsd.org/en/books/handbook/linuxemu/">Linuxulator</a> — Linux compatibility layer — on the line
@@ -955,12 +622,10 @@ Then, I enable the <code>vm</code> service for <a href="https://github.com/churc
 because all necessary programs built for FreeBSD. I don't remember why I
 enable it, maybe to launch Dwarf Fortress, may be to lauch <a href="https://cataclysmdda.org/">Cataclysm-DDA</a>.
 </p>
-
 <p>
 The most of the system-related configuration is already populated by the
 <code>bsdinstaller</code>. So I've just added the few lines:
 </p>
-
 <div class="org-src-container">
 <pre class="src src-shell"><span class="linenr">19: </span><span style="color: #93a1a1;">#######################</span>
 <span class="linenr">20: </span><span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">System configuration:</span>
@@ -973,7 +638,6 @@ The most of the system-related configuration is already populated by the
 <span id="coderef-rc-conf-blacklist" class="coderef-off"><span class="linenr">27: </span><span style="color: #268bd2;">devmatch_blocklist</span>=<span style="color: #2aa198;">"if_iwm if_iwlwifi"</span></span>
 </pre>
 </div>
-
 <ul class="org-ul">
 <li>In the line <a href="#coderef-rc-conf-kld-list" class="coderef" onmouseover="CodeHighlightOn(this, 'coderef-rc-conf-kld-list');" onmouseout="CodeHighlightOff(this, 'coderef-rc-conf-kld-list');">23</a> I load some kernel modules: the <code>fusefs</code> and
 the <code>cuse</code> modules. The first is necessary to work with <a href="https://en.wikipedia.org/wiki/Filesystem_in_Userspace">userspace
@@ -984,11 +648,9 @@ modules.</li>
 because I use <a href="https://man.freebsd.org/cgi/man.cgi?query=wifibox&apropos=0&sektion=8&manpath=freebsd-ports&format=html">wifibox(8)</a>, all FreeBSD related wireless networking shouldn't
 interfere with it.</li>
 </ul>
-
 <p>
 The daemons' configuration also populated by <code>bsdinstaller</code>:
 </p>
-
 <div class="org-src-container">
 <pre class="src src-shell"><span class="linenr">28: </span><span style="color: #93a1a1;">#########################</span>
 <span class="linenr">29: </span><span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">Services configuration:</span>
@@ -999,7 +661,6 @@ The daemons' configuration also populated by <code>bsdinstaller</code>:
 <span id="coderef-rc-conf-vm-conf" class="coderef-off"><span class="linenr">34: </span><span style="color: #268bd2;">vm_dir</span>=<span style="color: #2aa198;">"zfs:hdd/vms"</span></span>
 </pre>
 </div>
-
 <p>
 Here I just added an option for <code>webcamd</code> to use only specified device as a my
 web-camera (<a href="#coderef-rc-conf-webcamd-conf" class="coderef" onmouseover="CodeHighlightOn(this, 'coderef-rc-conf-webcamd-conf');" onmouseout="CodeHighlightOff(this, 'coderef-rc-conf-webcamd-conf');">33</a>), as written <a href="https://docs.freebsd.org/en/books/handbook/multimedia/index.html#webcam-setup">in documentation</a>. And
@@ -1014,11 +675,9 @@ specified the separate ZFS pool on the thirdt HDD to use for my VMs.
 The last main configuration file is a <code>/etc/sysctl.conf</code> with various system
 variables.
 </p>
-
 <p>
 The first section in my file is just a kernel-related settings:
 </p>
-
 <div class="org-src-container">
 <pre class="src src-shell"><span class="linenr"> 1: </span><span style="color: #93a1a1;">##################</span>
 <span class="linenr"> 2: </span><span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">Kernel settings:</span>
@@ -1035,7 +694,6 @@ The first section in my file is just a kernel-related settings:
 <span class="linenr">13: </span>kern.ipc.shm_use_phys=1
 </pre>
 </div>
-
 <p>
 Aside from the first lines added by the <code>bsdinstaller</code> and the commented lines,
 there are the following settings:
@@ -1044,11 +702,9 @@ there are the following settings:
 <li>Coredumps are disabled</li>
 <li>Bell on the console is also disabled.</li>
 </ul>
-
 <p>
 The next section in the file is hardware-specific:
 </p>
-
 <div class="org-src-container">
 <pre class="src src-shell"><span class="linenr">14: </span><span style="color: #93a1a1;">###################</span>
 <span class="linenr">15: </span><span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">Hardware setings:</span>
@@ -1069,13 +725,11 @@ The next section in the file is hardware-specific:
 <span class="linenr">30: </span>hw.acpi.thermal.tz1._CRT=199C
 </pre>
 </div>
-
 <p>
 Here are my specific trackpoint sensivity values, starting at
 line <a href="#coderef-sysctl-conf-trackpoint" class="coderef" onmouseover="CodeHighlightOn(this, 'coderef-sysctl-conf-trackpoint');" onmouseout="CodeHighlightOff(this, 'coderef-sysctl-conf-trackpoint');">17</a>. I chose these numbers experimentally, to get
 the best user experience.
 </p>
-
 <p>
 The four lines starting at <a href="#coderef-sysctl-conf-suspend" class="coderef" onmouseover="CodeHighlightOn(this, 'coderef-sysctl-conf-suspend');" onmouseout="CodeHighlightOff(this, 'coderef-sysctl-conf-suspend');">21</a>, configure the suspend
 behavior for my laptop. The first two lines are from the FreeBSD forum. They
@@ -1084,7 +738,6 @@ work properly after the laptop wakes up. The last two lines tell the OS to go
 to S3 state when I close the lid or press the sleep key (Fn+F4 on my Thinkpad
 X220).
 </p>
-
 <p>
 The five lines from <a href="#coderef-sysctl-conf-acpi-thermal" class="coderef" onmouseover="CodeHighlightOn(this, 'coderef-sysctl-conf-acpi-thermal');" onmouseout="CodeHighlightOff(this, 'coderef-sysctl-conf-acpi-thermal');">26</a> line are the <b>DANGEROUS</b> ones!
 The first allows you to override thermal protections for the laptop. So, if
@@ -1092,7 +745,6 @@ you configure something wrong, the laptop might melt🫠. The next two lines
 lower the default temperature to disable the passive cooling — the defaults
 were set to 90°C, which is too high for me.
 </p>
-
 <p>
 And the last two lines are necessary to prevent some weird behaviour of my
 laptop when it wakes up from the sleep state. Due to a some bug in the
@@ -1100,18 +752,15 @@ Libreboot, my ThinkPad X220 doing some hard calculations with it's CPU for a
 second, when it is waking up. And this second is enough for ACPI to decide,
 "on ho, the CPU is overheating — let's turn off the everything!"
 </p>
-
 <p>
 So, to prevent this unwanted shutdown I added those two lines. For now, laptop
 still overheats for a second (fan noise increases) but it is successfully
 wakes up and working like a charm. And it is not melt (yet)!
 </p>
-
 <p>
 The next few lines are filesystem specific settings. Most of these are also
 set by <code>bsdinstaller</code>.
 </p>
-
 <div class="org-src-container">
 <pre class="src src-shell"><span class="linenr">29: </span><span style="color: #93a1a1;">###############</span>
 <span class="linenr">30: </span><span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">VFS settings:</span>
@@ -1123,7 +772,6 @@ set by <code>bsdinstaller</code>.
 <span id="coderef-sysctl-conf-zfs-timeout" class="coderef-off"><span class="linenr">36: </span>vfs.zfs.txg.timeout=<span style="color: #2aa198;">"10"</span></span>
 </pre>
 </div>
-
 <p>
 I just made the following changes:
 </p>
@@ -1134,11 +782,9 @@ filesystems from various USB drives, SD cards, etc.</li>
 <li>The line <a href="#coderef-sysctl-conf-zfs-timeout" class="coderef" onmouseover="CodeHighlightOn(this, 'coderef-sysctl-conf-zfs-timeout');" onmouseout="CodeHighlightOff(this, 'coderef-sysctl-conf-zfs-timeout');">36</a> I took from the someone's blog. I can't
 say that it significantly increases the battery life of the laptop…</li>
 </ul>
-
 <p>
 The next lines are not written by me — I took them from <a href="https://www.sacredheartsc.com/blog/freebsd-14-on-the-desktop/">this blogpost</a>:
 </p>
-
 <div class="org-src-container">
 <pre class="src src-shell"><span class="linenr">37: </span><span style="color: #93a1a1;">#############################</span>
 <span class="linenr">38: </span><span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">Network performance tuning:</span>
@@ -1172,12 +818,10 @@ The next lines are not written by me — I took them from <a href="https://www.
 <span class="linenr">66: </span>net.local.stream.sendspace=65536
 </pre>
 </div>
-
 <p>
 The next lines were added when I was experimenting with sleep on my
 librebooted laptop:
 </p>
-
 <div class="org-src-container">
 <pre class="src src-shell"><span class="linenr">67: </span><span style="color: #93a1a1;">####################################################</span>
 <span class="linenr">68: </span><span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">Switch virtual consoles back and forth on suspend:</span>
@@ -1187,12 +831,10 @@ librebooted laptop:
 <span class="linenr">72: </span>hw.acpi.verbose=1
 </pre>
 </div>
-
 <p>
 After librebooting my laptop and suddenly finding that my RTC battery is
 dead — I force the kernel to save system time to the RTC on system shutdown:
 </p>
-
 <div class="org-src-container">
 <pre class="src src-shell"><span class="linenr">73: </span><span style="color: #93a1a1;">#######################</span>
 <span class="linenr">74: </span><span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">Save datetime to RTC:</span>
@@ -1200,7 +842,6 @@ dead — I force the kernel to save system time to the RTC on system shutdown:
 <span class="linenr">76: </span>machdep.disable_rtc_set=0
 </pre>
 </div>
-
 <p>
 Of course, I replaced the dead battery with the new one, but because I'm using
 the laptop in the places where the Internet may not exists — I'm really
@@ -1223,7 +864,6 @@ video drivers in the extremely customized systems, like Gentoo with a custom
 kernel and FreeBSD on the machine with a soldered-on 2K expansion board and 2K
 display.
 </p>
-
 <p>
 On my BSD box I have these lines in
 <code>/usr/local/etc/X11/xorg.conf.d/10-intel.conf</code> to get the nice transparency and
@@ -1245,22 +885,18 @@ other effects with picom:
 <span class="linenr">13: </span>EndSection
 </pre>
 </div>
-
 <p>
 Sometimes I use an external IBM MU29J ball mouse with two buttons:
 </p>
-
 <p>
-    <img alt="IBM black ball mouse" style="height: 100%; width: 100%;
-        object-fit: cover" src="/assets/images/uses/mouse.jpg">
+<img alt="IBM black ball mouse" style="height: 100%; width: 100%;
+object-fit: cover" src="/assets/images/uses/mouse.jpg">
 </p>
-
 <p>
 So I added the next configuration for the X server to
 <code>/usr/local/etc/X11/xorg.conf.d/20-ibm.conf</code>. This allows me to press the left
 and right buttons at the same time to simulate pressing the middle button.
 </p>
-
 <div class="org-src-container">
 <pre class="src src-nil"><span class="linenr">1: </span>Section "InputClass"
 <span class="linenr">2: </span>    Identifier "IBM MU29J Mouse"
@@ -1272,18 +908,15 @@ and right buttons at the same time to simulate pressing the middle button.
 <span class="linenr">8: </span>EndSection
 </pre>
 </div>
-
 <p>
 The path <code>/dev/input/event9</code> is taken from <code>/var/log/Xorg.0.log</code> — it is printed
 in this file after the mouse is connected.
 </p>
-
 <p>
 The last custom configuration is a few lines to disable the touchpad when the
 external mouse is connected and to send a click event when I tap on the
 touchpad (it was disabled by default):
 </p>
-
 <div class="org-src-container">
 <pre class="src src-nil"><span class="linenr">1: </span>Section "InputClass"
 <span class="linenr">2: </span>    Identifier "X220 Touchpad"
@@ -1295,7 +928,6 @@ touchpad (it was disabled by default):
 <span class="linenr">8: </span>EndSection
 </pre>
 </div>
-
 <p>
 I saved it as <code>/usr/local/etc/X11/xorg.conf.d/30-touchpad.conf</code> and after
 restarting the X server, my touchpad automatically disables when the IBM mouse
@@ -1310,16 +942,13 @@ is connected.
 To prolong life of the laptop when it's running on battery, I've just been
 using the <a href="https://man.freebsd.org/cgi/man.cgi?powerd">powerd(8)</a> (this line from the <code>/etc/rc.conf</code>):
 </p>
-
 <div class="org-src-container">
 <pre class="src src-shell"><span style="color: #268bd2;">powerd_enable</span>=<span style="color: #2aa198;">"YES"</span>
 </pre>
 </div>
-
 <p>
 All necessary configuration are also placed in the <code>/etc/rc.conf</code>:
 </p>
-
 <div class="org-src-container">
 <pre class="src src-shell"><span class="linenr">35: </span><span style="color: #93a1a1;">######################</span>
 <span class="linenr">36: </span><span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">Power configuration:</span>
@@ -1329,13 +958,11 @@ All necessary configuration are also placed in the <code>/etc/rc.conf</code>:
 <span class="linenr">40: </span><span style="color: #268bd2;">economy_cx_lowest</span>=<span style="color: #2aa198;">"Cmax"</span>
 </pre>
 </div>
-
 <p>
 Here I just select the <code>hiadaptive</code> mode when the laptop is running on AC power
 and the <code>adaptive</code> mode when it is running on battery. As described in the
 powerd man page:
 </p>
-
 <pre class="example">
 hiadaptive  Like adaptive mode, but tuned for systems where performance
             and interactivity are more important than power consump-
@@ -1343,7 +970,6 @@ hiadaptive  Like adaptive mode, but tuned for systems where performance
             less aggressively, and will maintain full frequency for
             longer.  May be abbreviated as hadp.
 </pre>
-
 <pre class="example">
 adaptive    Attempt to strike a balance by degrading performance when
             the system appears idle and increasing it when the system
@@ -1351,27 +977,23 @@ adaptive    Attempt to strike a balance by degrading performance when
             mance loss for greatly increased power savings.  May be ab-
             breviated as adp.
 </pre>
-
 <p>
 Then I slightly increase the CPU load percent level at which powerd will start
 to degrade performance to save the battery power. The default was at 50% and I
 set it to the 75%.
 </p>
-
 <p>
 And I set the maximum frequency that powerd will use to 2 GHz. Out of the box
 my CPU can run at a maximum of 2.7 GHz, but I don't need so much computation
 power, so I keep it at 2 GHz. The most CPU-intensive program — Librewolf with
 a YouTube video playing in a tab — still works well with a 2 GHz CPU.
 </p>
-
 <p>
 But I don't like it when my CPU is too hot (close to 50-60°C) when I watch the
 YouTube videos. So, in order to trade some silence for CPU temperature, I
 install the <a href="https://github.com/claudiozz/bsdfan">bsdfan</a> utility. This little thing allows me to tweak the
 temperature levels at which the fan starts spinning.
 </p>
-
 <p>
 This daemon starts with these simple lines in <code>/etc/rc.local</code>:
 </p>
@@ -1381,7 +1003,6 @@ This daemon starts with these simple lines in <code>/etc/rc.local</code>:
 /usr/local/bin/bsdfan -d
 </pre>
 </div>
-
 <p>
 And to stop the daemon on system shutdown, these lines were added to the
 <code>/etc/rc.shutdown.local</code>:
@@ -1392,7 +1013,6 @@ And to stop the daemon on system shutdown, these lines were added to the
 /usr/bin/pkill bsdfan
 </pre>
 </div>
-
 <p>
 I use the default configuration file, placed in the <code>/usr/local/etc/bsdfan.conf</code>
 with tweaked values that I choose experimentally:
@@ -1428,13 +1048,11 @@ I have the two network interfaces on the laptop:
 <li>
 <code>wlan0</code> — the WiFi card.</li>
 </ul>
-
 <p>
 Speaking of Ethernet it's pretty easy to configure. Just ask the DHCP server
 for the network configuration and do it in the background so the system
 doesn't wait at boot time if it's not connected to any networks:
 </p>
-
 <div class="org-src-container">
 <pre class="src src-shell"><span class="linenr">41: </span><span style="color: #93a1a1;">########################</span>
 <span class="linenr">42: </span><span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">Network configuration:</span>
@@ -1446,37 +1064,31 @@ doesn't wait at boot time if it's not connected to any networks:
 <span id="coderef-rc-conf-route-delay" class="coderef-off"><span class="linenr">48: </span><span style="color: #268bd2;">defaultroute_delay</span>=<span style="color: #2aa198;">"0"</span></span>
 </pre>
 </div>
-
 <p>
 Line <a href="#coderef-rc-conf-route-delay" class="coderef" onmouseover="CodeHighlightOn(this, 'coderef-rc-conf-route-delay');" onmouseout="CodeHighlightOff(this, 'coderef-rc-conf-route-delay');">48</a> tells the system not to wait at boot while the
 interface(s) are getting address(es) from DHCP — it's also to speed up booting
 when there are no networks.
 </p>
-
 <p>
 The WiFi configuration is much trickier. Since I'm using an Intel 8260 WiFi
 card<sup><a id="fnr.4" class="footref" href="#fn.4" role="doc-backlink">4</a></sup>, I can't (for now<sup><a id="fnr.freebsd-wifi" class="footref" href="#fn.freebsd-wifi" role="doc-backlink">5</a></sup>) rely on the default FreeBSD
 drivers if I want to use the new enough IEEE 802.11 standards. So I start
 using the <a href="https://github.com/pgj/freebsd-wifibox">wifibox</a>:
 </p>
-
 <div class="org-src-container">
 <pre class="src src-shell"><span style="color: #268bd2;">wifibox_enable</span>=<span style="color: #2aa198;">"YES"</span>
 </pre>
 </div>
-
 <p>
 The system-side configuration is quite simple, and copies the configuration
 for the <code>em0</code> interface:
 </p>
-
 <div class="org-src-container">
 <pre class="src src-shell"><span class="linenr">49: </span><span style="color: #268bd2;">ifconfig_wifibox0_descr</span>=<span style="color: #2aa198;">"WiFi (wifibox)"</span>
 <span class="linenr">50: </span><span style="color: #268bd2;">ifconfig_wifibox0</span>=<span style="color: #2aa198;">"SYNCDHCP"</span>
 <span class="linenr">51: </span><span style="color: #268bd2;">background_dhclient_wifibox0</span>=<span style="color: #2aa198;">"YES"</span>
 </pre>
 </div>
-
 <p>
 The configuration of the wifibox is well described in it's documentation and I
 won't write about it here.
@@ -1489,7 +1101,6 @@ won't write about it here.
 After reading the FreeBSD Handbook for the nth time, I found a few sentences
 about USB tethering.
 </p>
-
 <p>
 Back in the days, then phones didn't have the "smart" prefix, I used the cable
 to connect my laptop to the Internet with my phone. The setup looks like this:
@@ -1502,7 +1113,6 @@ dial-up era, of course).</li>
 <li>Then the laptop can connect to the Internet via the <code>ppp</code>, just like in the
 old days of 56K.</li>
 </ul>
-
 <p>
 Times have changed and now smartphones can share their Internet connection via
 WiFi. I have used this feature for some time. It has some advantages — for
@@ -1512,13 +1122,11 @@ connect to the Internet. There are also some disadvantages — the WiFi AP is
 visible to everyone and the radio transmission drains the batteries of both
 the laptop and the phone.
 </p>
-
 <p>
 So I decided to experiment with USB tethering on the modern system to extend
 the battery life and reduce the EMR for my devices. I used the Android phone,
 other phones should use the different kernel modules<sup><a id="fnr.tethering-modules" class="footref" href="#fn.tethering-modules" role="doc-backlink">6</a></sup>.
 </p>
-
 <p>
 On the FreeBSD side, the configuration is simple — I've just added the next
 lines to <code>/etc/rc.conf</code> and rebooted:
@@ -1529,13 +1137,11 @@ lines to <code>/etc/rc.conf</code> and rebooted:
 <span class="linenr">54: </span><span style="color: #268bd2;">ifconfig_ue0_descr</span>=<span style="color: #2aa198;">"Motorola Defy (tethering)"</span>
 </pre>
 </div>
-
 <p>
 On the phone side, the configuration is much easier — just connect the phone
 to the laptop with the USB cable and select "USB tethering" in the
 notification area.
 </p>
-
 <p>
 After that, the <code>dmesg</code> should show that the OS has recognized the device as a
 USB Ethernet peripheral:
@@ -1549,7 +1155,6 @@ urndis0: &lt;unknown TrebleDroid vanilla, class 0/0, rev 2.00/4.19, addr 1&gt; o
 ue0: &lt;USB Ethernet&gt; on urndis0
 ue0: Ethernet address: 16:b5:c1:e6:61:58
 </pre>
-
 <p>
 Then, to establish the connection through the new interface, the following
 commands can be issued:
@@ -1558,7 +1163,6 @@ commands can be issued:
 # service netif restart ue0
 # service dhclient restart ue0
 </pre>
-
 <p>
 I wrote a simple script to connect over the phone without typing a lot of
 commands:
@@ -1593,7 +1197,6 @@ commands:
 <span style="color: #859900; font-weight: bold;">esac</span>
 </pre>
 </div>
-
 <p>
 This code displays a rofi menu with the three items and runs the appropriate
 commands with sudo. The sudo will ask for a password using the askpass facility and
@@ -1619,7 +1222,6 @@ drives with the next (default) configuration in the <code>/etc/auto_master</code
 # to move the call to "automount -c" out of the comments section.
 /media		-media		-nosuid
 </pre>
-
 <p>
 As you can see from the output of the <code>zpool status zroot</code> command at the top of
 the post — I am using two disks in a pool for the root filesystem. Some data
@@ -1635,12 +1237,10 @@ zroot         97.1G   482G     59     17  6.26M   622K
   ada2p3.eli  61.9G   382G     38     10  3.99M   391K
 ------------  -----  -----  -----  -----  -----  -----
 </pre>
-
 <p>
 There is no redundancy — if one disk fails, the entire root filesystem
 fails. So backups a very important to me.
 </p>
-
 <p>
 ZFS comes to the rescue here! To make a snapshot of the root filesystem, I use
 the next command (after the <code>@</code> symbol you can add any string you like, usually
@@ -1649,7 +1249,6 @@ the timestamp):
 <pre class="example">
 # zfs snapshot -r zroot@2025-03-09
 </pre>
-
 <p>
 To check which snapshot was created, I use the next command for the <code>zroot</code>
 mounted on the <code>/</code>:
@@ -1673,7 +1272,6 @@ total 255
 17 drwxr-xr-x  22 root wheel   28B Mar  9 10:40 2025-03-09/
 17 drwxr-xr-x  21 root wheel   27B Oct 27 01:45 backup_recursive_2024-10-27/
 </pre>
-
 <p>
 As you can see, there are a lot of outdated backups, mostly created by the
 <code>freebsd-update</code> utility. I remove them with the <code>zfs destroy</code> command:
@@ -1685,7 +1283,6 @@ As you can see, there are a lot of outdated backups, mostly created by the
 # zfs destroy -R zroot/ROOT/default@2024-06-26-22:39:36-0
 ...
 </pre>
-
 <p>
 After that, the only one (current) snapshot remains in the system:
 </p>
@@ -1710,29 +1307,24 @@ zroot/var/tmp@2025-03-09          0B      -   104K  -
 total 17
 17 drwxr-xr-x  22 root wheel   28B Mar  9 10:40 2025-03-09/
 </pre>
-
 <p>
 Restoring from this snapshot can be done with the:
 </p>
 <pre class="example">
 # zfs rollback zroot@2025-03-09
 </pre>
-
 <p>
 Snapshot can also be sent anywhere with the:
 </p>
 <pre class="example">
 # zfs send zroot@2025-03-09 | send_it_somewhere
 </pre>
-
 <p>
 or:
 </p>
-
 <pre class="example">
 # zfs send zroot@2025-03-09 &gt; /backup/2025-03-09-zroot.snap
 </pre>
-
 <p>
 To check the health of my disks and to verify the checksums of the files in my
 pools, here are the next set of commands:
@@ -1743,14 +1335,12 @@ all pools are healthy
 # zpool scrub zroot
 # zpool scrub hdd
 </pre>
-
 <p>
 The last two commands start a lot of heavy I/O operations, so don't launch
 them if the system is already using the disks intensively! Estimates and
 results of the scrubbing operation can be viewed using the <code>zpool status</code>
 command.
 </p>
-
 <p>
 The FreeBSD Handbook recommends launch scrubbing at least once a month.
 </p>
@@ -1764,20 +1354,16 @@ Some day, some time, I decided to configure fingerprint scanner on my
 laptop. Many years ago I wrote an article about libfprint for IBM Portal, so I
 thought that setting up fingerprint service will not be so difficult.
 </p>
-
-
 <div class="figure">
 <p><img src="/assets/static/fingerprint_scanner.jpg" alt="fingerprint scanner with turned on green LED on the left" align="center" width="50%">
 </p>
 <p style="text-align: center"><i>Thinkpad X220 fingerprint scanner</i></p>
 </div>
-
 <p>
 As a starting documentation I take the next blog post:
 <a href="https://hauweele.net/~gawen/blog/?p=408">https://hauweele.net/~gawen/blog/?p=408</a> and slightly modify some steps to fit
 them to my system:
 </p>
-
 <ol class="org-ol">
 <li>
 <p>
@@ -1813,7 +1399,6 @@ notify 100 {
     action "chown drag0n:fprint /dev/$cdev &amp;&amp; chmod 660 /dev/$cdev";
 };
 </pre>
-
 <p>
 After that I reboot the system to apply the new settings.
 </p>
@@ -1824,19 +1409,16 @@ Then, I ran into the D-Bus-related problems🤮. The <code>libfprint</code> util
 communicate with the daemon via D-Bus and my user can't connect to the
 daemon via it.
 </p>
-
 <p>
 I don't use D-Bus in my system — I only have it to work with the <a href="https://dunst-project.org/">dunst
 notification daemon</a>. There is a lightweight replacement for the big
 notification daemons of a large desktop environments, which I obviously
 don't use either. It works fine for me out of the box.
 </p>
-
 <p>
 But it is not a case of <code>libfprint</code> utilities. So I've added the next lines
 to <code>/usr/local/share/dbus-1/system.d/net.reactivated.Fprint.conf</code>:
 </p>
-
 <pre class="example">
 &lt;policy user="drag0n"&gt;
   &lt;allow own="net.reactivated.Fprint"/&gt;
@@ -1851,18 +1433,15 @@ password or any other high-value passwords (like a password to unlock a GPG
 key). Obviously, if I do that, then <i>some</i> bad actors can forcibly roll my
 finger on the scanner and get access to my system.
 </p>
-
 <p>
 So, I decide to use fingerprint instead of password only with <code>sudo</code>. If I'm
 already logged in and someone catches me and forcibly rolls my finger —
-then I'm <b>already</b> <i>sooo fucked up</i> before that event!
+then I'm <b>already</b><i>sooo fucked up</i> before that event!
 </p>
-
 <p>
 To use the fingerprint scanner with <code>sudo</code>, I've just added this line to the
 top of the file <code>/usr/local/etc/pam.d/sudo</code>:
 </p>
-
 <pre class="example">
 auth       sufficient  /usr/local/lib/security/pam_fprintd.so
 </pre>
@@ -1872,7 +1451,6 @@ the <code>sudo fprintd-enroll drag0n</code> command. To verify that the finger w
 successfully scanned, I killed the <code>fprintd</code> daemon and verified the finger
 with the <code>fprintd-verify</code> command.</li>
 </ol>
-
 <p>
 Now, <code>sudo</code> asks me for my finger first and then asks for the password after
 three failed attempts to get a proper fingerprint:
@@ -1906,140 +1484,122 @@ FreeBSD
 </div>
 </div>
 <div id="footnotes">
-
 <div id="text-footnotes">
-
 <div class="footdef">
-<sup><a id="fn.modesetting-wiki" class="footnum" href="#fnr.modesetting-wiki" role="doc-backlink">1</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+<sup><a id="fn.modesetting-wiki" class="footnum" href="#fnr.modesetting-wiki" role="doc-backlink">1</a></sup><div class="footpara" role="doc-footnote"><p class="footpara">
 <a href="https://en.wikipedia.org/wiki/Mode_setting">https://en.wikipedia.org/wiki/Mode_setting</a>
 </p></div>
 </div>
-
 <div class="footdef">
-<sup><a id="fn.dtrace-internal" class="footnum" href="#fnr.dtrace-internal" role="doc-backlink">2</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+<sup><a id="fn.dtrace-internal" class="footnum" href="#fnr.dtrace-internal" role="doc-backlink">2</a></sup><div class="footpara" role="doc-footnote"><p class="footpara">
 For example, it is possible to call <code>panic()</code> via DTrace.
 </p></div>
 </div>
-
 <div class="footdef">
-<sup><a id="fn.slackware" class="footnum" href="#fnr.slackware" role="doc-backlink">3</a></sup> <div class="footpara" role="doc-footnote">
+<sup><a id="fn.slackware" class="footnum" href="#fnr.slackware" role="doc-backlink">3</a></sup><div class="footpara" role="doc-footnote">
 <p class="footpara">
 In these times I used Slackware (MOPSLinux) and <code>Xconfigure</code>
 generates wrong <code>/etc/X11/xorg.conf</code> for my AGP video card and CRT monitor, so I
 was forced to write it by hands with proper monitor description and
 proprietary driver's section included.
 </p>
-
 <p class="footpara">
 <a href="https://eugene-andrienko.com/en/it/2024/01/02/life-in-console">https://eugene-andrienko.com/en/it/2024/01/02/life-in-console</a>
 </p>
 </div>
 </div>
-
 <div class="footdef">
-<sup><a id="fn.4" class="footnum" href="#fnr.4" role="doc-backlink">4</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+<sup><a id="fn.4" class="footnum" href="#fnr.4" role="doc-backlink">4</a></sup><div class="footpara" role="doc-footnote"><p class="footpara">
 TL-8260D2W
 </p></div>
 </div>
-
 <div class="footdef">
-<sup><a id="fn.freebsd-wifi" class="footnum" href="#fnr.freebsd-wifi" role="doc-backlink">5</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+<sup><a id="fn.freebsd-wifi" class="footnum" href="#fnr.freebsd-wifi" role="doc-backlink">5</a></sup><div class="footpara" role="doc-footnote"><p class="footpara">
 <a href="https://freebsdfoundation.org/blog/why-laptop-support-why-now-freebsds-strategic-move-toward-broader-adoption/">Why laptop support, why now: FreeBSD’s strategic move toward
 broader adoption</a>
 </p></div>
 </div>
-
 <div class="footdef">
-<sup><a id="fn.tethering-modules" class="footnum" href="#fnr.tethering-modules" role="doc-backlink">6</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+<sup><a id="fn.tethering-modules" class="footnum" href="#fnr.tethering-modules" role="doc-backlink">6</a></sup><div class="footpara" role="doc-footnote"><p class="footpara">
 See the documentation:
 <a href="https://docs.freebsd.org/en/books/handbook/advanced-networking/#network-usb-tethering">https://docs.freebsd.org/en/books/handbook/advanced-networking/#network-usb-tethering</a>
 </p></div>
 </div>
-
-
 </div>
 </div>
-
-  </div>
+</div>
 </article>
 </section>
 </div>
+</div>
+</div>
+</main><footer class="site-footer h-card">
+<div class="wrapper">
+<div class="site-footer-inner">
+<div>
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewbox="0 0 24 24" fill="none" stroke="#586e75" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-pen-tool"><path d="M12 19l7-7 3 3-7 7-3-3z"></path><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"></path><path d="M2 2l7.586 7.586"></path><circle cx="11" cy="11" r="2"></circle></svg>
+<a href="/en/changelog.html">ChangeLog</a> ┆
+<a href="/en/tags.html">Tags</a> ┆
+<a href="/en/categories.html">Categories</a> ┆
+<a href="/en/archives.html">Archives</a>
+</div>
+<br>
 
+<div xmlns:cc="http://creativecommons.org/ns#">
+<a rel="cc:attributionURL" href="https://eugene-andrienko.com/en/">This blog</a>
+© 2020-2025 by
+<a rel="cc:attributionURL dct:creator" property="cc:attributionName" href="https://eugene-andrienko.com/en/about">Eugene Andrienko</a>
+is licensed under
+<a href="https://creativecommons.org/licenses/by/4.0/?ref=chooser-v1" target="_blank" rel="license noopener noreferrer" style="display:inline-block;">
+CC BY 4.0
+</a>
+<img loading="lazy" width="16" height="16" class="copyleft" src="/assets/images/icons/cc.svg" alt="CC">
+<img loading="lazy" width="16" height="16" class="copyleft" src="/assets/images/icons/by.svg" alt="BY">
+</div>
+<div>
+Powered by: <a title="Jekyll is a simple, blog-aware, static site
+generator." href="https://jekyllrb.com/">Jekyll</a>.
+Icons: <a href="https://github.com/feathericons/feather">Feather</a>.
+Colors: <a href="https://ethanschoonover.com/solarized/">Solarized Light</a>.
 </div>
 
-      </div>
-    </main><footer class="site-footer h-card">
-  <div class="wrapper">
-    <div class="site-footer-inner">
-<div>
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewbox="0 0 24 24" fill="none" stroke="#586e75" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-pen-tool"><path d="M12 19l7-7 3 3-7 7-3-3z"></path><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"></path><path d="M2 2l7.586 7.586"></path><circle cx="11" cy="11" r="2"></circle></svg> 
-          <a href="/en/changelog.html">ChangeLog</a> ┆
-          <a href="/en/tags.html">Tags</a> ┆
-          <a href="/en/categories.html">Categories</a> ┆
-          <a href="/en/archives.html">Archives</a>
-        </div>
-
-        <br>
-
-        <!-- CC BY 4.0 -->
-        <div xmlns:cc="http://creativecommons.org/ns#">
-          <a rel="cc:attributionURL" href="https://eugene-andrienko.com/en/">This blog</a>
-          © 2020-2025 by
-          <a rel="cc:attributionURL dct:creator" property="cc:attributionName" href="https://eugene-andrienko.com/en/about">Eugene Andrienko</a>
-          is licensed under
-          <a href="https://creativecommons.org/licenses/by/4.0/?ref=chooser-v1" target="_blank" rel="license noopener noreferrer" style="display:inline-block;">
-            CC BY 4.0
-          </a>
-          <img loading="lazy" width="16" height="16" class="copyleft" src="/assets/images/icons/cc.svg" alt="CC">
-          <img loading="lazy" width="16" height="16" class="copyleft" src="/assets/images/icons/by.svg" alt="BY">
-        </div>
-
-        <div>
-          Powered by: <a title="Jekyll is a simple, blog-aware, static site
-          generator." href="https://jekyllrb.com/">Jekyll</a>.
-          Icons: <a href="https://github.com/feathericons/feather">Feather</a>.
-          Colors: <a href="https://ethanschoonover.com/solarized/">Solarized Light</a>.
-        </div>
-
-        <!-- Old but gold buttons -->
-        <div class="old-gold-buttons">
-          <a href="https://eugene-andrienko.com/en/it/2024/07/07/thinkpad-x220-second-life">
-            <img loading="lazy" alt="IBM Thinkpad button" width="80" height="15" src="/assets/images/buttons/80x15/thinkpad.png">
-          </a>
-          <a href="https://github.com/eugeneandrienko">
-            <img loading="lazy" alt="Night coder button" width="80" height="15" src="/assets/images/buttons/80x15/nightcoder.png">
-          </a>
-          <img loading="lazy" alt="Love dragons button" width="80" height="15" src="/assets/images/buttons/80x15/dragon.png">
-        </div>
-
-        <div class="old-gold-buttons">
-          <a href="https://cobaltblue.neocities.org/buttons/">
-            <img loading="lazy" alt="Made by dragon button" width="88" height="31" src="/assets/images/buttons/88x31/dragonmade-yellow.png">
-          </a>
-          <map name="fediring6">
-            <area href="https://fediring.net/previous?host=eugene-andrienko.com%2Fen%2F" shape="rect" coords="3,6,12,27" target="_top" alt="previous" title="previous">
-            <area href="https://fediring.net/" shape="rect" coords="15,3,72,27" target="_blank" alt="Fediring" title="Fediring">
-            <area href="https://fediring.net/next?host=eugene-andrienko.com%2Fen%2F" shape="rect" coords="75,6,84,27" target="_top" alt="next" title="next">
-          </map>
-          <img loading="lazy" usemap="#fediring6" alt="Fediring" width="88" height="31" src="/assets/images/buttons/88x31/fediring.png">
-          <map name="noaimini7">
-            <area href="https://baccyflap.com/noai" shape="rect" coords="15,3,72,27" target="_blank" alt="no ai webring" title="no ai webring">
-            <area href="https://baccyflap.com/noai/?prv&s=drg" target="_top" shape="rect" coords="3,6,12,27" alt="previous" title="previous">
-            <area href="https://baccyflap.com/noai/?nxt&s=drg" target="_top" shape="rect" coords="75,6,84,27" alt="next" title="next">
-          </map>
-          <img loading="lazy" usemap="#noaimini7" alt="No AI ring" width="88" height="31" src="/assets/images/buttons/88x31/noaiwidget.gif">
-          <a href="https://512kb.club/#100">
-            <img loading="lazy" alt="512KB club, green team" width="88" height="31" src="/assets/images/buttons/88x31/green-team.gif">
-          </a>
-          <a href="https://no-js.club/">
-            <img loading="lazy" alt="no-JS Club" width="88" height="31" src="/assets/images/buttons/88x31/javascript-zero.gif">
-          </a>
-          <a href="https://www.gnu.org/software/emacs/">
-            <img loading="lazy" alt="Created with Emacs" width="88" height="31" src="/assets/images/buttons/88x31/emacs.gif">
-          </a>
-        </div>
-    </div>
-  </div>
+<div class="old-gold-buttons">
+<a href="https://eugene-andrienko.com/en/it/2024/07/07/thinkpad-x220-second-life">
+<img loading="lazy" alt="IBM Thinkpad button" width="80" height="15" src="/assets/images/buttons/80x15/thinkpad.png">
+</a>
+<a href="https://github.com/eugeneandrienko">
+<img loading="lazy" alt="Night coder button" width="80" height="15" src="/assets/images/buttons/80x15/nightcoder.png">
+</a>
+<img loading="lazy" alt="Love dragons button" width="80" height="15" src="/assets/images/buttons/80x15/dragon.png">
+</div>
+<div class="old-gold-buttons">
+<a href="https://cobaltblue.neocities.org/buttons/">
+<img loading="lazy" alt="Made by dragon button" width="88" height="31" src="/assets/images/buttons/88x31/dragonmade-yellow.png">
+</a>
+<map name="fediring6">
+<area href="https://fediring.net/previous?host=eugene-andrienko.com%2Fen%2F" shape="rect" coords="3,6,12,27" target="_top" alt="previous" title="previous">
+<area href="https://fediring.net/" shape="rect" coords="15,3,72,27" target="_blank" alt="Fediring" title="Fediring">
+<area href="https://fediring.net/next?host=eugene-andrienko.com%2Fen%2F" shape="rect" coords="75,6,84,27" target="_top" alt="next" title="next">
+</map>
+<img loading="lazy" usemap="#fediring6" alt="Fediring" width="88" height="31" src="/assets/images/buttons/88x31/fediring.png">
+<map name="noaimini7">
+<area href="https://baccyflap.com/noai" shape="rect" coords="15,3,72,27" target="_blank" alt="no ai webring" title="no ai webring">
+<area href="https://baccyflap.com/noai/?prv&s=drg" target="_top" shape="rect" coords="3,6,12,27" alt="previous" title="previous">
+<area href="https://baccyflap.com/noai/?nxt&s=drg" target="_top" shape="rect" coords="75,6,84,27" alt="next" title="next">
+</map>
+<img loading="lazy" usemap="#noaimini7" alt="No AI ring" width="88" height="31" src="/assets/images/buttons/88x31/noaiwidget.gif">
+<a href="https://512kb.club/#100">
+<img loading="lazy" alt="512KB club, green team" width="88" height="31" src="/assets/images/buttons/88x31/green-team.gif">
+</a>
+<a href="https://no-js.club/">
+<img loading="lazy" alt="no-JS Club" width="88" height="31" src="/assets/images/buttons/88x31/javascript-zero.gif">
+</a>
+<a href="https://www.gnu.org/software/emacs/">
+<img loading="lazy" alt="Created with Emacs" width="88" height="31" src="/assets/images/buttons/88x31/emacs.gif">
+</a>
+</div>
+</div>
+</div>
 </footer>
 </body>
 </html>

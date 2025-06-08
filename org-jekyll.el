@@ -215,6 +215,23 @@ PROPERTY-LIST is a list of properties from
                                        "\\.png$\\|\\.svg$\\|\\.txt$"
                                        nil nil nil))))
 
+(defun org-jekyll--start-jekyll-build (_property-list)
+  "Execute `jekyll build' command when the all necessary files are ready.
+
+PROPERTY-LIST is a list of properties from `org-publish-project-alist'."
+  (make-process
+   :name "jekyll-build"
+   :buffer "jekyll-build"
+   :command '("bundle" "exec" "jekyll" "build")
+   :sentinel (lambda (process state)
+               (cond
+                ((and (eq (process-status process) 'exit)
+                      (zerop (process-exit-status process)))
+                 (message "%s" (propertize "Blog built" 'face '(:foreground "blue"))))
+                ((eq (process-status process) 'run)
+                 (accept-process-output process))
+                (t (error (concat "Jekyll Build: " state)))))))
+
 ;; Function which creates new blog post:
 
 (defun org-jekyll--create-new-post ()
@@ -273,51 +290,44 @@ PROPERTY-LIST is a list of properties from
 (defun org-jekyll--suffix-build ()
   "Build the blog."
   (interactive)
-  (let ((org-publish-project-alist `(("org-jekyll-org"
-                                      :base-directory ,(concat org-jekyll-paths-base-path "/_articles")
-                                      :base-extension "org"
-                                      :publishing-directory ,(concat org-jekyll-paths-base-path "/_posts")
-                                      :preparation-function org-jekyll--prepare-articles
-                                      :completion-function org-jekyll--complete-articles
-                                      :publishing-function org-html-publish-to-html
-                                      :html-extension "html"
-                                      :headline-levels 5
-                                      :html-toplevel-hlevel 2
-                                      :html-html5-fancy t
-                                      :html-table-attributes (:border "2" :cellspacing "0" :cellpadding "6" :frame "void")
-                                      :section-numbers nil
-                                      :html-inline-images t
-                                      :htmlized-source t
-                                      :with-toc nil
-                                      :with-sub-superscript nil
-                                      :body-only t
-                                      :exclude ,org-jekyll-exclude-regex
-                                      :recursive t)
-                                     ("org-jekyll-static"
-                                      :base-directory ,(concat org-jekyll-paths-base-path "/_static")
-                                      :base-extension "jpg\\|JPG\\|jpeg\\|png\\|gif\\|webm\\|webp\\|gpx\\|tar.bz2\\|svg\\|txt"
-                                      :publishing-directory ,(concat org-jekyll-paths-base-path "/assets/static")
-                                      :publishing-function org-publish-attachment
-                                      :preparation-function org-jekyll--prepare-static
-                                      :exclude ,org-jekyll-exclude-regex
-                                      :recursive t)
-                                     ("org-jekyll" :components ("org-jekyll-org" "org-jekyll-static"))))
-        (current-path (file-name-directory buffer-file-name)))
-    (cd (expand-file-name org-jekyll-paths-base-path))
-    (org-publish-project "org-jekyll" t nil)
-    (make-process
-     :name "jekyll-build"
-     :buffer "jekyll-build"
-     :command '("bundle" "exec" "jekyll" "build")
-     :sentinel (lambda (process state)
-                 (cond
-                  ((and (eq (process-status process) 'exit)
-                        (zerop (process-exit-status process)))
-                   (message "%s" (propertize "Blog built" 'face '(:foreground "blue"))))
-                  ((eq (process-status process) 'run)
-                   (accept-process-output process))
-                  (t (error (concat "Jekyll Build: " state))))))
-    (cd current-path)))
+  (make-thread (lambda ()
+                 (let ((org-publish-project-alist
+                        `(("org-jekyll-org"
+                           :base-directory ,(concat org-jekyll-paths-base-path "/_articles")
+                           :base-extension "org"
+                           :publishing-directory ,(concat org-jekyll-paths-base-path "/_posts")
+                           :preparation-function org-jekyll--prepare-articles
+                           :completion-function org-jekyll--complete-articles
+                           :publishing-function org-html-publish-to-html
+                           :html-extension "html"
+                           :headline-levels 5
+                           :html-toplevel-hlevel 2
+                           :html-html5-fancy t
+                           :html-table-attributes (:border "2" :cellspacing "0" :cellpadding "6" :frame "void")
+                           :section-numbers nil
+                           :html-inline-images t
+                           :htmlized-source t
+                           :with-toc nil
+                           :with-sub-superscript nil
+                           :body-only t
+                           :exclude ,org-jekyll-exclude-regex
+                           :recursive t)
+                          ("org-jekyll-static"
+                           :base-directory ,(concat org-jekyll-paths-base-path "/_static")
+                           :base-extension "jpg\\|JPG\\|jpeg\\|png\\|gif\\|webm\\|webp\\|gpx\\|tar.bz2\\|svg\\|txt"
+                           :publishing-directory ,(concat org-jekyll-paths-base-path "/assets/static")
+                           :publishing-function org-publish-attachment
+                           :preparation-function org-jekyll--prepare-static
+                           :completion-function org-jekyll--start-jekyll-build
+                           :exclude ,org-jekyll-exclude-regex
+                           :recursive t)
+                          ("org-jekyll" :components ("org-jekyll-org" "org-jekyll-static")))))
+                   (message "%s" "cd")
+                   (cd (expand-file-name org-jekyll-paths-base-path))
+                   (message "%s" (expand-file-name org-jekyll-paths-base-path))
+                   (org-publish-project "org-jekyll" t nil)
+                   (message "%s" org-publish-project-alist)))
+               "jekyll-build"))
 
 (defun org-jekyll--suffix-serve-toggle ()
   "Serve blog or stop serving the blog."

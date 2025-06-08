@@ -9,4 +9,4 @@ _static/
 articles/.project
 articles/*/hidden-*
 articles/*/draft-*
-assets/
+assets/static/

@@ -239,10 +239,30 @@ PROPERTY-LIST is a list of properties from
                                        "\\.png$\\|\\.svg$\\|\\.txt$"
                                        nil nil nil))))
 
-(defun org-jekyll--start-jekyll-build (_property-list)
+(defun org-jekyll--start-jekyll-build-devel (_property-list)
   "Execute `jekyll build' command when the all necessary files are ready.
 
+The resulting files were not minified during the build.
+
 _PROPERTY-LIST is a list of properties from `org-publish-project-alist'."
+  (org-jekyll--start-jekyll-build nil))
+
+(defun org-jekyll--start-jekyll-build-production (_property-list)
+  "Execute `jekyll build' command when the all necessary files are ready.
+
+The resulting files were minified via the jekyll-minifier.
+
+_PROPERTY-LIST is a list of properties from `org-publish-project-alist'."
+  (org-jekyll--start-jekyll-build t))
+
+(defun org-jekyll--start-jekyll-build (minify-files)
+  "Execute `jekyll build' command when the all necessary files are ready.
+
+MINIFY-FILES enables use of `jekyll-minifier' if set to t.  If it is set to nil
+then the minifier will not be used."
+  (if minify-files
+      (setenv "JEKYLL_ENV" "production")
+    (setenv "JEKYLL_ENV" ""))
   (make-process
    :name "jekyll-build"
    :buffer "jekyll-build"
@@ -255,6 +275,50 @@ _PROPERTY-LIST is a list of properties from `org-publish-project-alist'."
                 ((eq (process-status process) 'run)
                  (accept-process-output process))
                 (t (error (concat "Jekyll Build: " state)))))))
+
+(defun org-jekyll--build (minify-files)
+  "Build the blog.
+
+MINIFY-FILES enables use of `jekyll-minifier' if set to t.  If it is set to nil
+then the minifier will not be used."
+  (org-jekyll--prepare-site-worktree)
+  (make-thread (lambda ()
+                 (let ((org-publish-project-alist
+                        `(("org-jekyll-org"
+                           :base-directory ,(concat org-jekyll-paths-base-path "/_articles")
+                           :base-extension "org"
+                           :publishing-directory ,(concat org-jekyll-paths-base-path "/_posts")
+                           :preparation-function org-jekyll--prepare-articles
+                           :completion-function org-jekyll--complete-articles
+                           :publishing-function org-html-publish-to-html
+                           :html-extension "html"
+                           :headline-levels 5
+                           :html-toplevel-hlevel 2
+                           :html-html5-fancy t
+                           :html-table-attributes (:border "2" :cellspacing "0" :cellpadding "6" :frame "void")
+                           :section-numbers nil
+                           :html-inline-images t
+                           :htmlized-source t
+                           :with-toc nil
+                           :with-sub-superscript nil
+                           :body-only t
+                           :exclude ,org-jekyll-exclude-regex
+                           :recursive t)
+                          ("org-jekyll-static"
+                           :base-directory ,(concat org-jekyll-paths-base-path "/_static")
+                           :base-extension "jpg\\|JPG\\|jpeg\\|png\\|gif\\|webm\\|webp\\|gpx\\|tar.bz2\\|svg\\|txt"
+                           :publishing-directory ,(concat org-jekyll-paths-base-path "/assets/static")
+                           :publishing-function org-publish-attachment
+                           :preparation-function org-jekyll--prepare-static
+                           :completion-function ,(if minify-files
+                                                     #'org-jekyll--start-jekyll-build-production
+                                                   #'org-jekyll--start-jekyll-build-devel)
+                           :exclude ,org-jekyll-exclude-regex
+                           :recursive t)
+                          ("org-jekyll" :components ("org-jekyll-org" "org-jekyll-static")))))
+                   (cd (expand-file-name org-jekyll-paths-base-path))
+                   (org-publish-project "org-jekyll" t nil)))
+               "jekyll-build"))
 
 ;; Function which creates new blog post:
 
@@ -311,45 +375,15 @@ _PROPERTY-LIST is a list of properties from `org-publish-project-alist'."
 
 ;; Transient sufficies:
 
-(defun org-jekyll--suffix-build ()
+(defun org-jekyll--suffix-build-devel ()
   "Build the blog."
   (interactive)
-  (org-jekyll--prepare-site-worktree)
-  (make-thread (lambda ()
-                 (let ((org-publish-project-alist
-                        `(("org-jekyll-org"
-                           :base-directory ,(concat org-jekyll-paths-base-path "/_articles")
-                           :base-extension "org"
-                           :publishing-directory ,(concat org-jekyll-paths-base-path "/_posts")
-                           :preparation-function org-jekyll--prepare-articles
-                           :completion-function org-jekyll--complete-articles
-                           :publishing-function org-html-publish-to-html
-                           :html-extension "html"
-                           :headline-levels 5
-                           :html-toplevel-hlevel 2
-                           :html-html5-fancy t
-                           :html-table-attributes (:border "2" :cellspacing "0" :cellpadding "6" :frame "void")
-                           :section-numbers nil
-                           :html-inline-images t
-                           :htmlized-source t
-                           :with-toc nil
-                           :with-sub-superscript nil
-                           :body-only t
-                           :exclude ,org-jekyll-exclude-regex
-                           :recursive t)
-                          ("org-jekyll-static"
-                           :base-directory ,(concat org-jekyll-paths-base-path "/_static")
-                           :base-extension "jpg\\|JPG\\|jpeg\\|png\\|gif\\|webm\\|webp\\|gpx\\|tar.bz2\\|svg\\|txt"
-                           :publishing-directory ,(concat org-jekyll-paths-base-path "/assets/static")
-                           :publishing-function org-publish-attachment
-                           :preparation-function org-jekyll--prepare-static
-                           :completion-function org-jekyll--start-jekyll-build
-                           :exclude ,org-jekyll-exclude-regex
-                           :recursive t)
-                          ("org-jekyll" :components ("org-jekyll-org" "org-jekyll-static")))))
-                   (cd (expand-file-name org-jekyll-paths-base-path))
-                   (org-publish-project "org-jekyll" t nil)))
-               "jekyll-build"))
+  (org-jekyll--build nil))
+
+(defun org-jekyll--suffix-build-production ()
+  "Build the blog and minify some files."
+  (interactive)
+  (org-jekyll--build t))
 
 (defun org-jekyll--suffix-serve-toggle ()
   "Serve blog or stop serving the blog."
@@ -444,7 +478,7 @@ _PROPERTY-LIST is a list of properties from `org-publish-project-alist'."
   "Transient layout with blog commands."
   [:description (lambda () (concat org-jekyll-url " control panel" "\n"))
                 ["Development"
-                 ("b" "Build blog" org-jekyll--suffix-build)
+                 ("b" "Build blog" org-jekyll--suffix-build-devel)
                  ("s" org-jekyll--suffix-serve-toggle
                   :description (lambda () (if (eq (process-status "jekyll-serve") 'run)
                                          "Stop serving local blog"
@@ -454,6 +488,8 @@ _PROPERTY-LIST is a list of properties from `org-publish-project-alist'."
                  ("B" "Open build log" org-jekyll--suffix-open-build-log)
                  ("l" "Open serve log" org-jekyll--suffix-open-serve-log)
                  ("C" "Clear blog directory" org-jekyll--suffix-clear)]
+                ["Production"
+                 ("p" "Build blog" org-jekyll--suffix-build-production)]
                 ["Actions"
                  ("n" "New blog post" org-jekyll--suffix-create-post)]])
 

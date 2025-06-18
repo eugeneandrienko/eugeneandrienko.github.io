@@ -1,3 +1,6 @@
+Repository *was moved* to the
+https://codeberg.org/evgandr/eugeneandrienko.github.io!
+
 *NOTE:* Some links and all footnotes are broken when you view this file from
 GitHub. Because GitHub doesn't support OrgMode completely.
 
